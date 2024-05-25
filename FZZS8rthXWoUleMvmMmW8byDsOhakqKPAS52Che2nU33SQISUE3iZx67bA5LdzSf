@@ -746,7 +746,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	Players.LocalPlayer.OnTeleport:Connect(function(State)
 	if ju and (not tpc) and queueteleport then
 		tpc = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e'))()")
+		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()")
 		end
 	end)
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
