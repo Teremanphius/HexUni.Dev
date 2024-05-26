@@ -308,7 +308,7 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 104", true);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 105", true);
 Paragraph = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, true, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
@@ -2280,7 +2280,6 @@ Input = Misc:CreateInput({SectionParent=Sectionnoclip,Name="Change Vehicle Nocli
 end});
 Sectioninvisible = Misc:CreateSection("FE LocalPlayer Related | Invisible's", false, false, 14386256326);
 inviskeybind = "";
-Paragraph = Misc:CreateParagraph({Title="Invisible Info",Content="After Sit Walk Toggle, It Doesn't Work"}, Sectioninvisible);
 Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Invisible",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		invisibleeee = Value;
@@ -3008,21 +3007,50 @@ Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",Curre
 end});
 Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		sitwalker = Value;
-		if sitwalker then
-			speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
-			wait(0.2);
-			game.Players.LocalPlayer.Character.Animate.Disabled = true;
-			wait(0.2);
-			Humanoid:ChangeState(Enum.HumanoidStateType.Jumping);
+		sitwalkerr = Value;
+		if sitwalkerr then
+			anims = Character.Animate
+			idholder = {
+				anims.idle:FindFirstChildOfClass("Animation").AnimationId, 
+				anims.walk:FindFirstChildOfClass("Animation").AnimationId, 
+				anims.run:FindFirstChildOfClass("Animation").AnimationId, 
+				anims.jump:FindFirstChildOfClass("Animation").AnimationId,
+				Character.Humanoid.HipHeight,
+			}
+	local sit = anims.sit:FindFirstChildOfClass("Animation").AnimationId
+	anims.idle:FindFirstChildOfClass("Animation").AnimationId = sit
+	anims.walk:FindFirstChildOfClass("Animation").AnimationId = sit
+	anims.run:FindFirstChildOfClass("Animation").AnimationId = sit
+	anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit
 		end
-		if not sitwalker then
-			speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false;
-			game.Players.LocalPlayer.Character.Animate.Disabled = false;
+		if not sitwalkerr then
+			anims.idle:FindFirstChildOfClass("Animation").AnimationId = idholder[1]
+			anims.walk:FindFirstChildOfClass("Animation").AnimationId = idholder[2]
+			anims.run:FindFirstChildOfClass("Animation").AnimationId = idholder[3]
+			anims.jump:FindFirstChildOfClass("Animation").AnimationId = idholder[4]
+			Character.Humanoid.HipHeight = idholder[5]
+			wait(0.1)
+			Character.Humanoid.Jump = true
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglestiwalk:Set(false);
-		end);
+	end);
+end});
+Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		icewalker = Value;
+		if icewalker then
+			for a,a in pairs(Character:GetDescendants()) do 
+				if a.ClassName=="Part" then 
+				a.CustomPhysicalProperties=PhysicalProperties.new(0,0,0)
+				end 
+			end 
+		end
+		if not icewalker then
+			for a,a in pairs(Character:GetDescendants()) do 
+				if a.ClassName=="Part" then 
+				a.CustomPhysicalProperties=PhysicalProperties.new(1,0,0)
+				end 
+			end 
+		end
 	end);
 end});
 Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Jump",CurrentValue=false,Callback=function(Value)
