@@ -754,7 +754,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	Rayfield:Notify({Title="Rejoined!",Content=("Rejoined " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Bang's, Headsit & Other", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Note",Content="To Enable : Username First Then Press Enter\nTo Disable : Empty And Press Enter"}, Sectionplayrerelatedtp);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Make The Box Empty And Press Enter"}, Sectionplayrerelatedtp);
 local Annoy = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -3005,6 +3005,7 @@ Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",Curre
 		end);
 	end);
 end});
+Paragraph = Misc:CreateParagraph({Title="Sit Walk Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionlprtog);
 Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		sitwalkerr = Value;
@@ -3015,7 +3016,6 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 				anims.walk:FindFirstChildOfClass("Animation").AnimationId, 
 				anims.run:FindFirstChildOfClass("Animation").AnimationId, 
 				anims.jump:FindFirstChildOfClass("Animation").AnimationId,
-				Character.Humanoid.HipHeight,
 			}
 	local sit = anims.sit:FindFirstChildOfClass("Animation").AnimationId
 	anims.idle:FindFirstChildOfClass("Animation").AnimationId = sit
@@ -3028,24 +3028,28 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 			anims.walk:FindFirstChildOfClass("Animation").AnimationId = idholder[2]
 			anims.run:FindFirstChildOfClass("Animation").AnimationId = idholder[3]
 			anims.jump:FindFirstChildOfClass("Animation").AnimationId = idholder[4]
-			Character.Humanoid.HipHeight = idholder[5]
-			wait(0.1)
-			Character.Humanoid.Jump = true
+			LP = game:GetService("Players").LocalPlayer;
+			prev = LP.Character:WaitForChild("HumanoidRootPart").CFrame;
+			LP.Character.Parent = workspace.Terrain;
+			LP.Character:BreakJoints();
+			game:GetService("Workspace"):WaitForChild(LP.Name);
+			LP.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 		end
 	end);
 end});
+Paragraph = Misc:CreateParagraph({Title="Slide Info",Content="Can Or Can Not Work."}, Sectionlprtog);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		icewalker = Value;
 		if icewalker then
-			for a,a in pairs(Character:GetDescendants()) do 
+			for _,a in pairs(Character:GetDescendants()) do 
 				if a.ClassName=="Part" then 
-				a.CustomPhysicalProperties=PhysicalProperties.new(0,0,0)
+				a.CustomPhysicalProperties=PhysicalProperties.new(0.01,0,0)
 				end 
 			end 
 		end
 		if not icewalker then
-			for a,a in pairs(Character:GetDescendants()) do 
+			for _,a in pairs(Character:GetDescendants()) do 
 				if a.ClassName=="Part" then 
 				a.CustomPhysicalProperties=PhysicalProperties.new(1,0,0)
 				end 
