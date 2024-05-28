@@ -98,6 +98,16 @@ function getTorso(x)
 	x = x or speakers.LocalPlayer.Character;
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart");
 end
+function getPlr(name)
+	x = nil;
+	for i, v in next, game:GetService("Players"):GetPlayers() do
+		if string.find(v.Name:lower(), name:lower()) then
+			x = v;
+			break;
+		end
+	end
+	return x;
+end
 function effecttrue()
 	soundnotification = Instance.new("Sound");
 	soundnotification.SoundId = "rbxassetid://1555493683";
@@ -561,35 +571,14 @@ end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
 Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
-	client = game:GetService("Players").LocalPlayer;
-	function getPlr(name)
-		x = nil;
-		for i, v in next, game:GetService("Players"):GetPlayers() do
-			if string.find(v.Name:lower(), name:lower()) then
-				x = v;
-				break;
-			end
-		end
-		return x;
-	end
 	foundPlr = getPlr(plrName);
-	client.Character:PivotTo(foundPlr.Character:GetPivot());
+	Character:PivotTo(foundPlr.Character:GetPivot());
 end});
 tweenSpeedtp = 1;
 Paragraph = Misc:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritps);
 Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
 		foundPlr = getPlr(plrName);
 		if (foundPlr.Character ~= nil) then
 			if (Humanoid and Humanoid.SeatPart) then
@@ -620,17 +609,6 @@ end});
 Paragraph = Misc:CreateParagraph({Title="Spectate Info",Content="Leave The Player Box Empty To Unspectate."}, Sectiontpscritps);
 Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Spectate",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
-	client = game:GetService("Players").LocalPlayer;
-	function getPlr(name)
-		x = nil;
-		for i, v in next, game:GetService("Players"):GetPlayers() do
-			if string.find(v.Name:lower(), name:lower()) then
-				x = v;
-				break;
-			end
-		end
-		return x;
-	end
 	foundPlr = getPlr(plrName);
 	game.Workspace.Camera.CameraSubject = foundPlr.Character.Humanoid;
 end});
@@ -741,11 +719,11 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	Rayfield:Notify({Title="Rejoined!",Content=("Rejoined " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game With JU",Interact="Click",Callback=function()
-	tpc = false
+	tpcc = false
 	ju = true
 	Players.LocalPlayer.OnTeleport:Connect(function(State)
-	if ju and (not tpc) and queueteleport then
-		tpc = true
+	if ju and (not tpcc) and queueteleport then
+		tpcc = true
 		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()")
 		end
 	end)
@@ -758,18 +736,7 @@ Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : En
 local Annoy = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		client = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		annoyfoundPlr = getPlr(plrName);
 		if annoyfoundPlr then
 			if (annoyfoundPlr.Character and annoyfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -783,14 +750,13 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 					effecttrue();
 					notifyyw("Now Annoying", "Annoying " .. annoyfoundPlr.Name, 2, 10709790644);
 					while Annoy do
-						client.Character.HumanoidRootPart.CFrame = annoyfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+						speaker.Character.HumanoidRootPart.CFrame = annoyfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 						wait();
 					end
 				end
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			clientheadsit.Character.Humanoid.Sit = false;
 			effectfalse();
 		end
 	end);
@@ -798,18 +764,7 @@ end});
 local Follow = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		clinetfolloa = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		folloawafoundplr = getPlr(plrName);
 		if folloawafoundplr then
 			flwnum = -5;
@@ -824,7 +779,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 					notifyyw("Now Stalking", "Stalking " .. folloawafoundplr.Name, 2, 10709790644);
 					effecttrue();
 					while Follow do
-						clinetfolloa.Character.HumanoidRootPart.CFrame = folloawafoundplr.Character.HumanoidRootPart.CFrame + (folloawafoundplr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+						speaker.Character.HumanoidRootPart.CFrame = folloawafoundplr.Character.HumanoidRootPart.CFrame + (folloawafoundplr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 						wait();
 					end
 				end
@@ -838,18 +793,7 @@ end});
 local Carpettion = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		client = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		carpetfoundPlr = getPlr(plrName);
 		if carpetfoundPlr then
 			if not r15(speaker) then
@@ -870,14 +814,13 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 						effecttrue();
 						notifyyw("Now Carpeting", "Carpeting " .. carpetfoundPlr.Name, 2, 10709790644);
 						while Carpettion do
-							client.Character.HumanoidRootPart.CFrame = carpetfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+							speaker.Character.HumanoidRootPart.CFrame = carpetfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							wait();
 						end
 					end
 				end
 			else
 				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				clientheadsit.Character.Humanoid.Sit = false;
 				effectfalse();
 			end
 		end
@@ -889,18 +832,7 @@ frequencyofbang = 1;
 minuss1 = -1;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		clientv1 = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		bangv1foundplr = getPlr(plrName);
 		if bangv1foundplr then
 			if (bangv1foundplr.Character and bangv1foundplr.Character:FindFirstChild("Humanoid")) then
@@ -918,8 +850,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang",
 						time = tick();
 						xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						clientv1.Character.HumanoidRootPart.CFrame = (bangv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(Vector3.new(0, 0, xOffset))) + (bangv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
-						clientv1.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character.HumanoidRootPart.CFrame = (bangv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(Vector3.new(0, 0, xOffset))) + (bangv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						wait();
 					end
 				end
@@ -943,18 +875,7 @@ end});
 local Bang = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		clientbsdfawfawfangv2 = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		bangingfoundplrv2v2 = getPlr(plrName);
 		if bangingfoundplrv2v2 then
 			flwnum = -1;
@@ -1007,17 +928,6 @@ local Bang69 = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
-		client69 = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
 		r69foundplr = getPlr(plrName);
 		if r69foundplr then
 			if not r15(speaker) then
@@ -1055,13 +965,13 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 					f69lwnum = 1;
 					bangAnim = Instance.new("Animation");
 					bangAnim.AnimationId = "rbxassetid://148840371";
-					bang69 = client69.Character.Humanoid:LoadAnimation(bangAnim);
+					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
 					bang69:Play(0.1, 1, 1);
 					if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
 						Bang69 = true;
 						while Bang69 and c and c.Parent do
-							client69.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-							client69.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(0, 0, 180)
 							hrp0.Position -= Vector3.new(0, 0, 0)
@@ -1101,17 +1011,6 @@ frequencyof69hump = 1;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
-		clientfacehumpv1 = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
 		humpfoundPlr69 = getPlr(plrName);
 		if humpfoundPlr69 then
 			if (humpfoundPlr69.Character and humpfoundPlr69.Character:FindFirstChild("Humanoid")) then
@@ -1149,8 +1048,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 						speaker.Character.Humanoid.PlatformStand = true;
 						time = tick();
 						xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-						clientfacehumpv1.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-						clientfacehumpv1.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						hrp0.CFrame = hrp1.CFrame;
 						hrp0.Orientation += Vector3.new(0, 0, 180)
 						hrp0.Position -= Vector3.new(0, 0, 0)
@@ -1181,17 +1080,6 @@ frequencyofbangface = 1;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
-		clientfacev1 = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
 		facebangv1foundPlr = getPlr(plrName);
 		if facebangv1foundPlr then
 			if (facebangv1foundPlr.Character and facebangv1foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1209,8 +1097,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Faceba
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						time = tick();
 						xOffset = amplitudeofbangface * math.sin(2 * math.pi * frequencyofbangface * time);
-						clientfacev1.Character.HumanoidRootPart.CFrame = facebangv1foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
-						clientfacev1.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character.HumanoidRootPart.CFrame = facebangv1foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						wait();
 					end
 				end
@@ -1234,24 +1122,13 @@ end});
 local ff = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		client = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		facebangfoundPlr = getPlr(plrName);
 		if facebangfoundPlr then
 			if (facebangfoundPlr.Character and facebangfoundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((ff == true) or (facebangfoundPlr == speaker)) then
 					ff = false;
-					client.Character.Humanoid.Sit = false;
+					Character.Humanoid.Sit = false;
 					notifyyw("No Longer Facebanging ", "Not Facebanging", 2, 10747384394);
 					effectfalse();
 					return;
@@ -1260,9 +1137,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Faceban
 					notifyyw("Facebanging Enabled", "Facebanging " .. facebangfoundPlr.Name, 2, 10709790644);
 					effecttrue();
 					while ff do
-						client.Character.Humanoid.Sit = true;
-						client.Character.HumanoidRootPart.CFrame = facebangfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
-						client.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = facebangfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						wait();
 					end
 				end
@@ -1277,17 +1154,6 @@ local ffhugger = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		local plrName = Text;
-		client = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
 		huggingfoundPlr = getPlr(plrName);
 		if huggingfoundPlr then
 			if not r15(speaker) then
@@ -1309,8 +1175,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 						notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
 						effecttrue();
 						while ffhugger do
-							client.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
-							client.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							wait();
 						end
 					end
@@ -1328,17 +1194,6 @@ end});
 local ff2 = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local plrName = Text;
-	clientv3bang = game:GetService("Players").LocalPlayer;
-	function getPlr(name)
-		x = nil;
-		for i, v in next, game:GetService("Players"):GetPlayers() do
-			if string.find(v.Name:lower(), name:lower()) then
-				x = v;
-				break;
-			end
-		end
-		return x;
-	end
 	facebangv3foundPlr = getPlr(plrName);
 	if facebangv3foundPlr then
 		if (facebangv3foundPlr.Character and facebangv3foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1362,8 +1217,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 				notifyyw("Facebanging Enabled", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
 				effecttrue();
 				while ff2 do
-					clientv3bang.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 1.6, 0.4);
-					clientv3bang.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 1.6, 0.4);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 					wait();
 				end
 			end
@@ -1386,25 +1241,14 @@ end});
 local actualpb = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		clientpiggyback = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		piggybackfoundPlr = getPlr(plrName);
 		if piggybackfoundPlr then
 			if (piggybackfoundPlr.Character and piggybackfoundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((actualpb == true) or (piggybackfoundPlr == speaker)) then
 					actualpb = false;
 					notifyyw("No Longer PiggyBacking ", "Not PiggyBacking", 2, 10747384394);
-					clientpiggyback.Character.Humanoid.Sit = false;
+					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
@@ -1412,9 +1256,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 					notifyyw("Now PiggyBacking", "PiggyBacking " .. piggybackfoundPlr.Name, 2, 10709790644);
 					effecttrue();
 					while actualpb do
-						clientpiggyback.Character.Humanoid.Sit = true;
-						clientpiggyback.Character.HumanoidRootPart.CFrame = piggybackfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
-						clientpiggyback.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = piggybackfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
@@ -1428,25 +1272,14 @@ end});
 local pb = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		clientheadsit = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		headsitfoundPlr = getPlr(plrName);
 		if headsitfoundPlr then
 			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((pb == true) or (headsitfoundPlr == speaker)) then
 					pb = false;
 					notifyyw("No Longer HeadSitting ", "Not HeadSitting", 2, 10747384394);
-					clientheadsit.Character.Humanoid.Sit = false;
+					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
@@ -1454,9 +1287,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 2, 10709790644);
 					effecttrue();
 					while pb do
-						clientheadsit.Character.Humanoid.Sit = true;
-						clientheadsit.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
-						clientheadsit.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
@@ -1470,31 +1303,20 @@ end});
 local orbitingfuck = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		coribtlient = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		orbitfoundPlr = getPlr(plrName);
 		if orbitfoundPlr then
 			if ((orbitingfuck == true) or (orbitfoundPlr == speaker)) then
 				effectfalse();
 				orbitingfuck = false;
 				notifyyw("No Longer Orbiting ", "Not Orbiting", 2, 10747384394);
-				for i, v in pairs(coribtlient.Character:GetDescendants()) do
+				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
 					end
 				end
-				coribtlient.Character.Humanoid.PlatformStand = false;
-				coribtlient.Character.Humanoid.Sit = false;
+				speaker.Character.Humanoid.PlatformStand = false;
+				speaker.Character.Humanoid.Sit = false;
 				return;
 			else
 				orbitingfuck = true;
@@ -1514,7 +1336,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Plac
 				local spin = 0;
 				local spin2 = 0;
 				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = coribtlient.Character.HumanoidRootPart;
+				rp.Parent = speaker.Character.HumanoidRootPart;
 				rp.CartoonFactor = 1;
 				rp.MaxThrust = 5000;
 				rp.MaxSpeed = 100;
@@ -1522,7 +1344,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Plac
 				rp.Name = "OrbitalDestructionPart";
 				rp.Target = orbitfoundPlr.Character.ThePart;
 				rp:Fire();
-				coribtlient.Character.Humanoid.PlatformStand = true;
+				speaker.Character.Humanoid.PlatformStand = true;
 				while orbitingfuck do
 					game:GetService("RunService").RenderStepped:wait();
 					sine = sine + change;
@@ -1540,37 +1362,26 @@ end});
 local closeorbitingfuck = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		closecoribtlient = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		closeorbitfoundPlr = getPlr(plrName);
 		if closeorbitfoundPlr then
 			if ((closeorbitingfuck == true) or (closeorbitfoundPlr == speaker)) then
 				effectfalse();
 				closeorbitingfuck = false;
 				notifyyw("No Longer Orbiting ", "Not Orbiting", 2, 10747384394);
-				for i, v in pairs(closecoribtlient.Character:GetDescendants()) do
+				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
 					end
 				end
-				closecoribtlient.Character.Humanoid.Sit = false;
+				speaker.Character.Humanoid.Sit = false;
 				return;
 			else
 				closeorbitingfuck = true;
 				effecttrue();
 				notifyyw("Now Orbiting", "Orbiting Around " .. closeorbitfoundPlr.Name, 2, 10709790644);
 				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = closecoribtlient.Character.HumanoidRootPart;
+				rp.Parent = speaker.Character.HumanoidRootPart;
 				rp.CartoonFactor = 1;
 				rp.MaxThrust = 5000;
 				rp.MaxSpeed = 100;
@@ -1578,7 +1389,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit
 				rp.Name = "OrbitalDestruction";
 				rp.Target = closeorbitfoundPlr.Character.HumanoidRootPart;
 				rp:Fire();
-				closecoribtlient.Character.Humanoid.Sit = true;
+				speaker.Character.Humanoid.Sit = true;
 				while closeorbitingfuck do
 					game:GetService("RunService").RenderStepped:wait();
 					sine = sine + change;
@@ -1597,18 +1408,7 @@ Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Char
 local lookingAt = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		local plrName = Text;
-		cllookatient = game:GetService("Players").LocalPlayer;
-		function getPlr(name)
-			x = nil;
-			for i, v in next, game:GetService("Players"):GetPlayers() do
-				if string.find(v.Name:lower(), name:lower()) then
-					x = v;
-					break;
-				end
-			end
-			return x;
-		end
+		plrName = Text;
 		LookAtfoundPlr = getPlr(plrName);
 		if LookAtfoundPlr then
 			if ((lookingAt == true) or (LookAtfoundPlr == speaker)) then
@@ -6855,7 +6655,8 @@ Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Cham
 end});
 local CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", true);
-Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Script Owner: Javolo\nCo Owner: TripleDomm\nTesting: Javolo's Brother\nGeneral Helping: Sunken\nGeneral Helping: Kooggy\nGeneral Helping: Nihan\nGeneral Helping: Valco\nOther's:\nMoney Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nUI: Array Field Library (Modified)"}, nil);
+Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, nil);
+Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing )\nUI: Array Field Library (Modified)"}, nil);
 Sectionchangelog = CRD:CreateSection("Changelog", true);
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Made Some Improvement's."}, nil);
 Sectionother = CRD:CreateSection("Point", true);
@@ -6872,7 +6673,7 @@ totalSeconds = math.floor(workspace.DistributedGameTime);
 hours = math.floor(totalSeconds / 3600);
 minutes = math.floor((totalSeconds % 3600) / 60);
 seconds = totalSeconds % 60;
-Paragraphcrdd = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. LocalPlayer.Name .. " | " .. LocalPlayer.DisplayName .. "" .. "\nUserId: " .. LocalPlayer.UserId .. "" .. "\nAccount Age | In Days: " .. "Day's " .. Daysinfo .. " Month's: " .. Monthsinfo .. " Year's: " .. Yearsinfo .. " | " .. speaker.AccountAge .. "" .. "\nPlaceId: " .. game.PlaceId .. "")});
+Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. LocalPlayer.Name .. " | " .. LocalPlayer.DisplayName .. "" .. "\nUserId: " .. LocalPlayer.UserId .. "" .. "\nAccount Age | In Days: " .. "Day's " .. Daysinfo .. " Month's: " .. Monthsinfo .. " Year's: " .. Yearsinfo .. " | " .. speaker.AccountAge .. "" .. "\nPlaceId: " .. game.PlaceId .. "")});
 task.spawn(function()
 	while task.wait() do
 		totalSeconds = math.floor(workspace.DistributedGameTime);
@@ -6882,8 +6683,7 @@ task.spawn(function()
 		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 	end
 end);
-Sectionclientinfo = CRD:CreateSection("Detailed Client Information", true);
-Paragraphcrdd = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. LocalPlayer.Name .. " | " .. LocalPlayer.DisplayName .. "" .. "\nUserId: " .. LocalPlayer.UserId .. "" .. "\nAccount Age | In Days: " .. "Day's " .. Daysinfo .. " Month's: " .. Monthsinfo .. " Year's: " .. Yearsinfo .. " | " .. speaker.AccountAge .. "" .. "\nPlaceId: " .. game.PlaceId .. "" .. "\nCountry: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
+Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 Sectionfriendinfo = CRD:CreateSection("Friend Information", true);
 Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")});
 task.spawn(function()
@@ -6910,16 +6710,6 @@ end});
 Paragraphchangelog = CRD:CreateParagraph({Title="Copy Player ID Info",Content="Basically You Enter Some Player's Username And You Press Enter, You'll Have Their ID Copied."}, Sectioncopysc);
 Input = CRD:CreateInput({SectionParent=Sectioncopysc,Name="Copy Player's UserId",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
-	function getPlr(name)
-		x = nil;
-		for i, v in next, game:GetService("Players"):GetPlayers() do
-			if string.find(v.Name:lower(), name:lower()) then
-				x = v;
-				break;
-			end
-		end
-		return x;
-	end
 	foundPlr = getPlr(plrName);
 	toClipboard("" .. foundPlr.UserId .. "");
 end});
