@@ -1293,8 +1293,30 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 					end
 				end
 			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
+				if ((ffhugger == true) or (huggingfoundPlr == speaker)) then
+					ffhugger = false;
+					notifyyw("No Longer Hugging ", "Not Hugging", 2, 10747384394);
+					effectfalse();
+					zomearm:Stop();
+					zombiearmsAnim:Destroy();
+					speaker.Character.Animate.Disabled = false;
+					return;
+				else
+					ffhugger = true;
+					zombiearmsAnim = Instance.new("Animation");
+					zombiearmsAnim.AnimationId = "rbxassetid://708553116";
+					zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+					zomearm:Play();
+					zomearm:AdjustSpeed(0);
+					speaker.Character.Animate.Disabled = true;
+					notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+					effecttrue();
+					while ffhugger do
+						speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						wait();
+					end
+				end
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
