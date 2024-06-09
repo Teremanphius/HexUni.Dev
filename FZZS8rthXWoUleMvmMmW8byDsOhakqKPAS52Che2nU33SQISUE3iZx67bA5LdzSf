@@ -1292,30 +1292,28 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 						end
 					end
 				end
+			elseif ((ffhugger == true) or (huggingfoundPlr == speaker)) then
+				ffhugger = false;
+				notifyyw("No Longer Hugging ", "Not Hugging", 2, 10747384394);
+				effectfalse();
+				zomearm:Stop();
+				zombiearmsAnim:Destroy();
+				speaker.Character.Animate.Disabled = false;
+				return;
 			else
-				if ((ffhugger == true) or (huggingfoundPlr == speaker)) then
-					ffhugger = false;
-					notifyyw("No Longer Hugging ", "Not Hugging", 2, 10747384394);
-					effectfalse();
-					zomearm:Stop();
-					zombiearmsAnim:Destroy();
-					speaker.Character.Animate.Disabled = false;
-					return;
-				else
-					ffhugger = true;
-					zombiearmsAnim = Instance.new("Animation");
-					zombiearmsAnim.AnimationId = "rbxassetid://708553116";
-					zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-					zomearm:Play();
-					zomearm:AdjustSpeed(0);
-					speaker.Character.Animate.Disabled = true;
-					notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
-					effecttrue();
-					while ffhugger do
-						speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						wait();
-					end
+				ffhugger = true;
+				zombiearmsAnim = Instance.new("Animation");
+				zombiearmsAnim.AnimationId = "rbxassetid://708553116";
+				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+				zomearm:Play();
+				zomearm:AdjustSpeed(0);
+				speaker.Character.Animate.Disabled = true;
+				notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+				effecttrue();
+				while ffhugger do
+					speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					wait();
 				end
 			end
 		else
@@ -2262,26 +2260,11 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			local CF;
 			invisFix = RunService.Stepped:Connect(function()
 				pcall(function()
-					local IsInteger;
-					if tostring(Void):find("-") then
-						IsInteger = true;
-					else
-						IsInteger = false;
-					end
-					Pos = Player.Character.HumanoidRootPart.Position;
-					Pos_String = tostring(Pos);
-					Pos_Seperate = Pos_String:split(", ");
-					X = tonumber(Pos_Seperate[1]);
-					Y = tonumber(Pos_Seperate[2]);
-					Z = tonumber(Pos_Seperate[3]);
-					if (IsInteger == true) then
-						if (Y <= Void) then
-							Respawn();
-						end
-					elseif (IsInteger == false) then
-						if (Y >= Void) then
-							Respawn();
-						end
+					local IsInteger = tostring(Void):find("-");
+					local Pos = Player.Character.HumanoidRootPart.Position;
+					local Pos_Y = Pos.Y;
+					if ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void))) then
+						Respawn();
 					end
 				end);
 			end);
@@ -2297,7 +2280,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			end
 			function Respawn()
 				IsRunning = false;
-				if (IsInvis == true) then
+				if IsInvis then
 					pcall(function()
 						Player.Character = Character;
 						wait();
@@ -2307,7 +2290,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 						InvisibleCharacter.Parent = nil;
 						invisRunning = false;
 					end);
-				elseif (IsInvis == false) then
+				else
 					pcall(function()
 						Player.Character = Character;
 						wait();
@@ -2322,7 +2305,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 				Respawn();
 				invisDied:Disconnect();
 			end);
-			if (IsInvis == true) then
+			if IsInvis then
 				return;
 			end
 			IsInvis = true;
@@ -2351,7 +2334,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			Player.Character.Animate.Disabled = true;
 			Player.Character.Animate.Disabled = false;
 			function TurnVisible()
-				if (IsInvis == false) then
+				if not IsInvis then
 					return;
 				end
 				invisFix:Disconnect();
@@ -2392,133 +2375,6 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 		wait();
 	until JMouse 
 	toginvis = false;
-	function Invisfuncc()
-		Player = speaker;
-		repeat
-			wait(0.1);
-		until Player.Character 
-		Character = Player.Character;
-		Character.Archivable = true;
-		IsInvis = false;
-		IsRunning = true;
-		InvisibleCharacter = Character:Clone();
-		InvisibleCharacter.Parent = Lighting;
-		Void = workspace.FallenPartsDestroyHeight;
-		InvisibleCharacter.Name = "";
-		local CF;
-		invisFix = RunService.Stepped:Connect(function()
-			pcall(function()
-				local IsInteger;
-				if tostring(Void):find("-") then
-					IsInteger = true;
-				else
-					IsInteger = false;
-				end
-				Pos = Player.Character.HumanoidRootPart.Position;
-				Pos_String = tostring(Pos);
-				Pos_Seperate = Pos_String:split(", ");
-				X = tonumber(Pos_Seperate[1]);
-				Y = tonumber(Pos_Seperate[2]);
-				Z = tonumber(Pos_Seperate[3]);
-				if (IsInteger == true) then
-					if (Y <= Void) then
-						Respawn();
-					end
-				elseif (IsInteger == false) then
-					if (Y >= Void) then
-						Respawn();
-					end
-				end
-			end);
-		end);
-		for i, v in pairs(InvisibleCharacter:GetDescendants()) do
-			if v:IsA("BasePart") then
-				if (v.Name == "HumanoidRootPart") then
-					v.Transparency = 1;
-				else
-					v.Material = Enum.Material.ForceField;
-					v.Color = Color3.fromRGB(25, 25, 25);
-				end
-			end
-		end
-		function Respawn()
-			IsRunning = false;
-			if (IsInvis == true) then
-				pcall(function()
-					Player.Character = Character;
-					wait();
-					Character.Parent = workspace;
-					Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
-					IsInvis = false;
-					InvisibleCharacter.Parent = nil;
-					invisRunning = false;
-				end);
-			elseif (IsInvis == false) then
-				pcall(function()
-					Player.Character = Character;
-					wait();
-					Character.Parent = workspace;
-					Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
-					TurnVisible();
-				end);
-			end
-		end
-		local invisDied;
-		invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			Respawn();
-			invisDied:Disconnect();
-		end);
-		if (IsInvis == true) then
-			return;
-		end
-		IsInvis = true;
-		CF = workspace.CurrentCamera.CFrame;
-		CF_1 = Player.Character.HumanoidRootPart.CFrame;
-		Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
-		workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
-		wait(0.2);
-		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
-		InvisibleCharacter = InvisibleCharacter;
-		Character.Parent = Lighting;
-		InvisibleCharacter.Parent = workspace;
-		InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
-		Player.Character = InvisibleCharacter;
-		game.workspace.CurrentCamera:remove();
-		wait(0.1);
-		repeat
-			wait();
-		until speaker.Character ~= nil 
-		game.workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
-		game.workspace.CurrentCamera.CameraType = "Custom";
-		speaker.CameraMinZoomDistance = 0.5;
-		speaker.CameraMaxZoomDistance = 400;
-		speaker.CameraMode = "Classic";
-		speaker.Character.Head.Anchored = false;
-		Player.Character.Animate.Disabled = true;
-		Player.Character.Animate.Disabled = false;
-		function TurnVisible()
-			if (IsInvis == false) then
-				return;
-			end
-			IsRunning = false;
-			invisFix:Disconnect();
-			invisDied:Disconnect();
-			CF = workspace.CurrentCamera.CFrame;
-			Character = Character;
-			local CF_1 = Player.Character.HumanoidRootPart.CFrame;
-			Character.HumanoidRootPart.CFrame = CF_1;
-			InvisibleCharacter:Destroy();
-			Player.Character = Character;
-			Character.Parent = workspace;
-			IsInvis = false;
-			Player.Character.Animate.Disabled = true;
-			Player.Character.Animate.Disabled = false;
-			invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				Respawn();
-				invisDied:Disconnect();
-			end);
-		end
-	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == inviskeybind) then
 			if toginvis then
@@ -2526,7 +2382,115 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				TurnVisible();
 			else
 				toginvis = true;
-				Invisfuncc();
+				Player = speaker;
+				repeat
+					wait(0.1);
+				until Player.Character 
+				Character = Player.Character;
+				Character.Archivable = true;
+				IsInvis = false;
+				IsRunning = true;
+				InvisibleCharacter = Character:Clone();
+				InvisibleCharacter.Parent = Lighting;
+				Void = workspace.FallenPartsDestroyHeight;
+				InvisibleCharacter.Name = "";
+				local CF;
+				invisFix = RunService.Stepped:Connect(function()
+					pcall(function()
+						local IsInteger = tostring(Void):find("-");
+						local Pos = Player.Character.HumanoidRootPart.Position;
+						local Pos_Y = Pos.Y;
+						if ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void))) then
+							Respawn();
+						end
+					end);
+				end);
+				for i, v in pairs(InvisibleCharacter:GetDescendants()) do
+					if v:IsA("BasePart") then
+						if (v.Name == "HumanoidRootPart") then
+							v.Transparency = 1;
+						else
+							v.Material = Enum.Material.ForceField;
+							v.Color = Color3.fromRGB(25, 25, 25);
+						end
+					end
+				end
+				function Respawn()
+					IsRunning = false;
+					if IsInvis then
+						pcall(function()
+							Player.Character = Character;
+							wait();
+							Character.Parent = workspace;
+							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+							IsInvis = false;
+							InvisibleCharacter.Parent = nil;
+							invisRunning = false;
+						end);
+					else
+						pcall(function()
+							Player.Character = Character;
+							wait();
+							Character.Parent = workspace;
+							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+							TurnVisible();
+						end);
+					end
+				end
+				local invisDied;
+				invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					Respawn();
+					invisDied:Disconnect();
+				end);
+				if IsInvis then
+					return;
+				end
+				IsInvis = true;
+				CF = workspace.CurrentCamera.CFrame;
+				local CF_1 = Player.Character.HumanoidRootPart.CFrame;
+				Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
+				workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
+				wait(0.2);
+				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
+				InvisibleCharacter = InvisibleCharacter;
+				Character.Parent = Lighting;
+				InvisibleCharacter.Parent = workspace;
+				InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
+				Player.Character = InvisibleCharacter;
+				game.workspace.CurrentCamera:remove();
+				wait(0.1);
+				repeat
+					wait();
+				until speaker.Character ~= nil 
+				game.workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
+				game.workspace.CurrentCamera.CameraType = "Custom";
+				speaker.CameraMinZoomDistance = 0.5;
+				speaker.CameraMaxZoomDistance = 400;
+				speaker.CameraMode = "Classic";
+				speaker.Character.Head.Anchored = false;
+				Player.Character.Animate.Disabled = true;
+				Player.Character.Animate.Disabled = false;
+				function TurnVisible()
+					if not IsInvis then
+						return;
+					end
+					invisFix:Disconnect();
+					invisDied:Disconnect();
+					CF = workspace.CurrentCamera.CFrame;
+					Character = Character;
+					local CF_1 = Player.Character.HumanoidRootPart.CFrame;
+					Character.HumanoidRootPart.CFrame = CF_1;
+					InvisibleCharacter:Destroy();
+					Player.Character = Character;
+					Character.Parent = workspace;
+					IsInvis = false;
+					Player.Character.Animate.Disabled = true;
+					Player.Character.Animate.Disabled = false;
+					invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+						Respawn();
+						invisDied:Disconnect();
+					end);
+				end
 			end
 		end
 	end);
