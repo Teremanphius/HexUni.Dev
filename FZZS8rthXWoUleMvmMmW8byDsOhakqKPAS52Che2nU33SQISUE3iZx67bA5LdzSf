@@ -1,9 +1,9 @@
-if not game:IsLoaded() then 
+if not game:IsLoaded() then
 	game.Loaded:Wait();
 end
 getgenv().SecureMode = true;
 RunService = game:GetService("RunService");
-Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))();
+NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))();
 speaker = game.Players.LocalPlayer;
 Character = speaker.Character or speaker.CharacterAdded:Wait();
 LocalPlayer = speaker;
@@ -29,7 +29,7 @@ ChatService = game:GetService("Chat");
 ProximityPromptService = game:GetService("ProximityPromptService");
 StatsService = game:GetService("Stats");
 MaterialService = game:GetService("MaterialService");
-JMouse = game.Players.LocalPlayer:GetMouse();
+JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
 Camera = workspace.CurrentCamera;
@@ -73,7 +73,7 @@ function toClipboard(String)
 	end
 end
 function notifyyw(String, String2, Durationnn, Imageee)
-	Rayfield:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee});
+	NSUI:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee});
 end
 function r15(plr)
 	if (plr.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15) then
@@ -95,7 +95,7 @@ function breakvelocity()
 	end
 end
 function getTorso(x)
-	x = x or speakers.LocalPlayer.Character;
+	x = x or speakers.speaker.Character;
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart");
 end
 function getPlr(name)
@@ -171,21 +171,21 @@ end
 function CheckTime()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
-		Rayfield:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=Rayfield:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	elseif ((h >= 12) and (h < 20)) then
-		Rayfield:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=Rayfield:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	else
-		Rayfield:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=Rayfield:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	end
 end
 CheckTime();
 speakers.PlayerAdded:Connect(function(Player)
-	if Player:IsFriendsWith(Players.LocalPlayer.UserId) then
+	if Player:IsFriendsWith(speaker.UserId) then
 		pcall(function()
-			Rayfield:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " Has Joined The Server."),Duration=6,Image=Rayfield:GetPlayerThumbnail(Player.UserId, "HeadShot")});
+			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
 			soundfriendjoin = Instance.new("Sound");
 			soundfriendjoin.SoundId = "rbxassetid://1862043663";
 			soundfriendjoin.Looped = false;
@@ -203,7 +203,7 @@ flykeybind = "";
 function sFLY(vfly)
 	repeat
 		wait();
-	until speakers.LocalPlayer and speakers.LocalPlayer.Character and getRoot(speakers.LocalPlayer.Character) and speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") 
+	until speakers.LocalPlayer and speakers.speaker.Character and getRoot(speakers.speaker.Character) and speakers.speaker.Character:FindFirstChildOfClass("Humanoid") 
 	repeat
 		wait();
 	until JMouse 
@@ -211,7 +211,7 @@ function sFLY(vfly)
 		flyKeyDown:Disconnect();
 		flyKeyUp:Disconnect();
 	end
-	local T = getRoot(speakers.LocalPlayer.Character);
+	local T = getRoot(speakers.speaker.Character);
 	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
 	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
 	local SPEED = 0;
@@ -229,8 +229,8 @@ function sFLY(vfly)
 		task.spawn(function()
 			repeat
 				wait();
-				if (not vfly and speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")) then
-					speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+				if (not vfly and speakers.speaker.Character:FindFirstChildOfClass("Humanoid")) then
+					speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 				end
 				if (((CONTROL.L + CONTROL.R) ~= 0) or ((CONTROL.F + CONTROL.B) ~= 0) or ((CONTROL.Q + CONTROL.E) ~= 0)) then
 					SPEED = 50;
@@ -252,8 +252,8 @@ function sFLY(vfly)
 			SPEED = 0;
 			BG:Destroy();
 			BV:Destroy();
-			if speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-				speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+			if speakers.speaker.Character:FindFirstChildOfClass("Humanoid") then
+				speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 			end
 		end);
 	end
@@ -299,8 +299,8 @@ function NOFLY()
 		flyKeyDown:Disconnect();
 		flyKeyUp:Disconnect();
 	end
-	if speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-		speakers.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+	if speakers.speaker.Character:FindFirstChildOfClass("Humanoid") then
+		speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 	end
 	pcall(function()
 		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
@@ -311,7 +311,7 @@ RunService.RenderStepped:Connect(function(step)
 	local fps = 1 / step;
 	UpdatedFPS = math.floor(fps);
 end);
-local Window = Rayfield:CreateWindow({Name=("Javolo Universal\t\t\t\t   " .. os.date("%H:%M")),LoadingTitle="Javolo Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="Javolo Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. LocalPlayer.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
+local Window = NSUI:CreateWindow({Name=("Javolo Universal\t\t\t\t   " .. os.date("%H:%M")),LoadingTitle="Javolo Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="Javolo Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. speaker.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
 task.spawn(function()
 	while task.wait(1) do
 		Window:SetTopbarTitle("Javolo Universal\t\t\t\t   " .. os.date("%H:%M"));
@@ -325,35 +325,35 @@ Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",I
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Dex",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="CMD X",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Sirius",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://sirius.menu/script"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Nameless Admin Hub",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Sectiontgearstools = Misc:CreateSection("FE / (Client) LocalPlayer Related Script's | Gear's", false, true, 10747383470);
@@ -362,7 +362,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Equip All Too
 		v.Parent = speaker.Character;
 	end
 	effecttrue();
-	Rayfield:Notify({Title="Equipped!",Content="Equipped All Gear's / Tool's!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Equipped!",Content="Equipped All Gear's / Tool's!",Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Remove Gear's",Interact="Click",Callback=function()
 	for i, v in pairs(speaker.Backpack:GetChildren()) do
@@ -371,7 +371,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Remove Gear's
 		end
 	end
 	effecttrue();
-	Rayfield:Notify({Title="Removed!",Content="Removed Gear's",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Removed!",Content="Removed Gear's",Duration=3,Image=7733715400});
 end});
 Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop Gear's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -396,7 +396,7 @@ Sectionfeplayerelatedanti = Misc:CreateSection("FE LocalPlayer / Player Related 
 if (game.PlaceId == 417267366) then
 	Button = Misc:CreateButton({SectionParent=Sectionfeplayerelatedanti,Name="DollHouse Anti Bot Fling",Interact="Click",Callback=function()
 		effecttrue();
-		Rayfield:Notify({Title="Running!",Content="Script Is Running!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Running!",Content="Script Is Running!",Duration=3,Image=7733715400});
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/tonumber/pastes/main/antiflingbot.lua"))();
 	end});
 end
@@ -524,7 +524,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		if antiwindowafk then
 			if not getconnections then
 				effectfalse();
-				Rayfield:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
+				NSUI:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
 				return;
 			end
 			for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -536,7 +536,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 			if not antiwindowafk then
 				if not getconnections then
 					effectfalse();
-					Rayfield:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
+					NSUI:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
 					return;
 				end
 				for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -554,12 +554,12 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		antiafkidle = Value;
 		if antiafkidle then
 			vu = game:GetService("VirtualUser");
-			antiafk = game:GetService("Players").LocalPlayer.Idled:connect(function()
+			antiafk = game:GetService("Players").speaker.Idled:connect(function()
 				vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
 				wait(1);
 				vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
 			end);
-			for i, v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+			for i, v in pairs(getconnections(speaker.Idled)) do
 				v:Disable();
 			end
 		end
@@ -614,14 +614,12 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Spectate",Placeho
 end});
 local function clicktpFunc()
 	pcall(function()
-		local character = speakers.LocalPlayer.Character;
-		local humanoid = character:FindFirstChildOfClass("Humanoid");
-		if (humanoid and humanoid.SeatPart) then
-			humanoid.Sit = false;
+		if (Humanoid and Humanoid.SeatPart) then
+			Humanoid.Sit = false;
 			wait(0.1);
 		end
-		local hipHeight = humanoid and (humanoid.HipHeight > 0) and (humanoid.HipHeight + 1);
-		local rootPart = getRoot(character);
+		local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1);
+		local rootPart = getRoot(Character);
 		local rootPartPosition = rootPart.Position;
 		local hitPosition = JMouse.Hit.Position;
 		local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) * CFrame.Angles(0, math.pi, 0);
@@ -633,9 +631,9 @@ Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You
 Buttonpresstotp = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Press To Teleport",Interact="Click",Callback=function()
 	Buttonpresstotp:Set("Press To Teleport (Exed)");
 	if (presstotpkeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key == presstotpkeybind) then
@@ -669,7 +667,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Low
 		TPS:TeleportToPlaceInstance(_place, Server.id, game.Players.LocalPlayer);
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Teleported!",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Paragraph = Misc:CreateParagraph({Title="TP To Highest.. Info",Content='Can Show Up a Prompt Saying \"Server Full\" Or Something, Basically Failing But Keep On Pressing To TP'}, Sectiontpscritps);
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Highest Player's Server",Interact="Click",Callback=function()
@@ -692,44 +690,46 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Hig
 		TPS:TeleportToPlaceInstance(_place, Server.id, game.Players.LocalPlayer);
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Teleported!",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Interact="Click",Callback=function()
-	if httprequest then
-		local servers = {};
-		local req = httprequest({Url=string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100", PlaceId)});
-		local body = HttpService:JSONDecode(req.Body);
-		if (body and body.data) then
-			for i, v in next, body.data do
-				if ((type(v) == "table") and tonumber(v.playing) and tonumber(v.maxPlayers) and (v.playing < v.maxPlayers) and (v.id ~= JobId)) then
-					table.insert(servers, 1, v.id);
+	pcall(function()
+		if httprequest then
+			local servers = {};
+			local req = httprequest({Url=string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100", PlaceId)});
+			local body = HttpService:JSONDecode(req.Body);
+			if (body and body.data) then
+				for i, v in next, body.data do
+					if ((type(v) == "table") and tonumber(v.playing) and tonumber(v.maxPlayers) and (v.playing < v.maxPlayers) and (v.id ~= JobId)) then
+						table.insert(servers, 1, v.id);
+					end
 				end
 			end
+			if (#servers > 0) then
+				TeleportService:TeleportToPlaceInstance(PlaceId, servers[math.random(1, #servers)], speakers.LocalPlayer);
+			else
+				return NSUI:Notify({Title="Server Hop",Content="Couldn't Find Any Server's",Duration=3,Image=nil});
+			end
 		end
-		if (#servers > 0) then
-			TeleportService:TeleportToPlaceInstance(PlaceId, servers[math.random(1, #servers)], speakers.LocalPlayer);
-		else
-			return Rayfield:Notify({Title="Server Hop",Content="Couldn't Find Any Server's",Duration=3,Image=nil});
-		end
-	end
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game",Interact="Click",Callback=function()
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
 	effecttrue();
-	Rayfield:Notify({Title="Rejoined!",Content=("Rejoined " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game With JU",Interact="Click",Callback=function()
-	tpcc = false
-	ju = true
-	Players.LocalPlayer.OnTeleport:Connect(function(State)
-	if ju and (not tpcc) and queueteleport then
-		tpcc = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()")
+	tpcc = false;
+	ju = true;
+	speaker.OnTeleport:Connect(function(State)
+		if (ju and not tpcc and queueteleport) then
+			tpcc = true;
+			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()");
 		end
-	end)
+	end);
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
 	effecttrue();
-	Rayfield:Notify({Title="Rejoined!",Content=("Rejoined " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Bang's, Headsit & Other", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Make The Box Empty And Press Enter"}, Sectionplayrerelatedtp);
@@ -820,7 +820,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 					end
 				end
 			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
 				effectfalse();
 			end
 		end
@@ -830,7 +830,7 @@ local bangfrfrfrf = false;
 amplitudeofbang = 1.2;
 frequencyofbang = 1;
 minuss1 = -1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		bangv1foundplr = getPlr(plrName);
@@ -862,18 +862,18 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang",
 		end
 	end);
 end});
-bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyofbang = Value;
 	end);
 end});
-Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Bang Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		frequencyofbang = Text;
 	end);
 end});
 local Bang = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		bangingfoundplrv2v2 = getPlr(plrName);
@@ -913,12 +913,12 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation B
 		end
 	end);
 end});
-bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Animation Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
+bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
 		bangv2:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Bang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		bangv2:AdjustSpeed(Text);
 	end);
@@ -938,19 +938,17 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 					bang69:Stop();
 					bangAnim:Destroy();
 					Bang69 = false;
-					LP = game:GetService("Players").LocalPlayer;
-					prev = LP.Character:WaitForChild("HumanoidRootPart").CFrame;
-					LP.Character.Parent = workspace.Terrain;
-					LP.Character:BreakJoints();
-					game:GetService("Workspace"):WaitForChild(LP.Name);
-					LP.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+					prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+					speaker.Character.Parent = workspace.Terrain;
+					speaker.Character:BreakJoints();
+					game:GetService("Workspace"):WaitForChild(speaker.Name);
+					speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 					return;
 				else
 					Bang69 = true;
 					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
 					effecttrue();
-					lp = game:GetService("Players").LocalPlayer;
-					c = lp.Character;
+					c = Character;
 					hrp0 = c:FindFirstChild("HumanoidRootPart");
 					hrp1 = hrp0:Clone();
 					c.Parent = nil;
@@ -980,9 +978,68 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 						end
 					end
 				end
-			else
+			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
+				Bang69 = false;
+				notifyyw("No Longer Banging", "Not Banging", 2, 10747384394);
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				bang69:Stop();
+				bangAnim:Destroy();
+				Bang69 = false;
+				prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+				speaker.Character.Parent = workspace.Terrain;
+				speaker.Character:BreakJoints();
+				game:GetService("Workspace"):WaitForChild(speaker.Name);
+				speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+				return;
+			else
+				Bang69 = true;
+				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
+				effecttrue();
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, -0.5, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				Players.LocalPlayer.CharacterAdded:Connect(function(char)
+					c = char;
+					setupCharacter();
+				end);
+				f69lwnum = 1;
+				bangAnim = Instance.new("Animation");
+				bangAnim.AnimationId = "rbxassetid://5918726674";
+				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
+				bang69:Play(0.1, 1, 1);
+				if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
+					Bang69 = true;
+					while Bang69 do
+						speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						wait();
+					end
+				end
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1000,7 +1057,7 @@ bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="69 
 		bang69:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		bang69:AdjustSpeed(Text);
 	end);
@@ -1013,54 +1070,108 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 		plrName = Text;
 		humpfoundPlr69 = getPlr(plrName);
 		if humpfoundPlr69 then
-			if (humpfoundPlr69.Character and humpfoundPlr69.Character:FindFirstChild("Humanoid")) then
-				if ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
-					ffc1hump = false;
-					speaker.Character.Humanoid.PlatformStand = false;
-					notifyyw("No Longer 69 Humping ", "Not 69 Humping", 2, 10747384394);
-					effectfalse();
-					LP = game:GetService("Players").LocalPlayer;
-					prev = LP.Character:WaitForChild("HumanoidRootPart").CFrame;
-					LP.Character.Parent = workspace.Terrain;
-					LP.Character:BreakJoints();
-					game:GetService("Workspace"):WaitForChild(LP.Name);
-					LP.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
-					return;
-				else
-					ffc1hump = true;
-					notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 2, 10709790644);
-					effecttrue();
-					lp = game:GetService("Players").LocalPlayer;
-					c = lp.Character;
-					hrp0 = c:FindFirstChild("HumanoidRootPart");
-					hrp1 = hrp0:Clone();
-					c.Parent = nil;
-					hrp0.Parent = hrp1;
-					hrp0.RootJoint.Part0 = nil;
-					hrp1.Parent = c;
-					c.Parent = workspace;
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-					h = game:GetService("RunService").Heartbeat;
-					hrp0.Transparency = 0.85;
-					hrp0.Material = Enum.Material.ForceField;
-					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					while ffc1hump and c and c.Parent do
-						speaker.Character.Humanoid.PlatformStand = true;
-						time = tick();
-						xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-						speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						hrp0.CFrame = hrp1.CFrame;
-						hrp0.Orientation += Vector3.new(0, 0, 180)
-						hrp0.Position -= Vector3.new(0, 0, 0)
-						hrp0.Velocity = hrp1.Velocity;
-						wait();
+			if not r15(speaker) then
+				if (humpfoundPlr69.Character and humpfoundPlr69.Character:FindFirstChild("Humanoid")) then
+					if ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
+						ffc1hump = false;
+						speaker.Character.Humanoid.PlatformStand = false;
+						notifyyw("No Longer 69 Humping ", "Not 69 Humping", 2, 10747384394);
+						effectfalse();
+						prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+						speaker.Character.Parent = workspace.Terrain;
+						speaker.Character:BreakJoints();
+						game:GetService("Workspace"):WaitForChild(speaker.Name);
+						speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+						return;
+					else
+						ffc1hump = true;
+						notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 2, 10709790644);
+						effecttrue();
+						c = Character;
+						hrp0 = c:FindFirstChild("HumanoidRootPart");
+						hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp0.RootJoint.Part0 = nil;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						while ffc1hump and c and c.Parent do
+							speaker.Character.Humanoid.PlatformStand = true;
+							time = tick();
+							xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
+							speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+							wait();
+						end
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			elseif ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
+				ffc1hump = false;
+				speaker.Character.Humanoid.PlatformStand = false;
+				notifyyw("No Longer 69 Humping ", "Not 69 Humping", 2, 10747384394);
 				effectfalse();
+				prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+				speaker.Character.Parent = workspace.Terrain;
+				speaker.Character:BreakJoints();
+				game:GetService("Workspace"):WaitForChild(speaker.Name);
+				speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+				return;
+			else
+				ffc1hump = true;
+				notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 2, 10709790644);
+				effecttrue();
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, 0, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				Players.LocalPlayer.CharacterAdded:Connect(function(char)
+					c = char;
+					setupCharacter();
+				end);
+				while ffc1hump do
+					speaker.Character.Humanoid.PlatformStand = true;
+					time = tick();
+					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
+					speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					wait();
+				end
 			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
 		end
 	end);
 end});
@@ -1183,7 +1294,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 				end
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1228,12 +1339,12 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 		effectfalse();
 	end
 end});
-facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Animation Facebanger Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		facebanger:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Facebanger Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		facebanger:AdjustSpeed(Text);
 	end);
@@ -1435,23 +1546,22 @@ Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true,
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Enable Reset Button",Interact="Click",Callback=function()
 	game:GetService("StarterGui"):SetCore("ResetButtonCallback", true);
 	effecttrue();
-	Rayfield:Notify({Title="Reset!",Content="Reset Button Is Now Available In The Esc Menu!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Reset!",Content="Reset Button Is Now Available In The Esc Menu!",Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Reset",Interact="Click",Callback=function()
-	game.Players.LocalPlayer.Character.Humanoid.Health = 0;
+	speaker.Character.Humanoid.Health = 0;
 	effecttrue();
-	Rayfield:Notify({Title="Reset!",Content=("Reseted " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Label = Misc:CreateLabel("⬇ This Character Reset Goes To Your Position When You Died ⬇", Sectionreset);
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
-	LP = game:GetService("Players").LocalPlayer;
-	prev = LP.Character:WaitForChild("HumanoidRootPart").CFrame;
-	LP.Character.Parent = workspace.Terrain;
-	LP.Character:BreakJoints();
-	game:GetService("Workspace"):WaitForChild(LP.Name);
-	LP.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+	speaker.Character.Parent = workspace.Terrain;
+	speaker.Character:BreakJoints();
+	game:GetService("Workspace"):WaitForChild(speaker.Name);
+	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 	effecttrue();
-	Rayfield:Notify({Title="Reset!",Content=("Reseted " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callback=function()
 	A_1 = "This is it im doing it.";
@@ -1470,8 +1580,8 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 	Event:FireServer(A_1, A_2);
 	wait(1);
 	LocalPlayer = game:GetService("Players").LocalPlayer;
-	LocalPlayer.Character.Humanoid:MoveTo(LocalPlayer.Character.HumanoidRootPart.Position + (LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 10));
-	LocalPlayer.Character.Humanoid.Jump = true;
+	speaker.Character.Humanoid:MoveTo(speaker.Character.HumanoidRootPart.Position + (speaker.Character.HumanoidRootPart.CFrame.lookVector * 10));
+	speaker.Character.Humanoid.Jump = true;
 	wait(0.5);
 	function Iterate(instance, func)
 		for i, v in next, instance:GetChildren() do
@@ -1479,7 +1589,7 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 		end
 	end
 	limbs = {["Right Leg"]=true,["Right Arm"]=true,["Left Leg"]=true,["Left Arm"]=true};
-	Iterate(LocalPlayer.Character, function(v)
+	Iterate(speaker.Character, function(v)
 		if v:IsA("BasePart") then
 			attachment = Instance.new("Attachment");
 			attachment.Parent = v;
@@ -1498,10 +1608,10 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 	rightLegAttachment = Instance.new("Attachment");
 	rightLegAttachment.Position = Vector3.new(0.5, -1, 0);
 	rightLegAttachment.Rotation = Vector3.new(0, -90, 0);
-	rightLegAttachment.Parent, leftLegAttachment.Parent = LocalPlayer.Character.Torso, LocalPlayer.Character.Torso;
-	jointAttachments = {Head={Attachment0=LocalPlayer.Character.Torso['NeckAttachment'],Attachment1=LocalPlayer.Character.Head["Head[Attachment]"]},["Left Arm"]={Attachment0=LocalPlayer.Character.Torso['LeftCollarAttachment'],Attachment1=LocalPlayer.Character["Left Arm"]["Left Arm[Attachment]"]},["Right Arm"]={Attachment0=LocalPlayer.Character.Torso['RightCollarAttachment'],Attachment1=LocalPlayer.Character["Right Arm"]["Right Arm[Attachment]"]},["Left Leg"]={Attachment0=leftLegAttachment,Attachment1=LocalPlayer.Character["Left Leg"]["Left Leg[Attachment]"]},["Right Leg"]={Attachment0=rightLegAttachment,Attachment1=LocalPlayer.Character["Right Leg"]["Right Leg[Attachment]"]}};
-	LocalPlayer.Character.Humanoid.PlatformStand = true;
-	Iterate(LocalPlayer.Character, function(v)
+	rightLegAttachment.Parent, leftLegAttachment.Parent = speaker.Character.Torso, speaker.Character.Torso;
+	jointAttachments = {Head={Attachment0=speaker.Character.Torso['NeckAttachment'],Attachment1=speaker.Character.Head["Head[Attachment]"]},["Left Arm"]={Attachment0=speaker.Character.Torso['LeftCollarAttachment'],Attachment1=speaker.Character["Left Arm"]["Left Arm[Attachment]"]},["Right Arm"]={Attachment0=speaker.Character.Torso['RightCollarAttachment'],Attachment1=speaker.Character["Right Arm"]["Right Arm[Attachment]"]},["Left Leg"]={Attachment0=leftLegAttachment,Attachment1=speaker.Character["Left Leg"]["Left Leg[Attachment]"]},["Right Leg"]={Attachment0=rightLegAttachment,Attachment1=speaker.Character["Right Leg"]["Right Leg[Attachment]"]}};
+	speaker.Character.Humanoid.PlatformStand = true;
+	Iterate(speaker.Character, function(v)
 		if v:IsA("BasePart") then
 			if jointAttachments[v.Name] then
 				ballSocketJoint = Instance.new("BallSocketConstraint");
@@ -1511,13 +1621,13 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 			end
 		end
 	end);
-	Iterate(LocalPlayer.Character.Torso, function(v)
+	Iterate(speaker.Character.Torso, function(v)
 		if v:IsA("Motor") then
 			v:Remove();
 		end
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Damn Bro,",Content="Why'd You Kill Yourself?",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Damn Bro,",Content="Why'd You Kill Yourself?",Duration=3,Image=7733715400});
 end});
 Sectionflights = Misc:CreateSection("FE LocalPlayer Related | Flight", false, false, 9134755504);
 Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Values",Interact="Click",Callback=function()
@@ -1589,14 +1699,14 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",C
 end});
 Buttoncframefly = Misc:CreateButton({SectionParent=Sectionflights,Name="CFrame Fly",Interact="Click",Callback=function()
 	pcall(function()
-		Rayfield:Notify({Title="Wait..",Content="Loading...",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Wait..",Content="Loading...",Duration=3,Image=7733715400});
 		wait(3);
 		Buttoncframefly:Set("CFrame Fly (Exed)");
 		effecttrue();
 		if (cframeflykeybind == "") then
-			Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -1662,9 +1772,9 @@ Buttonnormalfly = Misc:CreateButton({SectionParent=Sectionflights,Name="Fly",Cal
 	Buttonnormalfly:Set("Fly (Exed)");
 	effecttrue();
 	if (flykeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
@@ -1705,9 +1815,9 @@ Buttonvefly = Misc:CreateButton({SectionParent=Sectionflights,Name="Vehicle Fly"
 	Buttonvefly:Set("Vehicle Fly (Exed)");
 	effecttrue();
 	if (vehicleflykeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
@@ -1737,9 +1847,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Upside Do
 	pcall(function()
 		if not r15(speaker) then
 			effecttrue();
-			Rayfield:Notify({Title="Your Now Upside Down!",Content="Your Upside Down Until You Reset!\nAnd When You Sit In A Chair!\nR6 Only!",Duration=5,Image=7733715400});
-			lp = game:GetService("Players").LocalPlayer;
-			c = lp.Character;
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!\nR6 Only!",Duration=5,Image=7733715400});
+			c = Character;
 			hrp0 = c:FindFirstChild("HumanoidRootPart");
 			hrp1 = hrp0:Clone();
 			c.Parent = nil;
@@ -1759,15 +1868,47 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Upside Do
 				hrp0.Velocity = hrp1.Velocity;
 			end
 		else
-			effectfalse();
-			Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+			local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
+				local hrp0 = c:FindFirstChild("HumanoidRootPart");
+				if hrp0 then
+					local hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1, 0);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 1, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
+				end
+			end
+			setupCharacter();
+			Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+			end);
+			effecttrue();
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 		end
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Break Velocity",Interact="Click",Callback=function()
 	breakvelocity();
 	effecttrue();
-	Rayfield:Notify({Title="Broke Velocity!",Content="Broke Character's Velocity!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Broke Velocity!",Content="Broke Character's Velocity!",Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Velocity",Interact="Click",Callback=function()
 	for i, v in pairs(speaker.Character:GetDescendants()) do
@@ -1776,16 +1917,16 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 		end
 	end
 	effecttrue();
-	Rayfield:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
 end});
 freezekeybind = "";
 Buttonfreezee = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Freeze Yourself / Anchor",Interact="Click",Callback=function()
 	Buttonfreezee:Set("Freeze Yourself / Anchor (Exed)");
 	effecttrue();
 	if (freezekeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	local freezeanchor = false;
 	JMouse.KeyDown:connect(function(key)
@@ -1809,16 +1950,16 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthe
 		end
 	end
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
 end});
 tripkeybind = "";
 Buttontrip = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Trip",Interact="Click",Callback=function()
 	Buttontrip:Set("Trip (Exed)");
 	effecttrue();
 	if (tripkeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == tripkeybind) then
@@ -1842,9 +1983,9 @@ Buttonsitvers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Si
 	Buttonsitvers:Set("Sit Keybind Version (Exed)");
 	effecttrue();
 	if (sitkeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == sitkeybind) then
@@ -1861,9 +2002,9 @@ Buttonstunnar = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="St
 	Buttonstunnar:Set("Stun (Exed)");
 	effecttrue();
 	if (stunkeybindder == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == stunkeybindder) then
@@ -1882,7 +2023,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Stun
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode",Interact="Click",Callback=function()
 	effecttrue();
-	Rayfield:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
 	Cam = workspace.CurrentCamera;
 	Pos, Char = Cam.CFrame, speaker.Character;
 	Human = Char and Char.FindFirstChildWhichIsA(Char, "Humanoid");
@@ -1907,13 +2048,13 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 	Buttongodmodevers:Set("God Mode Keybind Version (Exed)");
 	effecttrue();
 	if (godmodekeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == godmodekeybind) then
-			Rayfield:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
 			Cam = workspace.CurrentCamera;
 			Pos, Char = Cam.CFrame, speaker.Character;
 			Human = Char and Char.FindFirstChildWhichIsA(Char, "Humanoid");
@@ -1972,9 +2113,9 @@ Buttonnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="NoClip",Inte
 		Buttonnoclip:Set("Noclip (Exed)");
 		effecttrue();
 		if (noclippkeybind == "") then
-			Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -2040,9 +2181,9 @@ Buttonvnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Vehicle NoC
 		Buttonvnoclip:Set("Vehicle Noclip (Exed)");
 		effecttrue();
 		if (vehiclenoclippkeybind == "") then
-			Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -2221,9 +2362,9 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 	Buttoninvis:Set("Invisible (Exed)");
 	effecttrue();
 	if (inviskeybind == "") then
-		Rayfield:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
 	end
 	repeat
 		wait();
@@ -2374,8 +2515,8 @@ end});
 Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool)",Interact="Click",Callback=function()
 	offset = 1100;
 	LocalPlayer = game.Players.LocalPlayer;
-	Backpack = LocalPlayer.Backpack;
-	Character = LocalPlayer.Character;
+	Backpack = speaker.Backpack;
+	Character = speaker.Character;
 	invisible = false;
 	grips = {};
 	local heldTool;
@@ -2486,7 +2627,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 		end
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze Yourself / Anchor",CurrentValue=false,Callback=function(Value)
@@ -2510,7 +2651,7 @@ Toggleinfjump1 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Hold Jump"
 	InfiniteJumpEnabled = Value;
 	game:GetService("UserInputService").JumpRequest:connect(function()
 		if InfiniteJumpEnabled then
-			game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
+			game:GetService("Players").speaker.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
 		end
 	end);
 end});
@@ -2539,9 +2680,9 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 end});
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		flippa = Value;
-		if flippa then
+	flippa = Value;
+	if flippa then
+		if not r15(speaker) then
 			Flipping = true;
 			pl = speaker;
 			me = pl.Character;
@@ -2623,11 +2764,98 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",Cu
 				wait();
 				Flip2();
 			end
+		else
+			Flipping = true;
+			local speaker = game.Players.LocalPlayer;
+			local pl = speaker;
+			local me = pl.Character;
+			local xl = me:WaitForChild("RightUpperArm");
+			local debounce = false;
+			function _restoreproperties()
+				local Holder = speaker.Character;
+				local Torso = Holder:FindFirstChild("UpperTorso");
+				local RightS = Torso:FindFirstChild("Right Shoulder") or Holder:FindFirstChild("RightShoulder");
+				local LeftS = Torso:FindFirstChild("Left Shoulder") or Holder:FindFirstChild("LeftShoulder");
+				local RightH = Torso:FindFirstChild("Right Hip") or Holder:FindFirstChild("RightHip");
+				local LeftH = Torso:FindFirstChild("Left Hip") or Holder:FindFirstChild("LeftHip");
+				if (Torso and RightS and LeftS and RightH and LeftH) then
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+			end
+			function ManageAnimation(value)
+				local Holder = speaker.Character;
+				local Player = speaker;
+				if (value == "no anim") then
+					local Anim = Holder:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = true;
+						Anim.Parent = Player;
+					end
+				elseif (value == "re-anim") then
+					local Anim = Player:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = false;
+						Anim.Parent = Holder;
+					end
+				end
+			end
+			function Down(ml)
+				for i = 1, ml.Velocity.y / 3 do
+					ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Destroy();
+			end
+			function Flip2()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Char = speaker.Character;
+				local Human = Char.Humanoid;
+				local Torso = Char:FindFirstChild("UpperTorso");
+				if Torso then
+					local CF = Torso.CFrame;
+					Human.PlatformStand = true;
+					local VelUp = Instance.new("BodyVelocity");
+					VelUp.Velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.LookVector * 26);
+					VelUp.P = VelUp.P * 2;
+					VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+					VelUp.Parent = Torso;
+					coroutine.resume(coroutine.create(Down), VelUp);
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.CFrame = CF;
+					Gyro.Parent = Torso;
+					for i = 2, 28 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0);
+						wait();
+					end
+					Gyro.CFrame = CF;
+					wait();
+					Gyro:Destroy();
+					Human.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+			end
+			while Flipping do
+				wait();
+				Flip2();
+			end
 		end
 		if not flippa then
 			Flipping = false;
 		end
-	end);
+	end
 	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		Toggleflipppping:Set(false);
 	end);
@@ -2637,86 +2865,172 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Do
 	pcall(function()
 		doubleflippa = Value;
 		if doubleflippa then
-			doubleFlipping = true;
-			pl = speaker;
-			me = pl.Character;
-			xl = me.Torso["Right Shoulder"];
-			local debounce = false;
-			function _restoreproperties()
-				Holder = speaker.Character;
-				Torso = Holder:FindFirstChild("Torso");
-				RightS = Torso:FindFirstChild("Right Shoulder");
-				LeftS = Torso:FindFirstChild("Left Shoulder");
-				RightH = Torso:FindFirstChild("Right Hip");
-				LeftH = Torso:FindFirstChild("Left Hip");
-				RightS.MaxVelocity = 0.15;
-				LeftS.MaxVelocity = 0.15;
-				RightH.MaxVelocity = 0.1;
-				LeftH.MaxVelocity = 0.1;
-				RightS.DesiredAngle = 0;
-				LeftS.DesiredAngle = 0;
-				LeftH.DesiredAngle = 0;
-				RightH.DesiredAngle = 0;
-			end
-			function ManageAnimation(value)
-				Holder = speaker.Character;
-				Player = speaker;
-				if (value == "no anim") then
-					Anim = Holder:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = true;
-						Anim.Parent = Player;
+			if not r15(speaker) then
+				doubleFlipping = true;
+				pl = speaker;
+				me = pl.Character;
+				xl = me.Torso["Right Shoulder"];
+				local debounce = false;
+				function _restoreproperties()
+					Holder = speaker.Character;
+					Torso = Holder:FindFirstChild("Torso");
+					RightS = Torso:FindFirstChild("Right Shoulder");
+					LeftS = Torso:FindFirstChild("Left Shoulder");
+					RightH = Torso:FindFirstChild("Right Hip");
+					LeftH = Torso:FindFirstChild("Left Hip");
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+				function ManageAnimation(value)
+					Holder = speaker.Character;
+					Player = speaker;
+					if (value == "no anim") then
+						Anim = Holder:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = true;
+							Anim.Parent = Player;
+						end
+					elseif (value == "re-anim") then
+						Anim = Player:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = false;
+							Anim.Parent = Holder;
+						end
 					end
-				elseif (value == "re-anim") then
-					Anim = Player:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = false;
-						Anim.Parent = Holder;
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip3()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					Char = speaker.Character;
+					Human = Char.Humanoid;
+					Torso = Char.Torso;
+					CF = Torso.CFrame;
+					Human.PlatformStand = true;
+					VelUp = Instance.new("BodyVelocity");
+					VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
+					VelUp.P = VelUp.P * 2;
+					VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
+					VelUp.Parent = Torso;
+					coroutine.resume(coroutine.create(Down), VelUp);
+					Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.cframe = CF;
+					Gyro.Parent = Torso;
+					for i = 2, 28 do
+						Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
+						wait();
+					end
+					Gyro.cframe = CF;
+					wait();
+					Gyro:Remove();
+					Human.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+				while doubleFlipping do
+					wait();
+					Flip3();
+				end
+			else
+				doubleFlipping = true;
+				local speaker = game.Players.LocalPlayer;
+				local debounce = false;
+				function _restoreproperties()
+					local Holder = speaker.Character;
+					local UpperTorso = Holder:FindFirstChild("UpperTorso");
+					local RightShoulder = Holder:FindFirstChild("RightShoulder");
+					local LeftShoulder = Holder:FindFirstChild("LeftShoulder");
+					local RightHip = Holder:FindFirstChild("RightHip");
+					local LeftHip = Holder:FindFirstChild("LeftHip");
+					if (UpperTorso and RightShoulder and LeftShoulder and RightHip and LeftHip) then
+						RightShoulder.MaxVelocity = 0.15;
+						LeftShoulder.MaxVelocity = 0.15;
+						RightHip.MaxVelocity = 0.1;
+						LeftHip.MaxVelocity = 0.1;
+						RightShoulder.DesiredAngle = 0;
+						LeftShoulder.DesiredAngle = 0;
+						LeftHip.DesiredAngle = 0;
+						RightHip.DesiredAngle = 0;
 					end
 				end
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+				function ManageAnimation(value)
+					local Holder = speaker.Character;
+					local Player = speaker;
+					if (value == "no anim") then
+						local Anim = Holder:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = true;
+							Anim.Parent = Player;
+						end
+					elseif (value == "re-anim") then
+						local Anim = Player:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = false;
+							Anim.Parent = Holder;
+						end
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.Velocity.Y / 3 do
+						ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Destroy();
+				end
+				function Flip3()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Char = speaker.Character;
+					local Human = Char.Humanoid;
+					local Torso = Char:FindFirstChild("UpperTorso");
+					if Torso then
+						local CF = Torso.CFrame;
+						Human.PlatformStand = true;
+						local VelUp = Instance.new("BodyVelocity");
+						VelUp.Velocity = Vector3.new(0, 80, 0) + (Torso.CFrame.LookVector * 35);
+						VelUp.P = VelUp.P * 2;
+						VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+						VelUp.Parent = Torso;
+						coroutine.resume(coroutine.create(Down), VelUp);
+						local Gyro = Instance.new("BodyGyro");
+						Gyro.P = Gyro.P * 10;
+						Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+						Gyro.CFrame = CF;
+						Gyro.Parent = Torso;
+						for i = 2, 20 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0);
+							wait();
+						end
+						Gyro.CFrame = CF;
+						wait();
+						Gyro:Destroy();
+						Human.PlatformStand = false;
+						_restoreproperties();
+						debounce = false;
+					end
+				end
+				while doubleFlipping do
 					wait();
+					Flip3();
 				end
-				ml:Remove();
-			end
-			function Flip3()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				Char = speaker.Character;
-				Human = Char.Humanoid;
-				Torso = Char.Torso;
-				CF = Torso.CFrame;
-				Human.PlatformStand = true;
-				VelUp = Instance.new("BodyVelocity");
-				VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
-				VelUp.P = VelUp.P * 2;
-				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
-				VelUp.Parent = Torso;
-				coroutine.resume(coroutine.create(Down), VelUp);
-				Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-				Gyro.cframe = CF;
-				Gyro.Parent = Torso;
-				for i = 2, 28 do
-					Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
-					wait();
-				end
-				Gyro.cframe = CF;
-				wait();
-				Gyro:Remove();
-				Human.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while doubleFlipping do
-				wait();
-				Flip3();
 			end
 		end
 		if not doubleflippa then
@@ -2732,53 +3046,109 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Cart Whee
 	pcall(function()
 		cartwheeling = Value;
 		if cartwheeling then
-			cwFlipping = true;
-			function _restoreproperties()
-				Torso = speaker.Character:FindFirstChild("Torso");
-				RightS = Torso:FindFirstChild("Right Shoulder");
-				LeftS = Torso:FindFirstChild("Left Shoulder");
-				RightH = Torso:FindFirstChild("Right Hip");
-				LeftH = Torso:FindFirstChild("Left Hip");
-				RightS.MaxVelocity = 0.15;
-				LeftS.MaxVelocity = 0.15;
-				RightH.MaxVelocity = 0.1;
-				LeftH.MaxVelocity = 0.1;
-				RightS.DesiredAngle = 0;
-				LeftS.DesiredAngle = 0;
-				LeftH.DesiredAngle = 0;
-				RightH.DesiredAngle = 0;
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+			if not r15(speaker) then
+				cwFlipping = true;
+				function _restoreproperties()
+					Torso = speaker.Character:FindFirstChild("Torso");
+					RightS = Torso:FindFirstChild("Right Shoulder");
+					LeftS = Torso:FindFirstChild("Left Shoulder");
+					RightH = Torso:FindFirstChild("Right Hip");
+					LeftH = Torso:FindFirstChild("Left Hip");
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
+					Gyro.Parent = speaker.Character.Torso;
+					for i = 0, 50 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
+						wait();
+					end
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
 					wait();
+					Gyro:Remove();
+					speaker.Character.Humanoid.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
 				end
-				ml:Remove();
-			end
-			function Flip()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				local Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				Gyro.Parent = speaker.Character.Torso;
-				for i = 0, 50 do
-					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
+				while cwFlipping do
 					wait();
+					Flip();
 				end
-				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				wait();
-				Gyro:Remove();
-				speaker.Character.Humanoid.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while cwFlipping do
-				wait();
-				Flip();
+			else
+				cwFlipping = true;
+				function _restoreproperties()
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					local RightS = Torso:FindFirstChild("Right Shoulder");
+					local LeftS = Torso:FindFirstChild("Left Shoulder");
+					local RightH = Torso:FindFirstChild("Right Hip");
+					local LeftH = Torso:FindFirstChild("Left Hip");
+					if (Torso and RightS and LeftS and RightH and LeftH) then
+						RightS.MaxVelocity = 0.15;
+						LeftS.MaxVelocity = 0.15;
+						RightH.MaxVelocity = 0.1;
+						LeftH.MaxVelocity = 0.1;
+						RightS.DesiredAngle = 0;
+						LeftS.DesiredAngle = 0;
+						LeftH.DesiredAngle = 0;
+						RightH.DesiredAngle = 0;
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					if Torso then
+						Gyro.CFrame = Torso.CFrame;
+						Gyro.Parent = Torso;
+						for i = 0, 50 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-7), 0, 0);
+							wait();
+						end
+						Gyro.CFrame = Torso.CFrame;
+						wait();
+						Gyro:Remove();
+						speaker.Character.Humanoid.PlatformStand = false;
+						_restoreproperties();
+						debounce = false;
+					end
+				end
+				while cwFlipping do
+					wait();
+					Flip();
+				end
 			end
 		end
 		if not cartwheeling then
@@ -2810,51 +3180,62 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 	pcall(function()
 		sitwalkerr = Value;
 		if sitwalkerr then
-			anims = Character.Animate
-			idholder = {
-				anims.idle:FindFirstChildOfClass("Animation").AnimationId, 
-				anims.walk:FindFirstChildOfClass("Animation").AnimationId, 
-				anims.run:FindFirstChildOfClass("Animation").AnimationId, 
-				anims.jump:FindFirstChildOfClass("Animation").AnimationId,
-			}
-	local sit = anims.sit:FindFirstChildOfClass("Animation").AnimationId
-	anims.idle:FindFirstChildOfClass("Animation").AnimationId = sit
-	anims.walk:FindFirstChildOfClass("Animation").AnimationId = sit
-	anims.run:FindFirstChildOfClass("Animation").AnimationId = sit
-	anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit
+			anims = Character.Animate;
+			idholder = {anims.idle:FindFirstChildOfClass("Animation").AnimationId,anims.walk:FindFirstChildOfClass("Animation").AnimationId,anims.run:FindFirstChildOfClass("Animation").AnimationId,anims.jump:FindFirstChildOfClass("Animation").AnimationId};
+			local sit = anims.sit:FindFirstChildOfClass("Animation").AnimationId;
+			anims.idle:FindFirstChildOfClass("Animation").AnimationId = sit;
+			anims.walk:FindFirstChildOfClass("Animation").AnimationId = sit;
+			anims.run:FindFirstChildOfClass("Animation").AnimationId = sit;
+			anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit;
 		end
 		if not sitwalkerr then
-			anims.idle:FindFirstChildOfClass("Animation").AnimationId = idholder[1]
-			anims.walk:FindFirstChildOfClass("Animation").AnimationId = idholder[2]
-			anims.run:FindFirstChildOfClass("Animation").AnimationId = idholder[3]
-			anims.jump:FindFirstChildOfClass("Animation").AnimationId = idholder[4]
-			LP = game:GetService("Players").LocalPlayer;
-			prev = LP.Character:WaitForChild("HumanoidRootPart").CFrame;
-			LP.Character.Parent = workspace.Terrain;
-			LP.Character:BreakJoints();
-			game:GetService("Workspace"):WaitForChild(LP.Name);
-			LP.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+			anims.idle:FindFirstChildOfClass("Animation").AnimationId = idholder[1];
+			anims.walk:FindFirstChildOfClass("Animation").AnimationId = idholder[2];
+			anims.run:FindFirstChildOfClass("Animation").AnimationId = idholder[3];
+			anims.jump:FindFirstChildOfClass("Animation").AnimationId = idholder[4];
+			prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+			speaker.Character.Parent = workspace.Terrain;
+			speaker.Character:BreakJoints();
+			game:GetService("Workspace"):WaitForChild(speaker.Name);
+			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 		end
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			Togglestiwalk:Set(false);
+		end);
 	end);
 end});
-Paragraph = Misc:CreateParagraph({Title="Slide Info",Content="Can Or Can Not Work."}, Sectionlprtog);
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		icewalker = Value;
+function slipperwalk()
+	for _, a in pairs(Character:GetDescendants()) do
+		if a:IsA("BasePart") then
+			a.CustomPhysicalProperties = PhysicalProperties.new(0.01, 0, 0);
+		end
+	end
+end
+function nonslipwalk()
+	for _, a in pairs(Character:GetDescendants()) do
+		if a:IsA("BasePart") then
+			a.CustomPhysicalProperties = PhysicalProperties.new(1, 0, 0);
+		end
+	end
+end
+Toggleslider = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
+	icewalker = Value;
+	if icewalker then
+		slipperwalk();
+	end
+	if not icewalker then
+		nonslipwalk();
+	end
+	speaker.CharacterAdded:Connect(function(char)
+		Character = char;
 		if icewalker then
-			for _,a in pairs(Character:GetDescendants()) do 
-				if a.ClassName=="Part" then 
-				a.CustomPhysicalProperties=PhysicalProperties.new(0.01,0,0)
-				end 
-			end 
+			slipperwalk();
+		else
+			nonslipwalk();
 		end
-		if not icewalker then
-			for _,a in pairs(Character:GetDescendants()) do 
-				if a.ClassName=="Part" then 
-				a.CustomPhysicalProperties=PhysicalProperties.new(1,0,0)
-				end 
-			end 
-		end
+	end);
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+		Toggleslider:Set(false);
 	end);
 end});
 Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Jump",CurrentValue=false,Callback=function(Value)
@@ -2910,7 +3291,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 					Float.Anchored = true;
 					FloatValue = -3.1;
 					Float.CFrame = getRoot(pchar).CFrame * CFrame.new(0, FloatValue, 0);
-					Rayfield:Notify({Title="Enabled",Content="Q Down E up",Duration=0.2,Image=7733715400});
+					NSUI:Notify({Title="Enabled",Content="Q Down E up",Duration=0.2,Image=7733715400});
 					qUp = JMouse.KeyUp:Connect(function(KEY)
 						if (KEY == "q") then
 							FloatValue = FloatValue + 0.5;
@@ -2960,7 +3341,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 		if not floattt then
 			Floating = false;
 			pchar = speaker.Character;
-			Rayfield:Notify({Title="Disabled",Content="Disabled",Duration=0.2,Image=7733715400});
+			NSUI:Notify({Title="Disabled",Content="Disabled",Duration=0.2,Image=7733715400});
 			if pchar:FindFirstChild(floatName) then
 				pchar:FindFirstChild(floatName):Destroy();
 			end
@@ -3211,23 +3592,23 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Walk Speed",N
 		end);
 	end);
 end});
-Sliderhip = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Hip Height",Range={-2,100},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(game.Players.LocalPlayer.Character.Humanoid.HipHeight),Callback=function(Value)
+Sliderhip = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Hip Height",Range={-2,100},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(Value)
 	pcall(function()
-		game.Players.LocalPlayer.Character.Humanoid.HipHeight = Value;
+		speaker.Character.Humanoid.HipHeight = Value;
 		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderhip:Set(0);
 		end);
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",NumbersOnly=true,PlaceholderText=math.floor(game.Players.LocalPlayer.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		game.Players.LocalPlayer.Character.Humanoid.HipHeight = Text;
+		speaker.Character.Humanoid.HipHeight = Text;
 		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			game.Players.LocalPlayer.Character.Humanoid.HipHeight = 0;
+			speaker.Character.Humanoid.HipHeight = 0;
 		end);
 	end);
 end});
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix="Jump Power",CurrentValue=math.floor(game.Players.LocalPlayer.Character.Humanoid.JumpPower),Callback=function(Value)
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix="Jump Power",CurrentValue=math.floor(speaker.Character.Humanoid.JumpPower),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value;
@@ -3239,7 +3620,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 		end);
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,PlaceholderText=math.floor(game.Players.LocalPlayer.Character.Humanoid.JumpPower),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character.Humanoid.JumpPower),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Text;
@@ -3282,14 +3663,14 @@ function Notifies()
 		Days = tonumber(DT:FormatUniversalTime("DD", "en-us"));
 		Months = tonumber(DT:FormatUniversalTime("MM", "en-us"));
 		Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970;
-		Rayfield:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has joined the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=Rayfield:GetPlayerThumbnail(player.UserId, "HeadShot")});
+		NSUI:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has joined the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=NSUI:GetPlayerThumbnail(player.UserId, "HeadShot")});
 	end);
 	pjremoved = game.Players.ChildRemoved:Connect(function(player)
 		DT = DateTime.fromUnixTimestamp(86400 * player.AccountAge);
 		Days = tonumber(DT:FormatUniversalTime("DD", "en-us"));
 		Months = tonumber(DT:FormatUniversalTime("MM", "en-us"));
 		Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970;
-		Rayfield:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has Left the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=Rayfield:GetPlayerThumbnail(player.UserId, "HeadShot")});
+		NSUI:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has Left the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=NSUI:GetPlayerThumbnail(player.UserId, "HeadShot")});
 	end);
 end
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Player Join/Leave Notifications",CurrentValue=false,Flag="playerjoinsleave",Callback=function(Value)
@@ -3331,7 +3712,7 @@ Togglelowfps = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="L
 				if (FPS == nil) then
 				end
 				if (FPS < 25) then
-					Rayfield:Notify({Title="Low FPS Detected!",Content="Low FPS Detected!\nPress Lower To Higher up FPS \nGraphics Will Look Bad",Duration=6.5,Image=14388791023,Actions={yeatrue={Name="True!",Callback=function()
+					NSUI:Notify({Title="Low FPS Detected!",Content="Low FPS Detected!\nPress Lower To Higher up FPS \nGraphics Will Look Bad",Duration=6.5,Image=14388791023,Actions={yeatrue={Name="True!",Callback=function()
 						settings().Rendering.QualityLevel = Enum.QualityLevel.Level01;
 					end},nottrue={Name="False!",Callback=function()
 						settings().Rendering.QualityLevel = quliatyholder.frholder;
@@ -3382,10 +3763,10 @@ Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="Wh
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove Kick GUI",Interact="Click",Callback=function()
 	game:GetService("GuiService"):ClearError();
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("Executed " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("Executed " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	game.Players.LocalPlayer.UserId = Text;
+	speaker.UserId = Text;
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself Info",Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts);
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Kick Yourself",Interact="Click",Callback=function()
@@ -3398,7 +3779,7 @@ end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
 	speaker.DevEnableMouseLock = true;
 	effecttrue();
-	Rayfield:Notify({Title="ShiftLock",Content="ShiftLock Is Available!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="ShiftLock",Content="ShiftLock Is Available!",Duration=3,Image=7733715400});
 end});
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228);
 Label = Miscclient:CreateLabel("⬇ For Legacy Chat Only ⬇", Sectiontchat);
@@ -3454,7 +3835,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Int
 		end
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content="Chat Spy On!",Duration=6,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content="Chat Spy On!",Duration=6,Image=7733715400});
 end});
 Sectionmiscworldscripts = Miscclient:CreateSection("LocalPlayer Related | World (Client)", false, false, 10709806631);
 origsettingsbrightness = {sliderbright=game.Lighting.Brightness};
@@ -3484,7 +3865,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Fu
 	Lighting.GlobalShadows = false;
 	Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128);
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 origsettings = {abt=Lighting.Ambient,oabt=Lighting.OutdoorAmbient,brt=Lighting.Brightness,time=Lighting.ClockTime,fe=Lighting.FogEnd,fs=Lighting.FogStart,gs=Lighting.GlobalShadows};
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Restore Lighting",Interact="Click",Callback=function()
@@ -3496,7 +3877,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Re
 	Lighting.FogStart = origsettings.fs;
 	Lighting.GlobalShadows = origsettings.gs;
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxe's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -3592,7 +3973,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Ve
 	end
 	Initialize();
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 lightrangee = 30;
 lightbrightness = 5;
@@ -3765,7 +4146,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camer
 	local sc = (debug and debug.setconstant) or setconstant;
 	local gc = (debug and debug.getconstants) or getconstants;
 	if (not sc or not getgc or not gc) then
-		return Rayfield:Notify({Title="Incompatible Exploit!",Content="Missing Function's : setconstant or getconstants or getgc",Duration=3,Image=7733715400});
+		return NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function's : setconstant or getconstants or getgc",Duration=3,Image=7733715400});
 	end
 	local pop = speaker.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper;
 	for _, v in pairs(getgc()) do
@@ -3780,7 +4161,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camer
 		end
 	end
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content="Script Is Now Working!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content="Script Is Now Working!",Duration=3,Image=7733715400});
 end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
@@ -3797,7 +4178,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 	effecttrue();
 	Buttonfreeca:Set("Freecam (SHIFT+P)");
 	speaker.DevEnableMouseLock = false;
-	Rayfield:Notify({Title="Executed, SHIFT+P To Toggle!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=6,Image=7733715400});
+	NSUI:Notify({Title="Executed, SHIFT+P To Toggle!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=6,Image=7733715400});
 	function sandbox(var, func)
 		env = getfenv(func);
 		newenv = setmetatable({}, {__index=function(self, k)
@@ -4142,7 +4523,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 		end
 	end));
 	for i, v in pairs(mas:GetChildren()) do
-		v.Parent = game:GetService("Players").LocalPlayer.PlayerGui;
+		v.Parent = game:GetService("Players").speaker.PlayerGui;
 		pcall(function()
 			v:MakeJoints();
 		end);
@@ -4201,33 +4582,33 @@ Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Ma
 end});
 Sectiontaudio = Miscclient:CreateSection("LocalPlayer Related | Audio (Client)", false, true, 10747375679);
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio Logger",Interact="Click",Callback=function()
-	Rayfield:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
+	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
 	wait(2);
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/audiologger.lua", true))();
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 audioid = nil;
 Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	audioid = Text;
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Play Audio",Interact="Click",Callback=function()
-			Soundplayaudio = Instance.new("Sound");
-			Soundplayaudio.SoundId = "rbxassetid://" .. audioid;
-			Soundplayaudio:Play();
-			Rayfield:Notify({Title="Playing!",Content="Playing The Audio",Duration=3,Image=7733715400});
+	Soundplayaudio = Instance.new("Sound");
+	Soundplayaudio.SoundId = "rbxassetid://" .. audioid;
+	Soundplayaudio:Play();
+	NSUI:Notify({Title="Playing!",Content="Playing The Audio",Duration=3,Image=7733715400});
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Pause Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Pause();
-	Rayfield:Notify({Title="Paused!",Content="Paused The Audio",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Paused!",Content="Paused The Audio",Duration=3,Image=7733715400});
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Resume Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Resume();
-	Rayfield:Notify({Title="Resumed!",Content="Resumed The Audio",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Resumed!",Content="Resumed The Audio",Duration=3,Image=7733715400});
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Stop Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Stop();
-	Rayfield:Notify({Title="Stopped!",Content="Stopped The Audio",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Stopped!",Content="Stopped The Audio",Duration=3,Image=7733715400});
 end});
 Toggle = Miscclient:CreateToggle({SectionParent=Sectiontaudio,Name="Loop Audio",Interact="Click",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -4256,10 +4637,10 @@ Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name=
 	pcall(function()
 		freezeanims = Value;
 		if freezeanims then
-			game.Players.LocalPlayer.Character.Animate.Disabled = true;
+			speaker.Character.Animate.Disabled = true;
 		end
 		if not freezeanims then
-			game.Players.LocalPlayer.Character.Animate.Disabled = false;
+			speaker.Character.Animate.Disabled = false;
 		end
 		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Togglefreezeanims:Set(false);
@@ -4329,13 +4710,13 @@ SectionAnimHubs = Animations:CreateSection("FE Animation Hub's R6 & R15", false,
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R6 & R15 Animation Hub",Interact="Click",Callback=function()
 	effecttrue();
 	loadstring(game:HttpGet("https://pastebin.com/raw/RmD3qNp7", true))();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote Hub",Interact="Click",Callback=function()
-	Rayfield:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
+	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
 	wait(2);
 	effecttrue();
-	Rayfield:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400});
+	NSUI:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400});
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))();
 end});
 Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's", false, true, 11932783331);
@@ -4536,7 +4917,7 @@ Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not dancer then
@@ -4620,7 +5001,7 @@ Togglemonstermasher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not monsterdancer then
@@ -4652,7 +5033,7 @@ Togglefullswing = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fu
 				FullswAnim.AnimationId = "rbxassetid://218504594";
 				fullswingr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(FullswAnim);
 				fullswingr:Play(0.1, 1, 1);
-				fullswingr.Looped = true
+				fullswingr.Looped = true;
 				fullswinga = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 					fullswinga:Disconnect();
 					fullswingr:Stop();
@@ -4661,7 +5042,7 @@ Togglefullswing = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fu
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not fullswingV then
@@ -4693,7 +5074,7 @@ Togglepunch = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Punch 
 				Punchanim.AnimationId = "rbxassetid://204062532";
 				punchr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Punchanim);
 				punchr:Play(0.1, 1, 1);
-				punchr.Looped = true
+				punchr.Looped = true;
 				puncha = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 					puncha:Disconnect();
 					punchr:Stop();
@@ -4702,7 +5083,7 @@ Togglepunch = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Punch 
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not punchV then
@@ -4742,7 +5123,7 @@ Toggledinowalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Din
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not dinowalker then
@@ -4780,7 +5161,7 @@ Togglecarpetanim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="C
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not fecarpetion then
@@ -4807,7 +5188,7 @@ ToggleStaffwalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="St
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not dinowalker then
@@ -4835,7 +5216,7 @@ Togglespasm = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Spasm 
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not spastic then
@@ -4863,7 +5244,7 @@ Togglecloneillu = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Cl
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not clonerillusion then
@@ -4896,7 +5277,7 @@ Toggleglitchjump = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not glitchingjump then
@@ -4924,7 +5305,7 @@ Toggleglitchlevi = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not glitchleviii then
@@ -4952,7 +5333,7 @@ Togglefainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fain
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not fainterrr then
@@ -4985,7 +5366,7 @@ Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not superfainterrr then
@@ -5013,7 +5394,7 @@ Togglearmtubine = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Ar
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not armturbine then
@@ -5046,7 +5427,7 @@ Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not armdetacherrr then
@@ -5079,7 +5460,7 @@ Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="I
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not insanelegger then
@@ -5112,7 +5493,7 @@ Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pi
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not pinchnoser then
@@ -5145,7 +5526,7 @@ Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not floatingheader then
@@ -5173,7 +5554,7 @@ Togglezombiearmss = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 				end);
 			else
 				effectfalse();
-				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 			end
 		end
 		if not zombiearmss then
@@ -5192,7 +5573,7 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="HeadThrow R
 		headthrowk:AdjustSpeed(1);
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 	end
 end});
 Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="KickBoard R6",Interact="Click",Callback=function()
@@ -5203,7 +5584,7 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="KickBoard R
 		monsterdancerr:Play(0.1, 1, 1);
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 	end
 end});
 Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",Interact="Click",Callback=function()
@@ -5214,7 +5595,7 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",I
 		monsterdancerr:Play(0.1, 1, 1);
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
 	end
 end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
@@ -5223,7 +5604,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 	pcall(function()
 		if r15(speaker) then
 			local LocalPlayer = game:GetService("Players").LocalPlayer;
-			local Character = LocalPlayer.Character;
+			local Character = speaker.Character;
 			local Humanoid = Character:FindFirstChildOfClass("Humanoid");
 			function rm()
 				for i, v in pairs(Character:GetDescendants()) do
@@ -5269,17 +5650,16 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 			Humanoid:FindFirstChild("HeadScale"):Destroy();
 			wait(1);
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
-			Rayfield:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
 		end
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Giant Leg R15",Interact="Click",Callback=function()
 	pcall(function()
 		if r15(speaker) then
-			local Character = game.Players.LocalPlayer.Character;
 			local Hum = {"BodyTypeScale","BodyProportionScale","BodyWidthScale","BodyHeightScale","BodyDepthScale","HeadScale"};
 			function Remove()
 				repeat
@@ -5298,10 +5678,10 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 				Character.Humanoid[Hum[i]]:Destroy();
 			end
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
-			Rayfield:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
 		end
 	end);
 end});
@@ -5309,21 +5689,21 @@ Label = Animations:CreateLabel("⬇ Rthro Head ⬇", Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Big Head R15",Interact="Click",Callback=function()
 	pcall(function()
 		if r15(speaker) then
-			for i, v in pairs(game.Players.LocalPlayer.Character.Humanoid:GetChildren()) do
+			for i, v in pairs(Character.Humanoid:GetChildren()) do
 				if (string.find(v.Name, "Scale") and (v.Name ~= "HeadScale")) then
 					repeat
 						wait(HeadGrowSpeed);
-					until game.Players.LocalPlayer.Character.Head:FindFirstChild("OriginalSize") 
-					game.Players.LocalPlayer.Character.Head.OriginalSize:Destroy();
+					until Character.Head:FindFirstChild("OriginalSize") 
+					Character.Head.OriginalSize:Destroy();
 					v:Destroy();
-					game.Players.LocalPlayer.Character.Head:WaitForChild("OriginalSize");
+					Character.Head:WaitForChild("OriginalSize");
 				end
 			end
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
-			Rayfield:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
 		end
 	end);
 end});
@@ -5331,20 +5711,20 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Invi
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-3/main/invisible%20skateboard.lua", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro your R15..",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro your R15..",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
 end});
 Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
@@ -5352,7 +5732,7 @@ Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name
 	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
 	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT", true))();
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hamster Ball R6 & R15",Interact="Click",Callback=function()
@@ -5362,7 +5742,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hams
 	SPEED_MULTIPLIER = 30;
 	JUMP_POWER = 60;
 	JUMP_GAP = 0.3;
-	character = game.Players.LocalPlayer.Character;
+	character = speaker.Character;
 	for i, v in ipairs(character:GetDescendants()) do
 		if v:IsA("BasePart") then
 			v.CanCollide = false;
@@ -5406,100 +5786,79 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hams
 		tc:Disconnect();
 	end);
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://pastebin.com/raw/R5YR13pG", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	else
 		effecttrue();
-		Rayfield:Notify({Title="R6 Needed!",Content="Bro your R15..",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
 end});
-Paragraph = Animations:CreateParagraph({Title="BackFlip, FrontFlip Info",Content="Z = FrontFlip, \nX = BackFlip, \nC = Jump"}, Sectionotherfeanimssc);
+Paragraph = Animations:CreateParagraph({Title="BackFlip, FrontFlip Info",Content="Z = FrontFlip, \nX = BackFlip"}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="BackFlip, FrontFlip R6 & R15",Interact="Click",Callback=function()
-	Rayfield:Notify({Title="Wait..",Content="Loading it...",Duration=4.5,Image=7733715400});
+	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=4.5,Image=7733715400});
 	wait(5);
 	pcall(function()
-		ver = "2.00";
-		scriptname = "feFlip";
 		FrontflipKey = Enum.KeyCode.Z;
 		BackflipKey = Enum.KeyCode.X;
-		AirjumpKey = Enum.KeyCode.C;
 		ca = game:GetService("ContextActionService");
-		zeezy = game:GetService("Players").LocalPlayer;
 		h = 0.0174533;
 		local antigrav;
-		function zeezyFrontflip(act, inp, obj)
+		function speakerFrontflip(act, inp, obj)
 			if (inp == Enum.UserInputState.Begin) then
-				zeezy.Character.Humanoid:ChangeState("Jumping");
+				speaker.Character.Humanoid:ChangeState("Jumping");
 				wait();
-				zeezy.Character.Humanoid.Sit = true;
+				speaker.Character.Humanoid.Sit = true;
 				for i = 1, 360 do
 					delay(i / 720, function()
-						zeezy.Character.Humanoid.Sit = true;
-						zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h, 0, 0);
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h, 0, 0);
 					end);
 				end
 				wait(0.55);
-				zeezy.Character.Humanoid.Sit = false;
+				speaker.Character.Humanoid.Sit = false;
 			end
 		end
-		function zeezyBackflip(act, inp, obj)
+		function speakerBackflip(act, inp, obj)
 			if (inp == Enum.UserInputState.Begin) then
-				zeezy.Character.Humanoid:ChangeState("Jumping");
+				speaker.Character.Humanoid:ChangeState("Jumping");
 				wait();
-				zeezy.Character.Humanoid.Sit = true;
+				speaker.Character.Humanoid.Sit = true;
 				for i = 1, 360 do
 					delay(i / 720, function()
-						zeezy.Character.Humanoid.Sit = true;
-						zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(h, 0, 0);
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(h, 0, 0);
 					end);
 				end
 				wait(0.55);
-				zeezy.Character.Humanoid.Sit = false;
+				speaker.Character.Humanoid.Sit = false;
 			end
 		end
-		function zeezyAirjump(act, inp, obj)
-			if (inp == Enum.UserInputState.Begin) then
-				zeezy.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Seated");
-				wait();
-				zeezy.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
-			end
-		end
-		ca:BindAction("zeezyFrontflip", zeezyFrontflip, false, FrontflipKey);
-		ca:BindAction("zeezyBackflip", zeezyBackflip, false, BackflipKey);
-		ca:BindAction("zeezyAirjump", zeezyAirjump, false, AirjumpKey);
-		print(scriptname .. " " .. ver .. " loaded successfully");
-		print("made by Zeezy#7203");
-		notifSound = Instance.new("Sound", workspace);
-		notifSound.PlaybackSpeed = 1.5;
-		notifSound.Volume = 0.15;
-		notifSound.SoundId = "rbxassetid://170765130";
-		notifSound.PlayOnRemove = true;
-		notifSound:Destroy();
-		game.StarterGui:SetCore("SendNotification", {Title="feFlip",Text="feFlip loaded successfully!",Icon="rbxassetid://505845268",Duration=5,Button1="Okay"});
+		ca:BindAction("speakerFrontflip", speakerFrontflip, false, FrontflipKey);
+		ca:BindAction("speakerBackflip", speakerBackflip, false, BackflipKey);
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk On Walls R6 & R15",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))();
 	effecttrue();
-	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="CLOVR R15",Interact="Click",Callback=function()
 	if r15(speaker) then
-		Rayfield:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
+		NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/vr.lua"))();
 		wait(2);
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
-		Rayfield:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
 	end
 end});
 local TDS = Window:CreateTab("Tower Defense\nSimulator", 14716927183);
@@ -5511,11 +5870,11 @@ if (game.PlaceId == 5591597781) then
 		pcall(function()
 			loadstring(game:HttpGet("https://mmdevelopment.xyz/scripts/tdsautochain"))();
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = TDS:CreateButton({SectionParent=Sectionautomatic,Name="Auto Sell Farms At 40 , 50",Interact="Click",Callback=function()
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		effecttrue();
 		if not game:IsLoaded() then
 			game.Loaded:Wait();
@@ -5523,7 +5882,7 @@ if (game.PlaceId == 5591597781) then
 		if (game.PlaceId ~= 5591597781) then
 			return;
 		end
-		rf, id, StateReplicatorPath = game.ReplicatedStorage.RemoteFunction, game.Players.LocalPlayer.UserId;
+		rf, id, StateReplicatorPath = game.ReplicatedStorage.RemoteFunction, speaker.UserId;
 		for i, v in pairs(game.ReplicatedStorage.StateReplicators:GetChildren()) do
 			if v:GetAttribute("Wave") then
 				StateReplicatorPath = v;
@@ -5549,7 +5908,7 @@ if (game.PlaceId == 5591597781) then
 	Toggle = TDS:CreateToggle({SectionParent=Sectionautomatic,Name="Auto Wave Skip",CurrentValue=false,Callback=function(Value)
 		shared.Autoskipenabled = Value;
 	end});
-	local SkipProperty = game:GetService("Players").LocalPlayer.PlayerGui.RoactGame.Vote.content.votes.vote;
+	local SkipProperty = game:GetService("Players").speaker.PlayerGui.RoactGame.Vote.content.votes.vote;
 	SkipProperty:GetPropertyChangedSignal("IsNotOccluded"):Connect(function()
 		if (SkipProperty.IsNotOccluded and shared.Autoskipenabled) then
 			game:GetService("ReplicatedStorage").RemoteFunction:InvokeServer("Waves", "Skip");
@@ -5568,14 +5927,14 @@ elseif (game.PlaceId == 3260590327) then
 	Label = TDS:CreateLabel("Go Into a Elevator / Game To See The Ingame Script's!", Sectiongojoibgametds);
 	Sectionlobbyscirpttds = TDS:CreateSection("Lobby Script's", false);
 	Button = TDS:CreateButton({SectionParent=Sectionlobbyscirpttds,Name="Show Everything That You Don't Own",Interact="Click",Callback=function()
-		Towers = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Root.Inventory.View.Frame.Frame.Frame;
+		Towers = game:GetService("Players").speaker.PlayerGui.Interface.Root.Inventory.View.Frame.Frame.Frame;
 		for _, v in pairs(Towers:GetDescendants()) do
 			if v:IsA("ImageButton") then
 				v.Visible = true;
 			end
 		end
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content="Check Your Inventory!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content="Check Your Inventory!",Duration=3,Image=7733715400});
 	end});
 	Sectionlobbyscirpttdsplayerstats = TDS:CreateSection("Player Stat's", false);
 	Clickonplayer = TDS:CreateLabel("Click On a Player To Show Stat's", Sectionlobbyscirpttdsplayerstats);
@@ -5613,7 +5972,7 @@ else
 	Button = TDS:CreateButton({SectionParent=Sectiongojoibgametds,Name="Join Tower Defense",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(3260590327, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported!",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
 end
@@ -5625,43 +5984,43 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
 		loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534);
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
 		Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/vKhonshu/intro2/main/ui2"))();
@@ -5679,7 +6038,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 		local Plr;
 		enabled = false;
 		accomidationfactor = 0.136;
-		mouse = game.Players.LocalPlayer:GetMouse();
+		mouse = LocalPlayer:GetMouse();
 		placemarker = Instance.new("Part", game.Workspace);
 		function makemarker(Parent, Adornee, Color, Size, Size2)
 			e = Instance.new("BillboardGui", Parent);
@@ -5728,7 +6087,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			end);
 		end
 		for i = 1, #data do
-			if (data[i] ~= game.Players.LocalPlayer) then
+			if (data[i] ~= LocalPlayer) then
 				noob(data[i]);
 			end
 		end
@@ -5748,7 +6107,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 				makemarker(placemarker, placemarker, Color3.fromRGB(240, 250, 1), 0.4, 0);
 			end
 		end);
-		game.Players.LocalPlayer:GetMouse().KeyDown:Connect(function(k)
+		LocalPlayer:GetMouse().KeyDown:Connect(function(k)
 			if ((k == Settings.rewrittenmain.Key) and Settings.rewrittenmain.Enabled) then
 				if (enabled == true) then
 					enabled = false;
@@ -5769,7 +6128,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			local closestPlayer;
 			shortestDistance = Settings.rewrittenmain.FOV;
 			for i, v in pairs(game.Players:GetPlayers()) do
-				if ((v ~= game.Players.LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
+				if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
 					pos = CC:WorldToViewportPoint(v.Character.PrimaryPart.Position);
 					magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude;
 					if (magnitude < shortestDistance) then
@@ -5881,13 +6240,13 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 		end);
 		UICorner_3.Parent = Submit;
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
 		configs = {main={enabled=true,aimlockkey="q",prediction=0.173,aimpart="HumanoidRootPart",notifications=false}};
 		boxsettings = {box={Showbox=false,boxsize=Vector3.new(3.3, 3, 2.8),markercolor=Color3.fromRGB(255, 245, 0),markersize=UDim2.new(0, 0, 0, 0)}};
 		box = Instance.new("Part", game.Workspace);
-		Mouse = game.Players.LocalPlayer:GetMouse();
+		Mouse = LocalPlayer:GetMouse();
 		function makemarker(Parent, Adornee, Color, Size, Size2)
 			box = Instance.new("BillboardGui", Parent);
 			box.Name = "Dashware!";
@@ -5932,7 +6291,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			end);
 		end
 		for i = 1, #data do
-			if (data[i] ~= game.Players.LocalPlayer) then
+			if (data[i] ~= LocalPlayer) then
 				noob(data[i]);
 			end
 		end
@@ -5954,9 +6313,9 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			local closestPlayer;
 			ShortestDistance = 300;
 			for i, v in pairs(game.Players:GetPlayers()) do
-				if ((v ~= game.Players.LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
+				if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
 					pos = game:GetService("Workspace").CurrentCamera:WorldToViewportPoint(v.Character.PrimaryPart.Position);
-					magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)).magnitude;
+					magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalPlayer:GetMouse().X, LocalPlayer:GetMouse().Y)).magnitude;
 					if (magnitude < ShortestDistance) then
 						closestPlayer = v;
 						ShortestDistance = magnitude;
@@ -5987,7 +6346,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			return old(...);
 		end);
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
 		lib = loadstring(game:HttpGet("https://pastebin.com/raw/9Cau6Xvm"))();
@@ -5998,7 +6357,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			configs = {Main={Enabled=true,Aimlockkey="c",Prediction=0.13093,Aimpart="HumanoidRootPart",Notifications=true,AirshotFunc=true},Tracer={TracerThickness=3.5,TracerTransparency=1,TracerColor=Color3.fromRGB(99, 95, 98)}};
 			RunService = game:GetService("RunService");
 			CurrentCamera = game:GetService("Workspace").CurrentCamera;
-			Mouse = game.Players.LocalPlayer:GetMouse();
+			Mouse = LocalPlayer:GetMouse();
 			inset = game:GetService("GuiService"):GetGuiInset().Y;
 			Line = Drawing.new("Line");
 			local Plr;
@@ -6014,7 +6373,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 						Plr = FindClosestPlayer();
 						configs.Main.Enabled = true;
 						if (configs.Main.Notifications == true) then
-							game.StarterGui:SetCore("SendNotification", {Title="amh#0001 | <3",Text=("locked: " .. tostring(LocalPlayer.Character.Humanoid.DisplayName)),Icon="http://www.roblox.com/asset/?id=6917008796"});
+							game.StarterGui:SetCore("SendNotification", {Title="amh#0001 | <3",Text=("locked: " .. tostring(speaker.Character.Humanoid.DisplayName)),Icon="http://www.roblox.com/asset/?id=6917008796"});
 						end
 					end
 				end
@@ -6023,7 +6382,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 				local closestPlayer;
 				shortestDistance = math.huge;
 				for i, v in pairs(game.Players:GetPlayers()) do
-					if ((v ~= game.Players.LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
+					if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
 						pos = CurrentCamera:WorldToViewportPoint(v.Character.PrimaryPart.Position);
 						magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).magnitude;
 						if (magnitude < shortestDistance) then
@@ -6076,7 +6435,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			getgenv().Prediction = bool;
 		end);
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
 		getgenv().AimPart = "HumanoidRootPart";
@@ -6219,14 +6578,14 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			end
 		end);
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported!",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = DH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamedh);
 end
@@ -6239,7 +6598,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 		wait(1.5);
 		pcall(function()
 			effecttrue();
-			Rayfield:Notify({Title="Executed Bypass!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed Bypass!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
 			v0 = getreg();
 			for v6, v7 in next, v0 do
 				if (type(v7) == "function") then
@@ -6254,7 +6613,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 					end
 				end
 			end
-			local v1 = game("Players").LocalPlayer.PlayerScripts;
+			local v1 = game("Players").speaker.PlayerScripts;
 			local v2 = v1.LocalScript;
 			local v3 = v1.LocalScript2;
 			local v4 = v2.Changed;
@@ -6287,7 +6646,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 	end});
 	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
 		pcall(function()
-			for v0, v1 in pairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
+			for v0, v1 in pairs(speaker.Backpack:GetDescendants()) do
 				if v1:IsA("Tool") then
 					v1:Destroy();
 				end
@@ -6297,11 +6656,11 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 				if v3:IsA("Tool") then
 					local v4 = v3:Clone();
 					wait();
-					v4.Parent = game.Players.LocalPlayer.Backpack;
+					v4.Parent = speaker.Backpack;
 				end
 			end
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
@@ -6312,17 +6671,17 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 				end
 			end
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952);
 	Button = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
 		pcall(function()
 			v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
-			v1 = game.Players.LocalPlayer.Character;
+			v1 = speaker.Character;
 			v1.HumanoidRootPart.CFrame = v0;
 			effecttrue();
-			Rayfield:Notify({Title="Teleported!",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, true, 10723415766);
@@ -6347,7 +6706,7 @@ else
 	Button = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = TOH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegametoh);
 end
@@ -6359,19 +6718,19 @@ if (game.PlaceId == 4282985734) then
 	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Max Hub",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/1d4db6a1b04aaeccf046f7c63fbad31a.lua"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Lum Ware",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ditchmethis/Lumware-Combat-Warriors-/main/lumware_updated.lua"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjointhegamecm = CM:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = CM:CreateButton({SectionParent=Sectionjointhegamecm,Name="Join Combat Warrior's",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(4282985734, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = CM:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamecm);
 end
@@ -6383,7 +6742,7 @@ if (game.PlaceId == 6839171747) then
 	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Vynixius",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Loader.lua"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Ominous",Interact="Click",Callback=function()
 		local a = game("ReplicatedStorage");
@@ -6412,7 +6771,7 @@ if (game.PlaceId == 6839171747) then
 			f('loadstring(game:HttpGet("' .. b .. 'loadstring.lua"))()');
 		end
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 elseif (game.PlaceId == 6516141723) then
 	Sectionelevatordoors = DO:CreateSection("Elevator", true);
@@ -6422,7 +6781,7 @@ else
 	Button = DO:CreateButton({SectionParent=Sectionjoingamedoors,Name="Join Doors",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(6516141723, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = DO:CreateLabel("Join The Game To See The Button's!", Sectionjoingamedoors);
 end
@@ -6434,7 +6793,7 @@ if (game.PlaceId == 142823291) then
 	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Nexus",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/F2B-HUB/F2B/main/HUB"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	if (executor == "Fluxus") then
 		Label = MM:CreateLabel("Eclipse Note: Your Executor May Not Be Supported!", Sectionhubmm);
@@ -6445,20 +6804,20 @@ if (game.PlaceId == 142823291) then
 			c(a and b, "Executor not Supported");
 			a(b({Url=(e .. "?\107e\121\61" .. d(mainKey)),Headers={["User-Agent"]="Eclipse"}}).Body)();
 			effecttrue();
-			Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Lunar Hub",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/vwSaraa/LunarHub/main/mm2"))();
 		effecttrue();
-		Rayfield:Notify({Title="Executed!",Content=("You Have Executed it " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjoingamemm = MM:CreateSection("Join The Game", false, false, 14754300297);
 	Button = MM:CreateButton({SectionParent=Sectionjoingamemm,Name="Join Murder Mystery 2",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(142823291, LocalPlayer);
 		effecttrue();
-		Rayfield:Notify({Title="Teleported",Content=("Teleported " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = MM:CreateLabel("Join The Game To See The Button's!", Sectionjoingamemm);
 end
@@ -6768,30 +7127,34 @@ end});
 local CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", true);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, nil);
-Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing )\nUI: Array Field Library (Modified)"}, nil);
+Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nUI: Array Field Library (Modified)"}, nil);
 Sectionchangelog = CRD:CreateSection("Changelog", true);
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Made Some Improvement's."}, nil);
 Sectionother = CRD:CreateSection("Point", true);
 Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I've Made This Hub So You Don't Have To Look For Script's And Waste Executor Tab Space And Time Looking For The Right One. \nBasically This is a All-in-one Hub With Script's From The Internet / Script's By Me."}, nil);
 Button = CRD:CreateButton({SectionParent=Sectionother,Name="Destroy Hub UI",Interact="Click",Callback=function()
-	Rayfield:Destroy();
+	NSUI:Destroy();
 end});
 Sectionclientinfo = CRD:CreateSection("Client Information", true);
-DTinfo = DateTime.fromUnixTimestamp(86400 * LocalPlayer.AccountAge);
+DTinfo = DateTime.fromUnixTimestamp(86400 * speaker.AccountAge);
 Daysinfo = tonumber(DTinfo:FormatUniversalTime("DD", "en-us"));
 Monthsinfo = tonumber(DTinfo:FormatUniversalTime("MM", "en-us"));
 Yearsinfo = tonumber(DTinfo:FormatUniversalTime("YYYY", "en-us")) - 1970;
-Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. LocalPlayer.Name .. " | " .. LocalPlayer.DisplayName .. "" .. "\nUserId: " .. LocalPlayer.UserId .. "" .. "\nAccount Age | In Days: " .. "Day's " .. Daysinfo .. " Month's: " .. Monthsinfo .. " Year's: " .. Yearsinfo .. " | " .. speaker.AccountAge .. "" .. "\nPlaceId: " .. game.PlaceId .. "")});
+function timeme()
+	totalSeconds = math.floor(workspace.DistributedGameTime);
+	hours = math.floor(totalSeconds / 3600);
+	minutes = math.floor((totalSeconds % 3600) / 60);
+	seconds = totalSeconds % 60;
+end
+timeme();
+Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. speaker.Name .. " | " .. speaker.DisplayName .. "" .. "\nUserId: " .. speaker.UserId .. "" .. "\nAccount Age | In Days:\n" .. Daysinfo .. " Day('s)\n" .. Monthsinfo .. " Month('s)\n" .. Yearsinfo .. " Year('s)\n" .. speaker.AccountAge .. " In Day's" .. "\nPlaceId: " .. game.PlaceId .. "")});
+Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 task.spawn(function()
 	while task.wait() do
-		totalSeconds = math.floor(workspace.DistributedGameTime);
-		hours = math.floor(totalSeconds / 3600);
-		minutes = math.floor((totalSeconds % 3600) / 60);
-		seconds = totalSeconds % 60;
+		timeme();
 		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 	end
 end);
-Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 Sectionfriendinfo = CRD:CreateSection("Friend Information", true);
 Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")});
 task.spawn(function()
@@ -6803,17 +7166,17 @@ Sectioncopysc = CRD:CreateSection("Copy Script's", false, true, 10709799288);
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Interact="Click",Callback=function()
 	toClipboard("https://discord.gg/PhEH8uh9pR");
 	effecttrue();
-	Rayfield:Notify({Title="Copied Link!",Content="Copied Discord Link To Clipboard!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Copied Link!",Content="Copied Discord Link To Clipboard!",Duration=3,Image=7733715400});
 end});
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer Username",Interact="Click",Callback=function()
-	toClipboard("" .. LocalPlayer.Name .. "");
+	toClipboard("" .. speaker.Name .. "");
 	effecttrue();
-	Rayfield:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer UserId",Interact="Click",Callback=function()
-	toClipboard("" .. LocalPlayer.UserId .. "");
+	toClipboard("" .. speaker.UserId .. "");
 	effecttrue();
-	Rayfield:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
 Paragraphchangelog = CRD:CreateParagraph({Title="Copy Player ID Info",Content="Basically You Enter Some Player's Username And You Press Enter, You'll Have Their ID Copied."}, Sectioncopysc);
 Input = CRD:CreateInput({SectionParent=Sectioncopysc,Name="Copy Player's UserId",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
@@ -6824,11 +7187,11 @@ end});
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Interact="Click",Callback=function()
 	soundnotification = Instance.new("Sound");
 	effecttrue();
-	Rayfield:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 	toClipboard("--[[Will Join Your Friend's Game\nIf Not Join The Game He's Playing and Execute]]--" .. "\ngame:GetService(\'TeleportService\'):TeleportToPlaceInstance(\'" .. game.PlaceId .. "\', \'" .. game.JobId .. "\');");
 end});
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Interact="Click",Callback=function()
 	toClipboard("" .. game.PlaceId .. "");
 	effecttrue();
-	Rayfield:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
