@@ -95,7 +95,7 @@ function breakvelocity()
 	end
 end
 function getTorso(x)
-	x = x or speakers.speaker.Character;
+	x = x or speaker.Character;
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart");
 end
 function getPlr(name)
@@ -203,7 +203,7 @@ flykeybind = "";
 function sFLY(vfly)
 	repeat
 		wait();
-	until speakers.LocalPlayer and speakers.speaker.Character and getRoot(speakers.speaker.Character) and speakers.speaker.Character:FindFirstChildOfClass("Humanoid") 
+	until speakers.LocalPlayer and speaker.Character and getRoot(speaker.Character) and speaker.Character:FindFirstChildOfClass("Humanoid") 
 	repeat
 		wait();
 	until JMouse 
@@ -211,7 +211,7 @@ function sFLY(vfly)
 		flyKeyDown:Disconnect();
 		flyKeyUp:Disconnect();
 	end
-	local T = getRoot(speakers.speaker.Character);
+	local T = getRoot(speaker.Character);
 	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
 	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
 	local SPEED = 0;
@@ -229,8 +229,8 @@ function sFLY(vfly)
 		task.spawn(function()
 			repeat
 				wait();
-				if (not vfly and speakers.speaker.Character:FindFirstChildOfClass("Humanoid")) then
-					speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+				if (not vfly and speaker.Character:FindFirstChildOfClass("Humanoid")) then
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 				end
 				if (((CONTROL.L + CONTROL.R) ~= 0) or ((CONTROL.F + CONTROL.B) ~= 0) or ((CONTROL.Q + CONTROL.E) ~= 0)) then
 					SPEED = 50;
@@ -252,8 +252,8 @@ function sFLY(vfly)
 			SPEED = 0;
 			BG:Destroy();
 			BV:Destroy();
-			if speakers.speaker.Character:FindFirstChildOfClass("Humanoid") then
-				speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+			if speaker.Character:FindFirstChildOfClass("Humanoid") then
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 			end
 		end);
 	end
@@ -299,8 +299,8 @@ function NOFLY()
 		flyKeyDown:Disconnect();
 		flyKeyUp:Disconnect();
 	end
-	if speakers.speaker.Character:FindFirstChildOfClass("Humanoid") then
-		speakers.speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+	if speaker.Character:FindFirstChildOfClass("Humanoid") then
+		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 	end
 	pcall(function()
 		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
