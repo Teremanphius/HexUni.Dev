@@ -311,10 +311,10 @@ RunService.RenderStepped:Connect(function(step)
 	local fps = 1 / step;
 	UpdatedFPS = math.floor(fps);
 end);
-local Window = Rayfield:CreateWindow({Name=("Javolo Universal\t\t\t   " .. os.date("%H:%M")),LoadingTitle="Javolo Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="Javolo Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. LocalPlayer.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
+local Window = Rayfield:CreateWindow({Name=("Javolo Universal\t\t\t\t   " .. os.date("%H:%M")),LoadingTitle="Javolo Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="Javolo Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. LocalPlayer.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
 task.spawn(function()
 	while task.wait(1) do
-		Window:SetTopbarTitle("Javolo Universal\t\t\t   " .. os.date("%H:%M"));
+		Window:SetTopbarTitle("Javolo Universal\t\t\t\t   " .. os.date("%H:%M"));
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
@@ -988,7 +988,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
 			effectfalse();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			bang69:Stop();
 			bangAnim:Destroy();
 			Bang69 = false;
@@ -1963,7 +1963,7 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 		end
 		Clip = true;
 	end
-	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		Togglenoclip:Set(false);
 	end);
 end});
@@ -2031,7 +2031,7 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 			end
 		end
 	end
-	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		ToggleVehiclenoclip:Set(false);
 	end);
 end});
@@ -2212,7 +2212,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 		if not invisibleeee then
 			TurnVisible();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Toggleinvisibleeee:Set(false);
 		end);
 	end);
@@ -2628,7 +2628,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",Cu
 			Flipping = false;
 		end
 	end);
-	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		Toggleflipppping:Set(false);
 	end);
 end});
@@ -2723,7 +2723,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Do
 			doubleFlipping = false;
 		end
 	end);
-	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		Toggledoubleflipppping:Set(false);
 	end);
 end});
@@ -2785,7 +2785,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Cart Whee
 			cwFlipping = false;
 		end
 	end);
-	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 		Togglecartwheel:Set(false);
 	end);
 end});
@@ -2800,7 +2800,7 @@ Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",Curre
 		if not stunned then
 			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Togglestunned:Set(false);
 		end);
 	end);
@@ -2889,7 +2889,7 @@ Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Ju
 			HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or nil;
 			HumanModCons.ejCA = (HumanModCons.ejCA and HumanModCons.ejCA:Disconnect() and false) or nil;
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Toggleedgerjumper:Set(false);
 		end);
 	end);
@@ -2992,7 +2992,7 @@ Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Chara
 				end
 			end
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Toggleweaken:Set(false);
 		end);
 	end);
@@ -3037,7 +3037,7 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 				end
 			end
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Toggleswimmer:Set(false);
 		end);
 	end);
@@ -3064,7 +3064,7 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Spin",Curre
 				end
 			end
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Togglespinner:Set(false);
 		end);
 	end);
@@ -3072,7 +3072,7 @@ end});
 Sliderspinspeed = Misc:CreateSlider({SectionParent=Sectionlprtog,Name="Spin Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderspinspeed:Set(20);
 		end);
 	end);
@@ -3122,7 +3122,7 @@ end});
 Sliderwalkloop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
 	pcall(function()
 		walkspeedsped = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderwalkloop:Set(16);
 		end);
 	end);
@@ -3177,7 +3177,7 @@ end});
 Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,350},Increment=1,Suffix="Power | Height",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),Callback=function(Value)
 	pcall(function()
 		jpower = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderjumploop:Set(7);
 		end);
 	end);
@@ -3198,7 +3198,7 @@ end});
 Sliderwalk = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
 	pcall(function()
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderwalk:Set(16);
 		end);
 	end);
@@ -3206,7 +3206,7 @@ end});
 Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Walk Speed",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16;
 		end);
 	end);
@@ -3214,7 +3214,7 @@ end});
 Sliderhip = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Hip Height",Range={-2,100},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(game.Players.LocalPlayer.Character.Humanoid.HipHeight),Callback=function(Value)
 	pcall(function()
 		game.Players.LocalPlayer.Character.Humanoid.HipHeight = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderhip:Set(0);
 		end);
 	end);
@@ -3222,7 +3222,7 @@ end});
 Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",NumbersOnly=true,PlaceholderText=math.floor(game.Players.LocalPlayer.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		game.Players.LocalPlayer.Character.Humanoid.HipHeight = Text;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			game.Players.LocalPlayer.Character.Humanoid.HipHeight = 0;
 		end);
 	end);
@@ -3234,7 +3234,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 		else
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = Value;
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderjpower:Set(50);
 		end);
 	end);
@@ -3246,7 +3246,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / 
 		else
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = Text;
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 				speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50;
 			else
@@ -3258,7 +3258,7 @@ end});
 Slidergrav = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Gravity",Range={0,700},Increment=1,Suffix="Gravity",CurrentValue=math.floor(game.Workspace.Gravity),Callback=function(Value)
 	pcall(function()
 		game.Workspace.Gravity = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Slidergrav:Set(196);
 		end);
 	end);
@@ -3266,7 +3266,7 @@ end});
 Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",NumbersOnly=true,PlaceholderText=math.floor(game.Workspace.Gravity),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		game.Workspace.Gravity = Text;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			game.Workspace.Gravity = 196;
 		end);
 	end);
@@ -3512,7 +3512,7 @@ end});
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Brightness",Range={0,15},Increment=1,Suffix="Brightness",CurrentValue=math.floor(game.Lighting.Brightness),Callback=function(Value)
 	pcall(function()
 		game.Lighting.Brightness = Value;
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderbright:Set(origsettingsbrightness.sliderbright);
 		end);
 	end);
@@ -3619,7 +3619,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 				end
 			end
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Togglelightclient:Set(false);
 		end);
 	end);
@@ -3785,7 +3785,7 @@ end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
 		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {FieldOfView=Value}):Play();
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderfov:Set(70);
 		end);
 	end);
@@ -4208,11 +4208,14 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio
 	Rayfield:Notify({Title="Executed!",Content=("You Have Executed It " .. LocalPlayer.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 audioid = nil;
+Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	audioid = Text;
+end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Play Audio",Interact="Click",Callback=function()
-	Soundplayaudio = Instance.new("Sound", game:GetService("Lighting"));
-	Soundplayaudio.SoundId = "rbxassetid://" .. audioid;
-	Soundplayaudio:Play();
-	Rayfield:Notify({Title="Playing!",Content="Playing The Audio",Duration=3,Image=7733715400});
+			Soundplayaudio = Instance.new("Sound");
+			Soundplayaudio.SoundId = "rbxassetid://" .. audioid;
+			Soundplayaudio:Play();
+			Rayfield:Notify({Title="Playing!",Content="Playing The Audio",Duration=3,Image=7733715400});
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Pause Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Pause();
@@ -4245,11 +4248,8 @@ end});
 Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",PlaceholderText=1,NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	Soundplayaudio.Volume = Text;
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",PlaceholderText="",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	audioid = Text;
-end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 45", true);
+Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 47", true);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
@@ -4261,7 +4261,7 @@ Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name=
 		if not freezeanims then
 			game.Players.LocalPlayer.Character.Animate.Disabled = false;
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Togglefreezeanims:Set(false);
 		end);
 	end);
@@ -4292,32 +4292,35 @@ SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Pla
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		Animplr = Instance.new("Animation");
-		if not r15(speaker) then
-			Animplr.AnimationId = "rbxassetid://" .. Text .. "";
-		else
-			effecttrue();
-			Rayfield:Notify({Title="R6!",Content="Bro Only R6!",Duration=3,Image=7733715400});
+		Animplr.AnimationId = "rbxassetid://" .. Text .. "";
+	end);
+end});
+Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play / Stop Animation",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		animplrlr = Value;
+		if animplrlr then
+			animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr);
+			animpla:Play(0.1, 10, 1);
+			animplrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				animplrDied:Disconnect();
+				animpla:Stop();
+				Animplr:Destroy();
+				Toggleeanimplr:Set(false);
+			end);
+		end
+		if not animplrlr then
+			animpla:Stop();
+			Animplr:Destroy();
+			animplrDied:Disconnect();
 		end
 	end);
 end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Play Animation",Interact="Click",Callback=function()
-	animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr);
-	animpla:Play(0.1, 1, 1);
-	effecttrue();
-	Rayfield:Notify({Title="Playing!",Content="Playing The Animation..",Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Stop Animation",Interact="Click",Callback=function()
-	animpla:Stop();
-	Animplr:Destroy();
-	effecttrue();
-	Rayfield:Notify({Title="Stopped!",Content="Stopped The Animation..",Duration=3,Image=7733715400});
-end});
-Slider = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Animation Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Slider = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		animpla:AdjustSpeed(Value);
 	end);
 end});
-Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Animation Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		animpla:AdjustSpeed(Text);
 	end);
@@ -4354,6 +4357,7 @@ Toggleedance1 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 				edance1Died:Disconnect();
 				edance1:Stop();
 				edance1Anim:Destroy();
+				Toggleedance1:Set(false);
 			end);
 		end
 		if not eedancerfee then
@@ -4362,15 +4366,12 @@ Toggleedance1 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 			edance1:Stop();
 			edance1Anim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleedance1:Set(false);
-		end);
 	end);
 end});
 edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance1 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		edance1:AdjustSpeed(Value);
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			edance1Slider:Set(1);
 		end);
 	end);
@@ -4398,6 +4399,7 @@ Toggleedance2 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 				edance2Died:Disconnect();
 				edance2:Stop();
 				edance2Anim:Destroy();
+				Toggleedance2:Set(false);
 			end);
 		end
 		if not eedancerfe then
@@ -4406,15 +4408,12 @@ Toggleedance2 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 			edance2:Stop();
 			edance2Anim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleedance2:Set(false);
-		end);
 	end);
 end});
 edance2Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance2 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		edance2:AdjustSpeed(Value);
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			edance2Slider:Set(1);
 		end);
 	end);
@@ -4442,6 +4441,7 @@ Toggleedance3 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 				edance3Died:Disconnect();
 				edance3:Stop();
 				edance2Anim:Destroy();
+				Toggleedance3:Set(false);
 			end);
 		end
 		if not eedancerfe3 then
@@ -4450,15 +4450,12 @@ Toggleedance3 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Na
 			edance3:Stop();
 			edance3Anim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleedance3:Set(false);
-		end);
 	end);
 end});
 edance3Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance3 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		edance3:AdjustSpeed(Value);
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			edance3Slider:Set(1);
 		end);
 	end);
@@ -4500,6 +4497,7 @@ Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Ban
 				cbangerDied:Disconnect();
 				cbanger:Stop();
 				cbangerAnim:Destroy();
+				Togglebanganim:Set(false);
 			end);
 		end
 		if not febangerion then
@@ -4507,9 +4505,6 @@ Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Ban
 			cbanger:Stop();
 			cbangerAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglebanganim:Set(false);
-		end);
 	end);
 end});
 bangerSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -4537,6 +4532,7 @@ Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 					dancerrr:Disconnect();
 					dancerr:Stop();
 					dancerAnim:Destroy();
+					Togglemovingdancer:Set(false);
 				end);
 			else
 				effectfalse();
@@ -4549,15 +4545,12 @@ Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 			dancerr:Stop();
 			dancerAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglemovingdancer:Set(false);
-		end);
 	end);
 end});
 Slidermovindanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Moving Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		dancerr:AdjustSpeed(Value);
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Slidermovindanc:Set(1);
 		end);
 	end);
@@ -4570,27 +4563,35 @@ end});
 Togglerandance = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Random Dance R6 & R15",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		randomizedance = Value;
-		randomstringdances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
-		if r15(speaker) then
-			randomstringdances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576"};
-		end
 		if randomizedance then
+			if r15(speaker) then
+				randomstringdances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
+			else
+				randomstringdances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
+			end
 			animation = Instance.new("Animation");
 			animation.AnimationId = "rbxassetid://" .. randomstringdances[math.random(1, #randomstringdances)];
 			danceTrack = speaker.Character:FindFirstChildWhichIsA("Humanoid"):LoadAnimation(animation);
 			danceTrack.Looped = true;
-			danceTrack:Play();
+			danceTrack:Play(0.1, 10, 1);
+			randancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				randancerrr:Disconnect();
+				danceTrack:Stop();
+				animation:Destroy();
+				Togglerandance:Set(false);
+			end);
 		end
 		if not randomizedance then
 			danceTrack:Stop();
 			danceTrack:Destroy();
+			randancerrr:Disconnect();
 		end
 	end);
 end});
 Sliderrandance = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Random Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		randance:AdjustSpeed(Value);
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderrandance:Set(1);
 		end);
 	end);
@@ -4615,6 +4616,7 @@ Togglemonstermasher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name
 					monsterdancerrr:Disconnect();
 					monsterdancerr:Stop();
 					monsterdancerAnim:Destroy();
+					Togglemonstermasher:Set(false);
 				end);
 			else
 				effectfalse();
@@ -4627,9 +4629,6 @@ Togglemonstermasher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name
 			monsterdancerr:Stop();
 			monsterdancerAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglemonstermasher:Set(false);
-		end);
 	end);
 end});
 Slidermonsterdanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -4640,6 +4639,88 @@ end});
 Inputmonster = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		monsterdancerr:AdjustSpeed(Text);
+	end);
+end});
+fullswingrfr = false;
+Togglefullswing = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Full Swing R6",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		fullswingV = Value;
+		if fullswingV then
+			fullswingrfr = true;
+			if not r15(speaker) then
+				FullswAnim = Instance.new("Animation");
+				FullswAnim.AnimationId = "rbxassetid://218504594";
+				fullswingr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(FullswAnim);
+				fullswingr:Play(0.1, 1, 1);
+				fullswingr.Looped = true
+				fullswinga = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					fullswinga:Disconnect();
+					fullswingr:Stop();
+					FullswAnim:Destroy();
+					Togglefullswing:Set(false);
+				end);
+			else
+				effectfalse();
+				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+			end
+		end
+		if not fullswingV then
+			fullswingrfr = false;
+			fullswinga:Disconnect();
+			fullswingr:Stop();
+			FullswAnim:Destroy();
+		end
+	end);
+end});
+Slider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Full Swing Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		fullswingr:AdjustSpeed(Value);
+	end);
+end});
+Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Full Swing Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		fullswingr:AdjustSpeed(Text);
+	end);
+end});
+punchs = false;
+Togglepunch = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Punch R6",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		punchV = Value;
+		if punchV then
+			punchs = true;
+			if not r15(speaker) then
+				Punchanim = Instance.new("Animation");
+				Punchanim.AnimationId = "rbxassetid://204062532";
+				punchr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Punchanim);
+				punchr:Play(0.1, 1, 1);
+				punchr.Looped = true
+				puncha = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					puncha:Disconnect();
+					punchr:Stop();
+					Punchanim:Destroy();
+					Togglepunch:Set(false);
+				end);
+			else
+				effectfalse();
+				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
+			end
+		end
+		if not punchV then
+			punchs = false;
+			puncha:Disconnect();
+			punchr:Stop();
+			Punchanim:Destroy();
+		end
+	end);
+end});
+Slider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Punch Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		punchr:AdjustSpeed(Value);
+	end);
+end});
+Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Punch Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		punchr:AdjustSpeed(Text);
 	end);
 end});
 dinowalkerrra = false;
@@ -4657,6 +4738,7 @@ Toggledinowalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Din
 					dinowalkerrr:Disconnect();
 					dinowalkerr:Stop();
 					dinowalkerAnim:Destroy();
+					Toggledinowalk:Set(false);
 				end);
 			else
 				effectfalse();
@@ -4669,9 +4751,6 @@ Toggledinowalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Din
 			dinowalkerr:Stop();
 			dinowalkerAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggledinowalk:Set(false);
-		end);
 	end);
 end});
 Sliderdinowalk = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Dino Walk Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -4697,6 +4776,7 @@ Togglecarpetanim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="C
 					carpet:Stop();
 					carpetAnim:Destroy();
 					carpetDied:Disconnect();
+					Togglecarpetanim:Set(false);
 				end);
 			else
 				effectfalse();
@@ -4708,9 +4788,6 @@ Togglecarpetanim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="C
 			carpet:Stop();
 			carpetAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglecarpetanim:Set(false);
-		end);
 	end);
 end});
 ToggleStaffwalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Staff Walk R6",CurrentValue=false,Callback=function(Value)
@@ -4726,6 +4803,7 @@ ToggleStaffwalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="St
 					staffwalkerr:Disconnect();
 					staffwalker:Stop();
 					staffwalkeranim:Destroy();
+					ToggleStaffwalk:Set(false);
 				end);
 			else
 				effectfalse();
@@ -4737,9 +4815,6 @@ ToggleStaffwalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="St
 			staffwalker:Stop();
 			staffwalkeranim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			ToggleStaffwalk:Set(false);
-		end);
 	end);
 end});
 Togglespasm = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Spasm R6",CurrentValue=false,Callback=function(Value)
@@ -4752,6 +4827,12 @@ Togglespasm = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Spasm 
 				spasmm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(spasmAnim);
 				spasmm:Play();
 				spasmm:AdjustSpeed(99);
+				spamisitic = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					spamisitic:Disconnect();
+					spasmm:Stop();
+					spasmAnim:Destroy();
+					Togglespasm:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4760,10 +4841,8 @@ Togglespasm = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Spasm 
 		if not spastic then
 			spasmm:Stop();
 			spasmAnim:Destroy();
+			spamisitic:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglespasm:Set(false);
-		end);
 	end);
 end});
 Togglecloneillu = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Clone Illusion R6",CurrentValue=false,Callback=function(Value)
@@ -4776,6 +4855,12 @@ Togglecloneillu = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Cl
 				cloneillu = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cloneillusionAnim);
 				cloneillu:Play(0.5, 1, 10000000);
 				cloneillu:AdjustSpeed(9999);
+				colni = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					colni:Disconnect();
+					cloneillu:Stop();
+					cloneillusionAnim:Destroy();
+					Togglecloneillu:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4784,10 +4869,8 @@ Togglecloneillu = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Cl
 		if not clonerillusion then
 			cloneillu:Stop();
 			cloneillusionAnim:Destroy();
+			colni:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglecloneillu:Set(false);
-		end);
 	end);
 end});
 Toggleglitchjump = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Glitch Jump R6",CurrentValue=false,Callback=function(Value)
@@ -4805,18 +4888,22 @@ Toggleglitchjump = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 						end
 					end
 				end
+				glithhhy = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					glithhhy:Disconnect();
+					glitchjump:Stop();
+					glitchjumpAnim:Destroy();
+					Toggleglitchjump:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
 			end
 		end
 		if not glitchingjump then
-			superfaintt:Stop();
+			glitchjump:Stop();
+			glithhhy:Disconnect();
 			glitchjumpAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleglitchjump:Set(false);
-		end);
 	end);
 end});
 Toggleglitchlevi = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Glitch Levitate R6",CurrentValue=false,Callback=function(Value)
@@ -4829,6 +4916,12 @@ Toggleglitchlevi = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 				glitchlevi = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(glitchleviAnim);
 				glitchlevi:Play(0.5, 1, 10000000);
 				glitchlevi:AdjustSpeed(9999);
+				glithhhyee = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					glithhhyee:Disconnect();
+					glitchlevi:Stop();
+					glitchleviAnim:Destroy();
+					Toggleglitchlevi:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4837,10 +4930,8 @@ Toggleglitchlevi = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 		if not glitchleviii then
 			glitchlevi:Stop();
 			glitchleviAnim:Destroy();
+			glithhhyee:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleglitchlevi:Set(false);
-		end);
 	end);
 end});
 Togglefainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Faint R6",CurrentValue=false,Callback=function(Value)
@@ -4853,6 +4944,12 @@ Togglefainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fain
 				faintt = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(faintAnim);
 				faintt:Play(0.5, 1, 10000000);
 				faintt:AdjustSpeed(9999);
+				faintntnt = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					faintntnt:Disconnect();
+					faintt:Stop();
+					faintAnim:Destroy();
+					Togglefainter:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4861,10 +4958,8 @@ Togglefainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fain
 		if not fainterrr then
 			faintt:Stop();
 			faintAnim:Destroy();
+			faintntnt:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglefainter:Set(false);
-		end);
 	end);
 end});
 Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Super Faint R6",CurrentValue=false,Callback=function(Value)
@@ -4882,6 +4977,12 @@ Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 						end
 					end
 				end
+				faintntssnt = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					faintntssnt:Disconnect();
+					superfaintt:Stop();
+					superfaintAnim:Destroy();
+					Togglesuperfainter:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4890,10 +4991,8 @@ Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 		if not superfainterrr then
 			superfaintt:Stop();
 			superfaintAnim:Destroy();
+			faintntssnt:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglesuperfainter:Set(false);
-		end);
 	end);
 end});
 Togglearmtubine = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Arm Turbine R6",CurrentValue=false,Callback=function(Value)
@@ -4906,6 +5005,12 @@ Togglearmtubine = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Ar
 				armturb = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(armturbineAnim);
 				armturb:Play(0.5, 1, 10000000);
 				armturb:AdjustSpeed(9999);
+				armturbsss = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					armturbsss:Disconnect();
+					armturb:Stop();
+					armturbineAnim:Destroy();
+					Togglearmtubine:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4914,10 +5019,8 @@ Togglearmtubine = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Ar
 		if not armturbine then
 			armturb:Stop();
 			armturbineAnim:Destroy();
+			armturbsss:Disconnect();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglearmtubine:Set(false);
-		end);
 	end);
 end});
 Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Arm Detach R6",CurrentValue=false,Callback=function(Value)
@@ -4935,6 +5038,12 @@ Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 						end
 					end
 				end
+				armturbsssdeat = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					armturbsssdeat:Disconnect();
+					armdetach:Stop();
+					armdetachAnim:Destroy();
+					Togglearmdetacher:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4942,11 +5051,9 @@ Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 		end
 		if not armdetacherrr then
 			armdetach:Stop();
+			armturbsssdeat:Disconnect();
 			armdetachAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglearmdetacher:Set(false);
-		end);
 	end);
 end});
 Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Insane Leg's R6",CurrentValue=false,Callback=function(Value)
@@ -4964,6 +5071,12 @@ Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="I
 						end
 					end
 				end
+				insanelegsdi = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					insanelegsdi:Disconnect();
+					insanelegs:Stop();
+					insanelegsAnim:Destroy();
+					Toggleinsanelegs:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -4971,11 +5084,9 @@ Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="I
 		end
 		if not insanelegger then
 			insanelegs:Stop();
+			insanelegsdi:Disconnect();
 			insanelegsAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Toggleinsanelegs:Set(false);
-		end);
 	end);
 end});
 Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pinch Nose R6",CurrentValue=false,Callback=function(Value)
@@ -4993,6 +5104,12 @@ Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pi
 						end
 					end
 				end
+				pinchnosejg = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					pinchnosejg:Disconnect();
+					pinchnose:Stop();
+					pinchnoseAnim:Destroy();
+					Togglepinchnose:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -5000,11 +5117,9 @@ Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pi
 		end
 		if not pinchnoser then
 			pinchnose:Stop();
+			pinchnosejg:Disconnect();
 			pinchnoseAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglepinchnose:Set(false);
-		end);
 	end);
 end});
 Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Floating Head R6",CurrentValue=false,Callback=function(Value)
@@ -5022,6 +5137,12 @@ Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 						end
 					end
 				end
+				floatingheheh = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					floatingheheh:Disconnect();
+					floathead:Stop();
+					floatingheadAnim:Destroy();
+					Togglefloatinghead:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -5029,11 +5150,9 @@ Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 		end
 		if not floatingheader then
 			floathead:Stop();
+			floatingheheh:Disconnect();
 			floatingheadAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglefloatinghead:Set(false);
-		end);
 	end);
 end});
 Togglezombiearmss = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Zombie Arm's R6",CurrentValue=false,Callback=function(Value)
@@ -5046,25 +5165,28 @@ Togglezombiearmss = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
 				zomearm:Play();
 				zomearm:AdjustSpeed(0);
+				zomearmss = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					zomearmss:Disconnect();
+					zomearm:Stop();
+					zombiearmsAnim:Destroy();
+					Togglezombiearmss:Set(false);
+				end);
 			else
 				effectfalse();
 				Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
 			end
 		end
 		if not zombiearmss then
+			zomearmss:Disconnect();
 			zomearm:Stop();
 			zombiearmsAnim:Destroy();
 		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			Togglezombiearmss:Set(false);
-		end);
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="HeadThrow R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
-		AnimationId = "35154961";
 		HeadThrowAnim = Instance.new("Animation");
-		HeadThrowAnim.AnimationId = "rbxassetid://" .. AnimationId;
+		HeadThrowAnim.AnimationId = "rbxassetid://35154961";
 		headthrowk = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(HeadThrowAnim);
 		headthrowk:Play(0);
 		headthrowk:AdjustSpeed(1);
@@ -5079,11 +5201,6 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="KickBoard R
 		monsterdancerAnim.AnimationId = "rbxassetid://160737244";
 		monsterdancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(monsterdancerAnim);
 		monsterdancerr:Play(0.1, 1, 1);
-		monsterdancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			monsterdancerrr:Disconnect();
-			monsterdancerr:Stop();
-			monsterdancerAnim:Destroy();
-		end);
 	else
 		effectfalse();
 		Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -5095,11 +5212,6 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",I
 		monsterdancerAnim.AnimationId = "rbxassetid://74901237";
 		monsterdancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(monsterdancerAnim);
 		monsterdancerr:Play(0.1, 1, 1);
-		monsterdancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			monsterdancerrr:Disconnect();
-			monsterdancerr:Stop();
-			monsterdancerAnim:Destroy();
-		end);
 	else
 		effectfalse();
 		Rayfield:Notify({Title="R6 Needed!",Content="Bro Your R15..",Duration=6,Image=7733715400});
@@ -6669,10 +6781,6 @@ DTinfo = DateTime.fromUnixTimestamp(86400 * LocalPlayer.AccountAge);
 Daysinfo = tonumber(DTinfo:FormatUniversalTime("DD", "en-us"));
 Monthsinfo = tonumber(DTinfo:FormatUniversalTime("MM", "en-us"));
 Yearsinfo = tonumber(DTinfo:FormatUniversalTime("YYYY", "en-us")) - 1970;
-totalSeconds = math.floor(workspace.DistributedGameTime);
-hours = math.floor(totalSeconds / 3600);
-minutes = math.floor((totalSeconds % 3600) / 60);
-seconds = totalSeconds % 60;
 Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. LocalPlayer.Name .. " | " .. LocalPlayer.DisplayName .. "" .. "\nUserId: " .. LocalPlayer.UserId .. "" .. "\nAccount Age | In Days: " .. "Day's " .. Daysinfo .. " Month's: " .. Monthsinfo .. " Year's: " .. Yearsinfo .. " | " .. speaker.AccountAge .. "" .. "\nPlaceId: " .. game.PlaceId .. "")});
 task.spawn(function()
 	while task.wait() do
