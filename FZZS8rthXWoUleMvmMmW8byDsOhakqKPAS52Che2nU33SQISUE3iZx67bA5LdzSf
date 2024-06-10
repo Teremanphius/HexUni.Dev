@@ -2254,16 +2254,16 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			IsInvis = false;
 			IsRunning = true;
 			InvisibleCharacter = Character:Clone();
-			InvisibleCharacter.Parent = Lighting;
+			InvisibleCharacter.Parent = game.Lighting;
 			Void = workspace.FallenPartsDestroyHeight;
 			InvisibleCharacter.Name = "";
 			local CF;
-			invisFix = RunService.Stepped:Connect(function()
+			invisFix = game:GetService("RunService").Stepped:Connect(function()
 				pcall(function()
 					local IsInteger = tostring(Void):find("-");
-					local Pos = Player.Character.HumanoidRootPart.Position;
-					local Pos_Y = Pos.Y;
-					if ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void))) then
+					local Pos = Player.Character:FindFirstChild("HumanoidRootPart") and Player.Character.HumanoidRootPart.Position;
+					local Pos_Y = Pos and Pos.Y;
+					if (Pos_Y and ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void)))) then
 						Respawn();
 					end
 				end);
@@ -2285,7 +2285,10 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 						Player.Character = Character;
 						wait();
 						Character.Parent = workspace;
-						Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+						local humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+						if humanoid then
+							humanoid:Destroy();
+						end
 						IsInvis = false;
 						InvisibleCharacter.Parent = nil;
 						invisRunning = false;
@@ -2295,7 +2298,10 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 						Player.Character = Character;
 						wait();
 						Character.Parent = workspace;
-						Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+						local humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+						if humanoid then
+							humanoid:Destroy();
+						end
 						TurnVisible();
 					end);
 				end
@@ -2316,17 +2322,17 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			wait(0.2);
 			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
 			InvisibleCharacter = InvisibleCharacter;
-			Character.Parent = Lighting;
+			Character.Parent = game.Lighting;
 			InvisibleCharacter.Parent = workspace;
 			InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
 			Player.Character = InvisibleCharacter;
-			game.workspace.CurrentCamera:remove();
+			workspace.CurrentCamera:Remove();
 			wait(0.1);
 			repeat
 				wait();
 			until speaker.Character ~= nil 
-			game.workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
-			game.workspace.CurrentCamera.CameraType = "Custom";
+			workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
+			workspace.CurrentCamera.CameraType = "Custom";
 			speaker.CameraMinZoomDistance = 0.5;
 			speaker.CameraMaxZoomDistance = 400;
 			speaker.CameraMode = "Classic";
@@ -2391,16 +2397,16 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				IsInvis = false;
 				IsRunning = true;
 				InvisibleCharacter = Character:Clone();
-				InvisibleCharacter.Parent = Lighting;
+				InvisibleCharacter.Parent = game.Lighting;
 				Void = workspace.FallenPartsDestroyHeight;
 				InvisibleCharacter.Name = "";
 				local CF;
-				invisFix = RunService.Stepped:Connect(function()
+				invisFix = game:GetService("RunService").Stepped:Connect(function()
 					pcall(function()
 						local IsInteger = tostring(Void):find("-");
-						local Pos = Player.Character.HumanoidRootPart.Position;
-						local Pos_Y = Pos.Y;
-						if ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void))) then
+						local Pos = Player.Character:FindFirstChild("HumanoidRootPart") and Player.Character.HumanoidRootPart.Position;
+						local Pos_Y = Pos and Pos.Y;
+						if (Pos_Y and ((IsInteger and (Pos_Y <= Void)) or (not IsInteger and (Pos_Y >= Void)))) then
 							Respawn();
 						end
 					end);
@@ -2422,7 +2428,10 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 							Player.Character = Character;
 							wait();
 							Character.Parent = workspace;
-							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+							local humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+							if humanoid then
+								humanoid:Destroy();
+							end
 							IsInvis = false;
 							InvisibleCharacter.Parent = nil;
 							invisRunning = false;
@@ -2432,7 +2441,10 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 							Player.Character = Character;
 							wait();
 							Character.Parent = workspace;
-							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+							local humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+							if humanoid then
+								humanoid:Destroy();
+							end
 							TurnVisible();
 						end);
 					end
@@ -2453,17 +2465,17 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				wait(0.2);
 				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
 				InvisibleCharacter = InvisibleCharacter;
-				Character.Parent = Lighting;
+				Character.Parent = game.Lighting;
 				InvisibleCharacter.Parent = workspace;
 				InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
 				Player.Character = InvisibleCharacter;
-				game.workspace.CurrentCamera:remove();
+				workspace.CurrentCamera:Remove();
 				wait(0.1);
 				repeat
 					wait();
 				until speaker.Character ~= nil 
-				game.workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
-				game.workspace.CurrentCamera.CameraType = "Custom";
+				workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
+				workspace.CurrentCamera.CameraType = "Custom";
 				speaker.CameraMinZoomDistance = 0.5;
 				speaker.CameraMaxZoomDistance = 400;
 				speaker.CameraMode = "Classic";
