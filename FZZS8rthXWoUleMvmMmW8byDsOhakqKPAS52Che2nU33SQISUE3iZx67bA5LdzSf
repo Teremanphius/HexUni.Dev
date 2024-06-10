@@ -318,7 +318,7 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 105", true);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 106", true);
 Paragraph = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, true, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
@@ -507,8 +507,8 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 		speaker.Character.Humanoid:SetStateEnabled(0, false);
 		_G.connections['nofall'] = speaker.CharacterAdded:Connect(function(char)
 			wait();
-			char.Humanoid:SetStateEnabled(1, false);
-			char.Humanoid:SetStateEnabled(0, false);
+			Character.Humanoid:SetStateEnabled(1, false);
+			Character.Humanoid:SetStateEnabled(0, false);
 		end);
 	end
 	if not antifragdoller then
@@ -2046,7 +2046,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
 	Cam = workspace.CurrentCamera;
 	Pos, Char = Cam.CFrame, speaker.Character;
-	Human = Char and Char.FindFirstChildWhichIsA(Char, "Humanoid");
+	Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid");
 	nHuman = Human.Clone(Human);
 	nHuman.Parent, speaker.Character = Char, nil;
 	nHuman.SetStateEnabled(nHuman, 15, false);
@@ -2055,7 +2055,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	nHuman.BreakJointsOnDeath, Human = true, Human.Destroy(Human);
 	speaker.Character, Cam.CameraSubject, Cam.CFrame = Char, nHuman, wait() and Pos;
 	nHuman.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-	Script = Char.FindFirstChild(Char, "Animate");
+	Script = Character.FindFirstChild(Char, "Animate");
 	if Script then
 		Script.Disabled = true;
 		wait();
@@ -2077,7 +2077,7 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 			NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
 			Cam = workspace.CurrentCamera;
 			Pos, Char = Cam.CFrame, speaker.Character;
-			Human = Char and Char.FindFirstChildWhichIsA(Char, "Humanoid");
+			Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid");
 			nHuman = Human.Clone(Human);
 			nHuman.Parent, speaker.Character = Char, nil;
 			nHuman.SetStateEnabled(nHuman, 15, false);
@@ -2086,7 +2086,7 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 			nHuman.BreakJointsOnDeath, Human = true, Human.Destroy(Human);
 			speaker.Character, Cam.CameraSubject, Cam.CFrame = Char, nHuman, wait() and Pos;
 			nHuman.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-			Script = Char.FindFirstChild(Char, "Animate");
+			Script = Character.FindFirstChild(Char, "Animate");
 			if Script then
 				Script.Disabled = true;
 				wait();
@@ -2664,6 +2664,136 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 		infJumpDebounce = false;
 	end);
 end});
+local seizureFlipping = false;
+Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
+	seizure = Value;
+	if seizure then
+		if not r15(speaker) then
+			seizureFlipping = true;
+			function _restoreproperties()
+				Torso = Character:FindFirstChild("Torso");
+				RightS = Torso:FindFirstChild("Right Shoulder");
+				LeftS = Torso:FindFirstChild("Left Shoulder");
+				RightH = Torso:FindFirstChild("Right Hip");
+				LeftH = Torso:FindFirstChild("Left Hip");
+				RightS.MaxVelocity = 0.15;
+				LeftS.MaxVelocity = 0.15;
+				RightH.MaxVelocity = 0.1;
+				LeftH.MaxVelocity = 0.1;
+				RightS.DesiredAngle = 0;
+				LeftS.DesiredAngle = 0;
+				LeftH.DesiredAngle = 0;
+				RightH.DesiredAngle = 0;
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			function Flip5()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				Character.Humanoid.PlatformStand = true;
+				local VelUp = Instance.new("BodyVelocity");
+				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
+				VelUp.Parent = Character.Torso;
+				coroutine.resume(coroutine.create(Down), VelUp);
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.CFrame = Character.Torso.CFrame;
+				Gyro.Parent = Character.Torso;
+				for i = 1, 16 do
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 9, math.pi / -18, 0);
+					wait();
+				end
+				Gyro.CFrame = Character.Torso.CFrame;
+				wait();
+				Gyro:Remove();
+				Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while seizureFlipping do
+				wait();
+				Flip5();
+			end
+		else
+			seizureFlipping = true;
+			debounce = false;
+			local function _restoreproperties()
+				local UpperTorso = Character:FindFirstChild("UpperTorso");
+				if not UpperTorso then
+					return;
+				end
+				local RightShoulder = UpperTorso:FindFirstChild("Right Shoulder");
+				local LeftShoulder = UpperTorso:FindFirstChild("Left Shoulder");
+				local RightHip = Character:FindFirstChild("RightUpperLeg"):FindFirstChild("Right Hip");
+				local LeftHip = Character:FindFirstChild("LeftUpperLeg"):FindFirstChild("Left Hip");
+				if (RightShoulder and LeftShoulder and RightHip and LeftHip) then
+					RightShoulder.MaxVelocity = 0.15;
+					LeftShoulder.MaxVelocity = 0.15;
+					RightHip.MaxVelocity = 0.1;
+					LeftHip.MaxVelocity = 0.1;
+					RightShoulder.DesiredAngle = 0;
+					LeftShoulder.DesiredAngle = 0;
+					LeftHip.DesiredAngle = 0;
+					RightHip.DesiredAngle = 0;
+				end
+			end
+			local function Down(ml)
+				for i = 1, ml.Velocity.Y / 3 do
+					ml.Velocity = ml.Velocity + Vector3.new(0, -0.25, 0);
+					wait();
+				end
+				ml:Destroy();
+			end
+			local function Flip5()
+				if debounce then
+					return;
+				end
+				debounce = true;
+				Character.Humanoid.PlatformStand = true;
+				local VelUp = Instance.new("BodyVelocity");
+				VelUp.Velocity = Vector3.new(0, 10, 0);
+				VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+				VelUp.Parent = Character.HumanoidRootPart;
+				coroutine.resume(coroutine.create(Down), VelUp);
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
+				Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				Gyro.Parent = Character.HumanoidRootPart;
+				for i = 1, 16 do
+					local randomRotationX = math.random(-math.pi, math.pi) / 9;
+					local randomRotationY = math.random(-math.pi, math.pi) / 9;
+					local randomRotationZ = math.random(-math.pi, math.pi) / 9;
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(randomRotationX, randomRotationY, randomRotationZ);
+					wait();
+				end
+				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
+				wait();
+				Gyro:Destroy();
+				Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while seizureFlipping do
+				wait();
+				Flip5();
+			end
+		end
+	end
+	if not seizure then
+		seizureFlipping = false;
+	end
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+		Toggleseizuree:Set(false);
+	end);
+end});
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",CurrentValue=false,Callback=function(Value)
 	flippa = Value;
@@ -2720,8 +2850,8 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",Cu
 				end
 				debounce = true;
 				Char = speaker.Character;
-				Human = Char.Humanoid;
-				Torso = Char.Torso;
+				Human = Character.Humanoid;
+				Torso = Character.Torso;
 				CF = Torso.CFrame;
 				Human.PlatformStand = true;
 				VelUp = Instance.new("BodyVelocity");
@@ -2805,7 +2935,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",Cu
 				end
 				debounce = true;
 				local Char = speaker.Character;
-				local Human = Char.Humanoid;
+				local Human = Character.Humanoid;
 				local Torso = Char:FindFirstChild("UpperTorso");
 				if Torso then
 					local CF = Torso.CFrame;
@@ -2903,8 +3033,8 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Do
 					end
 					debounce = true;
 					Char = speaker.Character;
-					Human = Char.Humanoid;
-					Torso = Char.Torso;
+					Human = Character.Humanoid;
+					Torso = Character.Torso;
 					CF = Torso.CFrame;
 					Human.PlatformStand = true;
 					VelUp = Instance.new("BodyVelocity");
@@ -2985,7 +3115,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Do
 					end
 					debounce = true;
 					local Char = speaker.Character;
-					local Human = Char.Humanoid;
+					local Human = Character.Humanoid;
 					local Torso = Char:FindFirstChild("UpperTorso");
 					if Torso then
 						local CF = Torso.CFrame;
@@ -3238,10 +3368,10 @@ Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Ju
 					laststate = state;
 					state = Human:GetState();
 					if ((laststate ~= state) and (state == Enum.HumanoidStateType.Freefall) and (laststate ~= Enum.HumanoidStateType.Jumping)) then
-						Char.HumanoidRootPart.CFrame = lastcf;
-						Char.HumanoidRootPart.Velocity = Vector3.new(Char.HumanoidRootPart.Velocity.X, Human.JumpPower or Human.JumpHeight, Char.HumanoidRootPart.Velocity.Z);
+						Character.HumanoidRootPart.CFrame = lastcf;
+						Character.HumanoidRootPart.Velocity = Vector3.new(Character.HumanoidRootPart.Velocity.X, Human.JumpPower or Human.JumpHeight, Character.HumanoidRootPart.Velocity.Z);
 					end
-					lastcf = Char.HumanoidRootPart.CFrame;
+					lastcf = Character.HumanoidRootPart.CFrame;
 				end
 			end
 			edgejump();
@@ -4616,7 +4746,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 47", true);
+Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 66", true);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
@@ -4654,6 +4784,288 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 			end
 		end);
 	end
+end});
+SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Packs R15", false, true, 11932783331);
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Sneaky",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1132461372";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1132469004";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1132473842";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1132477671";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1132489853";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1132494274";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1132500520";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1132506407";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1132510133";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bold",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=16738332169";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=16738333171";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=16738333868";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=16738334710";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=16738336650";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=16738337225";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=16738339158";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=16738339817";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=16738340646";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Toy",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=782843869";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=782846423";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=782841498";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=782845736";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=782842708";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=782844582";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=782845186";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=782843345";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Pirate",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=750779899";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=750780242";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=750781874";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=750782770";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=750782230";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=750783738";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=750784579";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=750785176";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=750785693";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Knight",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=658360781";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=657600338";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=657595757";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=657568135";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=658409194";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=657564596";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=657560551";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=657557095";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=657552124";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Astronaut",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=891609353";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=891617961";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=891621366";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=891633237";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=891627522";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=891639666";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=891663592";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Vampire",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083439238";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083443587";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083445855";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083450166";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083455352";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083462077";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1083464683";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083467779";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083473930";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Robot",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616086039";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616087089";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616088211";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616089559";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616090535";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616091570";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616092998";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616094091";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616095330";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Levitation",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616005863";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616006778";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616008087";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616008936";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616010382";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616011509";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616012453";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bubbly",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=909997997";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=910001910";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=910004836";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=910009958";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=910016857";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=910025107";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=910028158";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=910030921";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=910034870";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Werewolf",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083182000";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083189019";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083195517";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083214717";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083218792";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083216690";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1083222527";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083225406";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083178339";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Stylish",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616133594";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616134815";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616136790";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616138447";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616139451";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616140816";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616143378";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616144772";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616146177";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Mage",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=707826056";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=707742142";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=707855907";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=707861613";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=707876443";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=707894699";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Cartoony",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=742636889";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=742637151";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=742637544";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=742638445";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=742637942";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=742638842";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=742639220";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=742639812";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=742640026";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Zombie",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616156119";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616157476";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616158929";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616160636";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616161997";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616163682";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616165109";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616166655";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616168032";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Superhero",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616104706";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616108001";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616111295";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616113536";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616115533";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616117076";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616119360";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616120861";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616122287";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Ninja",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=656114359";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=656115606";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=656117400";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=656118341";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=656117878";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=656118852";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=656119721";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=656121397";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=656121766";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Elder",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=845392038";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=845396048";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=845397899";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=845400520";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=845398858";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=845386501";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=845401742";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=845403127";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=845403856";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Oldschool",Interact="Click",Callback=function()
+	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=5319816685";
+	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=5319839762";
+	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=5319828216";
+	Character.Animate.idle.Animation1.Weight.Value = "9";
+	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=5319831086";
+	Character.Animate.idle.Animation2.Weight.Value = "1";
+	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=5319841935";
+	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=5319844329";
+	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=5319850266";
+	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=5319852613";
+	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=5319847204";
+	effecttrue();
+	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
