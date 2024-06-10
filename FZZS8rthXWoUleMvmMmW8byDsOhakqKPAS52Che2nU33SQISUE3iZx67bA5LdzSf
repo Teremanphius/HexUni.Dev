@@ -3745,6 +3745,12 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 		end
 		sifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			Sliderjpower:Set(50);
+			wait(0.2)
+			if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
+				speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50;
+			else
+				speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 7.2;
+			end
 		end);
 	end);
 end});
@@ -3759,7 +3765,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / 
 			if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 				speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50;
 			else
-				speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 50;
+				speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 7.2;
 			end
 		end);
 	end);
