@@ -171,13 +171,13 @@ end
 function CheckTime()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
-		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	elseif ((h >= 12) and (h < 20)) then
-		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	else
-		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to Javolo Hub Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	end
 end
@@ -318,14 +318,14 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 107", true);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 108", true);
 Paragraph = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, true, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))();
 		effecttrue();
 		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))();
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Dex",Interact="Click",Callback=function()
@@ -524,7 +524,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		if antiwindowafk then
 			if not getconnections then
 				effectfalse();
-				NSUI:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
+				NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : getconnections!",Duration=3,Image=7733715400});
 				return;
 			end
 			for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -536,7 +536,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 			if not antiwindowafk then
 				if not getconnections then
 					effectfalse();
-					NSUI:Notify({Title="!",Content="Your executor does not support getconnections!",Duration=5,Image=0});
+					NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : getconnections!",Duration=3,Image=7733715400});
 					return;
 				end
 				for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -761,6 +761,21 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 		end
 	end);
 end});
+Paragraph = Misc:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+	plrName = Text;
+	foundPlr = getPlr(plrName);
+	if (plrName ~= "") then
+		if foundPlr then
+			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+			wait(0.9);
+			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+		elseif (foundPlr == speaker) then
+			return nil;
+		end
+	end
+end});
 local Follow = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -783,6 +798,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 						wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -818,6 +836,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 							wait();
 						end
 					end
+				else
+					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+					effectfalse();
 				end
 			else
 				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
@@ -855,6 +876,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",Place
 						wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -906,6 +930,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 						wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -976,6 +1003,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 							hrp0.Velocity = hrp1.Velocity;
 							wait();
 						end
+					else
+						notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+						effectfalse();
 					end
 				end
 			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
@@ -1039,6 +1069,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						wait();
 					end
+				else
+					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+					effectfalse();
 				end
 			end
 		else
@@ -1112,6 +1145,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 							wait();
 						end
 					end
+				else
+					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+					effectfalse();
 				end
 			elseif ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
 				ffc1hump = false;
@@ -1217,6 +1253,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Faceba
 				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
 				effectfalse();
 			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
 		end
 	end);
 end});
@@ -1254,6 +1293,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Faceban
 						wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1291,6 +1333,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 							wait();
 						end
 					end
+				else
+					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+					effectfalse();
 				end
 			elseif ((ffhugger == true) or (huggingfoundPlr == speaker)) then
 				ffhugger = false;
@@ -1353,6 +1398,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 					wait();
 				end
 			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
 		end
 	else
 		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1393,6 +1441,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1424,6 +1475,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -2289,8 +2343,8 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 					if (v.Name == "HumanoidRootPart") then
 						v.Transparency = 1;
 					else
-						v.Material = Enum.Material.ForceField
-						v.Color = Color3.fromRGB(25,25,25)
+						v.Material = Enum.Material.ForceField;
+						v.Color = Color3.fromRGB(25, 25, 25);
 					end
 				end
 			end
@@ -2439,8 +2493,8 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 						if (v.Name == "HumanoidRootPart") then
 							v.Transparency = 1;
 						else
-							v.Material = Enum.Material.ForceField
-							v.Color = Color3.fromRGB(25,25,25)
+							v.Material = Enum.Material.ForceField;
+							v.Color = Color3.fromRGB(25, 25, 25);
 						end
 					end
 				end
@@ -3297,7 +3351,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 		barrelrolling = Value;
 		if barrelrolling then
 			if not r15(speaker) then
-				cwFlipping = true;
+				BarrelRoll = true;
 				function _restoreproperties()
 					Torso = speaker.Character:FindFirstChild("Torso");
 					RightS = Torso:FindFirstChild("Right Shoulder");
@@ -3341,7 +3395,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 					_restoreproperties();
 					debounce = false;
 				end
-				while cwFlipping do
+				while BarrelRoll do
 					wait();
 					Flip();
 				end
@@ -4328,7 +4382,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camer
 	local sc = (debug and debug.setconstant) or setconstant;
 	local gc = (debug and debug.getconstants) or getconstants;
 	if (not sc or not getgc or not gc) then
-		return NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function's : setconstant or getconstants or getgc",Duration=3,Image=7733715400});
+		effectfalse();
+		return NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : setconstant or getconstants or getgc",Duration=3,Image=7733715400});
 	end
 	local pop = speaker.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper;
 	for _, v in pairs(getgc()) do
@@ -4354,365 +4409,366 @@ Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View"
 	game:GetService("Workspace").Camera.FieldOfView = Text;
 end});
 Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freecam",Interact="Click",Callback=function()
-	effecttrue();
-	Buttonfreeca:Set("Freecam (SHIFT+P)");
-	speaker.DevEnableMouseLock = false;
-	NSUI:Notify({Title="Executed, SHIFT+P To Toggle!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=6,Image=7733715400});
-	function sandbox(var, func)
-		env = getfenv(func);
-		newenv = setmetatable({}, {__index=function(self, k)
-			if (k == "script") then
-				return var;
-			else
-				return env[k];
-			end
-		end});
-		setfenv(func, newenv);
-		return func;
-	end
-	cors = {};
-	mas = Instance.new("Model", game:GetService("Lighting"));
-	LocalScript0 = Instance.new("LocalScript");
-	LocalScript0.Name = "FreeCamera";
-	LocalScript0.Parent = mas;
-	table.insert(cors, sandbox(LocalScript0, function()
-		pi = math.pi;
-		abs = math.abs;
-		clamp = math.clamp;
-		exp = math.exp;
-		rad = math.rad;
-		sign = math.sign;
-		sqrt = math.sqrt;
-		tan = math.tan;
-		ContextActionService = game:GetService("ContextActionService");
-		Players = game:GetService("Players");
-		RunService = game:GetService("RunService");
-		StarterGui = game:GetService("StarterGui");
-		UserInputService = game:GetService("UserInputService");
-		LocalPlayer = Players.LocalPlayer;
-		if not LocalPlayer then
-			Players:GetPropertyChangedSignal("LocalPlayer"):Wait();
-			LocalPlayer = Players.LocalPlayer;
+	pcall(function()
+		effecttrue();
+		Buttonfreeca:Set("Freecam (SHIFT+P)");
+		speaker.DevEnableMouseLock = false;
+		NSUI:Notify({Title="Executed, SHIFT+P To Toggle!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=6,Image=7733715400});
+		function sandbox(var, func)
+			env = getfenv(func);
+			newenv = setmetatable({}, {__index=function(self, k)
+				if (k == "script") then
+					return var;
+				else
+					return env[k];
+				end
+			end});
+			setfenv(func, newenv);
+			return func;
 		end
-		Camera = workspace.CurrentCamera;
-		workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
-			newCamera = workspace.CurrentCamera;
-			if newCamera then
-				Camera = newCamera;
+		cors = {};
+		mas = Instance.new("Model", game:GetService("Lighting"));
+		LocalScript0 = Instance.new("LocalScript");
+		LocalScript0.Name = "FreeCamera";
+		LocalScript0.Parent = mas;
+		table.insert(cors, sandbox(LocalScript0, function()
+			pi = math.pi;
+			abs = math.abs;
+			clamp = math.clamp;
+			exp = math.exp;
+			rad = math.rad;
+			sign = math.sign;
+			sqrt = math.sqrt;
+			tan = math.tan;
+			ContextActionService = game:GetService("ContextActionService");
+			Players = game:GetService("Players");
+			RunService = game:GetService("RunService");
+			StarterGui = game:GetService("StarterGui");
+			UserInputService = game:GetService("UserInputService");
+			LocalPlayer = speaker;
+			if not LocalPlayer then
+				LocalPlayer = speaker;
 			end
-		end);
-		TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value;
-		INPUT_PRIORITY = Enum.ContextActionPriority.High.Value;
-		FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift,Enum.KeyCode.P};
-		NAV_GAIN = Vector3.new(1, 1, 1) * 64;
-		PAN_GAIN = Vector2.new(0.75, 1) * 8;
-		FOV_GAIN = 300;
-		PITCH_LIMIT = rad(90);
-		VEL_STIFFNESS = 1.5;
-		PAN_STIFFNESS = 1;
-		FOV_STIFFNESS = 4;
-		Spring = {};
-		do
-			Spring.__index = Spring;
-			Spring.new = function(freq, pos)
-				self = setmetatable({}, Spring);
-				self.f = freq;
-				self.p = pos;
-				self.v = pos * 0;
-				return self;
-			end;
-			Spring.Update = function(self, dt, goal)
-				f = self.f * 2 * pi;
-				p0 = self.p;
-				v0 = self.v;
-				offset = goal - p0;
-				decay = exp(-f * dt);
-				p1 = goal + (((v0 * dt) - (offset * ((f * dt) + 1))) * decay);
-				v1 = ((f * dt * ((offset * f) - v0)) + v0) * decay;
-				self.p = p1;
-				self.v = v1;
-				return p1;
-			end;
-			Spring.Reset = function(self, pos)
-				self.p = pos;
-				self.v = pos * 0;
-			end;
-		end
-		cameraPos = Vector3.new();
-		cameraRot = Vector2.new();
-		cameraFov = 0;
-		velSpring = Spring.new(VEL_STIFFNESS, Vector3.new());
-		panSpring = Spring.new(PAN_STIFFNESS, Vector2.new());
-		fovSpring = Spring.new(FOV_STIFFNESS, 0);
-		Input = {};
-		do
-			local thumbstickCurve;
+			Camera = workspace.CurrentCamera;
+			workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+				newCamera = workspace.CurrentCamera;
+				if newCamera then
+					Camera = newCamera;
+				end
+			end);
+			TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value;
+			INPUT_PRIORITY = Enum.ContextActionPriority.High.Value;
+			FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift,Enum.KeyCode.P};
+			NAV_GAIN = Vector3.new(1, 1, 1) * 64;
+			PAN_GAIN = Vector2.new(0.75, 1) * 8;
+			FOV_GAIN = 300;
+			PITCH_LIMIT = rad(90);
+			VEL_STIFFNESS = 1.5;
+			PAN_STIFFNESS = 1;
+			FOV_STIFFNESS = 4;
+			Spring = {};
 			do
-				K_CURVATURE = 2;
-				K_DEADZONE = 0.15;
-				function fCurve(x)
-					return (exp(K_CURVATURE * x) - 1) / (exp(K_CURVATURE) - 1);
-				end
-				function fDeadzone(x)
-					return fCurve((x - K_DEADZONE) / (1 - K_DEADZONE));
-				end
-				function thumbstickCurve(x)
-					return sign(x) * clamp(fDeadzone(abs(x)), 0, 1);
-				end
-			end
-			gamepad = {ButtonX=0,ButtonY=0,DPadDown=0,DPadUp=0,ButtonL2=0,ButtonR2=0,Thumbstick1=Vector2.new(),Thumbstick2=Vector2.new()};
-			keyboard = {W=0,A=0,S=0,D=0,E=0,Q=0,U=0,H=0,J=0,K=0,I=0,Y=0,Up=0,Down=0,LeftShift=0,RightShift=0};
-			mouse = {Delta=Vector2.new(),MouseWheel=0};
-			NAV_GAMEPAD_SPEED = Vector3.new(1, 1, 1);
-			NAV_KEYBOARD_SPEED = Vector3.new(1, 1, 1);
-			PAN_MOUSE_SPEED = Vector2.new(1, 1) * (pi / 64);
-			PAN_GAMEPAD_SPEED = Vector2.new(1, 1) * (pi / 8);
-			FOV_WHEEL_SPEED = 1;
-			FOV_GAMEPAD_SPEED = 0.25;
-			NAV_ADJ_SPEED = 0.75;
-			NAV_SHIFT_MUL = 0.25;
-			navSpeed = 1;
-			Input.Vel = function(dt)
-				navSpeed = clamp(navSpeed + (dt * (keyboard.Up - keyboard.Down) * NAV_ADJ_SPEED), 0.01, 4);
-				kGamepad = Vector3.new(thumbstickCurve(gamepad.Thumbstick1.x), thumbstickCurve(gamepad.ButtonR2) - thumbstickCurve(gamepad.ButtonL2), thumbstickCurve(-gamepad.Thumbstick1.y)) * NAV_GAMEPAD_SPEED;
-				kKeyboard = Vector3.new(((keyboard.D - keyboard.A) + keyboard.K) - keyboard.H, ((keyboard.E - keyboard.Q) + keyboard.I) - keyboard.Y, ((keyboard.S - keyboard.W) + keyboard.J) - keyboard.U) * NAV_KEYBOARD_SPEED;
-				shift = UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or UserInputService:IsKeyDown(Enum.KeyCode.RightShift);
-				return (kGamepad + kKeyboard) * navSpeed * ((shift and NAV_SHIFT_MUL) or 1);
-			end;
-			Input.Pan = function(dt)
-				kGamepad = Vector2.new(thumbstickCurve(gamepad.Thumbstick2.y), thumbstickCurve(-gamepad.Thumbstick2.x)) * PAN_GAMEPAD_SPEED;
-				kMouse = mouse.Delta * PAN_MOUSE_SPEED;
-				mouse.Delta = Vector2.new();
-				return kGamepad + kMouse;
-			end;
-			Input.Fov = function(dt)
-				kGamepad = (gamepad.ButtonX - gamepad.ButtonY) * FOV_GAMEPAD_SPEED;
-				kMouse = mouse.MouseWheel * FOV_WHEEL_SPEED;
-				mouse.MouseWheel = 0;
-				return kGamepad + kMouse;
-			end;
-			do
-				function Keypress(action, state, input)
-					keyboard[input.KeyCode.Name] = ((state == Enum.UserInputState.Begin) and 1) or 0;
-					return Enum.ContextActionResult.Sink;
-				end
-				function GpButton(action, state, input)
-					gamepad[input.KeyCode.Name] = ((state == Enum.UserInputState.Begin) and 1) or 0;
-					return Enum.ContextActionResult.Sink;
-				end
-				function MousePan(action, state, input)
-					delta = input.Delta;
-					mouse.Delta = Vector2.new(-delta.y, -delta.x);
-					return Enum.ContextActionResult.Sink;
-				end
-				function Thumb(action, state, input)
-					gamepad[input.KeyCode.Name] = input.Position;
-					return Enum.ContextActionResult.Sink;
-				end
-				function Trigger(action, state, input)
-					gamepad[input.KeyCode.Name] = input.Position.z;
-					return Enum.ContextActionResult.Sink;
-				end
-				function MouseWheel(action, state, input)
-					mouse[input.UserInputType.Name] = -input.Position.z;
-					return Enum.ContextActionResult.Sink;
-				end
-				function Zero(t)
-					for k, v in pairs(t) do
-						t[k] = v * 0;
-					end
-				end
-				Input.StartCapture = function()
-					ContextActionService:BindActionAtPriority("FreecamKeyboard", Keypress, false, INPUT_PRIORITY, Enum.KeyCode.W, Enum.KeyCode.U, Enum.KeyCode.A, Enum.KeyCode.H, Enum.KeyCode.S, Enum.KeyCode.J, Enum.KeyCode.D, Enum.KeyCode.K, Enum.KeyCode.E, Enum.KeyCode.I, Enum.KeyCode.Q, Enum.KeyCode.Y, Enum.KeyCode.Up, Enum.KeyCode.Down);
-					ContextActionService:BindActionAtPriority("FreecamMousePan", MousePan, false, INPUT_PRIORITY, Enum.UserInputType.MouseMovement);
-					ContextActionService:BindActionAtPriority("FreecamMouseWheel", MouseWheel, false, INPUT_PRIORITY, Enum.UserInputType.MouseWheel);
-					ContextActionService:BindActionAtPriority("FreecamGamepadButton", GpButton, false, INPUT_PRIORITY, Enum.KeyCode.ButtonX, Enum.KeyCode.ButtonY);
-					ContextActionService:BindActionAtPriority("FreecamGamepadTrigger", Trigger, false, INPUT_PRIORITY, Enum.KeyCode.ButtonR2, Enum.KeyCode.ButtonL2);
-					ContextActionService:BindActionAtPriority("FreecamGamepadThumbstick", Thumb, false, INPUT_PRIORITY, Enum.KeyCode.Thumbstick1, Enum.KeyCode.Thumbstick2);
+				Spring.__index = Spring;
+				Spring.new = function(freq, pos)
+					self = setmetatable({}, Spring);
+					self.f = freq;
+					self.p = pos;
+					self.v = pos * 0;
+					return self;
 				end;
-				Input.StopCapture = function()
-					navSpeed = 1;
-					Zero(gamepad);
-					Zero(keyboard);
-					Zero(mouse);
-					ContextActionService:UnbindAction("FreecamKeyboard");
-					ContextActionService:UnbindAction("FreecamMousePan");
-					ContextActionService:UnbindAction("FreecamMouseWheel");
-					ContextActionService:UnbindAction("FreecamGamepadButton");
-					ContextActionService:UnbindAction("FreecamGamepadTrigger");
-					ContextActionService:UnbindAction("FreecamGamepadThumbstick");
+				Spring.Update = function(self, dt, goal)
+					f = self.f * 2 * pi;
+					p0 = self.p;
+					v0 = self.v;
+					offset = goal - p0;
+					decay = exp(-f * dt);
+					p1 = goal + (((v0 * dt) - (offset * ((f * dt) + 1))) * decay);
+					v1 = ((f * dt * ((offset * f) - v0)) + v0) * decay;
+					self.p = p1;
+					self.v = v1;
+					return p1;
+				end;
+				Spring.Reset = function(self, pos)
+					self.p = pos;
+					self.v = pos * 0;
 				end;
 			end
-		end
-		function GetFocusDistance(cameraFrame)
-			znear = 0.1;
-			viewport = Camera.ViewportSize;
-			projy = 2 * tan(cameraFov / 2);
-			projx = (viewport.x / viewport.y) * projy;
-			fx = cameraFrame.rightVector;
-			fy = cameraFrame.upVector;
-			fz = cameraFrame.lookVector;
-			minVect = Vector3.new();
-			minDist = 512;
-			for x = 0, 1, 0.5 do
-				for y = 0, 1, 0.5 do
-					cx = (x - 0.5) * projx;
-					cy = (y - 0.5) * projy;
-					offset = ((fx * cx) - (fy * cy)) + fz;
-					origin = cameraFrame.p + (offset * znear);
-					part, hit = workspace:FindPartOnRay(Ray.new(origin, offset.unit * minDist));
-					dist = (hit - origin).magnitude;
-					if (minDist > dist) then
-						minDist = dist;
-						minVect = offset.unit;
+			cameraPos = Vector3.new();
+			cameraRot = Vector2.new();
+			cameraFov = 0;
+			velSpring = Spring.new(VEL_STIFFNESS, Vector3.new());
+			panSpring = Spring.new(PAN_STIFFNESS, Vector2.new());
+			fovSpring = Spring.new(FOV_STIFFNESS, 0);
+			Input = {};
+			do
+				local thumbstickCurve;
+				do
+					K_CURVATURE = 2;
+					K_DEADZONE = 0.15;
+					function fCurve(x)
+						return (exp(K_CURVATURE * x) - 1) / (exp(K_CURVATURE) - 1);
+					end
+					function fDeadzone(x)
+						return fCurve((x - K_DEADZONE) / (1 - K_DEADZONE));
+					end
+					function thumbstickCurve(x)
+						return sign(x) * clamp(fDeadzone(abs(x)), 0, 1);
 					end
 				end
+				gamepad = {ButtonX=0,ButtonY=0,DPadDown=0,DPadUp=0,ButtonL2=0,ButtonR2=0,Thumbstick1=Vector2.new(),Thumbstick2=Vector2.new()};
+				keyboard = {W=0,A=0,S=0,D=0,E=0,Q=0,U=0,H=0,J=0,K=0,I=0,Y=0,Up=0,Down=0,LeftShift=0,RightShift=0};
+				mouse = {Delta=Vector2.new(),MouseWheel=0};
+				NAV_GAMEPAD_SPEED = Vector3.new(1, 1, 1);
+				NAV_KEYBOARD_SPEED = Vector3.new(1, 1, 1);
+				PAN_MOUSE_SPEED = Vector2.new(1, 1) * (pi / 64);
+				PAN_GAMEPAD_SPEED = Vector2.new(1, 1) * (pi / 8);
+				FOV_WHEEL_SPEED = 1;
+				FOV_GAMEPAD_SPEED = 0.25;
+				NAV_ADJ_SPEED = 0.75;
+				NAV_SHIFT_MUL = 0.25;
+				navSpeed = 1;
+				Input.Vel = function(dt)
+					navSpeed = clamp(navSpeed + (dt * (keyboard.Up - keyboard.Down) * NAV_ADJ_SPEED), 0.01, 4);
+					kGamepad = Vector3.new(thumbstickCurve(gamepad.Thumbstick1.x), thumbstickCurve(gamepad.ButtonR2) - thumbstickCurve(gamepad.ButtonL2), thumbstickCurve(-gamepad.Thumbstick1.y)) * NAV_GAMEPAD_SPEED;
+					kKeyboard = Vector3.new(((keyboard.D - keyboard.A) + keyboard.K) - keyboard.H, ((keyboard.E - keyboard.Q) + keyboard.I) - keyboard.Y, ((keyboard.S - keyboard.W) + keyboard.J) - keyboard.U) * NAV_KEYBOARD_SPEED;
+					shift = UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or UserInputService:IsKeyDown(Enum.KeyCode.RightShift);
+					return (kGamepad + kKeyboard) * navSpeed * ((shift and NAV_SHIFT_MUL) or 1);
+				end;
+				Input.Pan = function(dt)
+					kGamepad = Vector2.new(thumbstickCurve(gamepad.Thumbstick2.y), thumbstickCurve(-gamepad.Thumbstick2.x)) * PAN_GAMEPAD_SPEED;
+					kMouse = mouse.Delta * PAN_MOUSE_SPEED;
+					mouse.Delta = Vector2.new();
+					return kGamepad + kMouse;
+				end;
+				Input.Fov = function(dt)
+					kGamepad = (gamepad.ButtonX - gamepad.ButtonY) * FOV_GAMEPAD_SPEED;
+					kMouse = mouse.MouseWheel * FOV_WHEEL_SPEED;
+					mouse.MouseWheel = 0;
+					return kGamepad + kMouse;
+				end;
+				do
+					function Keypress(action, state, input)
+						keyboard[input.KeyCode.Name] = ((state == Enum.UserInputState.Begin) and 1) or 0;
+						return Enum.ContextActionResult.Sink;
+					end
+					function GpButton(action, state, input)
+						gamepad[input.KeyCode.Name] = ((state == Enum.UserInputState.Begin) and 1) or 0;
+						return Enum.ContextActionResult.Sink;
+					end
+					function MousePan(action, state, input)
+						delta = input.Delta;
+						mouse.Delta = Vector2.new(-delta.y, -delta.x);
+						return Enum.ContextActionResult.Sink;
+					end
+					function Thumb(action, state, input)
+						gamepad[input.KeyCode.Name] = input.Position;
+						return Enum.ContextActionResult.Sink;
+					end
+					function Trigger(action, state, input)
+						gamepad[input.KeyCode.Name] = input.Position.z;
+						return Enum.ContextActionResult.Sink;
+					end
+					function MouseWheel(action, state, input)
+						mouse[input.UserInputType.Name] = -input.Position.z;
+						return Enum.ContextActionResult.Sink;
+					end
+					function Zero(t)
+						for k, v in pairs(t) do
+							t[k] = v * 0;
+						end
+					end
+					Input.StartCapture = function()
+						ContextActionService:BindActionAtPriority("FreecamKeyboard", Keypress, false, INPUT_PRIORITY, Enum.KeyCode.W, Enum.KeyCode.U, Enum.KeyCode.A, Enum.KeyCode.H, Enum.KeyCode.S, Enum.KeyCode.J, Enum.KeyCode.D, Enum.KeyCode.K, Enum.KeyCode.E, Enum.KeyCode.I, Enum.KeyCode.Q, Enum.KeyCode.Y, Enum.KeyCode.Up, Enum.KeyCode.Down);
+						ContextActionService:BindActionAtPriority("FreecamMousePan", MousePan, false, INPUT_PRIORITY, Enum.UserInputType.MouseMovement);
+						ContextActionService:BindActionAtPriority("FreecamMouseWheel", MouseWheel, false, INPUT_PRIORITY, Enum.UserInputType.MouseWheel);
+						ContextActionService:BindActionAtPriority("FreecamGamepadButton", GpButton, false, INPUT_PRIORITY, Enum.KeyCode.ButtonX, Enum.KeyCode.ButtonY);
+						ContextActionService:BindActionAtPriority("FreecamGamepadTrigger", Trigger, false, INPUT_PRIORITY, Enum.KeyCode.ButtonR2, Enum.KeyCode.ButtonL2);
+						ContextActionService:BindActionAtPriority("FreecamGamepadThumbstick", Thumb, false, INPUT_PRIORITY, Enum.KeyCode.Thumbstick1, Enum.KeyCode.Thumbstick2);
+					end;
+					Input.StopCapture = function()
+						navSpeed = 1;
+						Zero(gamepad);
+						Zero(keyboard);
+						Zero(mouse);
+						ContextActionService:UnbindAction("FreecamKeyboard");
+						ContextActionService:UnbindAction("FreecamMousePan");
+						ContextActionService:UnbindAction("FreecamMouseWheel");
+						ContextActionService:UnbindAction("FreecamGamepadButton");
+						ContextActionService:UnbindAction("FreecamGamepadTrigger");
+						ContextActionService:UnbindAction("FreecamGamepadThumbstick");
+					end;
+				end
 			end
-			return fz:Dot(minVect) * minDist;
-		end
-		function StepFreecam(dt)
-			vel = velSpring:Update(dt, Input.Vel(dt));
-			pan = panSpring:Update(dt, Input.Pan(dt));
-			fov = fovSpring:Update(dt, Input.Fov(dt));
-			zoomFactor = sqrt(tan(rad(70 / 2)) / tan(rad(cameraFov / 2)));
-			cameraFov = clamp(cameraFov + (fov * FOV_GAIN * (dt / zoomFactor)), 1, 120);
-			cameraRot = cameraRot + (pan * PAN_GAIN * (dt / zoomFactor));
-			cameraRot = Vector2.new(clamp(cameraRot.x, -PITCH_LIMIT, PITCH_LIMIT), cameraRot.y % (2 * pi));
-			cameraCFrame = CFrame.new(cameraPos) * CFrame.fromOrientation(cameraRot.x, cameraRot.y, 0) * CFrame.new(vel * NAV_GAIN * dt);
-			cameraPos = cameraCFrame.p;
-			Camera.CFrame = cameraCFrame;
-			Camera.Focus = cameraCFrame * CFrame.new(0, 0, -GetFocusDistance(cameraCFrame));
-			Camera.FieldOfView = cameraFov;
-		end
-		PlayerState = {};
-		do
-			local mouseIconEnabled;
-			local cameraSubject;
-			local cameraType;
-			local cameraFocus;
-			local cameraCFrame;
-			local cameraFieldOfView;
-			screenGuis = {};
-			coreGuis = {Backpack=true,Chat=true,Health=true,PlayerList=true};
-			setCores = {BadgesNotificationsActive=true,PointsNotificationsActive=true};
-			PlayerState.Push = function()
-				for name in pairs(coreGuis) do
-					coreGuis[name] = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType[name]);
-					StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], false);
-				end
-				for name in pairs(setCores) do
-					setCores[name] = StarterGui:GetCore(name);
-					StarterGui:SetCore(name, false);
-				end
-				playergui = LocalPlayer:FindFirstChildOfClass("PlayerGui");
-				if playergui then
-					for _, gui in pairs(playergui:GetChildren()) do
-						if (gui:IsA("ScreenGui") and gui.Enabled) then
-							screenGuis[#screenGuis + 1] = gui;
-							gui.Enabled = false;
+			function GetFocusDistance(cameraFrame)
+				znear = 0.1;
+				viewport = Camera.ViewportSize;
+				projy = 2 * tan(cameraFov / 2);
+				projx = (viewport.x / viewport.y) * projy;
+				fx = cameraFrame.rightVector;
+				fy = cameraFrame.upVector;
+				fz = cameraFrame.lookVector;
+				minVect = Vector3.new();
+				minDist = 512;
+				for x = 0, 1, 0.5 do
+					for y = 0, 1, 0.5 do
+						cx = (x - 0.5) * projx;
+						cy = (y - 0.5) * projy;
+						offset = ((fx * cx) - (fy * cy)) + fz;
+						origin = cameraFrame.p + (offset * znear);
+						part, hit = workspace:FindPartOnRay(Ray.new(origin, offset.unit * minDist));
+						dist = (hit - origin).magnitude;
+						if (minDist > dist) then
+							minDist = dist;
+							minVect = offset.unit;
 						end
 					end
 				end
-				cameraFieldOfView = Camera.FieldOfView;
-				Camera.FieldOfView = 70;
-				cameraType = Camera.CameraType;
-				Camera.CameraType = Enum.CameraType.Custom;
-				cameraSubject = Camera.CameraSubject;
-				Camera.CameraSubject = nil;
-				cameraCFrame = Camera.CFrame;
-				cameraFocus = Camera.Focus;
-				mouseIconEnabled = UserInputService.MouseIconEnabled;
-				UserInputService.MouseIconEnabled = false;
-				mouseBehavior = UserInputService.MouseBehavior;
-				UserInputService.MouseBehavior = Enum.MouseBehavior.Default;
-			end;
-			PlayerState.Pop = function()
-				for name, isEnabled in pairs(coreGuis) do
-					StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], isEnabled);
-				end
-				for name, isEnabled in pairs(setCores) do
-					StarterGui:SetCore(name, isEnabled);
-				end
-				for _, gui in pairs(screenGuis) do
-					if gui.Parent then
-						gui.Enabled = true;
-					end
-				end
-				Camera.FieldOfView = cameraFieldOfView;
-				cameraFieldOfView = nil;
-				Camera.CameraType = cameraType;
-				cameraType = nil;
-				Camera.CameraSubject = cameraSubject;
-				cameraSubject = nil;
+				return fz:Dot(minVect) * minDist;
+			end
+			function StepFreecam(dt)
+				vel = velSpring:Update(dt, Input.Vel(dt));
+				pan = panSpring:Update(dt, Input.Pan(dt));
+				fov = fovSpring:Update(dt, Input.Fov(dt));
+				zoomFactor = sqrt(tan(rad(70 / 2)) / tan(rad(cameraFov / 2)));
+				cameraFov = clamp(cameraFov + (fov * FOV_GAIN * (dt / zoomFactor)), 1, 120);
+				cameraRot = cameraRot + (pan * PAN_GAIN * (dt / zoomFactor));
+				cameraRot = Vector2.new(clamp(cameraRot.x, -PITCH_LIMIT, PITCH_LIMIT), cameraRot.y % (2 * pi));
+				cameraCFrame = CFrame.new(cameraPos) * CFrame.fromOrientation(cameraRot.x, cameraRot.y, 0) * CFrame.new(vel * NAV_GAIN * dt);
+				cameraPos = cameraCFrame.p;
 				Camera.CFrame = cameraCFrame;
-				cameraCFrame = nil;
-				Camera.Focus = cameraFocus;
-				cameraFocus = nil;
-				UserInputService.MouseIconEnabled = mouseIconEnabled;
-				mouseIconEnabled = nil;
-				UserInputService.MouseBehavior = mouseBehavior;
-				mouseBehavior = nil;
-			end;
-		end
-		function StartFreecam()
-			cameraCFrame = Camera.CFrame;
-			cameraRot = Vector2.new(cameraCFrame:toEulerAnglesYXZ());
-			cameraPos = cameraCFrame.p;
-			cameraFov = Camera.FieldOfView;
-			velSpring:Reset(Vector3.new());
-			panSpring:Reset(Vector2.new());
-			fovSpring:Reset(0);
-			PlayerState.Push();
-			RunService:BindToRenderStep("Freecam", Enum.RenderPriority.Camera.Value, StepFreecam);
-			Input.StartCapture();
-		end
-		function StopFreecam()
-			Input.StopCapture();
-			RunService:UnbindFromRenderStep("Freecam");
-			PlayerState.Pop();
-			speaker.DevEnableMouseLock = true;
-		end
-		do
-			enabled = false;
-			function ToggleFreecam()
-				if enabled then
-					StopFreecam();
-				else
-					StartFreecam();
-				end
-				enabled = not enabled;
+				Camera.Focus = cameraCFrame * CFrame.new(0, 0, -GetFocusDistance(cameraCFrame));
+				Camera.FieldOfView = cameraFov;
 			end
-			function CheckMacro(macro)
-				for i = 1, #macro - 1 do
-					if not UserInputService:IsKeyDown(macro[i]) then
-						return;
+			PlayerState = {};
+			do
+				local mouseIconEnabled;
+				local cameraSubject;
+				local cameraType;
+				local cameraFocus;
+				local cameraCFrame;
+				local cameraFieldOfView;
+				screenGuis = {};
+				coreGuis = {Backpack=true,Chat=true,Health=true,PlayerList=true};
+				setCores = {BadgesNotificationsActive=true,PointsNotificationsActive=true};
+				PlayerState.Push = function()
+					for name in pairs(coreGuis) do
+						coreGuis[name] = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType[name]);
+						StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], false);
 					end
-				end
-				ToggleFreecam();
-			end
-			function HandleActivationInput(action, state, input)
-				if (state == Enum.UserInputState.Begin) then
-					if (input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB]) then
-						CheckMacro(FREECAM_MACRO_KB);
+					for name in pairs(setCores) do
+						setCores[name] = StarterGui:GetCore(name);
+						StarterGui:SetCore(name, false);
 					end
-				end
-				return Enum.ContextActionResult.Pass;
+					playergui = LocalPlayer:FindFirstChildOfClass("PlayerGui");
+					if playergui then
+						for _, gui in pairs(playergui:GetChildren()) do
+							if (gui:IsA("ScreenGui") and gui.Enabled) then
+								screenGuis[#screenGuis + 1] = gui;
+								gui.Enabled = false;
+							end
+						end
+					end
+					cameraFieldOfView = Camera.FieldOfView;
+					Camera.FieldOfView = 70;
+					cameraType = Camera.CameraType;
+					Camera.CameraType = Enum.CameraType.Custom;
+					cameraSubject = Camera.CameraSubject;
+					Camera.CameraSubject = nil;
+					cameraCFrame = Camera.CFrame;
+					cameraFocus = Camera.Focus;
+					mouseIconEnabled = UserInputService.MouseIconEnabled;
+					UserInputService.MouseIconEnabled = false;
+					mouseBehavior = UserInputService.MouseBehavior;
+					UserInputService.MouseBehavior = Enum.MouseBehavior.Default;
+				end;
+				PlayerState.Pop = function()
+					for name, isEnabled in pairs(coreGuis) do
+						StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], isEnabled);
+					end
+					for name, isEnabled in pairs(setCores) do
+						StarterGui:SetCore(name, isEnabled);
+					end
+					for _, gui in pairs(screenGuis) do
+						if gui.Parent then
+							gui.Enabled = true;
+						end
+					end
+					Camera.FieldOfView = cameraFieldOfView;
+					cameraFieldOfView = nil;
+					Camera.CameraType = cameraType;
+					cameraType = nil;
+					Camera.CameraSubject = cameraSubject;
+					cameraSubject = nil;
+					Camera.CFrame = cameraCFrame;
+					cameraCFrame = nil;
+					Camera.Focus = cameraFocus;
+					cameraFocus = nil;
+					UserInputService.MouseIconEnabled = mouseIconEnabled;
+					mouseIconEnabled = nil;
+					UserInputService.MouseBehavior = mouseBehavior;
+					mouseBehavior = nil;
+				end;
 			end
-			ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB]);
+			function StartFreecam()
+				cameraCFrame = Camera.CFrame;
+				cameraRot = Vector2.new(cameraCFrame:toEulerAnglesYXZ());
+				cameraPos = cameraCFrame.p;
+				cameraFov = Camera.FieldOfView;
+				velSpring:Reset(Vector3.new());
+				panSpring:Reset(Vector2.new());
+				fovSpring:Reset(0);
+				PlayerState.Push();
+				RunService:BindToRenderStep("Freecam", Enum.RenderPriority.Camera.Value, StepFreecam);
+				Input.StartCapture();
+			end
+			function StopFreecam()
+				Input.StopCapture();
+				RunService:UnbindFromRenderStep("Freecam");
+				PlayerState.Pop();
+				speaker.DevEnableMouseLock = true;
+			end
+			do
+				enabled = false;
+				function ToggleFreecam()
+					if enabled then
+						StopFreecam();
+					else
+						StartFreecam();
+					end
+					enabled = not enabled;
+				end
+				function CheckMacro(macro)
+					for i = 1, #macro - 1 do
+						if not UserInputService:IsKeyDown(macro[i]) then
+							return;
+						end
+					end
+					ToggleFreecam();
+				end
+				function HandleActivationInput(action, state, input)
+					if (state == Enum.UserInputState.Begin) then
+						if (input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB]) then
+							CheckMacro(FREECAM_MACRO_KB);
+						end
+					end
+					return Enum.ContextActionResult.Pass;
+				end
+				ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB]);
+			end
+		end));
+		for i, v in pairs(mas:GetChildren()) do
+			v.Parent = game:GetService("Players").LocalPlayer.PlayerGui;
+			pcall(function()
+				v:MakeJoints();
+			end);
 		end
-	end));
-	for i, v in pairs(mas:GetChildren()) do
-		v.Parent = game:GetService("Players").speaker.PlayerGui;
-		pcall(function()
-			v:MakeJoints();
-		end);
-	end
-	mas:Destroy();
-	for i, v in pairs(cors) do
-		spawn(function()
-			pcall(v);
-		end);
-	end
+		mas:Destroy();
+		for i, v in pairs(cors) do
+			spawn(function()
+				pcall(v);
+			end);
+		end
+	end);
 end});
 Slidermaxzoomnoloop = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Change Max Zoom",Range={0,9999},Increment=1,Suffix="Zoom",CurrentValue=math.floor(speaker.CameraMaxZoomDistance),Callback=function(Value)
 	pcall(function()
