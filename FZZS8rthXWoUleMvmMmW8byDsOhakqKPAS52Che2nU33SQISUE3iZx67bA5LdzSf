@@ -318,13 +318,13 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 108", true);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 109", true);
 Paragraph = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, true, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))();
 	end);
 end});
@@ -332,28 +332,28 @@ Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Dex",Interact="Cl
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="CMD X",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Sirius",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://sirius.menu/script"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Nameless Admin Hub",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end);
 end});
 Sectiontgearstools = Misc:CreateSection("FE / (Client) LocalPlayer Related Script's | Gear's", false, true, 10747383470);
@@ -633,7 +633,7 @@ Buttonpresstotp = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Press 
 	if (presstotpkeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key == presstotpkeybind) then
@@ -1589,7 +1589,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit
 		end
 	end);
 end});
-Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. Best Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
+Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -1780,7 +1780,7 @@ Buttoncframefly = Misc:CreateButton({SectionParent=Sectionflights,Name="CFrame F
 		if (cframeflykeybind == "") then
 			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -1848,7 +1848,7 @@ Buttonnormalfly = Misc:CreateButton({SectionParent=Sectionflights,Name="Fly",Cal
 	if (flykeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
@@ -1891,7 +1891,7 @@ Buttonvefly = Misc:CreateButton({SectionParent=Sectionflights,Name="Vehicle Fly"
 	if (vehicleflykeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
@@ -2000,7 +2000,7 @@ Buttonfreezee = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Fr
 	if (freezekeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	local freezeanchor = false;
 	JMouse.KeyDown:connect(function(key)
@@ -2024,7 +2024,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthe
 		end
 	end
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
 end});
 tripkeybind = "";
 Buttontrip = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Trip",Interact="Click",Callback=function()
@@ -2033,7 +2033,7 @@ Buttontrip = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Trip"
 	if (tripkeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == tripkeybind) then
@@ -2059,7 +2059,7 @@ Buttonsitvers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Si
 	if (sitkeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == sitkeybind) then
@@ -2078,7 +2078,7 @@ Buttonstunnar = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="St
 	if (stunkeybindder == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == stunkeybindder) then
@@ -2124,7 +2124,7 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 	if (godmodekeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	JMouse.KeyDown:connect(function(key)
 		if (key:lower() == godmodekeybind) then
@@ -2186,7 +2186,7 @@ Buttonnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="NoClip",Inte
 		if (noclippkeybind == "") then
 			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -2253,7 +2253,7 @@ Buttonvnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Vehicle NoC
 		if (vehiclenoclippkeybind == "") then
 			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 		else
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
 			wait();
@@ -2437,7 +2437,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 	if (inviskeybind == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
 	else
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=5,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	repeat
 		wait();
@@ -2695,7 +2695,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 		end
 	end);
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
@@ -3345,13 +3345,13 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Cart Whee
 		end
 	end);
 end});
-BarrelRoll = false;
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
+StarRoll = false;
+Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Star Roll",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		barrelrolling = Value;
-		if barrelrolling then
+		starrolling = Value;
+		if starrolling then
 			if not r15(speaker) then
-				BarrelRoll = true;
+				StarRoll = true;
 				function _restoreproperties()
 					Torso = speaker.Character:FindFirstChild("Torso");
 					RightS = Torso:FindFirstChild("Right Shoulder");
@@ -3395,12 +3395,12 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 					_restoreproperties();
 					debounce = false;
 				end
-				while BarrelRoll do
+				while StarRoll do
 					wait();
 					Flip();
 				end
 			else
-				BarrelRoll = true;
+				StarRoll = true;
 				function _restoreproperties()
 					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
 					local RightS = Torso:FindFirstChild("Right Shoulder");
@@ -3449,16 +3449,137 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 						debounce = false;
 					end
 				end
-				while BarrelRoll do
+				while StarRoll do
 					wait();
 					Flip();
 				end
 			end
 		end
-		if not barrelrolling then
-			BarrelRoll = false;
+		if not starrolling then
+			StarRoll = false;
 		end
 	end);
+end});
+BarrelRoll = false;
+Looproll = false;
+Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
+	barrelrolling = Value;
+	if barrelrolling then
+		if not r15(speaker) then
+			BarrelRoll = true;
+			function _restoreproperties()
+				Torso = speaker.Character:FindFirstChild("Torso");
+				RightS = Torso:FindFirstChild("Right Shoulder");
+				LeftS = Torso:FindFirstChild("Left Shoulder");
+				RightH = Torso:FindFirstChild("Right Hip");
+				LeftH = Torso:FindFirstChild("Left Hip");
+				RightS.MaxVelocity = 0.15;
+				LeftS.MaxVelocity = 0.15;
+				RightH.MaxVelocity = 0.1;
+				LeftH.MaxVelocity = 0.1;
+				RightS.DesiredAngle = 0;
+				LeftS.DesiredAngle = 0;
+				LeftH.DesiredAngle = 0;
+				RightH.DesiredAngle = 0;
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			Looproll = true;
+			function Flip()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				Gyro.CFrame = speaker.Character.Torso.CFrame;
+				Gyro.Parent = speaker.Character.Torso;
+				local initialCFrame = speaker.Character.Torso.CFrame;
+				Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
+				while Looproll do
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0);
+					wait();
+				end
+				Gyro.CFrame = speaker.Character.Torso.CFrame;
+				wait();
+				Gyro:Remove();
+				speaker.Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while BarrelRoll do
+				wait();
+				Flip();
+			end
+		else
+			BarrelRoll = true;
+			function _restoreproperties()
+				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+				local RightS = Torso:FindFirstChild("Right Shoulder");
+				local LeftS = Torso:FindFirstChild("Left Shoulder");
+				local RightH = Torso:FindFirstChild("Right Hip");
+				local LeftH = Torso:FindFirstChild("Left Hip");
+				if (Torso and RightS and LeftS and RightH and LeftH) then
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			Looproll = true;
+			function Flip()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+				if Torso then
+					Gyro.CFrame = Torso.CFrame;
+					Gyro.Parent = Torso;
+					local initialCFrame = Torso.CFrame;
+					Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
+					while Looproll do
+						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, math.rad(-9), 0);
+						wait();
+					end
+					Gyro.CFrame = Torso.CFrame;
+					wait();
+					Gyro:Remove();
+					speaker.Character.Humanoid.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+			end
+			while BarrelRoll do
+				wait();
+				Flip();
+			end
+		end
+	end
+	if not barrelrolling then
+		BarrelRoll = false;
+		Looproll = false;
+	end
 end});
 Floating = false;
 floatName = randomString();
@@ -4001,11 +4122,11 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Netw
 		workspace.FallenPartsDestroyHeight = DHSaved;
 	end
 end});
-Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt saying You're Kicked."}, Sectionmiscscripts);
+Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts);
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove Kick GUI",Interact="Click",Callback=function()
 	game:GetService("GuiService"):ClearError();
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("Executed " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.UserId = Text;
@@ -4015,7 +4136,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Kick Yo
 	game:GetService("Players").LocalPlayer:Kick("You've Kicked Yourself!");
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself W/ A MSG Info",Content="In The Box First Type In The Message You Want To Be Kicked With And Press Enter."}, Sectionmiscscripts);
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself With a Custom Message",PlaceholderText="Enter Message",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom MSG",PlaceholderText="Enter Message",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game:GetService("Players").LocalPlayer:Kick(Text);
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
@@ -4024,7 +4145,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable 
 	NSUI:Notify({Title="ShiftLock",Content="ShiftLock Is Available!",Duration=3,Image=7733715400});
 end});
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228);
-Label = Miscclient:CreateLabel("⬇ For Legacy Chat Only ⬇", Sectiontchat);
+Paragraph = Miscclient:CreateParagraph({Title="Chat Script's Info",Content="Script's Here Are Only For Legacy Chat (The Chat You Can't Type Out Emoji's)."}, Sectiontchat);
 Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bubbles",CurrentValue=false,Callback=function(Value)
 	darkchatbubble = Value;
 	if darkchatbubble then
@@ -4077,7 +4198,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Int
 		end
 	end);
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content="Chat Spy On!",Duration=6,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content="Chat Spy On!",Duration=6,Image=7733715400});
 end});
 Sectionmiscworldscripts = Miscclient:CreateSection("LocalPlayer Related | World (Client)", false, false, 10709806631);
 origsettingsbrightness = {sliderbright=game.Lighting.Brightness};
@@ -4107,7 +4228,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Fu
 	Lighting.GlobalShadows = false;
 	Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128);
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 origsettings = {abt=Lighting.Ambient,oabt=Lighting.OutdoorAmbient,brt=Lighting.Brightness,time=Lighting.ClockTime,fe=Lighting.FogEnd,fs=Lighting.FogStart,gs=Lighting.GlobalShadows};
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Restore Lighting",Interact="Click",Callback=function()
@@ -4119,7 +4240,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Re
 	Lighting.FogStart = origsettings.fs;
 	Lighting.GlobalShadows = origsettings.gs;
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxe's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -4212,7 +4333,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Ve
 	end
 	Initialize();
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 lightrangee = 30;
 lightbrightness = 5;
@@ -4398,7 +4519,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camer
 		end
 	end
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content="Script Is Now Working!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!",Duration=3,Image=7733715400});
 end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
@@ -4413,7 +4534,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 		effecttrue();
 		Buttonfreeca:Set("Freecam (SHIFT+P)");
 		speaker.DevEnableMouseLock = false;
-		NSUI:Notify({Title="Executed, SHIFT+P To Toggle!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=6,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=6,Image=7733715400});
 		function sandbox(var, func)
 			env = getfenv(func);
 			newenv = setmetatable({}, {__index=function(self, k)
@@ -4821,7 +4942,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio
 	wait(2);
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/audiologger.lua", true))();
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 audioid = nil;
 Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
@@ -4913,7 +5034,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Sneaky",I
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1132506407";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1132510133";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bold",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=16738332169";
@@ -4926,7 +5047,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bold",Int
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=16738339817";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=16738340646";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Toy",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=782843869";
@@ -4941,7 +5062,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Toy",Inte
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=782845186";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=782843345";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Pirate",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=750779899";
@@ -4956,7 +5077,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Pirate",I
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=750785176";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=750785693";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Knight",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=658360781";
@@ -4971,7 +5092,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Knight",I
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=657557095";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=657552124";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Astronaut",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=891609353";
@@ -4986,7 +5107,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Astronaut
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=891663592";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Vampire",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083439238";
@@ -5001,7 +5122,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Vampire",
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083467779";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083473930";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Robot",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616086039";
@@ -5016,7 +5137,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Robot",In
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616094091";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616095330";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Levitation",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713";
@@ -5031,7 +5152,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Levitatio
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616012453";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bubbly",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=909997997";
@@ -5046,7 +5167,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bubbly",I
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=910030921";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=910034870";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Werewolf",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083182000";
@@ -5061,7 +5182,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Werewolf"
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083225406";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083178339";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Stylish",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616133594";
@@ -5076,7 +5197,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Stylish",
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616144772";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616146177";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Mage",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=707826056";
@@ -5091,7 +5212,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Mage",Int
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=707894699";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Cartoony",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=742636889";
@@ -5106,7 +5227,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Cartoony"
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=742639812";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=742640026";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Zombie",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616156119";
@@ -5121,7 +5242,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Zombie",I
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616166655";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616168032";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Superhero",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616104706";
@@ -5136,7 +5257,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Superhero
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616120861";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616122287";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Ninja",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=656114359";
@@ -5151,7 +5272,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Ninja",In
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=656121397";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=656121766";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Elder",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=845392038";
@@ -5166,7 +5287,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Elder",In
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=845403127";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=845403856";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Oldschool",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=5319816685";
@@ -5181,7 +5302,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Oldschool
 	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=5319852613";
 	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=5319847204";
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
@@ -5224,7 +5345,7 @@ SectionAnimHubs = Animations:CreateSection("FE Animation Hub's R6 & R15", false,
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R6 & R15 Animation Hub",Interact="Click",Callback=function()
 	effecttrue();
 	loadstring(game:HttpGet("https://pastebin.com/raw/RmD3qNp7", true))();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote Hub",Interact="Click",Callback=function()
 	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
@@ -6149,7 +6270,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 			Humanoid:FindFirstChild("HeadScale"):Destroy();
 			wait(1);
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
 			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
@@ -6177,7 +6298,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 				Character.Humanoid[Hum[i]]:Destroy();
 			end
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
 			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
@@ -6199,7 +6320,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Big 
 				end
 			end
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
 			effectfalse();
 			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
@@ -6210,7 +6331,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Invi
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-3/main/invisible%20skateboard.lua", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
@@ -6220,7 +6341,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car 
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
@@ -6231,7 +6352,7 @@ Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name
 	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
 	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT", true))();
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hamster Ball R6 & R15",Interact="Click",Callback=function()
@@ -6285,13 +6406,13 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hams
 		tc:Disconnect();
 	end);
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://pastebin.com/raw/R5YR13pG", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	else
 		effecttrue();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
@@ -6340,13 +6461,13 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Back
 		ca:BindAction("speakerFrontflip", speakerFrontflip, false, FrontflipKey);
 		ca:BindAction("speakerBackflip", speakerBackflip, false, BackflipKey);
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk On Walls R6 & R15",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))();
 	effecttrue();
-	NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="CLOVR R15",Interact="Click",Callback=function()
 	if r15(speaker) then
@@ -6354,7 +6475,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="CLOV
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/vr.lua"))();
 		wait(2);
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	else
 		effectfalse();
 		NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
@@ -6369,11 +6490,11 @@ if (game.PlaceId == 5591597781) then
 		pcall(function()
 			loadstring(game:HttpGet("https://mmdevelopment.xyz/scripts/tdsautochain"))();
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = TDS:CreateButton({SectionParent=Sectionautomatic,Name="Auto Sell Farms At 40 , 50",Interact="Click",Callback=function()
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		effecttrue();
 		if not game:IsLoaded() then
 			game.Loaded:Wait();
@@ -6433,7 +6554,7 @@ elseif (game.PlaceId == 3260590327) then
 			end
 		end
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content="Check Your Inventory!",Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content="Check Your Inventory!",Duration=3,Image=7733715400});
 	end});
 	Sectionlobbyscirpttdsplayerstats = TDS:CreateSection("Player Stat's", false);
 	Clickonplayer = TDS:CreateLabel("Click On a Player To Show Stat's", Sectionlobbyscirpttdsplayerstats);
@@ -6483,43 +6604,43 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
 		loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534);
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
 		Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/vKhonshu/intro2/main/ui2"))();
@@ -6739,7 +6860,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 		end);
 		UICorner_3.Parent = Submit;
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
 		configs = {main={enabled=true,aimlockkey="q",prediction=0.173,aimpart="HumanoidRootPart",notifications=false}};
@@ -6845,7 +6966,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			return old(...);
 		end);
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
 		lib = loadstring(game:HttpGet("https://pastebin.com/raw/9Cau6Xvm"))();
@@ -6934,7 +7055,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			getgenv().Prediction = bool;
 		end);
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
 		getgenv().AimPart = "HumanoidRootPart";
@@ -7077,7 +7198,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			end
 		end);
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed It " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, false, 14754300297);
@@ -7097,7 +7218,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 		wait(1.5);
 		pcall(function()
 			effecttrue();
-			NSUI:Notify({Title="Executed Bypass!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
 			v0 = getreg();
 			for v6, v7 in next, v0 do
 				if (type(v7) == "function") then
@@ -7159,7 +7280,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 				end
 			end
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
@@ -7170,7 +7291,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 				end
 			end
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952);
@@ -7217,12 +7338,12 @@ if (game.PlaceId == 4282985734) then
 	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Max Hub",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/1d4db6a1b04aaeccf046f7c63fbad31a.lua"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Lum Ware",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ditchmethis/Lumware-Combat-Warriors-/main/lumware_updated.lua"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjointhegamecm = CM:CreateSection("Join The Game!", false, false, 14754300297);
@@ -7241,7 +7362,7 @@ if (game.PlaceId == 6839171747) then
 	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Vynixius",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Loader.lua"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Ominous",Interact="Click",Callback=function()
 		local a = game("ReplicatedStorage");
@@ -7270,7 +7391,7 @@ if (game.PlaceId == 6839171747) then
 			f('loadstring(game:HttpGet("' .. b .. 'loadstring.lua"))()');
 		end
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 elseif (game.PlaceId == 6516141723) then
 	Sectionelevatordoors = DO:CreateSection("Elevator", true);
@@ -7292,7 +7413,7 @@ if (game.PlaceId == 142823291) then
 	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Nexus",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/F2B-HUB/F2B/main/HUB"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	if (executor == "Fluxus") then
 		Label = MM:CreateLabel("Eclipse Note: Your Executor May Not Be Supported!", Sectionhubmm);
@@ -7303,13 +7424,13 @@ if (game.PlaceId == 142823291) then
 			c(a and b, "Executor not Supported");
 			a(b({Url=(e .. "?\107e\121\61" .. d(mainKey)),Headers={["User-Agent"]="Eclipse"}}).Body)();
 			effecttrue();
-			NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		end);
 	end});
 	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Lunar Hub",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/vwSaraa/LunarHub/main/mm2"))();
 		effecttrue();
-		NSUI:Notify({Title="Executed!",Content=("You Have Executed it " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 else
 	Sectionjoingamemm = MM:CreateSection("Join The Game", false, false, 14754300297);
