@@ -2289,7 +2289,8 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 					if (v.Name == "HumanoidRootPart") then
 						v.Transparency = 1;
 					else
-						v.Transparency = 0.5;
+						v.Material = Enum.Material.ForceField
+						v.Color = Color3.fromRGB(25,25,25)
 					end
 				end
 			end
@@ -2438,7 +2439,8 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 						if (v.Name == "HumanoidRootPart") then
 							v.Transparency = 1;
 						else
-							v.Transparency = 0.5;
+							v.Material = Enum.Material.ForceField
+							v.Color = Color3.fromRGB(25,25,25)
 						end
 					end
 				end
