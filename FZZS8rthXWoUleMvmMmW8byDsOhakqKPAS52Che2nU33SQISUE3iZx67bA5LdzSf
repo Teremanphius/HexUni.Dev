@@ -185,7 +185,7 @@ CheckTime();
 speakers.PlayerAdded:Connect(function(Player)
 	if Player:IsFriendsWith(speaker.UserId) then
 		pcall(function()
-			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
+			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
 			soundfriendjoin = Instance.new("Sound");
 			soundfriendjoin.SoundId = "rbxassetid://1862043663";
 			soundfriendjoin.Looped = false;
@@ -569,7 +569,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To | Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	foundPlr = getPlr(plrName);
 	Character:PivotTo(foundPlr.Character:GetPivot());
