@@ -318,9 +318,9 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 109", true);
-Paragraph = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
-SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, true, 10709759610);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 109", false);
+Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
+SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
 		effecttrue();
@@ -518,7 +518,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 		_G.connections['nofall'] = nil;
 	end
 end});
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window AFK",CurrentValue=false,Callback=function(Value)
+Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=true,Callback=function(Value)
 	pcall(function()
 		antiwindowafk = Value;
 		if antiwindowafk then
@@ -554,7 +554,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		antiafkidle = Value;
 		if antiafkidle then
 			vu = game:GetService("VirtualUser");
-			antiafk = game:GetService("Players").speaker.Idled:connect(function()
+			antiafk = game:GetService("Players").LocalPlayer.Idled:connect(function()
 				vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
 				wait(1);
 				vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
@@ -569,7 +569,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To | Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	foundPlr = getPlr(plrName);
 	Character:PivotTo(foundPlr.Character:GetPivot());
@@ -644,7 +644,7 @@ Buttonpresstotp = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Press 
 	end);
 	effecttrue();
 end});
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Change Press To Tel.. Keybind",PlaceholderText="Keybind",RemoveTextAfterFocusLost=false,CharacterLimit=1,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Change Press To TP Keybind",PlaceholderText="Keybind",RemoveTextAfterFocusLost=false,CharacterLimit=1,Callback=function(Text)
 	presstotpkeybind = Text;
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Lowest Player's Server",Interact="Click",Callback=function()
@@ -1630,7 +1630,7 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Re
 	effecttrue();
 	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
-Label = Misc:CreateLabel("⬇ This Character Reset Goes To Your Position When You Died ⬇", Sectionreset);
+Paragraph = Misc:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset);
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
 	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
 	speaker.Character.Parent = workspace.Terrain;
@@ -2722,7 +2722,7 @@ Toggleinfjump1 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Hold Jump"
 	InfiniteJumpEnabled = Value;
 	game:GetService("UserInputService").JumpRequest:connect(function()
 		if InfiniteJumpEnabled then
-			game:GetService("Players").speaker.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
+			game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
 		end
 	end);
 end});
@@ -3688,6 +3688,7 @@ Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Ju
 		end
 	end);
 end});
+Paragraph = Misc:CreateParagraph({Title="Float Info",Content="Control's :\nQ - Down\nE - Up"}, Sectionlprtog);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		floattt = Value;
@@ -3704,7 +3705,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 					Float.Anchored = true;
 					FloatValue = -3.1;
 					Float.CFrame = getRoot(pchar).CFrame * CFrame.new(0, FloatValue, 0);
-					NSUI:Notify({Title="Enabled",Content="Q Down E up",Duration=0.2,Image=7733715400});
+					NSUI:Notify({Title="Float Has Been Enabled",Content="Now You Are Floating, Just Jump!",Duration=1.5,Image=7733715400});
 					qUp = JMouse.KeyUp:Connect(function(KEY)
 						if (KEY == "q") then
 							FloatValue = FloatValue + 0.5;
@@ -3754,7 +3755,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 		if not floattt then
 			Floating = false;
 			pchar = speaker.Character;
-			NSUI:Notify({Title="Disabled",Content="Disabled",Duration=0.2,Image=7733715400});
+			NSUI:Notify({Title="Float Has Been Disabled",Content="Now You Have Disabled Float!",Duration=1.5,Image=7733715400});
 			if pchar:FindFirstChild(floatName) then
 				pchar:FindFirstChild(floatName):Destroy();
 			end
@@ -3947,7 +3948,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop J
 				if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 					speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50;
 				else
-					speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 50;
+					speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 7;
 				end
 			end
 		end
@@ -3990,7 +3991,15 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",N
 		speaker.Character.Humanoid.HipHeight = Text;
 	end);
 end});
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix="Jump Power",CurrentValue=math.floor(speaker.Character.Humanoid.JumpPower),Callback=function(Value)
+function getJumpValue()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return humanoid.JumpPower
+	else
+		return humanoid.JumpHeight
+	end
+end
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix="Jump Power",CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value;
@@ -3999,7 +4008,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 		end
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character.Humanoid.JumpPower),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Text;
@@ -4019,8 +4028,8 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 	end);
 end});
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
-SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: 104", true);
-Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."});
+SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: 105", false);
+Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610);
 PJLNF = 1.3;
 function Notifies()
@@ -4245,7 +4254,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Re
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
-Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxe's",CurrentValue=false,Callback=function(Value)
+Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxes",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		showhitboxes = Value;
 		if showhitboxes then
@@ -4253,6 +4262,17 @@ Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscri
 		end
 		if not showhitboxes then
 			settings():GetService("RenderSettings").ShowBoundingBoxes = false;
+		end
+	end);
+end});
+Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Animation Data",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		animdata = Value;
+		if animdata then
+			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = true
+		end
+		if not animdata then
+			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = false
 		end
 	end);
 end});
@@ -4989,7 +5009,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 66", true);
+Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 67", true);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
@@ -5490,7 +5510,7 @@ Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e 
 		cheranim:Destroy();
 	end);
 end});
-Sectionfeanims = Animations:CreateSection("FE Animation's", false, true, 10686489468);
+Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
 Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Bang R6 & R15",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		febangerion = Value;
@@ -6531,7 +6551,7 @@ if (game.PlaceId == 5591597781) then
 	Toggle = TDS:CreateToggle({SectionParent=Sectionautomatic,Name="Auto Wave Skip",CurrentValue=false,Callback=function(Value)
 		shared.Autoskipenabled = Value;
 	end});
-	local SkipProperty = game:GetService("Players").speaker.PlayerGui.RoactGame.Vote.content.votes.vote;
+	local SkipProperty = game:GetService("Players").LocalPlayer.PlayerGui.RoactGame.Vote.content.votes.vote;
 	SkipProperty:GetPropertyChangedSignal("IsNotOccluded"):Connect(function()
 		if (SkipProperty.IsNotOccluded and shared.Autoskipenabled) then
 			game:GetService("ReplicatedStorage").RemoteFunction:InvokeServer("Waves", "Skip");
@@ -6550,7 +6570,7 @@ elseif (game.PlaceId == 3260590327) then
 	Label = TDS:CreateLabel("Go Into a Elevator / Game To See The Ingame Script's!", Sectiongojoibgametds);
 	Sectionlobbyscirpttds = TDS:CreateSection("Lobby Script's", false);
 	Button = TDS:CreateButton({SectionParent=Sectionlobbyscirpttds,Name="Show Everything That You Don't Own",Interact="Click",Callback=function()
-		Towers = game:GetService("Players").speaker.PlayerGui.Interface.Root.Inventory.View.Frame.Frame.Frame;
+		Towers = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Root.Inventory.View.Frame.Frame.Frame;
 		for _, v in pairs(Towers:GetDescendants()) do
 			if v:IsA("ImageButton") then
 				v.Visible = true;
