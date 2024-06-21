@@ -732,7 +732,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Bang's, Headsit & Other", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Make The Box Empty And Press Enter"}, Sectionplayrerelatedtp);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter"}, Sectionplayrerelatedtp);
 local Annoy = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -743,7 +743,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 				if ((Annoy == true) or (annoyfoundPlr == speaker)) then
 					Annoy = false;
 					effectfalse();
-					notifyyw("No Longer Annoying ", "Not Annoying", 2, 10747384394);
+					notifyyw("No Longer Annoying The Player " , "Not Annoying " .. annoyfoundPlr.Name .." Anymore", 2, 10747384394);
 					return;
 				else
 					Annoy = true;
@@ -754,6 +754,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 						wait();
 					end
 				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -786,7 +789,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 			if (folloawafoundplr.Character and folloawafoundplr.Character:FindFirstChild("Humanoid")) then
 				if ((Follow == true) or (folloawafoundplr == speaker)) then
 					Follow = false;
-					notifyyw("No Longer Stalking", "Not Stalking", 2, 10747384394);
+					notifyyw("No Longer Stalking The Player", "Not Stalking " .. folloawafoundplr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
@@ -819,7 +822,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 					if ((Carpettion == true) or (carpetfoundPlr == speaker)) then
 						Carpettion = false;
 						effectfalse();
-						notifyyw("No Longer Carpeting ", "Not Carpeting", 2, 10747384394);
+						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. carpetfoundPlr.Name .. " Anymore", 2, 10747384394);
 						carpete:Stop();
 						carpetAnim:Destroy();
 						return;
@@ -861,7 +864,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",Place
 					bangfrfrfrf = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Banging", "Not Banging", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. bangv1foundplr.Name .. " Anymore", 2, 10747384394);
 					return;
 				else
 					bangfrfrfrf = true;
@@ -909,7 +912,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 					v2banger:Stop();
 					v2bangerAnim:Destroy();
 					Bang = false;
-					notifyyw("Banging Disabled", "Not Banging", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. bangingfoundplrv2v2.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
@@ -922,7 +925,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 					end
 					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
 					v2banger:Play(0.1, 1, 1);
-					notifyyw("Banging Enabled", "Banging", 2, 10709790644);
+					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name , 2, 10709790644);
 					effecttrue();
 					while Bang do
 						speaker.Character.HumanoidRootPart.CFrame = bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame + (bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
@@ -960,7 +963,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 			if not r15(speaker) then
 				if ((Bang69 == true) or (r69foundplr == speaker)) then
 					Bang69 = false;
-					notifyyw("No Longer Banging", "Not Banging", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					bang69:Stop();
 					bangAnim:Destroy();
@@ -1010,7 +1013,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 				end
 			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
 				Bang69 = false;
-				notifyyw("No Longer Banging", "Not Banging", 2, 10747384394);
+				notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				bang69:Stop();
 				bangAnim:Destroy();
@@ -1108,7 +1111,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 					if ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
 						ffc1hump = false;
 						speaker.Character.Humanoid.PlatformStand = false;
-						notifyyw("No Longer 69 Humping ", "Not 69 Humping", 2, 10747384394);
+						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
 						speaker.Character.Parent = workspace.Terrain;
@@ -1152,7 +1155,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 			elseif ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
 				ffc1hump = false;
 				speaker.Character.Humanoid.PlatformStand = false;
-				notifyyw("No Longer 69 Humping ", "Not 69 Humping", 2, 10747384394);
+				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
 				speaker.Character.Parent = workspace.Terrain;
@@ -1233,7 +1236,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Faceba
 				if ((ffc1 == true) or (facebangv1foundPlr == speaker)) then
 					ffc1 = false;
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Facebanging ", "Not Facebanging", 2, 10747384394);
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv1foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
@@ -1279,12 +1282,12 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Faceban
 				if ((ff == true) or (facebangfoundPlr == speaker)) then
 					ff = false;
 					Character.Humanoid.Sit = false;
-					notifyyw("No Longer Facebanging ", "Not Facebanging", 2, 10747384394);
+					notifyyw("No Longer Facebanging ", "Not Facebanging " .. facebangfoundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
 					ff = true;
-					notifyyw("Facebanging Enabled", "Facebanging " .. facebangfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. facebangfoundPlr.Name, 2, 10709790644);
 					effecttrue();
 					while ff do
 						Character.Humanoid.Sit = true;
@@ -1313,7 +1316,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 				if (huggingfoundPlr.Character and huggingfoundPlr.Character:FindFirstChild("Humanoid")) then
 					if ((ffhugger == true) or (huggingfoundPlr == speaker)) then
 						ffhugger = false;
-						notifyyw("No Longer Hugging ", "Not Hugging", 2, 10747384394);
+						notifyyw("No Longer Hugging The Player", "Not Hugging " .. huggingfoundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						zomearm:Stop();
 						zombiearmsAnim:Destroy();
@@ -1325,7 +1328,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
 						zomearm:Play();
 						zomearm:AdjustSpeed(0);
-						notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+						notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
 						effecttrue();
 						while ffhugger do
 							speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
@@ -1339,7 +1342,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 				end
 			elseif ((ffhugger == true) or (huggingfoundPlr == speaker)) then
 				ffhugger = false;
-				notifyyw("No Longer Hugging ", "Not Hugging", 2, 10747384394);
+				notifyyw("No Longer Hugging The Player", "Not Hugging " .. huggingfoundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				zomearm:Stop();
 				zombiearmsAnim:Destroy();
@@ -1353,7 +1356,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 				zomearm:Play();
 				zomearm:AdjustSpeed(0);
 				speaker.Character.Animate.Disabled = true;
-				notifyyw("Hugging Enabled", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+				notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
 				effecttrue();
 				while ffhugger do
 					speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
@@ -1377,7 +1380,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 				ff2 = false;
 				facebanger:Stop();
 				facebangerAnim:Destroy();
-				notifyyw("No Longer Facebanging ", "Not Facebanging", 2, 10747384394);
+				notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv3foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				return;
 			else
@@ -1390,7 +1393,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 				end
 				facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
 				facebanger:Play(0.1, 1, 1);
-				notifyyw("Facebanging Enabled", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
+				notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
 				effecttrue();
 				while ff2 do
 					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 1.6, 0.4);
@@ -1426,7 +1429,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 			if (piggybackfoundPlr.Character and piggybackfoundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((actualpb == true) or (piggybackfoundPlr == speaker)) then
 					actualpb = false;
-					notifyyw("No Longer PiggyBacking ", "Not PiggyBacking", 2, 10747384394);
+					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. piggybackfoundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
@@ -1460,7 +1463,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((pb == true) or (headsitfoundPlr == speaker)) then
 					pb = false;
-					notifyyw("No Longer HeadSitting ", "Not HeadSitting", 2, 10747384394);
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. headsitfoundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
@@ -1494,7 +1497,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Plac
 			if ((orbitingfuck == true) or (orbitfoundPlr == speaker)) then
 				effectfalse();
 				orbitingfuck = false;
-				notifyyw("No Longer Orbiting ", "Not Orbiting", 2, 10747384394);
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. orbitfoundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
@@ -1553,7 +1556,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit
 			if ((closeorbitingfuck == true) or (closeorbitfoundPlr == speaker)) then
 				effectfalse();
 				closeorbitingfuck = false;
-				notifyyw("No Longer Orbiting ", "Not Orbiting", 2, 10747384394);
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. closeorbitfoundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
@@ -1599,7 +1602,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 			if ((lookingAt == true) or (LookAtfoundPlr == speaker)) then
 				lookingAt = false;
 				effectfalse();
-				notifyyw("No Longer Looking At", "Not Looking At", 2, 10747384394);
+				notifyyw("No Longer Looking At The Player", "Not Looking At " .. LookAtfoundPlr.Name .. "Anymore", 2, 10747384394);
 				return;
 			else
 				lookingAt = true;
