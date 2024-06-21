@@ -65,6 +65,13 @@ function isNumber(str)
 		return true;
 	end
 end
+function charresettopos()
+	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+	speaker.Character.Parent = workspace.Terrain;
+	speaker.Character:BreakJoints();
+	game:GetService("Workspace"):WaitForChild(speaker.Name);
+	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+end
 function toClipboard(String)
 	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set);
 	if clipBoard then
@@ -318,7 +325,7 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 109", false);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 167", false);
 Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
@@ -968,11 +975,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 					bang69:Stop();
 					bangAnim:Destroy();
 					Bang69 = false;
-					prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-					speaker.Character.Parent = workspace.Terrain;
-					speaker.Character:BreakJoints();
-					game:GetService("Workspace"):WaitForChild(speaker.Name);
-					speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+					charresettopos()
 					return;
 				else
 					Bang69 = true;
@@ -1018,11 +1021,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 				bang69:Stop();
 				bangAnim:Destroy();
 				Bang69 = false;
-				prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-				speaker.Character.Parent = workspace.Terrain;
-				speaker.Character:BreakJoints();
-				game:GetService("Workspace"):WaitForChild(speaker.Name);
-				speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+				charresettopos()
 				return;
 			else
 				Bang69 = true;
@@ -1113,11 +1112,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 						speaker.Character.Humanoid.PlatformStand = false;
 						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
-						prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-						speaker.Character.Parent = workspace.Terrain;
-						speaker.Character:BreakJoints();
-						game:GetService("Workspace"):WaitForChild(speaker.Name);
-						speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+						charresettopos()
 						return;
 					else
 						ffc1hump = true;
@@ -1157,11 +1152,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 				speaker.Character.Humanoid.PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
-				prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-				speaker.Character.Parent = workspace.Terrain;
-				speaker.Character:BreakJoints();
-				game:GetService("Workspace"):WaitForChild(speaker.Name);
-				speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+				charresettopos()
 				return;
 			else
 				ffc1hump = true;
@@ -1488,6 +1479,50 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 		end
 	end);
 end});
+local animsync
+issyncinganim = false
+Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+		plrName = Text;
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if issyncinganim == true or foundPlr == speaker then
+					issyncinganim = false
+					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					animsync:Disconnect()
+					charresettopos()
+					return;
+				else
+					issyncinganim = true
+					effecttrue();
+					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
+					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+						local animID = track.Animation.AnimationId
+						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+							animationTrack:Stop()
+						end
+						Character.Animate.Disabled = true
+						local Anim = Instance.new("Animation")
+						Anim.AnimationId = animID
+						local syncinganim = Character.Humanoid:LoadAnimation(Anim)
+						syncinganim:Play()
+						syncinganim:AdjustWeight(10)
+						syncinganim.Stopped:Connect(function()
+							Character.Animate.Disabled = false
+						end)
+					end)
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+end});
 local orbitingfuck = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -1632,11 +1667,7 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Re
 end});
 Paragraph = Misc:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset);
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
-	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-	speaker.Character.Parent = workspace.Terrain;
-	speaker.Character:BreakJoints();
-	game:GetService("Workspace"):WaitForChild(speaker.Name);
-	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+	charresettopos()
 	effecttrue();
 	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
@@ -3602,8 +3633,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 	pcall(function()
 		sitwalkerr = Value;
 		if sitwalkerr then
-			anims = Character.Animate;
-			idholder = {anims.idle:FindFirstChildOfClass("Animation").AnimationId,anims.walk:FindFirstChildOfClass("Animation").AnimationId,anims.run:FindFirstChildOfClass("Animation").AnimationId,anims.jump:FindFirstChildOfClass("Animation").AnimationId};
+			anims = speaker.Character.Animate;
 			local sit = anims.sit:FindFirstChildOfClass("Animation").AnimationId;
 			anims.idle:FindFirstChildOfClass("Animation").AnimationId = sit;
 			anims.walk:FindFirstChildOfClass("Animation").AnimationId = sit;
@@ -3611,15 +3641,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 			anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit;
 		end
 		if not sitwalkerr then
-			anims.idle:FindFirstChildOfClass("Animation").AnimationId = idholder[1];
-			anims.walk:FindFirstChildOfClass("Animation").AnimationId = idholder[2];
-			anims.run:FindFirstChildOfClass("Animation").AnimationId = idholder[3];
-			anims.jump:FindFirstChildOfClass("Animation").AnimationId = idholder[4];
-			prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-			speaker.Character.Parent = workspace.Terrain;
-			speaker.Character:BreakJoints();
-			game:GetService("Workspace"):WaitForChild(speaker.Name);
-			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+			charresettopos()
 		end
 	end);
 end});
@@ -4028,7 +4050,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 	end);
 end});
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
-SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: 105", false);
+SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: 167", false);
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610);
 PJLNF = 1.3;
@@ -4151,10 +4173,13 @@ Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself W/ A MSG Info",Cont
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom MSG",PlaceholderText="Enter Message",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game:GetService("Players").LocalPlayer:Kick(Text);
 end});
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom Ban MSG",PlaceholderText="Enter Reason",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	game:GetService("Players").LocalPlayer:Kick("You have been banned for: " .. Text);
+end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
 	speaker.DevEnableMouseLock = true;
 	effecttrue();
-	NSUI:Notify({Title="ShiftLock",Content="ShiftLock Is Available!",Duration=3,Image=7733715400});
+	NSUI:Notify({Title="ShiftLock is Available!",Content="ShiftLock Is Now Available And Enabled!",Duration=3,Image=7733715400});
 end});
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228);
 Paragraph = Miscclient:CreateParagraph({Title="Chat Script's Info",Content="Script's Here Are Only For Legacy Chat (The Chat You Can't Type Out Emoji's)."}, Sectiontchat);
@@ -5009,7 +5034,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 67", true);
+Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 66", true);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
