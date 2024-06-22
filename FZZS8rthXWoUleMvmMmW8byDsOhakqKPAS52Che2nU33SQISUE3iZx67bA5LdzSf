@@ -48,6 +48,8 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
+Scriptcount = "170"
+ScriptcountAnim = "66"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -325,7 +327,7 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: 167", false);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false);
 Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
@@ -2780,6 +2782,37 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 		infJumpDebounce = false;
 	end);
 end});
+fakelagging = false
+	Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",CurrentValue=false,Callback=function(Value)
+		pcall(function()
+			Fakelag = Value;
+			if Fakelag then
+				fakelagging = true
+				while fakelagging do
+					for i, v in pairs(speaker.Character:GetChildren()) do
+						if v:IsA("BasePart") then
+							v.Anchored = true;
+						end
+					end
+					wait(0.1)
+					for i, v in pairs(speaker.Character:GetChildren()) do
+						if v:IsA("BasePart") then
+							v.Anchored = false;
+						end
+					end
+					wait(0.1)
+					end
+			end
+			if not Fakelag then
+				fakelagging = false;
+				for i, v in pairs(speaker.Character:GetChildren()) do
+					if v:IsA("BasePart") then
+						v.Anchored = false;
+					end
+				end
+			end
+		end);
+	end});
 local seizureFlipping = false;
 Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
 	seizure = Value;
@@ -4050,7 +4083,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 	end);
 end});
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
-SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: 167", false);
+SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false);
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610);
 PJLNF = 1.3;
@@ -4526,12 +4559,12 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day L
 	todvalue = Text;
 end});
 Sectioncamera = Miscclient:CreateSection("LocalPlayer Related | Camera (Client)", false, false, 10709789686);
+camzoomdistanceholder = {speaker.CameraMaxZoomDistance,speaker.CameraMinZoomDistance}
 Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Camera Values",Interact="Click",Callback=function()
 	pcall(function()
-		Sliderwalkloop:Set(16);
 		Sliderfov:Set(70);
-		Sliderminimalzoomnoloop:Set(0);
-		Slidermaxzoomnoloop:Set(128);
+		Sliderminimalzoomnoloop:Set(camzoomdistanceholder[2]);
+		Slidermaxzoomnoloop:Set(camzoomdistanceholder[1]);
 	end);
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",Interact="Click",Callback=function()
@@ -4956,11 +4989,12 @@ Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Minimal
 	speaker.CameraMinZoomDistance = Text;
 end});
 maxzoomvalue = 128;
-Sectioncameraloops = Miscclient:CreateSection("LocalPlayer Related | Camera | Max Zoom Loop (Client)", false, true, 10709789686);
+Sectioncameraloops = Miscclient:CreateSection("LocalPlayer Related | Camera | Zoom Loop's (Client)", false, true, 10709789686);
 Label = Miscclient:CreateLabel("Set A Value First Then Enable", Sectioncameraloops);
 Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncameraloops,Name="Reset Camera Loop Values",Interact="Click",Callback=function()
 	pcall(function()
-		Sliderloopmaxzoom:Set(128);
+		Sliderloopmaxzoom:Set(camzoomdistanceholder[1]);
+		Sliderloopminzoom:Set(camzoomdistanceholder[2])
 	end);
 end});
 Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Max Zoom",CurrentValue=false,Callback=function(Value)
@@ -4981,8 +5015,30 @@ Sliderloopmaxzoom = Miscclient:CreateSlider({SectionParent=Sectioncameraloops,Na
 		maxzoomvalue = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Max Zoom",PlaceholderText="",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Max Zoom",PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	maxzoomvalue = Text;
+end});
+minzoomvalue = 0
+Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Min Zoom",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		minzooms = Value;
+		if minzooms then
+			minzoomloop = RunService.Heartbeat:Connect(function()
+				speaker.CameraMinZoomDistance = minzoomvalue;
+			end);
+		end
+		if not minzooms then
+			minzoomloop:Disconnect();
+		end
+	end);
+end});
+Sliderloopminzoom = Miscclient:CreateSlider({SectionParent=Sectioncameraloops,Name="Change Min Zoom",Range={0,99999},Increment=1,Suffix="Zoom",CurrentValue=math.floor(speaker.CameraMinZoomDistance),Callback=function(Value)
+	pcall(function()
+		minzoomvalue = Value;
+	end);
+end});
+Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Min Zoom",PlaceholderText=math.floor(speaker.CameraMinZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	minzoomvalue = Text;
 end});
 Sectiontaudio = Miscclient:CreateSection("LocalPlayer Related | Audio (Client)", false, true, 10747375679);
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio Logger",Interact="Click",Callback=function()
@@ -5034,7 +5090,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Scripts: 66", true);
+Sectiontotalscrismisc = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, true);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
