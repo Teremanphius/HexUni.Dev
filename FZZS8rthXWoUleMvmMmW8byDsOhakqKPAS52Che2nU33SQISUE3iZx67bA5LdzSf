@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "170"
+Scriptcount = "172"
 ScriptcountAnim = "66"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -1964,7 +1964,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Upside Do
 	pcall(function()
 		if not r15(speaker) then
 			effecttrue();
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!\nR6 Only!",Duration=5,Image=7733715400});
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 			c = Character;
 			hrp0 = c:FindFirstChild("HumanoidRootPart");
 			hrp1 = hrp0:Clone();
@@ -2195,6 +2195,33 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 end});
 Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change God Mode Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	godmodekeybind = Text;
+end});
+zerogravtripkey = "";
+Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Zero Grav Trip W/ Sit",Interact="Click",Callback=function()
+	Buttongodmodevers:Set("Zero Grav Trip W/ Sit (Exed)");
+	effecttrue();
+	if (zerogravtripkey == "") then
+		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+	else
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+	end
+	JMouse.KeyDown:connect(function(key)
+		if (key:lower() == zerogravtripkey) then
+			if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
+				hum = speaker.Character:FindFirstChildOfClass("Humanoid");
+				root = getRoot(speaker.Character);
+				game.Workspace.Gravity = 0
+				root.Velocity = root.CFrame.LookVector * 17;
+				speaker.Character.Humanoid.Sit = true
+			end
+		else
+			speaker.Character.Humanoid.Sit = false
+		game.Workspace.Gravity = oldgrav
+		end
+	end);
+end});
+Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Zero Grav Trip W/ Sit Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	zerogravtripkey = Text;
 end});
 carParts = {};
 Sectionnoclip = Misc:CreateSection("FE LocalPlayer Related | NoClip", false, false, 14385986465);
@@ -2756,6 +2783,22 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yo
 				v.Anchored = false;
 			end
 		end
+	end
+end});
+Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Zero Grav Trip W/ Sit",CurrentValue=false,Callback=function(Value)
+	zerograv = Value;
+	if zerograv then
+		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
+			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
+			root = getRoot(speaker.Character);
+			game.Workspace.Gravity = 0
+			root.Velocity = root.CFrame.LookVector * 17;
+			speaker.Character.Humanoid.Sit = true
+		end
+	end
+	if not zerograv then
+		speaker.Character.Humanoid.Sit = false
+		game.Workspace.Gravity = oldgrav
 	end
 end});
 Toggleinfjump1 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Hold Jump",CurrentValue=false,Callback=function(Value)
@@ -3571,7 +3614,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 				debounce = true;
 				local Gyro = Instance.new("BodyGyro");
 				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				Gyro.maxTorque = Vector3.new(10e10, 10e10, 10e10) * 9e9;
 				Gyro.CFrame = speaker.Character.Torso.CFrame;
 				Gyro.Parent = speaker.Character.Torso;
 				local initialCFrame = speaker.Character.Torso.CFrame;
@@ -4024,14 +4067,32 @@ end});
 Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	jpower = Text;
 end});
+function getJumpValue()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return math.floor(humanoid.JumpPower)
+	else
+		return math.floor(humanoid.JumpHeight)
+	end
+end
+function getJumpValue2()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return "Jump Power"
+	else
+		return "Jump Height"
+	end
+end
 Sectionlpsliderinput = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input's", false, false, 10686489468);
-Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Character Values",Interact="Click",Callback=function()
-	pcall(function()
-		Sliderwalk:Set(16);
-		Sliderhip:Set(0);
+Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Char Values",Interact="Click",Callback=function()
+	Sliderwalk:Set(16);
+	Sliderhip:Set(0);
+	if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 		Sliderjpower:Set(50);
-		Slidergrav:Set(196);
-	end);
+	else
+		Sliderjpower:Set(7);
+	end
+	Slidergrav:Set(196);
 end});
 Sliderwalk = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
 	pcall(function()
@@ -4053,22 +4114,6 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",N
 		speaker.Character.Humanoid.HipHeight = Text;
 	end);
 end});
-function getJumpValue()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return math.floor(humanoid.JumpPower)
-	else
-		return math.floor(humanoid.JumpHeight)
-	end
-end
-function getJumpValue2()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return "Jump Power"
-	else
-		return "Jump Height"
-	end
-end
 Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
@@ -7866,7 +7911,7 @@ end});
 local CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", true);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, nil);
-Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nUI: Array Field Library (Modified)"}, nil);
+Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nAnd You!\nUI: Array Field Library (Modified)"}, nil);
 Sectionchangelog = CRD:CreateSection("Changelog", true);
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Made Some Improvement's."}, nil);
 Sectionother = CRD:CreateSection("Point", true);
@@ -7957,12 +8002,10 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16;
 		Sliderhip:Set(0);
 		speaker.Character.Humanoid.HipHeight = 0;
-		Sliderjpower:Set(50);
-		wait(0.3);
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
-			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50;
+			Sliderjpower:Set(50);
 		else
-			speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 7.2;
+			Sliderjpower:Set(7);
 		end
 		Slidergrav:Set(196);
 		game.Workspace.Gravity = 196;
