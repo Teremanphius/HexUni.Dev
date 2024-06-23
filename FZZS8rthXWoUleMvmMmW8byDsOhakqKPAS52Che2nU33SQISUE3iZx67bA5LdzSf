@@ -221,8 +221,8 @@ function sFLY(vfly)
 		flyKeyUp:Disconnect();
 	end
 	local T = getRoot(speaker.Character);
-	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
-	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
+	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
+	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
 	local SPEED = 0;
 	local function FLY()
 		flying = true;
@@ -254,10 +254,11 @@ function sFLY(vfly)
 				else
 					BV.velocity = Vector3.new(0, 0, 0);
 				end
-				TweenService:Create(BG, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {cframe=workspace.CurrentCamera.CoordinateFrame}):Play();
+				local tiltCFrame = CFrame.Angles(math.rad(CONTROL.TiltX), 0, math.rad(CONTROL.TiltY))
+				TweenService:Create(BG, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {cframe=workspace.CurrentCamera.CoordinateFrame * tiltCFrame}):Play();
 			until not flying 
-			CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
-			lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0};
+			CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
+			lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
 			SPEED = 0;
 			BG:Destroy();
 			BV:Destroy();
@@ -269,12 +270,16 @@ function sFLY(vfly)
 	flyKeyDown = JMouse.KeyDown:Connect(function(KEY)
 		if (KEY:lower() == "w") then
 			CONTROL.F = (vfly and vehicleflyspeed) or flyysspeed;
+			CONTROL.TiltX = -45;
 		elseif (KEY:lower() == "s") then
 			CONTROL.B = -((vfly and vehicleflyspeed) or flyysspeed);
+			CONTROL.TiltX = 45;
 		elseif (KEY:lower() == "a") then
 			CONTROL.L = -((vfly and vehicleflyspeed) or flyysspeed);
+			CONTROL.TiltY = 45;
 		elseif (KEY:lower() == "d") then
 			CONTROL.R = (vfly and vehicleflyspeed) or flyysspeed;
+			CONTROL.TiltY = -45;
 		elseif (QEfly and (KEY:lower() == "e")) then
 			CONTROL.Q = ((vfly and vehicleflyspeed) or flyysspeed) * 2;
 		elseif (QEfly and (KEY:lower() == "q")) then
@@ -287,12 +292,16 @@ function sFLY(vfly)
 	flyKeyUp = JMouse.KeyUp:Connect(function(KEY)
 		if (KEY:lower() == "w") then
 			CONTROL.F = 0;
+			CONTROL.TiltX = 0;
 		elseif (KEY:lower() == "s") then
 			CONTROL.B = 0;
+			CONTROL.TiltX = 0;
 		elseif (KEY:lower() == "a") then
 			CONTROL.L = 0;
+			CONTROL.TiltY = 0;
 		elseif (KEY:lower() == "d") then
 			CONTROL.R = 0;
+			CONTROL.TiltY = 0;
 		elseif (KEY:lower() == "e") then
 			CONTROL.Q = 0;
 		elseif (KEY:lower() == "q") then
@@ -965,7 +974,6 @@ end});
 Paragraph = Misc:CreateParagraph({Title="69 Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
 local Bang69 = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
 		plrName = Text;
 		r69foundplr = getPlr(plrName);
 		if r69foundplr then
@@ -1087,7 +1095,6 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 			bangAnim:Destroy();
 			Bang69 = false;
 		end);
-	end);
 end});
 bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
@@ -1389,7 +1396,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 				notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
 				effecttrue();
 				while ff2 do
-					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 1.6, 0.4);
+					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 2, 0.4);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 					wait();
 				end
@@ -1974,7 +1981,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Upside Do
 			while h:Wait() and c and c.Parent do
 				hrp0.CFrame = hrp1.CFrame;
 				hrp0.Orientation += Vector3.new(0, 0, 180)
-				hrp0.Position -= Vector3.new(0, 1, 0)
+				hrp0.Position -= Vector3.new(0, 0, 0)
 				hrp0.Velocity = hrp1.Velocity;
 			end
 		else
@@ -4049,12 +4056,20 @@ end});
 function getJumpValue()
 	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	if humanoid.UseJumpPower then
-		return humanoid.JumpPower
+		return math.floor(humanoid.JumpPower)
 	else
-		return humanoid.JumpHeight
+		return math.floor(humanoid.JumpHeight)
 	end
 end
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix="Jump Power",CurrentValue=getJumpValue(),Callback=function(Value)
+function getJumpValue2()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return "Jump Power"
+	else
+		return "Jump Height"
+	end
+end
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value;
