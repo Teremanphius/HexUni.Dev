@@ -1371,7 +1371,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 	end);
 end});
 local ff2 = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local plrName = Text;
 	facebangv3foundPlr = getPlr(plrName);
 	if facebangv3foundPlr then
@@ -1396,7 +1396,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Animation F
 				notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
 				effecttrue();
 				while ff2 do
-					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.4, 2, 0.4);
+					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 					wait();
 				end
@@ -4083,6 +4083,14 @@ function getJumpValue2()
 		return "Jump Height"
 	end
 end
+function getJumpValue3()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return 600
+	else
+		return 400
+	end
+end
 Sectionlpsliderinput = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input's", false, false, 10686489468);
 Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Char Values",Interact="Click",Callback=function()
 	Sliderwalk:Set(16);
@@ -4114,7 +4122,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",N
 		speaker.Character.Humanoid.HipHeight = Text;
 	end);
 end});
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,350},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value;
@@ -5150,8 +5158,8 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation", 1114393432);
-Sectiontotalscrismisc = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, true);
-Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."});
+Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false);
+Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -5519,6 +5527,13 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote 
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))();
 end});
 Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's", false, true, 11932783331);
+Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Anim Values",Interact="Click",Callback=function()
+	pcall(function()
+		edance1Slider:Set(1);
+		edance2Slider:Set(1);
+		edance3Slider:Set(1);
+	end);
+end});
 dance1on = false;
 Toggleedance1 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="/e Dance1 R6 & R15",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -5652,6 +5667,17 @@ Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e 
 	end);
 end});
 Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
+Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
+	pcall(function()
+		bangerSlider:Set(1)
+		Slidermovindanc:Set(1)
+		Sliderrandance:Set(1)
+		Slidermonsterdanc:Set(1)
+		Sliderfulsiwing:Set(1)
+		Sliderpuncha:Set(1)
+		Sliderdinowalk:Set(1)
+	end);
+end});
 Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Bang R6 & R15",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		febangerion = Value;
@@ -5837,7 +5863,7 @@ Togglefullswing = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Fu
 		end
 	end);
 end});
-Slider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Full Swing Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Sliderfulsiwing = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Full Swing Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		fullswingr:AdjustSpeed(Value);
 	end);
@@ -5878,7 +5904,7 @@ Togglepunch = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Punch 
 		end
 	end);
 end});
-Slider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Punch Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Sliderpuncha = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Punch Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		punchr:AdjustSpeed(Value);
 	end);
@@ -8016,7 +8042,12 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		edance1Slider:Set(1);
 		edance2Slider:Set(1);
 		edance3Slider:Set(1);
-		Slidermovindanc:Set(1);
-		Sliderrandance:Set(1);
+		bangerSlider:Set(1)
+		Slidermovindanc:Set(1)
+		Sliderrandance:Set(1)
+		Slidermonsterdanc:Set(1)
+		Sliderfulsiwing:Set(1)
+		Sliderpuncha:Set(1)
+		Sliderdinowalk:Set(1)
 	end);
 end);
