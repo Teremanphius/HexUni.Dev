@@ -2197,8 +2197,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change God 
 	godmodekeybind = Text;
 end});
 zerogravtripkey = "";
-Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Zero Grav Trip W/ Sit",Interact="Click",Callback=function()
-	Buttongodmodevers:Set("Zero Grav Trip W/ Sit (Exed)");
+Buttonzerogravo = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Zero Grav Trip W/ Sit",Interact="Click",Callback=function()
+	Buttonzerogravo:Set("Zero Grav Trip W/ Sit (Exed)");
 	effecttrue();
 	if (zerogravtripkey == "") then
 		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
