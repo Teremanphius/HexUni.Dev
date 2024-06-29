@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "175"
+Scriptcount = "176"
 ScriptcountAnim = "66"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -1440,6 +1440,40 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 					while actualpb do
 						speaker.Character.Humanoid.Sit = true;
 						speaker.Character.HumanoidRootPart.CFrame = piggybackfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+	end);
+end});
+local besomebackpack = false;
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		plrName = Text;
+		BackpackFoundPlr = getPlr(plrName);
+		if BackpackFoundPlr then
+			if (BackpackFoundPlr.Character and BackpackFoundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((besomebackpack == true) or (BackpackFoundPlr == speaker)) then
+					besomebackpack = false;
+					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. BackpackFoundPlr.Name .. "", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					besomebackpack = true;
+					notifyyw("Now Backpacking", "Being " .. BackpackFoundPlr.Name .. " Backpack", 2, 10709790644);
+					effecttrue();
+					while besomebackpack do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = BackpackFoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
