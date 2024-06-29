@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "172"
+Scriptcount = "175"
 ScriptcountAnim = "66"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -963,12 +963,12 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 end});
 bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
-		bangv2:AdjustSpeed(Value);
+		v2banger:AdjustSpeed(Value);
 	end);
 end});
 Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		bangv2:AdjustSpeed(Text);
+		v2banger:AdjustSpeed(Text);
 	end);
 end});
 Paragraph = Misc:CreateParagraph({Title="69 Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
@@ -1497,11 +1497,11 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if issyncinganim == true or foundPlr == speaker then
+					charresettopos()
 					issyncinganim = false
 					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					animsync:Disconnect()
-					charresettopos()
 					return;
 				else
 					issyncinganim = true
@@ -1661,6 +1661,47 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
 			effectfalse();
 		end
+	end);
+end});
+local spinaround = false;
+local radiusfromplayer = 10
+local spinSpeed = 1
+local angle = 0
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		plrName = Text;
+		SpinaroundPlr = getPlr(plrName);
+		if SpinaroundPlr then
+			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
+				spinaround = false
+				return
+			else
+				spinaround = true
+				while spinaround do
+					game:GetService("RunService").Heartbeat:Wait()
+					angle = angle + spinSpeed * game:GetService("RunService").Heartbeat:Wait()
+					if angle > 2 * math.pi then
+						angle = angle - 2 * math.pi
+					end
+					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer)
+					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position)
+					Character.HumanoidRootPart.CFrame = newCFrame
+				end
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+	end);
+end});
+SpinaroundSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
+	pcall(function()
+		spinSpeed = Value;
+	end);
+end});
+SpinaroundInput = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		radiusfromplayer = Text;
 	end);
 end});
 Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true, 9134761478);
@@ -2862,6 +2903,75 @@ fakelagging = false
 				end
 			end
 		end);
+	end});
+	ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
+			Crawlingornot = Value;
+				if Crawlingornot then
+					if not r15(speaker) then
+						local climbAnim = Instance.new("Animation")
+						climbAnim.AnimationId = "rbxassetid://180436334"
+						local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim)
+						local function playIdleClimbingAnimation()
+							if not climbTrack.IsPlaying then
+								climbTrack:Play(0, 10, 0)
+							else
+								climbTrack:AdjustSpeed(0)
+							end
+						end
+						local function playWalkingClimbingAnimation()
+							if not climbTrack.IsPlaying then
+								climbTrack:Play(0, 10, 1)
+							else
+								climbTrack:AdjustSpeed(1)
+							end
+						end
+						speaker.Character.Humanoid.Running:Connect(function(speed)
+							if speed == 0 then
+								playIdleClimbingAnimation()
+							else
+								playWalkingClimbingAnimation()
+							end
+						end)
+						local c = speaker.Character;
+						local hrp0 = c:FindFirstChild("HumanoidRootPart")
+						if hrp0 then
+							local hrp1 = hrp0:Clone()
+							c.Parent = nil
+							hrp0.Parent = hrp1
+							hrp0.RootJoint.Part0 = nil
+							hrp1.Parent = c
+							c.Parent = workspace
+							c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
+							c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0)
+							local h = game:GetService("RunService").Heartbeat
+							hrp0.Transparency = 0.85
+							hrp0.Material = Enum.Material.ForceField
+							hrp0.Color = Color3.fromRGB(25, 25, 25)
+							while h:Wait() and c and c.Parent do
+								hrp0.CFrame = hrp1.CFrame
+								hrp0.Orientation += Vector3.new(-90, 0, 0)
+								hrp0.Position -= Vector3.new(0, 1.5, 0)
+								hrp0.Velocity = hrp1.Velocity
+							end
+						end
+					else
+						notifyyw("You're Not R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
+						effectfalse();
+					end
+				end
+		if not Crawlingornot then
+		if not r15(speaker) then
+				if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then 
+					speaker.Character.Humanoid.Health = 0
+				end
+				if climbTrack then
+					climbTrack:Stop()
+				end
+				if climbAnim then
+					climbAnim:Destroy()
+				end
+			end
+		end
 	end});
 local seizureFlipping = false;
 Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
@@ -5161,7 +5271,7 @@ Animations = Window:CreateTab("Animation", 1114393432);
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
-Togglefreezeanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
+Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		freezeanims = Value;
 		if freezeanims then
@@ -8038,7 +8148,7 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderbright:Set(origsettingsbrightness.sliderbright);
 		Togglelightclient:Set(false);
 		Sliderfov:Set(70);
-		Togglefreezeanims:Set(false);
+		Togglefreezecurrentanims:Set(false);
 		edance1Slider:Set(1);
 		edance2Slider:Set(1);
 		edance3Slider:Set(1);
@@ -8051,3 +8161,25 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderdinowalk:Set(1)
 	end);
 end);
+function CheckTimess()
+	local h = os.date("*t").hour;
+	if ((h < 12) and (h > 4)) then
+		return
+	elseif ((h >= 12) and (h < 20)) then
+		return
+	else
+		wait(5)
+		NSUI:Notify({Title=("And Also Since It's Night"),Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=0}):Play();
+		end},nottrue={Name="Nah",Callback=function()
+			return
+		end}}});
+			soundfriendjoin = Instance.new("Sound");
+			soundfriendjoin.SoundId = "rbxassetid://1862043663";
+			soundfriendjoin.Looped = false;
+			soundfriendjoin.Volume = 1;
+			soundfriendjoin.Parent = workspace;
+			soundfriendjoin:Play();
+	end
+end
+CheckTimess();
