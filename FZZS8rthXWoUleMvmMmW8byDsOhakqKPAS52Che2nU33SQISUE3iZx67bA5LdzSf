@@ -49,7 +49,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "176"
-ScriptcountAnim = "66"
+ScriptcountAnim = "67"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -2939,6 +2939,7 @@ fakelagging = false
 		end);
 	end});
 	ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
+		pcall(function()
 			Crawlingornot = Value;
 				if Crawlingornot then
 					if not r15(speaker) then
@@ -3006,6 +3007,7 @@ fakelagging = false
 				end
 			end
 		end
+	end)
 	end});
 local seizureFlipping = false;
 Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
@@ -5301,7 +5303,7 @@ end});
 Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",PlaceholderText=1,NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	Soundplayaudio.Volume = Text;
 end});
-Animations = Window:CreateTab("Animation", 1114393432);
+Animations = Window:CreateTab("Animation's", 1114393432);
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
@@ -5337,6 +5339,16 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 			end
 		end);
 	end
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
+local AnimationTracks = Humanoid:GetPlayingAnimationTracks()
+for i, track in pairs (AnimationTracks) do
+	    local animationobject = track.Animation
+	    local animationid = animationobject.AnimationId
+	    toClipboard(animationid)
+	end
+	NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
+	effecttrue();
 end});
 SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Packs R15", false, true, 11932783331);
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Sneaky",Interact="Click",Callback=function()
@@ -5670,7 +5682,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote 
 	NSUI:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400});
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))();
 end});
-Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's", false, true, 11932783331);
+Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's", false, false, 11932783331);
 Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
 		edance1Slider:Set(1);
@@ -6639,7 +6651,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 		end
 	end);
 end});
-Label = Animations:CreateLabel("⬇ Rthro Head ⬇", Sectionotherfeanimssc);
+Paragraph = Animations:CreateParagraph({Title="Big Head Info",Content="You'll Need A Rthro Head For This To Work."}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Big Head R15",Interact="Click",Callback=function()
 	pcall(function()
 		if r15(speaker) then
