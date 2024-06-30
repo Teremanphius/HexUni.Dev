@@ -49,7 +49,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "176"
-ScriptcountAnim = "67"
+ScriptcountAnim = "66"
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -6814,18 +6814,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))();
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="CLOVR R15",Interact="Click",Callback=function()
-	if r15(speaker) then
-		NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/vr.lua"))();
-		wait(2);
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	else
-		effectfalse();
-		NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
-	end
 end});
 local TDS = Window:CreateTab("Tower Defense\nSimulator", 14716927183);
 Sectiontdstotal = TDS:CreateSection("Total Scripts : 6", true);
