@@ -177,6 +177,14 @@ function effecttime()
 	soundnotification.Parent = workspace;
 	soundnotification:Play();
 end
+function effectfriendjoin()
+	soundfriendjoin = Instance.new("Sound");
+	soundfriendjoin.SoundId = "rbxassetid://1862043663";
+	soundfriendjoin.Looped = false;
+	soundfriendjoin.Volume = 1;
+	soundfriendjoin.Parent = workspace;
+	soundfriendjoin:Play();
+end
 function CheckTime()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
@@ -195,12 +203,7 @@ speakers.PlayerAdded:Connect(function(Player)
 	if Player:IsFriendsWith(speaker.UserId) then
 		pcall(function()
 			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
-			soundfriendjoin = Instance.new("Sound");
-			soundfriendjoin.SoundId = "rbxassetid://1862043663";
-			soundfriendjoin.Looped = false;
-			soundfriendjoin.Volume = 1;
-			soundfriendjoin.Parent = workspace;
-			soundfriendjoin:Play();
+			effectfriendjoin()
 		end);
 	end
 end);
@@ -8208,12 +8211,7 @@ function CheckTimess()
 		end},nottrue={Name="Nah",Callback=function()
 			return
 		end}}});
-			soundfriendjoin = Instance.new("Sound");
-			soundfriendjoin.SoundId = "rbxassetid://1862043663";
-			soundfriendjoin.Looped = false;
-			soundfriendjoin.Volume = 1;
-			soundfriendjoin.Parent = workspace;
-			soundfriendjoin:Play();
+		effectfriendjoin()
 	end
 end
 CheckTimess();
