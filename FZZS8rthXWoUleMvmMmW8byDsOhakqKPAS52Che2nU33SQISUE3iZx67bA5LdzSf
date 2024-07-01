@@ -199,14 +199,19 @@ function CheckTime()
 	end
 end
 CheckTime();
-speakers.PlayerAdded:Connect(function(Player)
+local playerAddedConnection
+local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(speaker.UserId) then
 		pcall(function()
 			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
 			effectfriendjoin()
-		end);
+		end)
 	end
-end);
+end
+if playerAddedConnection then
+	playerAddedConnection:Disconnect()
+end
+playerAddedConnection = speakers.PlayerAdded:Connect(onPlayerAdded)
 QEfly = false;
 flying = false;
 flyysspeed = 3;
@@ -1710,10 +1715,14 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around
 		SpinaroundPlr = getPlr(plrName);
 		if SpinaroundPlr then
 			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
+				effectfalse();
+				notifyyw("No Longer Spining Around The Player", "Not Spining Around " .. SpinaroundPlr.Name .. "Anymore", 2, 10747384394);
 				spinaround = false
 				return
 			else
 				spinaround = true
+				effecttrue();
+				notifyyw("Now Spining Around", "Spining Around " .. SpinaroundPlr.Name, 2, 10709790644);
 				while spinaround do
 					game:GetService("RunService").Heartbeat:Wait()
 					angle = angle + spinSpeed * game:GetService("RunService").Heartbeat:Wait()
@@ -1731,12 +1740,22 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around
 		end
 	end);
 end});
-SpinaroundSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
+SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
 	end);
 end});
-SpinaroundInput = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",PlaceholderText=spinSpeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		spinSpeed = Text;
+	end);
+end});
+SpinaroundSliderRadius = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",Range={1,999},Increment=1,Suffix="Radius",CurrentValue=radiusfromplayer,Callback=function(Value)
+	pcall(function()
+		radiusfromplayer = Value;
+	end);
+end});
+SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		radiusfromplayer = Text;
 	end);
@@ -1973,7 +1992,7 @@ Buttonnormalfly = Misc:CreateButton({SectionParent=Sectionflights,Name="Fly",Cal
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == flykeybind) then
+			if key:lower() == flykeybind then
 				if flying then
 					flying = false;
 				else
@@ -2963,7 +2982,8 @@ fakelagging = false
 								climbTrack:AdjustSpeed(1)
 							end
 						end
-						speaker.Character.Humanoid.Running:Connect(function(speed)
+						local humrunr6
+						humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
 							if speed == 0 then
 								playIdleClimbingAnimation()
 							else
@@ -2993,22 +3013,83 @@ fakelagging = false
 							end
 						end
 					else
-						notifyyw("You're Not R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
-						effectfalse();
+						local player = speaker
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local climbAnim = Instance.new("Animation")
+climbAnim.AnimationId = "rbxassetid://507765644"
+local climbTrack = humanoid:LoadAnimation(climbAnim)
+
+local function playIdleClimbingAnimation()
+	if not climbTrack.IsPlaying then
+		climbTrack:Play(0, 10, 0)
+	else
+		climbTrack:AdjustSpeed(0)
+	end
+end
+
+local function playWalkingClimbingAnimation()
+	if not climbTrack.IsPlaying then
+		climbTrack:Play(0, 10, 1)
+	else
+		climbTrack:AdjustSpeed(1)
+	end
+end
+
+local humrunr15
+humrunr15 = humanoid.Running:Connect(function(speed)
+	if speed == 0 then
+		playIdleClimbingAnimation()
+	else
+		playWalkingClimbingAnimation()
+	end
+end)
+local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
+				local hrp0 = c:FindFirstChild("HumanoidRootPart");
+				if hrp0 then
+					local hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, -1.2);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(-90, 0, 0)
+							hrp0.Position -= Vector3.new(0, 1.5, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
+				end
+			end
+            setupCharacter();
+			Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+			end);
 					end
 				end
 		if not Crawlingornot then
-		if not r15(speaker) then
-				if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then 
-					speaker.Character.Humanoid.Health = 0
-				end
+			if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then 
+				speaker.Character.Humanoid.Health = 0
+			end
 				if climbTrack then
 					climbTrack:Stop()
 				end
 				if climbAnim then
 					climbAnim:Destroy()
 				end
-			end
+				humrunr6:Disconnect()
+				humrunr15:Disconnect()
 		end
 	end)
 	end});
@@ -4243,7 +4324,13 @@ end
 Sectionlpsliderinput = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input's", false, false, 10686489468);
 Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Char Values",Interact="Click",Callback=function()
 	Sliderwalk:Set(16);
-	Sliderhip:Set(0);
+		if not r15(speaker) then
+			Sliderhip:Set(0);
+			speaker.Character.Humanoid.HipHeight = 0;
+		else
+			Sliderhip:Set(2);
+			speaker.Character.Humanoid.HipHeight = 2;
+		end
 	if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 		Sliderjpower:Set(50);
 	else
@@ -5353,7 +5440,7 @@ for i, track in pairs (AnimationTracks) do
 	NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
 	effecttrue();
 end});
-SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Packs R15", false, true, 11932783331);
+SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's R15", false, true, 11932783331);
 Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Sneaky",Interact="Click",Callback=function()
 	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1132461372";
 	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1132469004";
@@ -8173,8 +8260,13 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderjumploop:Set(7);
 		Sliderwalk:Set(16);
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16;
-		Sliderhip:Set(0);
-		speaker.Character.Humanoid.HipHeight = 0;
+		if not r15(speaker) then 
+			Sliderhip:Set(0);
+			speaker.Character.Humanoid.HipHeight = 0;
+		else
+			Sliderhip:Set(2);
+			speaker.Character.Humanoid.HipHeight = 2;
+		end
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			Sliderjpower:Set(50);
 		else
