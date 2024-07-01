@@ -48,8 +48,8 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "176"
-ScriptcountAnim = "66"
+Scriptcount = "176";
+ScriptcountAnim = "66";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -199,19 +199,19 @@ function CheckTime()
 	end
 end
 CheckTime();
-local playerAddedConnection
+local playerAddedConnection;
 local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(speaker.UserId) then
 		pcall(function()
 			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
-			effectfriendjoin()
-		end)
+			effectfriendjoin();
+		end);
 	end
 end
 if playerAddedConnection then
-	playerAddedConnection:Disconnect()
+	playerAddedConnection:Disconnect();
 end
-playerAddedConnection = speakers.PlayerAdded:Connect(onPlayerAdded)
+playerAddedConnection = speakers.PlayerAdded:Connect(onPlayerAdded);
 QEfly = false;
 flying = false;
 flyysspeed = 3;
@@ -229,8 +229,8 @@ function sFLY(vfly)
 		flyKeyUp:Disconnect();
 	end
 	local T = getRoot(speaker.Character);
-	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
-	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
+	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
+	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
 	local SPEED = 0;
 	local function FLY()
 		flying = true;
@@ -262,11 +262,11 @@ function sFLY(vfly)
 				else
 					BV.velocity = Vector3.new(0, 0, 0);
 				end
-				local tiltCFrame = CFrame.Angles(math.rad(CONTROL.TiltX), 0, math.rad(CONTROL.TiltY))
-				TweenService:Create(BG, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {cframe=workspace.CurrentCamera.CoordinateFrame * tiltCFrame}):Play();
+				local tiltCFrame = CFrame.Angles(math.rad(CONTROL.TiltX), 0, math.rad(CONTROL.TiltY));
+				TweenService:Create(BG, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {cframe=(workspace.CurrentCamera.CoordinateFrame * tiltCFrame)}):Play();
 			until not flying 
-			CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
-			lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0, TiltX=0, TiltY=0};
+			CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
+			lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
 			SPEED = 0;
 			BG:Destroy();
 			BV:Destroy();
@@ -769,7 +769,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 				if ((Annoy == true) or (annoyfoundPlr == speaker)) then
 					Annoy = false;
 					effectfalse();
-					notifyyw("No Longer Annoying The Player " , "Not Annoying " .. annoyfoundPlr.Name .." Anymore", 2, 10747384394);
+					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. annoyfoundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
 				else
 					Annoy = true;
@@ -951,7 +951,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 					end
 					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
 					v2banger:Play(0.1, 1, 1);
-					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name , 2, 10709790644);
+					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name, 2, 10709790644);
 					effecttrue();
 					while Bang do
 						speaker.Character.HumanoidRootPart.CFrame = bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame + (bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
@@ -982,111 +982,49 @@ end});
 Paragraph = Misc:CreateParagraph({Title="69 Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
 local Bang69 = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-		plrName = Text;
-		r69foundplr = getPlr(plrName);
-		if r69foundplr then
-			if not r15(speaker) then
-				if ((Bang69 == true) or (r69foundplr == speaker)) then
-					Bang69 = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					bang69:Stop();
-					bangAnim:Destroy();
-					Bang69 = false;
-					charresettopos()
-					return;
-				else
-					Bang69 = true;
-					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
-					effecttrue();
-					c = Character;
-					hrp0 = c:FindFirstChild("HumanoidRootPart");
-					hrp1 = hrp0:Clone();
-					c.Parent = nil;
-					hrp0.Parent = hrp1;
-					hrp0.RootJoint.Part0 = nil;
-					hrp1.Parent = c;
-					c.Parent = workspace;
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-					hrp0.Transparency = 0.85;
-					hrp0.Material = Enum.Material.ForceField;
-					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					f69lwnum = 1;
-					bangAnim = Instance.new("Animation");
-					bangAnim.AnimationId = "rbxassetid://148840371";
-					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
-					bang69:Play(0.1, 1, 1);
-					if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
-						Bang69 = true;
-						while Bang69 and c and c.Parent do
-							speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity;
-							wait();
-						end
-					else
-						notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-						effectfalse();
-					end
-				end
-			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
+	plrName = Text;
+	r69foundplr = getPlr(plrName);
+	if r69foundplr then
+		if not r15(speaker) then
+			if ((Bang69 == true) or (r69foundplr == speaker)) then
 				Bang69 = false;
 				notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				bang69:Stop();
 				bangAnim:Destroy();
 				Bang69 = false;
-				charresettopos()
+				charresettopos();
 				return;
 			else
 				Bang69 = true;
 				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
 				effecttrue();
-				local Players = game:GetService("Players");
-				local RunService = game:GetService("RunService");
-				local LocalPlayer = Players.LocalPlayer;
-				local Character = LocalPlayer.Character;
-				local c = Character;
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart");
-					if hrp0 then
-						local hrp1 = hrp0:Clone();
-						c.Parent = nil;
-						hrp0.Parent = hrp1;
-						hrp1.Parent = c;
-						c.Parent = workspace;
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
-						hrp0.Transparency = 0.85;
-						hrp0.Material = Enum.Material.ForceField;
-						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame;
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, -0.5, 0)
-								hrp0.Velocity = hrp1.Velocity;
-							end
-						end);
-					end
-				end
-				setupCharacter();
-				Players.LocalPlayer.CharacterAdded:Connect(function(char)
-					c = char;
-					setupCharacter();
-				end);
+				c = Character;
+				hrp0 = c:FindFirstChild("HumanoidRootPart");
+				hrp1 = hrp0:Clone();
+				c.Parent = nil;
+				hrp0.Parent = hrp1;
+				hrp0.RootJoint.Part0 = nil;
+				hrp1.Parent = c;
+				c.Parent = workspace;
+				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+				hrp0.Transparency = 0.85;
+				hrp0.Material = Enum.Material.ForceField;
+				hrp0.Color = Color3.fromRGB(25, 25, 25);
 				f69lwnum = 1;
 				bangAnim = Instance.new("Animation");
-				bangAnim.AnimationId = "rbxassetid://5918726674";
+				bangAnim.AnimationId = "rbxassetid://148840371";
 				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
 				bang69:Play(0.1, 1, 1);
 				if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true;
-					while Bang69 do
+					while Bang69 and c and c.Parent do
 						speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						hrp0.CFrame = hrp1.CFrame;
+						hrp0.Orientation += Vector3.new(0, 0, 180)
+						hrp0.Position -= Vector3.new(0, 0, 0)
+						hrp0.Velocity = hrp1.Velocity;
 						wait();
 					end
 				else
@@ -1094,15 +1032,77 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 					effectfalse();
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+		elseif ((Bang69 == true) or (r69foundplr == speaker)) then
+			Bang69 = false;
+			notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 			effectfalse();
-		end
-		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			bang69:Stop();
 			bangAnim:Destroy();
 			Bang69 = false;
-		end);
+			charresettopos();
+			return;
+		else
+			Bang69 = true;
+			notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
+			effecttrue();
+			local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
+				local hrp0 = c:FindFirstChild("HumanoidRootPart");
+				if hrp0 then
+					local hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, -0.5, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
+				end
+			end
+			setupCharacter();
+			Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+			end);
+			f69lwnum = 1;
+			bangAnim = Instance.new("Animation");
+			bangAnim.AnimationId = "rbxassetid://5918726674";
+			bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
+			bang69:Play(0.1, 1, 1);
+			if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
+				Bang69 = true;
+				while Bang69 do
+					speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					wait();
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		end
+	else
+		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+		effectfalse();
+	end
+	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+		bang69:Stop();
+		bangAnim:Destroy();
+		Bang69 = false;
+	end);
 end});
 bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
@@ -1129,7 +1129,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 						speaker.Character.Humanoid.PlatformStand = false;
 						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
-						charresettopos()
+						charresettopos();
 						return;
 					else
 						ffc1hump = true;
@@ -1169,7 +1169,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 				speaker.Character.Humanoid.PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
-				charresettopos()
+				charresettopos();
 				return;
 			else
 				ffc1hump = true;
@@ -1530,49 +1530,49 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 		end
 	end);
 end});
-local animsync
-issyncinganim = false
+local animsync;
+issyncinganim = false;
 Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-		plrName = Text;
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if issyncinganim == true or foundPlr == speaker then
-					charresettopos()
-					issyncinganim = false
-					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					animsync:Disconnect()
-					return;
-				else
-					issyncinganim = true
-					effecttrue();
-					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
-					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
-						local animID = track.Animation.AnimationId
-						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-							animationTrack:Stop()
-						end
-						Character.Animate.Disabled = true
-						local Anim = Instance.new("Animation")
-						Anim.AnimationId = animID
-						local syncinganim = Character.Humanoid:LoadAnimation(Anim)
-						syncinganim:Play()
-						syncinganim:AdjustWeight(10)
-						syncinganim.Stopped:Connect(function()
-							Character.Animate.Disabled = false
-						end)
-					end)
-				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+	plrName = Text;
+	foundPlr = getPlr(plrName);
+	if foundPlr then
+		if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+			if ((issyncinganim == true) or (foundPlr == speaker)) then
+				charresettopos();
+				issyncinganim = false;
+				notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
+				animsync:Disconnect();
+				return;
+			else
+				issyncinganim = true;
+				effecttrue();
+				notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
+				animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+					local animID = track.Animation.AnimationId;
+					for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+						animationTrack:Stop();
+					end
+					Character.Animate.Disabled = true;
+					local Anim = Instance.new("Animation");
+					Anim.AnimationId = animID;
+					local syncinganim = Character.Humanoid:LoadAnimation(Anim);
+					syncinganim:Play();
+					syncinganim:AdjustWeight(10);
+					syncinganim.Stopped:Connect(function()
+						Character.Animate.Disabled = false;
+					end);
+				end);
 			end
 		else
 			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
 			effectfalse();
 		end
+	else
+		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+		effectfalse();
+	end
 end});
 local orbitingfuck = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
@@ -1706,9 +1706,9 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 	end);
 end});
 local spinaround = false;
-local radiusfromplayer = 10
-local spinSpeed = 1
-local angle = 0
+local radiusfromplayer = 10;
+local spinSpeed = 1;
+local angle = 0;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
@@ -1717,21 +1717,21 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around
 			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
 				effectfalse();
 				notifyyw("No Longer Spining Around The Player", "Not Spining Around " .. SpinaroundPlr.Name .. "Anymore", 2, 10747384394);
-				spinaround = false
-				return
+				spinaround = false;
+				return;
 			else
-				spinaround = true
+				spinaround = true;
 				effecttrue();
 				notifyyw("Now Spining Around", "Spining Around " .. SpinaroundPlr.Name, 2, 10709790644);
 				while spinaround do
-					game:GetService("RunService").Heartbeat:Wait()
-					angle = angle + spinSpeed * game:GetService("RunService").Heartbeat:Wait()
-					if angle > 2 * math.pi then
-						angle = angle - 2 * math.pi
+					game:GetService("RunService").Heartbeat:Wait();
+					angle = angle + (spinSpeed * game:GetService("RunService").Heartbeat:Wait());
+					if (angle > (2 * math.pi)) then
+						angle = angle - (2 * math.pi);
 					end
-					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer)
-					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position)
-					Character.HumanoidRootPart.CFrame = newCFrame
+					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
+					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
+					Character.HumanoidRootPart.CFrame = newCFrame;
 				end
 			end
 		else
@@ -1773,7 +1773,7 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Re
 end});
 Paragraph = Misc:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset);
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
-	charresettopos()
+	charresettopos();
 	effecttrue();
 	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
@@ -1992,7 +1992,7 @@ Buttonnormalfly = Misc:CreateButton({SectionParent=Sectionflights,Name="Fly",Cal
 	end
 	pcall(function()
 		JMouse.KeyDown:connect(function(key)
-			if key:lower() == flykeybind then
+			if (key:lower() == flykeybind) then
 				if flying then
 					flying = false;
 				else
@@ -2307,13 +2307,13 @@ Buttonzerogravo = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="
 			if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 				hum = speaker.Character:FindFirstChildOfClass("Humanoid");
 				root = getRoot(speaker.Character);
-				game.Workspace.Gravity = 0
+				game.Workspace.Gravity = 0;
 				root.Velocity = root.CFrame.LookVector * 17;
-				speaker.Character.Humanoid.Sit = true
+				speaker.Character.Humanoid.Sit = true;
 			end
 		else
-			speaker.Character.Humanoid.Sit = false
-		game.Workspace.Gravity = oldgrav
+			speaker.Character.Humanoid.Sit = false;
+			game.Workspace.Gravity = oldgrav;
 		end
 	end);
 end});
@@ -2888,14 +2888,14 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Zero Grav Trip W/ 
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
 			root = getRoot(speaker.Character);
-			game.Workspace.Gravity = 0
+			game.Workspace.Gravity = 0;
 			root.Velocity = root.CFrame.LookVector * 17;
-			speaker.Character.Humanoid.Sit = true
+			speaker.Character.Humanoid.Sit = true;
 		end
 	end
 	if not zerograv then
-		speaker.Character.Humanoid.Sit = false
-		game.Workspace.Gravity = oldgrav
+		speaker.Character.Humanoid.Sit = false;
+		game.Workspace.Gravity = oldgrav;
 	end
 end});
 Toggleinfjump1 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Hold Jump",CurrentValue=false,Callback=function(Value)
@@ -2929,170 +2929,167 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 		infJumpDebounce = false;
 	end);
 end});
-fakelagging = false
-	Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",CurrentValue=false,Callback=function(Value)
-		pcall(function()
-			Fakelag = Value;
-			if Fakelag then
-				fakelagging = true
-				while fakelagging do
-					for i, v in pairs(speaker.Character:GetChildren()) do
-						if v:IsA("BasePart") then
-							v.Anchored = true;
-						end
+fakelagging = false;
+Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		Fakelag = Value;
+		if Fakelag then
+			fakelagging = true;
+			while fakelagging do
+				for i, v in pairs(speaker.Character:GetChildren()) do
+					if v:IsA("BasePart") then
+						v.Anchored = true;
 					end
-					wait(0.1)
-					for i, v in pairs(speaker.Character:GetChildren()) do
-						if v:IsA("BasePart") then
-							v.Anchored = false;
-						end
-					end
-					wait(0.1)
-					end
-			end
-			if not Fakelag then
-				fakelagging = false;
+				end
+				wait(0.1);
 				for i, v in pairs(speaker.Character:GetChildren()) do
 					if v:IsA("BasePart") then
 						v.Anchored = false;
 					end
 				end
+				wait(0.1);
 			end
-		end);
-	end});
-	ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
-		pcall(function()
-			Crawlingornot = Value;
-				if Crawlingornot then
-					if not r15(speaker) then
-						local climbAnim = Instance.new("Animation")
-						climbAnim.AnimationId = "rbxassetid://180436334"
-						local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim)
-						local function playIdleClimbingAnimation()
-							if not climbTrack.IsPlaying then
-								climbTrack:Play(0, 10, 0)
-							else
-								climbTrack:AdjustSpeed(0)
-							end
-						end
-						local function playWalkingClimbingAnimation()
-							if not climbTrack.IsPlaying then
-								climbTrack:Play(0, 10, 1)
-							else
-								climbTrack:AdjustSpeed(1)
-							end
-						end
-						local humrunr6
-						humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
-							if speed == 0 then
-								playIdleClimbingAnimation()
-							else
-								playWalkingClimbingAnimation()
-							end
-						end)
-						local c = speaker.Character;
-						local hrp0 = c:FindFirstChild("HumanoidRootPart")
-						if hrp0 then
-							local hrp1 = hrp0:Clone()
-							c.Parent = nil
-							hrp0.Parent = hrp1
-							hrp0.RootJoint.Part0 = nil
-							hrp1.Parent = c
-							c.Parent = workspace
-							c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
-							c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0)
-							local h = game:GetService("RunService").Heartbeat
-							hrp0.Transparency = 0.85
-							hrp0.Material = Enum.Material.ForceField
-							hrp0.Color = Color3.fromRGB(25, 25, 25)
-							while h:Wait() and c and c.Parent do
-								hrp0.CFrame = hrp1.CFrame
-								hrp0.Orientation += Vector3.new(-90, 0, 0)
-								hrp0.Position -= Vector3.new(0, 1.5, 0)
-								hrp0.Velocity = hrp1.Velocity
-							end
-						end
+		end
+		if not Fakelag then
+			fakelagging = false;
+			for i, v in pairs(speaker.Character:GetChildren()) do
+				if v:IsA("BasePart") then
+					v.Anchored = false;
+				end
+			end
+		end
+	end);
+end});
+ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		Crawlingornot = Value;
+		if Crawlingornot then
+			if not r15(speaker) then
+				local climbAnim = Instance.new("Animation");
+				climbAnim.AnimationId = "rbxassetid://180436334";
+				local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim);
+				local function playIdleClimbingAnimation()
+					if not climbTrack.IsPlaying then
+						climbTrack:Play(0, 10, 0);
 					else
-						local player = speaker
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local climbAnim = Instance.new("Animation")
-climbAnim.AnimationId = "rbxassetid://507765644"
-local climbTrack = humanoid:LoadAnimation(climbAnim)
-
-local function playIdleClimbingAnimation()
-	if not climbTrack.IsPlaying then
-		climbTrack:Play(0, 10, 0)
-	else
-		climbTrack:AdjustSpeed(0)
-	end
-end
-
-local function playWalkingClimbingAnimation()
-	if not climbTrack.IsPlaying then
-		climbTrack:Play(0, 10, 1)
-	else
-		climbTrack:AdjustSpeed(1)
-	end
-end
-
-local humrunr15
-humrunr15 = humanoid.Running:Connect(function(speed)
-	if speed == 0 then
-		playIdleClimbingAnimation()
-	else
-		playWalkingClimbingAnimation()
-	end
-end)
-local Players = game:GetService("Players");
-			local RunService = game:GetService("RunService");
-			local LocalPlayer = Players.LocalPlayer;
-			local Character = LocalPlayer.Character;
-			local c = Character;
-			local function setupCharacter()
+						climbTrack:AdjustSpeed(0);
+					end
+				end
+				local function playWalkingClimbingAnimation()
+					if not climbTrack.IsPlaying then
+						climbTrack:Play(0, 10, 1);
+					else
+						climbTrack:AdjustSpeed(1);
+					end
+				end
+				local humrunr6;
+				humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
+					if (speed == 0) then
+						playIdleClimbingAnimation();
+					else
+						playWalkingClimbingAnimation();
+					end
+				end);
+				local c = speaker.Character;
 				local hrp0 = c:FindFirstChild("HumanoidRootPart");
 				if hrp0 then
 					local hrp1 = hrp0:Clone();
 					c.Parent = nil;
 					hrp0.Parent = hrp1;
+					hrp0.RootJoint.Part0 = nil;
 					hrp1.Parent = c;
 					c.Parent = workspace;
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, -1.2);
+					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
+					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0);
+					local h = game:GetService("RunService").Heartbeat;
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(-90, 0, 0)
-							hrp0.Position -= Vector3.new(0, 1.5, 0)
-							hrp0.Velocity = hrp1.Velocity;
-						end
-					end);
-				end
-			end
-            setupCharacter();
-			Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char;
-				setupCharacter();
-			end);
+					while h:Wait() and c and c.Parent do
+						hrp0.CFrame = hrp1.CFrame;
+						hrp0.Orientation += Vector3.new(-90, 0, 0)
+						hrp0.Position -= Vector3.new(0, 1.5, 0)
+						hrp0.Velocity = hrp1.Velocity;
 					end
 				end
-		if not Crawlingornot then
-			if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then 
-				speaker.Character.Humanoid.Health = 0
+			else
+				local player = speaker;
+				local character = player.Character or player.CharacterAdded:Wait();
+				local humanoid = character:WaitForChild("Humanoid");
+				local climbAnim = Instance.new("Animation");
+				climbAnim.AnimationId = "rbxassetid://507765644";
+				local climbTrack = humanoid:LoadAnimation(climbAnim);
+				local function playIdleClimbingAnimation()
+					if not climbTrack.IsPlaying then
+						climbTrack:Play(0, 10, 0);
+					else
+						climbTrack:AdjustSpeed(0);
+					end
+				end
+				local function playWalkingClimbingAnimation()
+					if not climbTrack.IsPlaying then
+						climbTrack:Play(0, 10, 1);
+					else
+						climbTrack:AdjustSpeed(1);
+					end
+				end
+				local humrunr15;
+				humrunr15 = humanoid.Running:Connect(function(speed)
+					if (speed == 0) then
+						playIdleClimbingAnimation();
+					else
+						playWalkingClimbingAnimation();
+					end
+				end);
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, -1, -1.2);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(-90, 0, 0)
+								hrp0.Position -= Vector3.new(0, 1.5, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				Players.LocalPlayer.CharacterAdded:Connect(function(char)
+					c = char;
+					setupCharacter();
+				end);
 			end
-				if climbTrack then
-					climbTrack:Stop()
-				end
-				if climbAnim then
-					climbAnim:Destroy()
-				end
-				humrunr6:Disconnect()
-				humrunr15:Disconnect()
 		end
-	end)
-	end});
+		if not Crawlingornot then
+			if (speaker.Character and speaker.Character:FindFirstChild("Humanoid")) then
+				speaker.Character.Humanoid.Health = 0;
+			end
+			if climbTrack then
+				climbTrack:Stop();
+			end
+			if climbAnim then
+				climbAnim:Destroy();
+			end
+			humrunr6:Disconnect();
+			humrunr15:Disconnect();
+		end
+	end);
+end});
 local seizureFlipping = false;
 Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
 	seizure = Value;
@@ -3844,7 +3841,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Ro
 				debounce = true;
 				local Gyro = Instance.new("BodyGyro");
 				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(10e10, 10e10, 10e10) * 9e9;
+				Gyro.maxTorque = Vector3.new(99999997952, 99999997952, 99999997952) * 8999999488;
 				Gyro.CFrame = speaker.Character.Torso.CFrame;
 				Gyro.Parent = speaker.Character.Torso;
 				local initialCFrame = speaker.Character.Torso.CFrame;
@@ -3954,7 +3951,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 			anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit;
 		end
 		if not sitwalkerr then
-			charresettopos()
+			charresettopos();
 		end
 	end);
 end});
@@ -4298,39 +4295,39 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jum
 	jpower = Text;
 end});
 function getJumpValue()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid");
 	if humanoid.UseJumpPower then
-		return math.floor(humanoid.JumpPower)
+		return math.floor(humanoid.JumpPower);
 	else
-		return math.floor(humanoid.JumpHeight)
+		return math.floor(humanoid.JumpHeight);
 	end
 end
 function getJumpValue2()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid");
 	if humanoid.UseJumpPower then
-		return "Jump Power"
+		return "Jump Power";
 	else
-		return "Jump Height"
+		return "Jump Height";
 	end
 end
 function getJumpValue3()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid");
 	if humanoid.UseJumpPower then
-		return 600
+		return 600;
 	else
-		return 400
+		return 400;
 	end
 end
 Sectionlpsliderinput = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input's", false, false, 10686489468);
 Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Char Values",Interact="Click",Callback=function()
 	Sliderwalk:Set(16);
-		if not r15(speaker) then
-			Sliderhip:Set(0);
-			speaker.Character.Humanoid.HipHeight = 0;
-		else
-			Sliderhip:Set(2);
-			speaker.Character.Humanoid.HipHeight = 2;
-		end
+	if not r15(speaker) then
+		Sliderhip:Set(0);
+		speaker.Character.Humanoid.HipHeight = 0;
+	else
+		Sliderhip:Set(2);
+		speaker.Character.Humanoid.HipHeight = 2;
+	end
 	if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 		Sliderjpower:Set(50);
 	else
@@ -4631,10 +4628,10 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 	pcall(function()
 		animdata = Value;
 		if animdata then
-			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = true
+			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = true;
 		end
 		if not animdata then
-			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = false
+			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = false;
 		end
 	end);
 end});
@@ -4863,7 +4860,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day L
 	todvalue = Text;
 end});
 Sectioncamera = Miscclient:CreateSection("LocalPlayer Related | Camera (Client)", false, false, 10709789686);
-camzoomdistanceholder = {speaker.CameraMaxZoomDistance,speaker.CameraMinZoomDistance}
+camzoomdistanceholder = {speaker.CameraMaxZoomDistance,speaker.CameraMinZoomDistance};
 Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Camera Values",Interact="Click",Callback=function()
 	pcall(function()
 		Sliderfov:Set(70);
@@ -5298,7 +5295,7 @@ Label = Miscclient:CreateLabel("Set A Value First Then Enable", Sectioncameraloo
 Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncameraloops,Name="Reset Camera Loop Values",Interact="Click",Callback=function()
 	pcall(function()
 		Sliderloopmaxzoom:Set(camzoomdistanceholder[1]);
-		Sliderloopminzoom:Set(camzoomdistanceholder[2])
+		Sliderloopminzoom:Set(camzoomdistanceholder[2]);
 	end);
 end});
 Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Max Zoom",CurrentValue=false,Callback=function(Value)
@@ -5322,7 +5319,7 @@ end});
 Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Max Zoom",PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	maxzoomvalue = Text;
 end});
-minzoomvalue = 0
+minzoomvalue = 0;
 Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Min Zoom",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		minzooms = Value;
@@ -5431,11 +5428,11 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 	end
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
-local AnimationTracks = Humanoid:GetPlayingAnimationTracks()
-for i, track in pairs (AnimationTracks) do
-	    local animationobject = track.Animation
-	    local animationid = animationobject.AnimationId
-	    toClipboard(animationid)
+	local AnimationTracks = Humanoid:GetPlayingAnimationTracks();
+	for i, track in pairs(AnimationTracks) do
+		local animationobject = track.Animation;
+		local animationid = animationobject.AnimationId;
+		toClipboard(animationid);
 	end
 	NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
 	effecttrue();
@@ -5915,13 +5912,13 @@ end});
 Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
 Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
-		bangerSlider:Set(1)
-		Slidermovindanc:Set(1)
-		Sliderrandance:Set(1)
-		Slidermonsterdanc:Set(1)
-		Sliderfulsiwing:Set(1)
-		Sliderpuncha:Set(1)
-		Sliderdinowalk:Set(1)
+		bangerSlider:Set(1);
+		Slidermovindanc:Set(1);
+		Sliderrandance:Set(1);
+		Slidermonsterdanc:Set(1);
+		Sliderfulsiwing:Set(1);
+		Sliderpuncha:Set(1);
+		Sliderdinowalk:Set(1);
 	end);
 end});
 Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Bang R6 & R15",CurrentValue=false,Callback=function(Value)
@@ -8260,7 +8257,7 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderjumploop:Set(7);
 		Sliderwalk:Set(16);
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16;
-		if not r15(speaker) then 
+		if not r15(speaker) then
 			Sliderhip:Set(0);
 			speaker.Character.Humanoid.HipHeight = 0;
 		else
@@ -8281,29 +8278,29 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		edance1Slider:Set(1);
 		edance2Slider:Set(1);
 		edance3Slider:Set(1);
-		bangerSlider:Set(1)
-		Slidermovindanc:Set(1)
-		Sliderrandance:Set(1)
-		Slidermonsterdanc:Set(1)
-		Sliderfulsiwing:Set(1)
-		Sliderpuncha:Set(1)
-		Sliderdinowalk:Set(1)
+		bangerSlider:Set(1);
+		Slidermovindanc:Set(1);
+		Sliderrandance:Set(1);
+		Slidermonsterdanc:Set(1);
+		Sliderfulsiwing:Set(1);
+		Sliderpuncha:Set(1);
+		Sliderdinowalk:Set(1);
 	end);
 end);
 function CheckTimess()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
-		return
+		return;
 	elseif ((h >= 12) and (h < 20)) then
-		return
+		return;
 	else
-		wait(5)
-		NSUI:Notify({Title=("And Also Since It's Night"),Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+		wait(5);
+		NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=0}):Play();
 		end},nottrue={Name="Nah",Callback=function()
-			return
+			return;
 		end}}});
-		effectfriendjoin()
+		effectfriendjoin();
 	end
 end
 CheckTimess();
