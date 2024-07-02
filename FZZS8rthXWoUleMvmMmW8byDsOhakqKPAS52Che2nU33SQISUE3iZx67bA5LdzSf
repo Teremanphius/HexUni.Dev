@@ -1716,7 +1716,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around
 		if SpinaroundPlr then
 			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
 				effectfalse();
-				notifyyw("No Longer Spining Around The Player", "Not Spining Around " .. SpinaroundPlr.Name .. "Anymore", 2, 10747384394);
+				notifyyw("No Longer Spining Around The Player", "Not Spining Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
 				return;
 			else
@@ -3217,714 +3217,6 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",C
 		seizureFlipping = false;
 	end
 end});
-Flipping = false;
-Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Flip",CurrentValue=false,Callback=function(Value)
-	flippa = Value;
-	if flippa then
-		if not r15(speaker) then
-			Flipping = true;
-			pl = speaker;
-			me = pl.Character;
-			xl = me.Torso["Right Shoulder"];
-			local debounce = false;
-			function _restoreproperties()
-				Holder = speaker.Character;
-				Torso = Holder:FindFirstChild("Torso");
-				RightS = Torso:FindFirstChild("Right Shoulder");
-				LeftS = Torso:FindFirstChild("Left Shoulder");
-				RightH = Torso:FindFirstChild("Right Hip");
-				LeftH = Torso:FindFirstChild("Left Hip");
-				RightS.MaxVelocity = 0.15;
-				LeftS.MaxVelocity = 0.15;
-				RightH.MaxVelocity = 0.1;
-				LeftH.MaxVelocity = 0.1;
-				RightS.DesiredAngle = 0;
-				LeftS.DesiredAngle = 0;
-				LeftH.DesiredAngle = 0;
-				RightH.DesiredAngle = 0;
-			end
-			function ManageAnimation(value)
-				Holder = speaker.Character;
-				Player = speaker;
-				if (value == "no anim") then
-					Anim = Holder:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = true;
-						Anim.Parent = Player;
-					end
-				elseif (value == "re-anim") then
-					Anim = Player:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = false;
-						Anim.Parent = Holder;
-					end
-				end
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
-				end
-				ml:Remove();
-			end
-			function Flip2()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				Char = speaker.Character;
-				Human = Character.Humanoid;
-				Torso = Character.Torso;
-				CF = Torso.CFrame;
-				Human.PlatformStand = true;
-				VelUp = Instance.new("BodyVelocity");
-				VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
-				VelUp.P = VelUp.P * 2;
-				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
-				VelUp.Parent = Torso;
-				coroutine.resume(coroutine.create(Down), VelUp);
-				Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-				Gyro.cframe = CF;
-				Gyro.Parent = Torso;
-				for i = 2, 28 do
-					Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -16, 0, 0);
-					wait();
-				end
-				Gyro.cframe = CF;
-				wait();
-				Gyro:Remove();
-				Human.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while Flipping do
-				wait();
-				Flip2();
-			end
-		else
-			Flipping = true;
-			local speaker = game.Players.LocalPlayer;
-			local pl = speaker;
-			local me = pl.Character;
-			local xl = me:WaitForChild("RightUpperArm");
-			local debounce = false;
-			function _restoreproperties()
-				local Holder = speaker.Character;
-				local Torso = Holder:FindFirstChild("UpperTorso");
-				local RightS = Torso:FindFirstChild("Right Shoulder") or Holder:FindFirstChild("RightShoulder");
-				local LeftS = Torso:FindFirstChild("Left Shoulder") or Holder:FindFirstChild("LeftShoulder");
-				local RightH = Torso:FindFirstChild("Right Hip") or Holder:FindFirstChild("RightHip");
-				local LeftH = Torso:FindFirstChild("Left Hip") or Holder:FindFirstChild("LeftHip");
-				if (Torso and RightS and LeftS and RightH and LeftH) then
-					RightS.MaxVelocity = 0.15;
-					LeftS.MaxVelocity = 0.15;
-					RightH.MaxVelocity = 0.1;
-					LeftH.MaxVelocity = 0.1;
-					RightS.DesiredAngle = 0;
-					LeftS.DesiredAngle = 0;
-					LeftH.DesiredAngle = 0;
-					RightH.DesiredAngle = 0;
-				end
-			end
-			function ManageAnimation(value)
-				local Holder = speaker.Character;
-				local Player = speaker;
-				if (value == "no anim") then
-					local Anim = Holder:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = true;
-						Anim.Parent = Player;
-					end
-				elseif (value == "re-anim") then
-					local Anim = Player:FindFirstChild("Animate");
-					if (Anim ~= nil) then
-						Anim.Disabled = false;
-						Anim.Parent = Holder;
-					end
-				end
-			end
-			function Down(ml)
-				for i = 1, ml.Velocity.y / 3 do
-					ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-					wait();
-				end
-				ml:Destroy();
-			end
-			function Flip2()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				local Char = speaker.Character;
-				local Human = Character.Humanoid;
-				local Torso = Char:FindFirstChild("UpperTorso");
-				if Torso then
-					local CF = Torso.CFrame;
-					Human.PlatformStand = true;
-					local VelUp = Instance.new("BodyVelocity");
-					VelUp.Velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.LookVector * 26);
-					VelUp.P = VelUp.P * 2;
-					VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
-					VelUp.Parent = Torso;
-					coroutine.resume(coroutine.create(Down), VelUp);
-					local Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					Gyro.CFrame = CF;
-					Gyro.Parent = Torso;
-					for i = 2, 28 do
-						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0);
-						wait();
-					end
-					Gyro.CFrame = CF;
-					wait();
-					Gyro:Destroy();
-					Human.PlatformStand = false;
-					_restoreproperties();
-					debounce = false;
-				end
-			end
-			while Flipping do
-				wait();
-				Flip2();
-			end
-		end
-	end
-	if not flippa then
-		Flipping = false;
-	end
-end});
-doubleFlipping = false;
-Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Double Flip",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		doubleflippa = Value;
-		if doubleflippa then
-			if not r15(speaker) then
-				doubleFlipping = true;
-				pl = speaker;
-				me = pl.Character;
-				xl = me.Torso["Right Shoulder"];
-				local debounce = false;
-				function _restoreproperties()
-					Holder = speaker.Character;
-					Torso = Holder:FindFirstChild("Torso");
-					RightS = Torso:FindFirstChild("Right Shoulder");
-					LeftS = Torso:FindFirstChild("Left Shoulder");
-					RightH = Torso:FindFirstChild("Right Hip");
-					LeftH = Torso:FindFirstChild("Left Hip");
-					RightS.MaxVelocity = 0.15;
-					LeftS.MaxVelocity = 0.15;
-					RightH.MaxVelocity = 0.1;
-					LeftH.MaxVelocity = 0.1;
-					RightS.DesiredAngle = 0;
-					LeftS.DesiredAngle = 0;
-					LeftH.DesiredAngle = 0;
-					RightH.DesiredAngle = 0;
-				end
-				function ManageAnimation(value)
-					Holder = speaker.Character;
-					Player = speaker;
-					if (value == "no anim") then
-						Anim = Holder:FindFirstChild("Animate");
-						if (Anim ~= nil) then
-							Anim.Disabled = true;
-							Anim.Parent = Player;
-						end
-					elseif (value == "re-anim") then
-						Anim = Player:FindFirstChild("Animate");
-						if (Anim ~= nil) then
-							Anim.Disabled = false;
-							Anim.Parent = Holder;
-						end
-					end
-				end
-				function Down(ml)
-					for i = 1, ml.velocity.y / 3 do
-						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Remove();
-				end
-				function Flip3()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					Char = speaker.Character;
-					Human = Character.Humanoid;
-					Torso = Character.Torso;
-					CF = Torso.CFrame;
-					Human.PlatformStand = true;
-					VelUp = Instance.new("BodyVelocity");
-					VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
-					VelUp.P = VelUp.P * 2;
-					VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
-					VelUp.Parent = Torso;
-					coroutine.resume(coroutine.create(Down), VelUp);
-					Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					Gyro.cframe = CF;
-					Gyro.Parent = Torso;
-					for i = 2, 28 do
-						Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
-						wait();
-					end
-					Gyro.cframe = CF;
-					wait();
-					Gyro:Remove();
-					Human.PlatformStand = false;
-					_restoreproperties();
-					debounce = false;
-				end
-				while doubleFlipping do
-					wait();
-					Flip3();
-				end
-			else
-				doubleFlipping = true;
-				local speaker = game.Players.LocalPlayer;
-				local debounce = false;
-				function _restoreproperties()
-					local Holder = speaker.Character;
-					local UpperTorso = Holder:FindFirstChild("UpperTorso");
-					local RightShoulder = Holder:FindFirstChild("RightShoulder");
-					local LeftShoulder = Holder:FindFirstChild("LeftShoulder");
-					local RightHip = Holder:FindFirstChild("RightHip");
-					local LeftHip = Holder:FindFirstChild("LeftHip");
-					if (UpperTorso and RightShoulder and LeftShoulder and RightHip and LeftHip) then
-						RightShoulder.MaxVelocity = 0.15;
-						LeftShoulder.MaxVelocity = 0.15;
-						RightHip.MaxVelocity = 0.1;
-						LeftHip.MaxVelocity = 0.1;
-						RightShoulder.DesiredAngle = 0;
-						LeftShoulder.DesiredAngle = 0;
-						LeftHip.DesiredAngle = 0;
-						RightHip.DesiredAngle = 0;
-					end
-				end
-				function ManageAnimation(value)
-					local Holder = speaker.Character;
-					local Player = speaker;
-					if (value == "no anim") then
-						local Anim = Holder:FindFirstChild("Animate");
-						if (Anim ~= nil) then
-							Anim.Disabled = true;
-							Anim.Parent = Player;
-						end
-					elseif (value == "re-anim") then
-						local Anim = Player:FindFirstChild("Animate");
-						if (Anim ~= nil) then
-							Anim.Disabled = false;
-							Anim.Parent = Holder;
-						end
-					end
-				end
-				function Down(ml)
-					for i = 1, ml.Velocity.Y / 3 do
-						ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Destroy();
-				end
-				function Flip3()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					local Char = speaker.Character;
-					local Human = Character.Humanoid;
-					local Torso = Char:FindFirstChild("UpperTorso");
-					if Torso then
-						local CF = Torso.CFrame;
-						Human.PlatformStand = true;
-						local VelUp = Instance.new("BodyVelocity");
-						VelUp.Velocity = Vector3.new(0, 80, 0) + (Torso.CFrame.LookVector * 35);
-						VelUp.P = VelUp.P * 2;
-						VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
-						VelUp.Parent = Torso;
-						coroutine.resume(coroutine.create(Down), VelUp);
-						local Gyro = Instance.new("BodyGyro");
-						Gyro.P = Gyro.P * 10;
-						Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
-						Gyro.CFrame = CF;
-						Gyro.Parent = Torso;
-						for i = 2, 20 do
-							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0);
-							wait();
-						end
-						Gyro.CFrame = CF;
-						wait();
-						Gyro:Destroy();
-						Human.PlatformStand = false;
-						_restoreproperties();
-						debounce = false;
-					end
-				end
-				while doubleFlipping do
-					wait();
-					Flip3();
-				end
-			end
-		end
-		if not doubleflippa then
-			doubleFlipping = false;
-		end
-	end);
-end});
-cwFlipping = false;
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Cart Wheel",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		cartwheeling = Value;
-		if cartwheeling then
-			if not r15(speaker) then
-				cwFlipping = true;
-				function _restoreproperties()
-					Torso = speaker.Character:FindFirstChild("Torso");
-					RightS = Torso:FindFirstChild("Right Shoulder");
-					LeftS = Torso:FindFirstChild("Left Shoulder");
-					RightH = Torso:FindFirstChild("Right Hip");
-					LeftH = Torso:FindFirstChild("Left Hip");
-					RightS.MaxVelocity = 0.15;
-					LeftS.MaxVelocity = 0.15;
-					RightH.MaxVelocity = 0.1;
-					LeftH.MaxVelocity = 0.1;
-					RightS.DesiredAngle = 0;
-					LeftS.DesiredAngle = 0;
-					LeftH.DesiredAngle = 0;
-					RightH.DesiredAngle = 0;
-				end
-				function Down(ml)
-					for i = 1, ml.velocity.y / 3 do
-						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Remove();
-				end
-				function Flip()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					local Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					Gyro.Parent = speaker.Character.Torso;
-					for i = 0, 50 do
-						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
-						wait();
-					end
-					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					wait();
-					Gyro:Remove();
-					speaker.Character.Humanoid.PlatformStand = false;
-					_restoreproperties();
-					debounce = false;
-				end
-				while cwFlipping do
-					wait();
-					Flip();
-				end
-			else
-				cwFlipping = true;
-				function _restoreproperties()
-					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-					local RightS = Torso:FindFirstChild("Right Shoulder");
-					local LeftS = Torso:FindFirstChild("Left Shoulder");
-					local RightH = Torso:FindFirstChild("Right Hip");
-					local LeftH = Torso:FindFirstChild("Left Hip");
-					if (Torso and RightS and LeftS and RightH and LeftH) then
-						RightS.MaxVelocity = 0.15;
-						LeftS.MaxVelocity = 0.15;
-						RightH.MaxVelocity = 0.1;
-						LeftH.MaxVelocity = 0.1;
-						RightS.DesiredAngle = 0;
-						LeftS.DesiredAngle = 0;
-						LeftH.DesiredAngle = 0;
-						RightH.DesiredAngle = 0;
-					end
-				end
-				function Down(ml)
-					for i = 1, ml.velocity.y / 3 do
-						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Remove();
-				end
-				function Flip()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					local Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-					if Torso then
-						Gyro.CFrame = Torso.CFrame;
-						Gyro.Parent = Torso;
-						for i = 0, 50 do
-							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-7), 0, 0);
-							wait();
-						end
-						Gyro.CFrame = Torso.CFrame;
-						wait();
-						Gyro:Remove();
-						speaker.Character.Humanoid.PlatformStand = false;
-						_restoreproperties();
-						debounce = false;
-					end
-				end
-				while cwFlipping do
-					wait();
-					Flip();
-				end
-			end
-		end
-		if not cartwheeling then
-			cwFlipping = false;
-		end
-	end);
-end});
-StarRoll = false;
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Star Roll",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		starrolling = Value;
-		if starrolling then
-			if not r15(speaker) then
-				StarRoll = true;
-				function _restoreproperties()
-					Torso = speaker.Character:FindFirstChild("Torso");
-					RightS = Torso:FindFirstChild("Right Shoulder");
-					LeftS = Torso:FindFirstChild("Left Shoulder");
-					RightH = Torso:FindFirstChild("Right Hip");
-					LeftH = Torso:FindFirstChild("Left Hip");
-					RightS.MaxVelocity = 0.15;
-					LeftS.MaxVelocity = 0.15;
-					RightH.MaxVelocity = 0.1;
-					LeftH.MaxVelocity = 0.1;
-					RightS.DesiredAngle = 0;
-					LeftS.DesiredAngle = 0;
-					LeftH.DesiredAngle = 0;
-					RightH.DesiredAngle = 0;
-				end
-				function Down(ml)
-					for i = 1, ml.velocity.y / 3 do
-						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Remove();
-				end
-				function Flip()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					local Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					Gyro.Parent = speaker.Character.Torso;
-					for i = 0, 50 do
-						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / -29);
-						wait();
-					end
-					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					wait();
-					Gyro:Remove();
-					speaker.Character.Humanoid.PlatformStand = false;
-					_restoreproperties();
-					debounce = false;
-				end
-				while StarRoll do
-					wait();
-					Flip();
-				end
-			else
-				StarRoll = true;
-				function _restoreproperties()
-					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-					local RightS = Torso:FindFirstChild("Right Shoulder");
-					local LeftS = Torso:FindFirstChild("Left Shoulder");
-					local RightH = Torso:FindFirstChild("Right Hip");
-					local LeftH = Torso:FindFirstChild("Left Hip");
-					if (Torso and RightS and LeftS and RightH and LeftH) then
-						RightS.MaxVelocity = 0.15;
-						LeftS.MaxVelocity = 0.15;
-						RightH.MaxVelocity = 0.1;
-						LeftH.MaxVelocity = 0.1;
-						RightS.DesiredAngle = 0;
-						LeftS.DesiredAngle = 0;
-						LeftH.DesiredAngle = 0;
-						RightH.DesiredAngle = 0;
-					end
-				end
-				function Down(ml)
-					for i = 1, ml.velocity.y / 3 do
-						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
-					end
-					ml:Remove();
-				end
-				function Flip()
-					if (debounce == true) then
-						return;
-					end
-					debounce = true;
-					local Gyro = Instance.new("BodyGyro");
-					Gyro.P = Gyro.P * 10;
-					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-					if Torso then
-						Gyro.CFrame = Torso.CFrame;
-						Gyro.Parent = Torso;
-						for i = 0, 50 do
-							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, 0, math.rad(-7));
-							wait();
-						end
-						Gyro.CFrame = Torso.CFrame;
-						wait();
-						Gyro:Remove();
-						speaker.Character.Humanoid.PlatformStand = false;
-						_restoreproperties();
-						debounce = false;
-					end
-				end
-				while StarRoll do
-					wait();
-					Flip();
-				end
-			end
-		end
-		if not starrolling then
-			StarRoll = false;
-		end
-	end);
-end});
-BarrelRoll = false;
-Looproll = false;
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
-	barrelrolling = Value;
-	if barrelrolling then
-		if not r15(speaker) then
-			BarrelRoll = true;
-			function _restoreproperties()
-				Torso = speaker.Character:FindFirstChild("Torso");
-				RightS = Torso:FindFirstChild("Right Shoulder");
-				LeftS = Torso:FindFirstChild("Left Shoulder");
-				RightH = Torso:FindFirstChild("Right Hip");
-				LeftH = Torso:FindFirstChild("Left Hip");
-				RightS.MaxVelocity = 0.15;
-				LeftS.MaxVelocity = 0.15;
-				RightH.MaxVelocity = 0.1;
-				LeftH.MaxVelocity = 0.1;
-				RightS.DesiredAngle = 0;
-				LeftS.DesiredAngle = 0;
-				LeftH.DesiredAngle = 0;
-				RightH.DesiredAngle = 0;
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
-				end
-				ml:Remove();
-			end
-			Looproll = true;
-			function Flip()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				local Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(99999997952, 99999997952, 99999997952) * 8999999488;
-				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				Gyro.Parent = speaker.Character.Torso;
-				local initialCFrame = speaker.Character.Torso.CFrame;
-				Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
-				while Looproll do
-					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0);
-					wait();
-				end
-				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				wait();
-				Gyro:Remove();
-				speaker.Character.Humanoid.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while BarrelRoll do
-				wait();
-				Flip();
-			end
-		else
-			BarrelRoll = true;
-			function _restoreproperties()
-				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-				local RightS = Torso:FindFirstChild("Right Shoulder");
-				local LeftS = Torso:FindFirstChild("Left Shoulder");
-				local RightH = Torso:FindFirstChild("Right Hip");
-				local LeftH = Torso:FindFirstChild("Left Hip");
-				if (Torso and RightS and LeftS and RightH and LeftH) then
-					RightS.MaxVelocity = 0.15;
-					LeftS.MaxVelocity = 0.15;
-					RightH.MaxVelocity = 0.1;
-					LeftH.MaxVelocity = 0.1;
-					RightS.DesiredAngle = 0;
-					LeftS.DesiredAngle = 0;
-					LeftH.DesiredAngle = 0;
-					RightH.DesiredAngle = 0;
-				end
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
-				end
-				ml:Remove();
-			end
-			Looproll = true;
-			function Flip()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				local Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
-				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
-				if Torso then
-					Gyro.CFrame = Torso.CFrame;
-					Gyro.Parent = Torso;
-					local initialCFrame = Torso.CFrame;
-					Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
-					while Looproll do
-						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, math.rad(-9), 0);
-						wait();
-					end
-					Gyro.CFrame = Torso.CFrame;
-					wait();
-					Gyro:Remove();
-					speaker.Character.Humanoid.PlatformStand = false;
-					_restoreproperties();
-					debounce = false;
-				end
-			end
-			while BarrelRoll do
-				wait();
-				Flip();
-			end
-		end
-	end
-	if not barrelrolling then
-		BarrelRoll = false;
-		Looproll = false;
-	end
-end});
 Floating = false;
 floatName = randomString();
 Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",CurrentValue=false,Callback=function(Value)
@@ -4163,8 +3455,718 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 		end
 	end);
 end});
+Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478);
+Flipping = false;
+Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
+	flippa = Value;
+	if flippa then
+		if not r15(speaker) then
+			Flipping = true;
+			pl = speaker;
+			me = pl.Character;
+			xl = me.Torso["Right Shoulder"];
+			local debounce = false;
+			function _restoreproperties()
+				Holder = speaker.Character;
+				Torso = Holder:FindFirstChild("Torso");
+				RightS = Torso:FindFirstChild("Right Shoulder");
+				LeftS = Torso:FindFirstChild("Left Shoulder");
+				RightH = Torso:FindFirstChild("Right Hip");
+				LeftH = Torso:FindFirstChild("Left Hip");
+				RightS.MaxVelocity = 0.15;
+				LeftS.MaxVelocity = 0.15;
+				RightH.MaxVelocity = 0.1;
+				LeftH.MaxVelocity = 0.1;
+				RightS.DesiredAngle = 0;
+				LeftS.DesiredAngle = 0;
+				LeftH.DesiredAngle = 0;
+				RightH.DesiredAngle = 0;
+			end
+			function ManageAnimation(value)
+				Holder = speaker.Character;
+				Player = speaker;
+				if (value == "no anim") then
+					Anim = Holder:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = true;
+						Anim.Parent = Player;
+					end
+				elseif (value == "re-anim") then
+					Anim = Player:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = false;
+						Anim.Parent = Holder;
+					end
+				end
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			function Flip2()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				Char = speaker.Character;
+				Human = Character.Humanoid;
+				Torso = Character.Torso;
+				CF = Torso.CFrame;
+				Human.PlatformStand = true;
+				VelUp = Instance.new("BodyVelocity");
+				VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
+				VelUp.P = VelUp.P * 2;
+				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
+				VelUp.Parent = Torso;
+				coroutine.resume(coroutine.create(Down), VelUp);
+				Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				Gyro.cframe = CF;
+				Gyro.Parent = Torso;
+				for i = 2, 28 do
+					Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -16, 0, 0);
+					wait();
+				end
+				Gyro.cframe = CF;
+				wait();
+				Gyro:Remove();
+				Human.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while Flipping do
+				wait();
+				Flip2();
+			end
+		else
+			Flipping = true;
+			local speaker = game.Players.LocalPlayer;
+			local pl = speaker;
+			local me = pl.Character;
+			local xl = me:WaitForChild("RightUpperArm");
+			local debounce = false;
+			function _restoreproperties()
+				local Holder = speaker.Character;
+				local Torso = Holder:FindFirstChild("UpperTorso");
+				local RightS = Torso:FindFirstChild("Right Shoulder") or Holder:FindFirstChild("RightShoulder");
+				local LeftS = Torso:FindFirstChild("Left Shoulder") or Holder:FindFirstChild("LeftShoulder");
+				local RightH = Torso:FindFirstChild("Right Hip") or Holder:FindFirstChild("RightHip");
+				local LeftH = Torso:FindFirstChild("Left Hip") or Holder:FindFirstChild("LeftHip");
+				if (Torso and RightS and LeftS and RightH and LeftH) then
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+			end
+			function ManageAnimation(value)
+				local Holder = speaker.Character;
+				local Player = speaker;
+				if (value == "no anim") then
+					local Anim = Holder:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = true;
+						Anim.Parent = Player;
+					end
+				elseif (value == "re-anim") then
+					local Anim = Player:FindFirstChild("Animate");
+					if (Anim ~= nil) then
+						Anim.Disabled = false;
+						Anim.Parent = Holder;
+					end
+				end
+			end
+			function Down(ml)
+				for i = 1, ml.Velocity.y / 3 do
+					ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Destroy();
+			end
+			function Flip2()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Char = speaker.Character;
+				local Human = Character.Humanoid;
+				local Torso = Char:FindFirstChild("UpperTorso");
+				if Torso then
+					local CF = Torso.CFrame;
+					Human.PlatformStand = true;
+					local VelUp = Instance.new("BodyVelocity");
+					VelUp.Velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.LookVector * 26);
+					VelUp.P = VelUp.P * 2;
+					VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+					VelUp.Parent = Torso;
+					coroutine.resume(coroutine.create(Down), VelUp);
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.CFrame = CF;
+					Gyro.Parent = Torso;
+					for i = 2, 28 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0);
+						wait();
+					end
+					Gyro.CFrame = CF;
+					wait();
+					Gyro:Destroy();
+					Human.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+			end
+			while Flipping do
+				wait();
+				Flip2();
+			end
+		end
+	end
+	if not flippa then
+		Flipping = false;
+	end
+end});
+doubleFlipping = false;
+Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Double Flip",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		doubleflippa = Value;
+		if doubleflippa then
+			if not r15(speaker) then
+				doubleFlipping = true;
+				pl = speaker;
+				me = pl.Character;
+				xl = me.Torso["Right Shoulder"];
+				local debounce = false;
+				function _restoreproperties()
+					Holder = speaker.Character;
+					Torso = Holder:FindFirstChild("Torso");
+					RightS = Torso:FindFirstChild("Right Shoulder");
+					LeftS = Torso:FindFirstChild("Left Shoulder");
+					RightH = Torso:FindFirstChild("Right Hip");
+					LeftH = Torso:FindFirstChild("Left Hip");
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+				function ManageAnimation(value)
+					Holder = speaker.Character;
+					Player = speaker;
+					if (value == "no anim") then
+						Anim = Holder:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = true;
+							Anim.Parent = Player;
+						end
+					elseif (value == "re-anim") then
+						Anim = Player:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = false;
+							Anim.Parent = Holder;
+						end
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip3()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					Char = speaker.Character;
+					Human = Character.Humanoid;
+					Torso = Character.Torso;
+					CF = Torso.CFrame;
+					Human.PlatformStand = true;
+					VelUp = Instance.new("BodyVelocity");
+					VelUp.velocity = Vector3.new(0, 60, 0) + (Torso.CFrame.lookVector * 26);
+					VelUp.P = VelUp.P * 2;
+					VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
+					VelUp.Parent = Torso;
+					coroutine.resume(coroutine.create(Down), VelUp);
+					Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.cframe = CF;
+					Gyro.Parent = Torso;
+					for i = 2, 28 do
+						Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
+						wait();
+					end
+					Gyro.cframe = CF;
+					wait();
+					Gyro:Remove();
+					Human.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+				while doubleFlipping do
+					wait();
+					Flip3();
+				end
+			else
+				doubleFlipping = true;
+				local speaker = game.Players.LocalPlayer;
+				local debounce = false;
+				function _restoreproperties()
+					local Holder = speaker.Character;
+					local UpperTorso = Holder:FindFirstChild("UpperTorso");
+					local RightShoulder = Holder:FindFirstChild("RightShoulder");
+					local LeftShoulder = Holder:FindFirstChild("LeftShoulder");
+					local RightHip = Holder:FindFirstChild("RightHip");
+					local LeftHip = Holder:FindFirstChild("LeftHip");
+					if (UpperTorso and RightShoulder and LeftShoulder and RightHip and LeftHip) then
+						RightShoulder.MaxVelocity = 0.15;
+						LeftShoulder.MaxVelocity = 0.15;
+						RightHip.MaxVelocity = 0.1;
+						LeftHip.MaxVelocity = 0.1;
+						RightShoulder.DesiredAngle = 0;
+						LeftShoulder.DesiredAngle = 0;
+						LeftHip.DesiredAngle = 0;
+						RightHip.DesiredAngle = 0;
+					end
+				end
+				function ManageAnimation(value)
+					local Holder = speaker.Character;
+					local Player = speaker;
+					if (value == "no anim") then
+						local Anim = Holder:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = true;
+							Anim.Parent = Player;
+						end
+					elseif (value == "re-anim") then
+						local Anim = Player:FindFirstChild("Animate");
+						if (Anim ~= nil) then
+							Anim.Disabled = false;
+							Anim.Parent = Holder;
+						end
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.Velocity.Y / 3 do
+						ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Destroy();
+				end
+				function Flip3()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Char = speaker.Character;
+					local Human = Character.Humanoid;
+					local Torso = Char:FindFirstChild("UpperTorso");
+					if Torso then
+						local CF = Torso.CFrame;
+						Human.PlatformStand = true;
+						local VelUp = Instance.new("BodyVelocity");
+						VelUp.Velocity = Vector3.new(0, 80, 0) + (Torso.CFrame.LookVector * 35);
+						VelUp.P = VelUp.P * 2;
+						VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+						VelUp.Parent = Torso;
+						coroutine.resume(coroutine.create(Down), VelUp);
+						local Gyro = Instance.new("BodyGyro");
+						Gyro.P = Gyro.P * 10;
+						Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+						Gyro.CFrame = CF;
+						Gyro.Parent = Torso;
+						for i = 2, 20 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0);
+							wait();
+						end
+						Gyro.CFrame = CF;
+						wait();
+						Gyro:Destroy();
+						Human.PlatformStand = false;
+						_restoreproperties();
+						debounce = false;
+					end
+				end
+				while doubleFlipping do
+					wait();
+					Flip3();
+				end
+			end
+		end
+		if not doubleflippa then
+			doubleFlipping = false;
+		end
+	end);
+end});
+cwFlipping = false;
+Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Cart Wheel",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		cartwheeling = Value;
+		if cartwheeling then
+			if not r15(speaker) then
+				cwFlipping = true;
+				function _restoreproperties()
+					Torso = speaker.Character:FindFirstChild("Torso");
+					RightS = Torso:FindFirstChild("Right Shoulder");
+					LeftS = Torso:FindFirstChild("Left Shoulder");
+					RightH = Torso:FindFirstChild("Right Hip");
+					LeftH = Torso:FindFirstChild("Left Hip");
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
+					Gyro.Parent = speaker.Character.Torso;
+					for i = 0, 50 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
+						wait();
+					end
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
+					wait();
+					Gyro:Remove();
+					speaker.Character.Humanoid.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+				while cwFlipping do
+					wait();
+					Flip();
+				end
+			else
+				cwFlipping = true;
+				function _restoreproperties()
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					local RightS = Torso:FindFirstChild("Right Shoulder");
+					local LeftS = Torso:FindFirstChild("Left Shoulder");
+					local RightH = Torso:FindFirstChild("Right Hip");
+					local LeftH = Torso:FindFirstChild("Left Hip");
+					if (Torso and RightS and LeftS and RightH and LeftH) then
+						RightS.MaxVelocity = 0.15;
+						LeftS.MaxVelocity = 0.15;
+						RightH.MaxVelocity = 0.1;
+						LeftH.MaxVelocity = 0.1;
+						RightS.DesiredAngle = 0;
+						LeftS.DesiredAngle = 0;
+						LeftH.DesiredAngle = 0;
+						RightH.DesiredAngle = 0;
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					if Torso then
+						Gyro.CFrame = Torso.CFrame;
+						Gyro.Parent = Torso;
+						for i = 0, 50 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-7), 0, 0);
+							wait();
+						end
+						Gyro.CFrame = Torso.CFrame;
+						wait();
+						Gyro:Remove();
+						speaker.Character.Humanoid.PlatformStand = false;
+						_restoreproperties();
+						debounce = false;
+					end
+				end
+				while cwFlipping do
+					wait();
+					Flip();
+				end
+			end
+		end
+		if not cartwheeling then
+			cwFlipping = false;
+		end
+	end);
+end});
+StarRoll = false;
+Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Star Roll",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		starrolling = Value;
+		if starrolling then
+			if not r15(speaker) then
+				StarRoll = true;
+				function _restoreproperties()
+					Torso = speaker.Character:FindFirstChild("Torso");
+					RightS = Torso:FindFirstChild("Right Shoulder");
+					LeftS = Torso:FindFirstChild("Left Shoulder");
+					RightH = Torso:FindFirstChild("Right Hip");
+					LeftH = Torso:FindFirstChild("Left Hip");
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
+					Gyro.Parent = speaker.Character.Torso;
+					for i = 0, 50 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / -29);
+						wait();
+					end
+					Gyro.CFrame = speaker.Character.Torso.CFrame;
+					wait();
+					Gyro:Remove();
+					speaker.Character.Humanoid.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+				while StarRoll do
+					wait();
+					Flip();
+				end
+			else
+				StarRoll = true;
+				function _restoreproperties()
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					local RightS = Torso:FindFirstChild("Right Shoulder");
+					local LeftS = Torso:FindFirstChild("Left Shoulder");
+					local RightH = Torso:FindFirstChild("Right Hip");
+					local LeftH = Torso:FindFirstChild("Left Hip");
+					if (Torso and RightS and LeftS and RightH and LeftH) then
+						RightS.MaxVelocity = 0.15;
+						LeftS.MaxVelocity = 0.15;
+						RightH.MaxVelocity = 0.1;
+						LeftH.MaxVelocity = 0.1;
+						RightS.DesiredAngle = 0;
+						LeftS.DesiredAngle = 0;
+						LeftH.DesiredAngle = 0;
+						RightH.DesiredAngle = 0;
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+						wait();
+					end
+					ml:Remove();
+				end
+				function Flip()
+					if (debounce == true) then
+						return;
+					end
+					debounce = true;
+					local Gyro = Instance.new("BodyGyro");
+					Gyro.P = Gyro.P * 10;
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+					if Torso then
+						Gyro.CFrame = Torso.CFrame;
+						Gyro.Parent = Torso;
+						for i = 0, 50 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, 0, math.rad(-7));
+							wait();
+						end
+						Gyro.CFrame = Torso.CFrame;
+						wait();
+						Gyro:Remove();
+						speaker.Character.Humanoid.PlatformStand = false;
+						_restoreproperties();
+						debounce = false;
+					end
+				end
+				while StarRoll do
+					wait();
+					Flip();
+				end
+			end
+		end
+		if not starrolling then
+			StarRoll = false;
+		end
+	end);
+end});
+BarrelRoll = false;
+Looproll = false;
+Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
+	barrelrolling = Value;
+	if barrelrolling then
+		if not r15(speaker) then
+			BarrelRoll = true;
+			function _restoreproperties()
+				Torso = speaker.Character:FindFirstChild("Torso");
+				RightS = Torso:FindFirstChild("Right Shoulder");
+				LeftS = Torso:FindFirstChild("Left Shoulder");
+				RightH = Torso:FindFirstChild("Right Hip");
+				LeftH = Torso:FindFirstChild("Left Hip");
+				RightS.MaxVelocity = 0.15;
+				LeftS.MaxVelocity = 0.15;
+				RightH.MaxVelocity = 0.1;
+				LeftH.MaxVelocity = 0.1;
+				RightS.DesiredAngle = 0;
+				LeftS.DesiredAngle = 0;
+				LeftH.DesiredAngle = 0;
+				RightH.DesiredAngle = 0;
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			Looproll = true;
+			function Flip()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.maxTorque = Vector3.new(99999997952, 99999997952, 99999997952) * 8999999488;
+				Gyro.CFrame = speaker.Character.Torso.CFrame;
+				Gyro.Parent = speaker.Character.Torso;
+				local initialCFrame = speaker.Character.Torso.CFrame;
+				Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
+				while Looproll do
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0);
+					wait();
+				end
+				Gyro.CFrame = speaker.Character.Torso.CFrame;
+				wait();
+				Gyro:Remove();
+				speaker.Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while BarrelRoll do
+				wait();
+				Flip();
+			end
+		else
+			BarrelRoll = true;
+			function _restoreproperties()
+				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+				local RightS = Torso:FindFirstChild("Right Shoulder");
+				local LeftS = Torso:FindFirstChild("Left Shoulder");
+				local RightH = Torso:FindFirstChild("Right Hip");
+				local LeftH = Torso:FindFirstChild("Left Hip");
+				if (Torso and RightS and LeftS and RightH and LeftH) then
+					RightS.MaxVelocity = 0.15;
+					LeftS.MaxVelocity = 0.15;
+					RightH.MaxVelocity = 0.1;
+					LeftH.MaxVelocity = 0.1;
+					RightS.DesiredAngle = 0;
+					LeftS.DesiredAngle = 0;
+					LeftH.DesiredAngle = 0;
+					RightH.DesiredAngle = 0;
+				end
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					wait();
+				end
+				ml:Remove();
+			end
+			Looproll = true;
+			function Flip()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso");
+				if Torso then
+					Gyro.CFrame = Torso.CFrame;
+					Gyro.Parent = Torso;
+					local initialCFrame = Torso.CFrame;
+					Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
+					while Looproll do
+						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, math.rad(-9), 0);
+						wait();
+					end
+					Gyro.CFrame = Torso.CFrame;
+					wait();
+					Gyro:Remove();
+					speaker.Character.Humanoid.PlatformStand = false;
+					_restoreproperties();
+					debounce = false;
+				end
+			end
+			while BarrelRoll do
+				wait();
+				Flip();
+			end
+		end
+	end
+	if not barrelrolling then
+		BarrelRoll = false;
+		Looproll = false;
+	end
+end});
+Sectionspin = Misc:CreateSection("FE LocalPlayer Related | Spin", false, false, 9134761478);
 spinSpeed = 20;
-Togglespinner = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Spin",CurrentValue=false,Callback=function(Value, args)
+Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",CurrentValue=false,Callback=function(Value, args)
 	pcall(function()
 		spinner = Value;
 		if spinner then
@@ -4187,12 +4189,12 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Spin",Curre
 		end
 	end);
 end});
-Sliderspinspeed = Misc:CreateSlider({SectionParent=Sectionlprtog,Name="Spin Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
+Sliderspinspeed = Misc:CreateSlider({SectionParent=Sectionspin,Name="Spin Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
 	end);
 end});
-Inputspinspeed = Misc:CreateInput({SectionParent=Sectionlprtog,Name="Spin Speed",PlaceholderText=20,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputspinspeed = Misc:CreateInput({SectionParent=Sectionspin,Name="Spin Speed",PlaceholderText=20,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	spinSpeed = Text;
 end});
 Sectionlpsliderinputloops = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input Loop's", false, true, 10686489468);
