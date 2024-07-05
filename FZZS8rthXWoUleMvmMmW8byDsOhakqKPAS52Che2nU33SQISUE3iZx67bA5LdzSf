@@ -4166,7 +4166,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 end});
 Sectionspin = Misc:CreateSection("FE LocalPlayer Related | Spin", false, false, 9134761478);
 spinSpeed = 20;
-Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",CurrentValue=false,Callback=function(Value, args)
+Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		spinner = Value;
 		if spinner then
