@@ -2858,7 +2858,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468);
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
+Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
 	upsidedown = Value;
 	if upsidedown then
 		if not r15(speaker) then
@@ -8335,6 +8335,7 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Togglelightclient:Set(false);
 		Sliderfov:Set(70);
 		Togglefreezecurrentanims:Set(false);
+		Toggleupsidedown:Set(false);
 		edance1Slider:Set(1);
 		edance2Slider:Set(1);
 		edance3Slider:Set(1);
