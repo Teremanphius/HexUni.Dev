@@ -2112,68 +2112,6 @@ Inputvehicleflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Vehi
 	vehicleflyspeed = Text;
 end});
 Sectionplayerealtefunc = Misc:CreateSection("FE LocalPlayer Related | Function's & Keybind's", false, false, 10686489468);
-Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Upside Down Character",Interact="Click",Callback=function()
-	pcall(function()
-		if not r15(speaker) then
-			effecttrue();
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
-			c = Character;
-			hrp0 = c:FindFirstChild("HumanoidRootPart");
-			hrp1 = hrp0:Clone();
-			c.Parent = nil;
-			hrp0.Parent = hrp1;
-			hrp0.RootJoint.Part0 = nil;
-			hrp1.Parent = c;
-			c.Parent = workspace;
-			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-			h = game:GetService("RunService").Heartbeat;
-			hrp0.Transparency = 0.85;
-			hrp0.Material = Enum.Material.ForceField;
-			hrp0.Color = Color3.fromRGB(25, 25, 25);
-			while h:Wait() and c and c.Parent do
-				hrp0.CFrame = hrp1.CFrame;
-				hrp0.Orientation += Vector3.new(0, 0, 180)
-				hrp0.Position -= Vector3.new(0, 0, 0)
-				hrp0.Velocity = hrp1.Velocity;
-			end
-		else
-			local Players = game:GetService("Players");
-			local RunService = game:GetService("RunService");
-			local LocalPlayer = Players.LocalPlayer;
-			local Character = LocalPlayer.Character;
-			local c = Character;
-			local function setupCharacter()
-				local hrp0 = c:FindFirstChild("HumanoidRootPart");
-				if hrp0 then
-					local hrp1 = hrp0:Clone();
-					c.Parent = nil;
-					hrp0.Parent = hrp1;
-					hrp1.Parent = c;
-					c.Parent = workspace;
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1, 0);
-					hrp0.Transparency = 0.85;
-					hrp0.Material = Enum.Material.ForceField;
-					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 1, 0)
-							hrp0.Velocity = hrp1.Velocity;
-						end
-					end);
-				end
-			end
-			setupCharacter();
-			Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char;
-				setupCharacter();
-			end);
-			effecttrue();
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
-		end
-	end);
-end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Break Velocity",Interact="Click",Callback=function()
 	breakvelocity();
 	effecttrue();
@@ -2920,6 +2858,71 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468);
+Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
+	upsidedown = Value;
+	if upsidedown then
+		if not r15(speaker) then
+			effecttrue();
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
+			c = Character;
+			hrp0 = c:FindFirstChild("HumanoidRootPart");
+			hrp1 = hrp0:Clone();
+			c.Parent = nil;
+			hrp0.Parent = hrp1;
+			hrp0.RootJoint.Part0 = nil;
+			hrp1.Parent = c;
+			c.Parent = workspace;
+			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+			h = game:GetService("RunService").Heartbeat;
+			hrp0.Transparency = 0.85;
+			hrp0.Material = Enum.Material.ForceField;
+			hrp0.Color = Color3.fromRGB(25, 25, 25);
+			while h:Wait() and c and c.Parent do
+				hrp0.CFrame = hrp1.CFrame;
+				hrp0.Orientation += Vector3.new(0, 0, 180)
+				hrp0.Position -= Vector3.new(0, 0, 0)
+				hrp0.Velocity = hrp1.Velocity;
+			end
+		else
+			local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
+				local hrp0 = c:FindFirstChild("HumanoidRootPart");
+				if hrp0 then
+					local hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1, 0);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 1, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
+				end
+			end
+			setupCharacter();
+			Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+			end);
+			effecttrue();
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
+	end
+	if not upsidedown then
+		charresettopos()
+	end
+end});
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
 	freezeyourself = Value;
 	if freezeyourself then
