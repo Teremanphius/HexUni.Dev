@@ -2918,6 +2918,7 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 			end);
 			effecttrue();
 			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
+		end
 	end
 	if not upsidedown then
 		charresettopos()
