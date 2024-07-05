@@ -2921,9 +2921,16 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 		end
 	end
 	if not upsidedown then
-		charresettopos()
+		if (speaker.Character and speaker.Character:FindFirstChild("Humanoid")) then
+			speaker.Character.Humanoid.Health = 0;
+		end
 	end
 end});
+ifuserdieda = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+	pcall(function()
+		Toggleupsidedown:Set(false);
+	end);
+end);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
 	freezeyourself = Value;
 	if freezeyourself then
@@ -8336,7 +8343,6 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Togglelightclient:Set(false);
 		Sliderfov:Set(70);
 		Togglefreezecurrentanims:Set(false);
-		Toggleupsidedown:Set(false);
 		edance1Slider:Set(1);
 		edance2Slider:Set(1);
 		edance3Slider:Set(1);
