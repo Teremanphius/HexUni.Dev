@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "177";
+Scriptcount = "179";
 ScriptcountAnim = "66";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -199,19 +199,20 @@ function CheckTime()
 	end
 end
 CheckTime();
-local playerAddedConnection;
+local playerAddedConnection
 local function onPlayerAdded(Player)
-	if Player:IsFriendsWith(speaker.UserId) then
-		pcall(function()
-			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")});
-			effectfriendjoin();
-		end);
-	end
+    if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+        pcall(function()
+            NSUI:Notify({Title = (Player.Name .. " Joined!"),Content = (Player.Name .. " (Your Friend) Has Joined The Server."),Duration = 6,Image = NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")})
+            effectfriendjoin()
+        end)
+		wait(5)
+        playerAddedConnection:Disconnect()
+        wait(1)
+        playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded)
+    end
 end
-if playerAddedConnection then
-	playerAddedConnection:Disconnect();
-end
-playerAddedConnection = speakers.PlayerAdded:Connect(onPlayerAdded);
+playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded)
 QEfly = false;
 flying = false;
 flyysspeed = 3;
@@ -777,7 +778,42 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 					notifyyw("Now Annoying", "Annoying " .. annoyfoundPlr.Name, 2, 10709790644);
 					while Annoy do
 						speaker.Character.HumanoidRootPart.CFrame = annoyfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
-						wait();
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+	end);
+end});
+local StandOnHead = false;
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		plrName = Text;
+		StandFoundPlr = getPlr(plrName);
+		if StandFoundPlr then
+			if (StandFoundPlr.Character and StandFoundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((StandOnHead == true) or (StandFoundPlr == speaker)) then
+					StandOnHead = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. StandFoundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					StandOnHead = true;
+					effecttrue();
+					notifyyw("Now Standing", "Standing On " .. StandFoundPlr.Name, 2, 10709790644);
+					while StandOnHead do
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -824,7 +860,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 					effecttrue();
 					while Follow do
 						speaker.Character.HumanoidRootPart.CFrame = folloawafoundplr.Character.HumanoidRootPart.CFrame + (folloawafoundplr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
-						wait();
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -874,12 +911,13 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave /
 					while LoopHello do
 						if speaker.Character and foundPlr.Character then
 							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						end
 						if trueforanim then
 							Waver:Play(0.1, 10, 1)
 							wait(1.8)
 						end
-						wait()
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -917,7 +955,8 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 						notifyyw("Now Carpeting", "Carpeting " .. carpetfoundPlr.Name, 2, 10709790644);
 						while Carpettion do
 							speaker.Character.HumanoidRootPart.CFrame = carpetfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
-							wait();
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
 				else
@@ -957,7 +996,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",Place
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						speaker.Character.HumanoidRootPart.CFrame = (bangv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(Vector3.new(0, 0, xOffset))) + (bangv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						wait();
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -1011,7 +1050,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",
 					while Bang do
 						speaker.Character.HumanoidRootPart.CFrame = bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame + (bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						wait();
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -1080,7 +1119,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 						hrp0.Orientation += Vector3.new(0, 0, 180)
 						hrp0.Position -= Vector3.new(0, 0, 0)
 						hrp0.Velocity = hrp1.Velocity;
-						wait();
+						game:GetService("RunService").RenderStepped:Wait();
 					end
 				else
 					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1142,7 +1181,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",Placeho
 				while Bang69 do
 					speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					wait();
+					game:GetService("RunService").RenderStepped:Wait();
 				end
 			else
 				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
@@ -1212,7 +1251,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 							hrp0.Orientation += Vector3.new(0, 0, 180)
 							hrp0.Position -= Vector3.new(0, 0, 0)
 							hrp0.Velocity = hrp1.Velocity;
-							wait();
+							game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
 				else
@@ -1268,7 +1307,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",Pl
 					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
 					speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					wait();
+					game:GetService("RunService").RenderStepped:Wait();
 				end
 			end
 		else
@@ -1312,7 +1351,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Faceba
 						xOffset = amplitudeofbangface * math.sin(2 * math.pi * frequencyofbangface * time);
 						speaker.Character.HumanoidRootPart.CFrame = facebangv1foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						wait();
+					game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -1356,7 +1395,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Faceban
 						Character.Humanoid.Sit = true;
 						speaker.Character.HumanoidRootPart.CFrame = facebangfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						wait();
+					game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
 			else
@@ -1396,7 +1435,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 						while ffhugger do
 							speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							wait();
+					game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
 				else
@@ -1424,7 +1463,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 				while ffhugger do
 					speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					wait();
+					game:GetService("RunService").RenderStepped:Wait();
 				end
 			end
 		else
@@ -1461,7 +1500,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Faceba
 				while ff2 do
 					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					wait();
+					game:GetService("RunService").RenderStepped:Wait();
 				end
 			end
 		else
@@ -1551,26 +1590,60 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",P
 		end
 	end);
 end});
-local pb = false;
+local headsits = false;
 Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		headsitfoundPlr = getPlr(plrName);
 		if headsitfoundPlr then
 			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((pb == true) or (headsitfoundPlr == speaker)) then
-					pb = false;
+				if ((headsits == true) or (headsitfoundPlr == speaker)) then
+					headsits = false;
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. headsitfoundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
-					pb = true;
+					headsits = true;
 					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 2, 10709790644);
 					effecttrue();
-					while pb do
+					while headsits do
 						speaker.Character.Humanoid.Sit = true;
 						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+	end);
+end});
+local ActualHeadsit = false;
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		plrName = Text;
+		headsitfoundPlr = getPlr(plrName);
+		if headsitfoundPlr then
+			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ActualHeadsit == true) or (headsitfoundPlr == speaker)) then
+					ActualHeadsit = false;
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. headsitfoundPlr.Name .. " Anymore", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					ActualHeadsit = true;
+					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 2, 10709790644);
+					effecttrue();
+					while ActualHeadsit do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
