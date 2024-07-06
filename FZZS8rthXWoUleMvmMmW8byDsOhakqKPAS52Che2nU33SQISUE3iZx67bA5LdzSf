@@ -863,7 +863,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave /
 					if not r15(speaker) then
 						WaveAnim.AnimationId = "rbxassetid://128777973";
 					else
-						WaveAnim.AnimationId = "rbxassetid://5918726674";
+						WaveAnim.AnimationId = "rbxassetid://507770239";
 					end
 					Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim);
 					WaverDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
