@@ -100,7 +100,7 @@ function breakvelocity()
 				v.Velocity, v.RotVelocity = V3, V3;
 			end
 		end
-		wait();
+		task.wait()
 	end
 end
 function getTorso(x)
@@ -220,10 +220,10 @@ vehicleflyspeed = 3;
 flykeybind = "";
 function sFLY(vfly)
 	repeat
-		wait();
+		task.wait()
 	until speakers.LocalPlayer and speaker.Character and getRoot(speaker.Character) and speaker.Character:FindFirstChildOfClass("Humanoid") 
 	repeat
-		wait();
+		task.wait()
 	until JMouse 
 	if (flyKeyDown or flyKeyUp) then
 		flyKeyDown:Disconnect();
@@ -246,7 +246,7 @@ function sFLY(vfly)
 		BV.maxForce = Vector3.one * 8999999488;
 		task.spawn(function()
 			repeat
-				wait();
+				task.wait()
 				if (not vfly and speaker.Character:FindFirstChildOfClass("Humanoid")) then
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 				end
@@ -533,7 +533,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 		speaker.Character.Humanoid:SetStateEnabled(1, false);
 		speaker.Character.Humanoid:SetStateEnabled(0, false);
 		_G.connections['nofall'] = speaker.CharacterAdded:Connect(function(char)
-			wait();
+			task.wait()
 			Character.Humanoid:SetStateEnabled(1, false);
 			Character.Humanoid:SetStateEnabled(0, false);
 		end);
@@ -1992,7 +1992,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 			moveToMouse = true;
 			local bpNew = Instance.new("BodyPosition", speaker.Character.HumanoidRootPart);
 			while moveToMouse do
-				wait();
+				task.wait()
 				local mousePosY = JMouse.Hit.Y;
 				local mousePosX = JMouse.Hit.X;
 				local mousePosZ = JMouse.Hit.Z;
@@ -2042,7 +2042,7 @@ end});
 Buttoncframefly = Misc:CreateButton({SectionParent=Sectionflights,Name="CFrame Fly",Interact="Click",Callback=function()
 	pcall(function()
 		NSUI:Notify({Title="Wait..",Content="Loading...",Duration=3,Image=7733715400});
-		wait(3);
+		task.wait(3)
 		Buttoncframefly:Set("CFrame Fly (Exed)");
 		effecttrue();
 		if (cframeflykeybind == "") then
@@ -2051,7 +2051,7 @@ Buttoncframefly = Misc:CreateButton({SectionParent=Sectionflights,Name="CFrame F
 			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
-			wait();
+			task.wait()
 		until JMouse 
 		togcfly = false;
 		JMouse.KeyDown:connect(function(key)
@@ -2318,7 +2318,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	Script = Character.FindFirstChild(Char, "Animate");
 	if Script then
 		Script.Disabled = true;
-		wait();
+		task.wait()
 		Script.Disabled = false;
 	end
 	nHuman.Health = nHuman.MaxHealth;
@@ -2349,7 +2349,7 @@ Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name
 			Script = Character.FindFirstChild(Char, "Animate");
 			if Script then
 				Script.Disabled = true;
-				wait();
+				task.wait()
 				Script.Disabled = false;
 			end
 			nHuman.Health = nHuman.MaxHealth;
@@ -2422,7 +2422,7 @@ Buttonnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="NoClip",Inte
 			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
-			wait();
+			task.wait()
 		until JMouse 
 		JMouse.KeyDown:connect(function(key)
 			if (key:lower() == noclippkeybind) then
@@ -2489,7 +2489,7 @@ Buttonvnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Vehicle NoC
 			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 		end
 		repeat
-			wait();
+			task.wait()
 		until JMouse 
 		JMouse.KeyDown:connect(function(key)
 			if (key:lower() == vehiclenoclippkeybind) then
@@ -2535,7 +2535,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			invisRunning = true;
 			local Player = speaker;
 			repeat
-				wait(0.1);
+				task.wait(0.1)
 			until Player.Character 
 			local Character = Player.Character;
 			Character.Archivable = true;
@@ -2586,7 +2586,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 				if (IsInvis == true) then
 					pcall(function()
 						Player.Character = Character;
-						wait();
+						task.wait()
 						Character.Parent = workspace;
 						Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
 						IsInvis = false;
@@ -2596,7 +2596,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 				elseif (IsInvis == false) then
 					pcall(function()
 						Player.Character = Character;
-						wait();
+						task.wait()
 						Character.Parent = workspace;
 						Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
 						TurnVisible();
@@ -2616,7 +2616,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			local CF_1 = Player.Character.HumanoidRootPart.CFrame;
 			Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
 			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
-			wait(0.2);
+			task.wait(0.2);
 			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
 			InvisibleCharacter = InvisibleCharacter;
 			Character.Parent = Lighting;
@@ -2624,9 +2624,9 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 			InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
 			Player.Character = InvisibleCharacter;
 			workspace.CurrentCamera:remove();
-			wait(0.1);
+			task.wait(0.1)
 			repeat
-				wait();
+				task.wait()
 			until speaker.Character ~= nil 
 			workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
 			workspace.CurrentCamera.CameraType = "Custom";
@@ -2673,7 +2673,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
 	end
 	repeat
-		wait();
+		task.wait()
 	until JMouse 
 	toginvis = false;
 	JMouse.KeyDown:connect(function(key)
@@ -2685,7 +2685,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				toginvis = true;
 				local Player = speaker;
 				repeat
-					wait(0.1);
+					task.wait(0.1)
 				until Player.Character 
 				local Character = Player.Character;
 				Character.Archivable = true;
@@ -2736,7 +2736,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 					if (IsInvis == true) then
 						pcall(function()
 							Player.Character = Character;
-							wait();
+							task.wait()
 							Character.Parent = workspace;
 							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
 							IsInvis = false;
@@ -2745,7 +2745,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 					elseif (IsInvis == false) then
 						pcall(function()
 							Player.Character = Character;
-							wait();
+							task.wait()
 							Character.Parent = workspace;
 							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
 							TurnVisible();
@@ -2765,7 +2765,7 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				local CF_1 = Player.Character.HumanoidRootPart.CFrame;
 				Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
 				workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
-				wait(0.2);
+				task.wait(0.2)
 				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
 				InvisibleCharacter = InvisibleCharacter;
 				Character.Parent = Lighting;
@@ -2773,9 +2773,9 @@ Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible"
 				InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
 				Player.Character = InvisibleCharacter;
 				workspace.CurrentCamera:remove();
-				wait(0.1);
+				task.wait(0.1)
 				repeat
-					wait();
+					task.wait()
 				until speaker.Character ~= nil 
 				workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
 				workspace.CurrentCamera.CameraType = "Custom";
@@ -2837,7 +2837,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 	tool.RequiresHandle = false;
 	tool.CanBeDropped = false;
 	tool.Equipped:Connect(function()
-		wait();
+		task.wait()
 		if not invisible then
 			invisible = true;
 			tool.Name = "Ghostify [Enabled]";
@@ -2896,7 +2896,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 		tool.Parent = Backpack;
 	end);
 	Character.ChildAdded:Connect(function(child)
-		wait();
+		task.wait()
 		if (invisible and child:IsA("Tool") and (child ~= heldTool) and (child ~= tool)) then
 			heldTool = child;
 			lastGrip = heldTool.Grip;
@@ -2914,7 +2914,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 				gripChanged:Disconnect();
 			end
 			gripChanged = heldTool:GetPropertyChangedSignal("Grip"):Connect(function()
-				wait();
+				task.wait()
 				if not invisible then
 					gripChanged:Disconnect();
 				end
@@ -3057,7 +3057,7 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 				if not infJumpDebounce then
 					infJumpDebounce = true;
 					speaker.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping);
-					wait();
+					task.wait()
 					infJumpDebounce = false;
 				end
 			end);
@@ -3080,13 +3080,13 @@ Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",C
 						v.Anchored = true;
 					end
 				end
-				wait(0.1);
+				task.wait(0.1)
 				for i, v in pairs(speaker.Character:GetChildren()) do
 					if v:IsA("BasePart") then
 						v.Anchored = false;
 					end
 				end
-				wait(0.1);
+				task.wait(0.1)
 			end
 		end
 		if not Fakelag then
@@ -3253,7 +3253,7 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",C
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Remove();
 			end
@@ -3273,17 +3273,17 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",C
 				Gyro.Parent = Character.Torso;
 				for i = 1, 16 do
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 9, math.pi / -18, 0);
-					wait();
+					task.wait()
 				end
 				Gyro.CFrame = Character.Torso.CFrame;
-				wait();
+				task.wait()
 				Gyro:Remove();
 				Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while seizureFlipping do
-				wait();
+				task.wait()
 				Flip5();
 			end
 		else
@@ -3312,7 +3312,7 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",C
 			local function Down(ml)
 				for i = 1, ml.Velocity.Y / 3 do
 					ml.Velocity = ml.Velocity + Vector3.new(0, -0.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Destroy();
 			end
@@ -3337,17 +3337,17 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",C
 					local randomRotationY = math.random(-math.pi, math.pi) / 9;
 					local randomRotationZ = math.random(-math.pi, math.pi) / 9;
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(randomRotationX, randomRotationY, randomRotationZ);
-					wait();
+					task.wait()
 				end
 				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
-				wait();
+				task.wait()
 				Gyro:Destroy();
 				Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while seizureFlipping do
-				wait();
+				task.wait()
 				Flip5();
 			end
 		end
@@ -3641,7 +3641,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Remove();
 			end
@@ -3668,17 +3668,17 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 				Gyro.Parent = Torso;
 				for i = 2, 28 do
 					Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -16, 0, 0);
-					wait();
+					task.wait()
 				end
 				Gyro.cframe = CF;
-				wait();
+				task.wait()
 				Gyro:Remove();
 				Human.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while Flipping do
-				wait();
+				task.wait()
 				Flip2();
 			end
 		else
@@ -3726,7 +3726,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 			function Down(ml)
 				for i = 1, ml.Velocity.y / 3 do
 					ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Destroy();
 			end
@@ -3754,10 +3754,10 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 					Gyro.Parent = Torso;
 					for i = 2, 28 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0);
-						wait();
+						task.wait()
 					end
 					Gyro.CFrame = CF;
-					wait();
+					task.wait()
 					Gyro:Destroy();
 					Human.PlatformStand = false;
 					_restoreproperties();
@@ -3765,7 +3765,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 				end
 			end
 			while Flipping do
-				wait();
+				task.wait()
 				Flip2();
 			end
 		end
@@ -3821,7 +3821,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Remove();
 				end
@@ -3848,17 +3848,17 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 					Gyro.Parent = Torso;
 					for i = 2, 28 do
 						Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
-						wait();
+						task.wait()
 					end
 					Gyro.cframe = CF;
-					wait();
+					task.wait()
 					Gyro:Remove();
 					Human.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while doubleFlipping do
-					wait();
+					task.wait()
 					Flip3();
 				end
 			else
@@ -3903,7 +3903,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 				function Down(ml)
 					for i = 1, ml.Velocity.Y / 3 do
 						ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Destroy();
 				end
@@ -3931,10 +3931,10 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 						Gyro.Parent = Torso;
 						for i = 2, 20 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0);
-							wait();
+							task.wait()
 						end
 						Gyro.CFrame = CF;
-						wait();
+						task.wait()
 						Gyro:Destroy();
 						Human.PlatformStand = false;
 						_restoreproperties();
@@ -3942,7 +3942,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 					end
 				end
 				while doubleFlipping do
-					wait();
+					task.wait()
 					Flip3();
 				end
 			end
@@ -3977,7 +3977,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Remove();
 				end
@@ -3993,17 +3993,17 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 					Gyro.Parent = speaker.Character.Torso;
 					for i = 0, 50 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
-						wait();
+						task.wait()
 					end
 					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					wait();
+					task.wait()
 					Gyro:Remove();
 					speaker.Character.Humanoid.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while cwFlipping do
-					wait();
+					task.wait()
 					Flip();
 				end
 			else
@@ -4028,7 +4028,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Remove();
 				end
@@ -4046,10 +4046,10 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 						Gyro.Parent = Torso;
 						for i = 0, 50 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-7), 0, 0);
-							wait();
+							task.wait()
 						end
 						Gyro.CFrame = Torso.CFrame;
-						wait();
+						task.wait()
 						Gyro:Remove();
 						speaker.Character.Humanoid.PlatformStand = false;
 						_restoreproperties();
@@ -4057,7 +4057,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 					end
 				end
 				while cwFlipping do
-					wait();
+					task.wait()
 					Flip();
 				end
 			end
@@ -4092,7 +4092,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Remove();
 				end
@@ -4108,17 +4108,17 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 					Gyro.Parent = speaker.Character.Torso;
 					for i = 0, 50 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / -29);
-						wait();
+						task.wait()
 					end
 					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					wait();
+					task.wait()
 					Gyro:Remove();
 					speaker.Character.Humanoid.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while StarRoll do
-					wait();
+					task.wait()
 					Flip();
 				end
 			else
@@ -4143,7 +4143,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						wait();
+						task.wait()
 					end
 					ml:Remove();
 				end
@@ -4161,10 +4161,10 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 						Gyro.Parent = Torso;
 						for i = 0, 50 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, 0, math.rad(-7));
-							wait();
+							task.wait()
 						end
 						Gyro.CFrame = Torso.CFrame;
-						wait();
+						task.wait()
 						Gyro:Remove();
 						speaker.Character.Humanoid.PlatformStand = false;
 						_restoreproperties();
@@ -4172,7 +4172,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 					end
 				end
 				while StarRoll do
-					wait();
+					task.wait()
 					Flip();
 				end
 			end
@@ -4207,7 +4207,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Remove();
 			end
@@ -4226,17 +4226,17 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 				Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
 				while Looproll do
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0);
-					wait();
+					task.wait()
 				end
 				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				wait();
+				task.wait()
 				Gyro:Remove();
 				speaker.Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while BarrelRoll do
-				wait();
+				task.wait()
 				Flip();
 			end
 		else
@@ -4261,7 +4261,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					wait();
+					task.wait()
 				end
 				ml:Remove();
 			end
@@ -4282,10 +4282,10 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 					Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
 					while Looproll do
 						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, math.rad(-9), 0);
-						wait();
+						task.wait()
 					end
 					Gyro.CFrame = Torso.CFrame;
-					wait();
+					task.wait()
 					Gyro:Remove();
 					speaker.Character.Humanoid.PlatformStand = false;
 					_restoreproperties();
@@ -4293,7 +4293,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 				end
 			end
 			while BarrelRoll do
-				wait();
+				task.wait()
 				Flip();
 			end
 		end
@@ -4314,7 +4314,7 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",Current
 			Spin.Parent = getRoot(speaker.Character);
 			Spin.MaxTorque = Vector3.new(0, math.huge, 0);
 			spawn(function()
-				while wait() do
+				while task.wait() do
 					Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0);
 				end
 			end);
@@ -4589,7 +4589,7 @@ Togglelowfps = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="L
 					end},nottrue={Name="False!",Callback=function()
 						settings().Rendering.QualityLevel = quliatyholder.frholder;
 					end}}});
-					wait(30);
+					task.wait(30)
 				end
 			end
 			if not lowfpsdect then
@@ -4838,7 +4838,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Ve
 			e.Enabled = false;
 		end
 	end
-	wait(1);
+	task.wait(1)
 	function WindowFocusReleasedFunction()
 		RunService:Set3dRenderingEnabled(false);
 		setfpscap(10);
@@ -4869,7 +4869,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 			local light = Instance.new("PointLight");
 			light.Parent = getRoot(speaker.Character);
 			spawn(function()
-				while wait() do
+				while task.wait() do
 					light.Range = lightrangee;
 					light.Brightness = lightbrightness;
 				end
@@ -4904,7 +4904,7 @@ Toggleremovefogga = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 			removefogg = game:GetService("RunService").RenderStepped:Connect(function()
 				Lighting.FogStart = 0;
 				Lighting.FogEnd = 99999999999;
-				wait();
+				task.wait()
 			end);
 		end
 		if not removefogga then
@@ -5011,9 +5011,9 @@ Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncamera,Name
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",Interact="Click",Callback=function()
 	workspace.CurrentCamera:remove();
-	wait(0.1);
+	task.wait(0.1)
 	repeat
-		wait();
+		task.wait()
 	until speaker.Character ~= nil 
 	workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
 	workspace.CurrentCamera.CameraType = "Custom";
@@ -5485,7 +5485,7 @@ end});
 Sectiontaudio = Miscclient:CreateSection("LocalPlayer Related | Audio (Client)", false, true, 10747375679);
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio Logger",Interact="Click",Callback=function()
 	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
-	wait(2);
+	task.wait(2)
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/audiologger.lua", true))();
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
@@ -5551,7 +5551,7 @@ Slider = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name="Current An
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
 	for i, v in next, Hum:GetPlayingAnimationTracks() do
 		spawn(function()
-			while wait() do
+			while task.wait() do
 				v:AdjustSpeed(Value);
 			end
 		end);
@@ -5562,7 +5562,7 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
 	for i, v in next, Hum:GetPlayingAnimationTracks() do
 		spawn(function()
-			while wait() do
+			while task.wait() do
 				v:AdjustSpeed(Text);
 			end
 		end);
@@ -5905,7 +5905,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R6 & R15 A
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote Hub",Interact="Click",Callback=function()
 	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400});
-	wait(2);
+	task.wait(2)
 	effecttrue();
 	NSUI:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400});
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))();
@@ -6456,7 +6456,7 @@ Toggleglitchjump = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="G
 				glitchjumpAnim = Instance.new("Animation");
 				glitchjumpAnim.AnimationId = "rbxassetid://184574340";
 				glitchjump = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(glitchjumpAnim);
-				while wait() do
+				while task.wait() do
 					if (glitchjump.IsPlaying == false) then
 						if glitchingjump then
 							glitchjump:Play(0.5, 1, 40);
@@ -6545,7 +6545,7 @@ Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 				superfaintAnim = Instance.new("Animation");
 				superfaintAnim.AnimationId = "rbxassetid://181525546";
 				superfaintt = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(superfaintAnim);
-				while wait() do
+				while task.wait() do
 					if (superfaintt.IsPlaying == false) then
 						if superfainterrr then
 							superfaintt:Play(0.5, 1, 40);
@@ -6606,7 +6606,7 @@ Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="
 				armdetachAnim = Instance.new("Animation");
 				armdetachAnim.AnimationId = "rbxassetid://33169583";
 				armdetach = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(armdetachAnim);
-				while wait() do
+				while task.wait() do
 					if (armdetach.IsPlaying == false) then
 						if armdetacherrr then
 							armdetach:Play(0.1, 1, 1000000);
@@ -6639,7 +6639,7 @@ Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="I
 				insanelegsAnim = Instance.new("Animation");
 				insanelegsAnim.AnimationId = "rbxassetid://87986341";
 				insanelegs = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(insanelegsAnim);
-				while wait() do
+				while task.wait() do
 					if (insanelegs.IsPlaying == false) then
 						if insanelegger then
 							insanelegs:Play(0.1, 1, 1000000);
@@ -6672,7 +6672,7 @@ Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pi
 				pinchnoseAnim = Instance.new("Animation");
 				pinchnoseAnim.AnimationId = "rbxassetid://30235165";
 				pinchnose = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(pinchnoseAnim);
-				while wait() do
+				while task.wait() do
 					if (pinchnose.IsPlaying == false) then
 						if pinchnoser then
 							pinchnose:Play(0.1, 1, 1);
@@ -6705,7 +6705,7 @@ Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name=
 				floatingheadAnim = Instance.new("Animation");
 				floatingheadAnim.AnimationId = "rbxassetid://121572214";
 				floathead = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(floatingheadAnim);
-				while wait() do
+				while task.wait() do
 					if (floathead.IsPlaying == false) then
 						if floatingheader then
 							floathead:Play(0.1, 1, 1);
@@ -6824,25 +6824,25 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Gian
 				end
 			end
 			rm();
-			wait(0.05);
+			task.wait(0.05)
 			Humanoid:FindFirstChild("BodyProportionScale"):Destroy();
-			wait(1);
+			task.wait(1)
 			rm();
-			wait(0.05);
+			task.wait(0.05)
 			Humanoid:FindFirstChild("BodyHeightScale"):Destroy();
-			wait(1);
+			task.wait(1)
 			rm();
-			wait(0.05);
+			task.wait(0.05)
 			Humanoid:FindFirstChild("BodyWidthScale"):Destroy();
-			wait(1);
+			task.wait(1)
 			rm();
-			wait(0.05);
+			task.wait(0.05)
 			Humanoid:FindFirstChild("BodyDepthScale"):Destroy();
-			wait(1);
+			task.wait(1)
 			rm();
-			wait(0.05);
+			task.wait(0.05)
 			Humanoid:FindFirstChild("HeadScale"):Destroy();
-			wait(1);
+			task.wait(1)
 			effecttrue();
 			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
 		else
@@ -6886,7 +6886,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Big 
 			for i, v in pairs(Character.Humanoid:GetChildren()) do
 				if (string.find(v.Name, "Scale") and (v.Name ~= "HeadScale")) then
 					repeat
-						wait(HeadGrowSpeed);
+						task.wait(HeadGrowSpeed)
 					until Character.Head:FindFirstChild("OriginalSize") 
 					Character.Head.OriginalSize:Destroy();
 					v:Destroy();
@@ -6995,7 +6995,7 @@ end});
 Paragraph = Animations:CreateParagraph({Title="BackFlip, FrontFlip Info",Content="Z = FrontFlip, \nX = BackFlip"}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="BackFlip, FrontFlip R6 & R15",Interact="Click",Callback=function()
 	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=4.5,Image=7733715400});
-	wait(5);
+	task.wait(5)
 	pcall(function()
 		FrontflipKey = Enum.KeyCode.Z;
 		BackflipKey = Enum.KeyCode.X;
@@ -7005,7 +7005,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Back
 		function speakerFrontflip(act, inp, obj)
 			if (inp == Enum.UserInputState.Begin) then
 				speaker.Character.Humanoid:ChangeState("Jumping");
-				wait();
+				task.wait()
 				speaker.Character.Humanoid.Sit = true;
 				for i = 1, 360 do
 					delay(i / 720, function()
@@ -7013,14 +7013,14 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Back
 						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h, 0, 0);
 					end);
 				end
-				wait(0.55);
+				task.wait(0.55)
 				speaker.Character.Humanoid.Sit = false;
 			end
 		end
 		function speakerBackflip(act, inp, obj)
 			if (inp == Enum.UserInputState.Begin) then
 				speaker.Character.Humanoid:ChangeState("Jumping");
-				wait();
+				task.wait()
 				speaker.Character.Humanoid.Sit = true;
 				for i = 1, 360 do
 					delay(i / 720, function()
@@ -7028,7 +7028,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Back
 						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(h, 0, 0);
 					end);
 				end
-				wait(0.55);
+				task.wait(0.55)
 				speaker.Character.Humanoid.Sit = false;
 			end
 		end
@@ -7254,7 +7254,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 		function noob(player)
 			local character;
 			repeat
-				wait();
+				task.wait()
 			until player.Character 
 			handler = makemarker(guimain, player.Character:WaitForChild(SelectedPart), Color3.fromRGB(240, 250, 1), 0.3, 3);
 			handler.Name = player.Name;
@@ -7262,7 +7262,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 				handler.Adornee = Char:WaitForChild(SelectedPart);
 			end);
 			spawn(function()
-				while wait() do
+				while task.wait() do
 					if player.Character then
 					end
 				end
@@ -7380,7 +7380,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 							AnchorCount = AnchorCount + 1;
 							if (AnchorCount >= MaxAnchor) then
 								Prediction = false;
-								wait(2);
+								task.wait(2)
 								AnchorCount = 0;
 							end
 						else
@@ -7393,7 +7393,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 							AnchorCount = AnchorCount + 1;
 							if (AnchorCount >= MaxAnchor) then
 								Prediction = false;
-								wait(2);
+								task.wait(2)
 								AnchorCount = 0;
 							end
 						else
@@ -7407,7 +7407,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 						AnchorCount = AnchorCount + 1;
 						if (AnchorCount >= MaxAnchor) then
 							Prediction = false;
-							wait(2);
+							task.wait(2)
 							AnchorCount = 0;
 						end
 					else
@@ -7464,7 +7464,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 		function noob(player)
 			local character;
 			repeat
-				wait();
+				task.wait()
 			until player.Character 
 			handler = makemarker(guimain, player.Character:WaitForChild(configs.main.aimpart), Color3.fromRGB(107, 184, 255), 0.1, 8);
 			handler.Name = player.Name;
@@ -7514,7 +7514,7 @@ if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 			end
 		end);
 		repeat
-			wait();
+			task.wait()
 		until game:IsLoaded() 
 		mt = getrawmetatable(game);
 		old = mt.__namecall;
@@ -7777,7 +7777,7 @@ Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guar
 if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566)) then
 	Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610);
 	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
-		wait(1.5);
+		task.wait(1.5)
 		pcall(function()
 			effecttrue();
 			NSUI:Notify({Title="You've Executed The Script!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
@@ -7817,7 +7817,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 				removefogg = game:GetService("RunService").RenderStepped:Connect(function()
 					Lighting.FogStart = 0;
 					Lighting.FogEnd = 99999999999;
-					wait();
+					task.wait()
 				end);
 			end
 			if not removefogga then
@@ -7833,11 +7833,11 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 					v1:Destroy();
 				end
 			end
-			wait();
+			task.wait()
 			for v2, v3 in pairs(game.ReplicatedStorage.Gear:GetDescendants()) do
 				if v3:IsA("Tool") then
 					local v4 = v3:Clone();
-					wait();
+					task.wait()
 					v4.Parent = speaker.Backpack;
 				end
 			end
@@ -7872,7 +7872,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 			while getgenv().Boolean == true do
 				local endzone = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
 				Character.HumanoidRootPart.CFrame = endzone;
-				wait();
+				task.wait()
 			end
 		end);
 	end
@@ -8435,7 +8435,7 @@ function CheckTimess()
 	elseif ((h >= 12) and (h < 20)) then
 		return;
 	else
-		wait(5);
+		task.wait(5)
 		NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=0}):Play();
 		end},nottrue={Name="Nah",Callback=function()
