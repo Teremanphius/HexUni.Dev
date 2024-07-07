@@ -492,9 +492,9 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 	if anitisitter then
 		nosit = true;
 		while nosit do
-			wait(0.1);
+			task.wait(0.1);
 			if (speaker.Character.Humanoid.Sit == true) then
-				wait(0.1);
+				task.wait(0.1);
 				speaker.Character.Humanoid.Sit = false;
 			end
 		end
@@ -509,9 +509,9 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 	if antistun then
 		nostun = true;
 		while nostun do
-			wait(0.1);
+			task.wait(0.1);
 			if (speaker.Character.Humanoid.PlatformStand == true) then
-				wait(0.1);
+				task.wait(0.1);
 				speaker.Character.Humanoid.PlatformStand = false;
 			end
 		end
@@ -576,7 +576,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 			vu = game:GetService("VirtualUser");
 			antiafk = game:GetService("Players").LocalPlayer.Idled:connect(function()
 				vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
-				wait(1);
+				task.wait(1);
 				vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame);
 			end);
 			for i, v in pairs(getconnections(speaker.Idled)) do
@@ -636,7 +636,7 @@ local function clicktpFunc()
 	pcall(function()
 		if (Humanoid and Humanoid.SeatPart) then
 			Humanoid.Sit = false;
-			wait(0.1);
+			task.wait(0.1);
 		end
 		local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1);
 		local rootPart = getRoot(Character);
@@ -908,7 +908,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave /
 						end
 						if trueforanim then
 							Waver:Play(0.1, 10, 1)
-							wait(1.8)
+							task.wait(1.8)
 						end
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1903,21 +1903,21 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 	A_2 = "All";
 	Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest;
 	Event:FireServer(A_1, A_2);
-	wait(1);
+	task.wait(1);
 	A_1 = "I'm going to commit oof.";
 	A_2 = "All";
 	Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest;
 	Event:FireServer(A_1, A_2);
-	wait(1);
+	task.wait(1);
 	A_1 = "Sayonara cruel world.";
 	A_2 = "All";
 	Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest;
 	Event:FireServer(A_1, A_2);
-	wait(1);
+	task.wait(1);
 	LocalPlayer = game:GetService("Players").LocalPlayer;
 	speaker.Character.Humanoid:MoveTo(speaker.Character.HumanoidRootPart.Position + (speaker.Character.HumanoidRootPart.CFrame.lookVector * 10));
 	speaker.Character.Humanoid.Jump = true;
-	wait(0.5);
+	task.wait(0.5);
 	function Iterate(instance, func)
 		for i, v in next, instance:GetChildren() do
 			func(v);
@@ -2386,7 +2386,7 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 	nnoclipping = Value;
 	if nnoclipping then
 		Clip = false;
-		wait(0.1);
+		task.wait(0.1);
 		local function NoclipLoop()
 			if ((Clip == false) and (speaker.Character ~= nil)) then
 				for _, child in pairs(speaker.Character:GetDescendants()) do
@@ -2421,7 +2421,7 @@ Buttonnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="NoClip",Inte
 			if (key:lower() == noclippkeybind) then
 				pcall(function()
 					Clip = false;
-					wait(0.1);
+					task.wait(0.1);
 					local function NoclipLoop()
 						if ((Clip == false) and (speaker.Character ~= nil)) then
 							for _, child in pairs(speaker.Character:GetDescendants()) do
@@ -3221,133 +3221,6 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 			humrunr15:Disconnect();
 		end
 	end);
-end});
-local seizureFlipping = false;
-Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Seizure",CurrentValue=false,Callback=function(Value)
-	seizure = Value;
-	if seizure then
-		if not r15(speaker) then
-			seizureFlipping = true;
-			function _restoreproperties()
-				Torso = Character:FindFirstChild("Torso");
-				RightS = Torso:FindFirstChild("Right Shoulder");
-				LeftS = Torso:FindFirstChild("Left Shoulder");
-				RightH = Torso:FindFirstChild("Right Hip");
-				LeftH = Torso:FindFirstChild("Left Hip");
-				RightS.MaxVelocity = 0.15;
-				LeftS.MaxVelocity = 0.15;
-				RightH.MaxVelocity = 0.1;
-				LeftH.MaxVelocity = 0.1;
-				RightS.DesiredAngle = 0;
-				LeftS.DesiredAngle = 0;
-				LeftH.DesiredAngle = 0;
-				RightH.DesiredAngle = 0;
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					task.wait()
-				end
-				ml:Remove();
-			end
-			function Flip5()
-				if (debounce == true) then
-					return;
-				end
-				debounce = true;
-				Character.Humanoid.PlatformStand = true;
-				local VelUp = Instance.new("BodyVelocity");
-				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
-				VelUp.Parent = Character.Torso;
-				coroutine.resume(coroutine.create(Down), VelUp);
-				local Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.CFrame = Character.Torso.CFrame;
-				Gyro.Parent = Character.Torso;
-				for i = 1, 16 do
-					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 9, math.pi / -18, 0);
-					task.wait()
-				end
-				Gyro.CFrame = Character.Torso.CFrame;
-				task.wait()
-				Gyro:Remove();
-				Character.Humanoid.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while seizureFlipping do
-				task.wait()
-				Flip5();
-			end
-		else
-			seizureFlipping = true;
-			debounce = false;
-			local function _restoreproperties()
-				local UpperTorso = Character:FindFirstChild("UpperTorso");
-				if not UpperTorso then
-					return;
-				end
-				local RightShoulder = UpperTorso:FindFirstChild("Right Shoulder");
-				local LeftShoulder = UpperTorso:FindFirstChild("Left Shoulder");
-				local RightHip = Character:FindFirstChild("RightUpperLeg"):FindFirstChild("Right Hip");
-				local LeftHip = Character:FindFirstChild("LeftUpperLeg"):FindFirstChild("Left Hip");
-				if (RightShoulder and LeftShoulder and RightHip and LeftHip) then
-					RightShoulder.MaxVelocity = 0.15;
-					LeftShoulder.MaxVelocity = 0.15;
-					RightHip.MaxVelocity = 0.1;
-					LeftHip.MaxVelocity = 0.1;
-					RightShoulder.DesiredAngle = 0;
-					LeftShoulder.DesiredAngle = 0;
-					LeftHip.DesiredAngle = 0;
-					RightHip.DesiredAngle = 0;
-				end
-			end
-			local function Down(ml)
-				for i = 1, ml.Velocity.Y / 3 do
-					ml.Velocity = ml.Velocity + Vector3.new(0, -0.25, 0);
-					task.wait()
-				end
-				ml:Destroy();
-			end
-			local function Flip5()
-				if debounce then
-					return;
-				end
-				debounce = true;
-				Character.Humanoid.PlatformStand = true;
-				local VelUp = Instance.new("BodyVelocity");
-				VelUp.Velocity = Vector3.new(0, 10, 0);
-				VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
-				VelUp.Parent = Character.HumanoidRootPart;
-				coroutine.resume(coroutine.create(Down), VelUp);
-				local Gyro = Instance.new("BodyGyro");
-				Gyro.P = Gyro.P * 10;
-				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
-				Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
-				Gyro.Parent = Character.HumanoidRootPart;
-				for i = 1, 16 do
-					local randomRotationX = math.random(-math.pi, math.pi) / 9;
-					local randomRotationY = math.random(-math.pi, math.pi) / 9;
-					local randomRotationZ = math.random(-math.pi, math.pi) / 9;
-					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(randomRotationX, randomRotationY, randomRotationZ);
-					task.wait()
-				end
-				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
-				task.wait()
-				Gyro:Destroy();
-				Character.Humanoid.PlatformStand = false;
-				_restoreproperties();
-				debounce = false;
-			end
-			while seizureFlipping do
-				task.wait()
-				Flip5();
-			end
-		end
-	end
-	if not seizure then
-		seizureFlipping = false;
-	end
 end});
 Floating = false;
 floatName = randomString();
@@ -4174,6 +4047,133 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 			StarRoll = false;
 		end
 	end);
+end});
+local seizureFlipping = false;
+Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seizure",CurrentValue=false,Callback=function(Value)
+	seizure = Value;
+	if seizure then
+		if not r15(speaker) then
+			seizureFlipping = true;
+			function _restoreproperties()
+				Torso = Character:FindFirstChild("Torso");
+				RightS = Torso:FindFirstChild("Right Shoulder");
+				LeftS = Torso:FindFirstChild("Left Shoulder");
+				RightH = Torso:FindFirstChild("Right Hip");
+				LeftH = Torso:FindFirstChild("Left Hip");
+				RightS.MaxVelocity = 0.15;
+				LeftS.MaxVelocity = 0.15;
+				RightH.MaxVelocity = 0.1;
+				LeftH.MaxVelocity = 0.1;
+				RightS.DesiredAngle = 0;
+				LeftS.DesiredAngle = 0;
+				LeftH.DesiredAngle = 0;
+				RightH.DesiredAngle = 0;
+			end
+			function Down(ml)
+				for i = 1, ml.velocity.y / 3 do
+					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
+					task.wait()
+				end
+				ml:Remove();
+			end
+			function Flip5()
+				if (debounce == true) then
+					return;
+				end
+				debounce = true;
+				Character.Humanoid.PlatformStand = true;
+				local VelUp = Instance.new("BodyVelocity");
+				VelUp.maxForce = Vector3.new(10000, 10000, 10000) * 999;
+				VelUp.Parent = Character.Torso;
+				coroutine.resume(coroutine.create(Down), VelUp);
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.CFrame = Character.Torso.CFrame;
+				Gyro.Parent = Character.Torso;
+				for i = 1, 16 do
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 9, math.pi / -18, 0);
+					task.wait()
+				end
+				Gyro.CFrame = Character.Torso.CFrame;
+				task.wait()
+				Gyro:Remove();
+				Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while seizureFlipping do
+				task.wait()
+				Flip5();
+			end
+		else
+			seizureFlipping = true;
+			debounce = false;
+			local function _restoreproperties()
+				local UpperTorso = Character:FindFirstChild("UpperTorso");
+				if not UpperTorso then
+					return;
+				end
+				local RightShoulder = UpperTorso:FindFirstChild("Right Shoulder");
+				local LeftShoulder = UpperTorso:FindFirstChild("Left Shoulder");
+				local RightHip = Character:FindFirstChild("RightUpperLeg"):FindFirstChild("Right Hip");
+				local LeftHip = Character:FindFirstChild("LeftUpperLeg"):FindFirstChild("Left Hip");
+				if (RightShoulder and LeftShoulder and RightHip and LeftHip) then
+					RightShoulder.MaxVelocity = 0.15;
+					LeftShoulder.MaxVelocity = 0.15;
+					RightHip.MaxVelocity = 0.1;
+					LeftHip.MaxVelocity = 0.1;
+					RightShoulder.DesiredAngle = 0;
+					LeftShoulder.DesiredAngle = 0;
+					LeftHip.DesiredAngle = 0;
+					RightHip.DesiredAngle = 0;
+				end
+			end
+			local function Down(ml)
+				for i = 1, ml.Velocity.Y / 3 do
+					ml.Velocity = ml.Velocity + Vector3.new(0, -0.25, 0);
+					task.wait()
+				end
+				ml:Destroy();
+			end
+			local function Flip5()
+				if debounce then
+					return;
+				end
+				debounce = true;
+				Character.Humanoid.PlatformStand = true;
+				local VelUp = Instance.new("BodyVelocity");
+				VelUp.Velocity = Vector3.new(0, 10, 0);
+				VelUp.MaxForce = Vector3.new(10000, 10000, 10000) * 999;
+				VelUp.Parent = Character.HumanoidRootPart;
+				coroutine.resume(coroutine.create(Down), VelUp);
+				local Gyro = Instance.new("BodyGyro");
+				Gyro.P = Gyro.P * 10;
+				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
+				Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999;
+				Gyro.Parent = Character.HumanoidRootPart;
+				for i = 1, 16 do
+					local randomRotationX = math.random(-math.pi, math.pi) / 9;
+					local randomRotationY = math.random(-math.pi, math.pi) / 9;
+					local randomRotationZ = math.random(-math.pi, math.pi) / 9;
+					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(randomRotationX, randomRotationY, randomRotationZ);
+					task.wait()
+				end
+				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
+				task.wait()
+				Gyro:Destroy();
+				Character.Humanoid.PlatformStand = false;
+				_restoreproperties();
+				debounce = false;
+			end
+			while seizureFlipping do
+				task.wait()
+				Flip5();
+			end
+		end
+	end
+	if not seizure then
+		seizureFlipping = false;
+	end
 end});
 BarrelRoll = false;
 Looproll = false;
