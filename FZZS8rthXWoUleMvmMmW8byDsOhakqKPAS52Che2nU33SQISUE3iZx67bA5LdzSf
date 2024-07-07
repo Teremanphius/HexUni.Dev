@@ -686,8 +686,6 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Low
 		until Server 
 		TPS:TeleportToPlaceInstance(_place, Server.id, game.Players.LocalPlayer);
 	end);
-	effecttrue();
-	NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Paragraph = Misc:CreateParagraph({Title="TP To Highest.. Info",Content='Can Show Up a Prompt Saying \"Server Full\" Or Something, Basically Failing But Keep On Pressing To TP'}, Sectiontpscritps);
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Highest Player's Server",Interact="Click",Callback=function()
@@ -709,8 +707,6 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Hig
 		until Server 
 		TPS:TeleportToPlaceInstance(_place, Server.id, game.Players.LocalPlayer);
 	end);
-	effecttrue();
-	NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Interact="Click",Callback=function()
 	pcall(function()
@@ -748,8 +744,6 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 		end
 	end);
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
-	effecttrue();
-	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Bang's, Headsit & Other", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter"}, Sectionplayrerelatedtp);
@@ -7146,11 +7140,136 @@ else
 	Sectiongojoibgametds = TDS:CreateSection("Go Join The Game", false, false, 14754300297);
 	Button = TDS:CreateButton({SectionParent=Sectiongojoibgametds,Name="Join Tower Defense",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(3260590327, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
 end
+MP = Window:CreateTab("Meepcity", 7072984974);
+	Sectiontotalscmp = MP:CreateSection("Total Script's: 3", false);
+	Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."});
+	if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
+		Sectionavmp = MP:CreateSection("Avatar Script's", false);
+		pcall(function()
+			function colorToTable(clr)
+				return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
+			end
+			l__ReplicatedStorage__2 = game:GetService("ReplicatedStorage");
+			Constants = require(l__ReplicatedStorage__2:FindFirstChild("Constants"));
+			Connection = l__ReplicatedStorage__2:FindFirstChild("Connection");
+			ConnectionEvent = l__ReplicatedStorage__2:FindFirstChild("ConnectionEvent");
+			data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			humdes = game:GetService("Players"):GetHumanoidDescriptionFromUserId(userId);
+			ava = {};
+			for _, v in pairs({"WidthScale","HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
+				ava[v] = colorToTable(humdes[v]);
+			end
+			for _, v in pairs({"GraphicTShirt","Shirt","Pants"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
+				ava[v .. "Accessory"] = humdes[v .. "Accessory"];
+			end
+			ava.Emotes = humdes:GetEmotes();
+			ConnectionEvent:FireServer(315, ava, true);
+		function ExtractData(humdes)
+			function colorToTable(clr)
+				return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
+			end
+			ava = {};
+			for _, v in pairs({"WidthScale","HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
+				ava[v] = colorToTable(humdes[v]);
+			end
+			for _, v in pairs({"GraphicTShirt","Shirt","Pants"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
+				ava[v] = humdes[v];
+			end
+			for _, v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
+				ava[v .. "Accessory"] = humdes[v .. "Accessory"];
+			end
+			ava.Emotes = humdes:GetEmotes();
+			layered = humdes:GetAccessories(false);
+			for i, v in pairs(layered) do
+				if (v.AccessoryType and (typeof(v.AccessoryType) == "EnumItem")) then
+					v.AccessoryType = v.AccessoryType.Name;
+				end
+			end
+			ava.AccessoryBlob = layered;
+			return ava;
+		end
+	end);
+		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From Player ID",PlaceholderText="",RemoveTextAfterFocusLost=false,Callback=function(Text)
+			userId = Text;
+			if userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid)) then
+				local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)))
+				ConnectionEvent:FireServer(315,data,true)
+			end
+		end});
+		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From Player Username",PlaceholderText="",RemoveTextAfterFocusLost=false,Callback=function(Text)
+			usernameofplr = Text
+			ConnectionEvent = game.ReplicatedStorage:FindFirstChild("ConnectionEvent");
+			if (usernameofplr and Players:GetUserIdFromNameAsync(usernameofplr)) then
+				data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(usernameofplr)));
+				ConnectionEvent:FireServer(315, data, true);
+			end
+		end});
+		Toggle = MP:CreateToggle({SectionParent=Sectionavmp,Name="No Outfit Max",CurrentValue=false,Callback=function(Max)
+			Constants = require(game.ReplicatedStorage:FindFirstChild("Constants"));
+			outfitfunc = Max;
+			if outfitfunc then
+				Constants.stats.MAXAvatarEditorCustomOutfits = 999999;
+			end
+			if not outfitfunc then
+				Constants.stats.MAXAvatarEditorCustomOutfits = 3;
+			end
+		end});
+		Sectionothermp = MP:CreateSection("Other Script's", false);
+		Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Made Offsale Assets Onsale",Interact = 'Click',Callback=function()
+			if not onsaleran then
+				onsaleran = true;
+				function onsale(module)
+					fd = require(module);
+					id = 666;
+					fd.Categories[id] = {CategoryId=id,Image=5277185610,CatTitle="offsale ;)"};
+					for i, v in pairs(fd.Assets) do
+						if not fd.Assets[i].ForSale then
+							fd.Assets[i].ForSale = true;
+							if fd.Assets[i].Details.Price.HalloweenCandy then
+								fd.Assets[i].Details.Price.HalloweenCandy = nil;
+							end
+							fd.Assets[i].CatId = id;
+							fd.Assets[i].Desc = "this is an offsale item that got brought back to life";
+						end
+					end
+				end
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"));
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"));
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"));
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
+			end
+		end});
+	else
+		Sectiojointhegamemp = MP:CreateSection("Join The Game", false);
+		Paragraph = MP:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectiojointhegamemp);
+		Button = MP:CreateButton({SectionParent=Sectiojointhegamemp,Name="Join Meepcity",Interact = 'Click',Callback=function()
+			game:GetService("TeleportService"):Teleport(370731277, LocalPlayer);
+		end});
+	end
 DH = Window:CreateTab("DaHood", 14367231837);
 Sectiontotaldh = DH:CreateSection("Total Scripts : 13", true);
 Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"});
@@ -7759,8 +7878,6 @@ else
 	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = DH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamedh);
 end
@@ -7880,8 +7997,6 @@ else
 	Sectionjointhegametoh = TOH:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = TOH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegametoh);
 end
@@ -7904,8 +8019,6 @@ else
 	Sectionjointhegamecm = CM:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = CM:CreateButton({SectionParent=Sectionjointhegamecm,Name="Join Combat Warrior's",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(4282985734, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = CM:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamecm);
 end
@@ -7955,8 +8068,6 @@ else
 	Sectionjoingamedoors = DO:CreateSection("Join The Game!", false, false, 14754300297);
 	Button = DO:CreateButton({SectionParent=Sectionjoingamedoors,Name="Join Doors",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(6516141723, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = DO:CreateLabel("Join The Game To See The Button's!", Sectionjoingamedoors);
 end
@@ -7991,8 +8102,6 @@ else
 	Sectionjoingamemm = MM:CreateSection("Join The Game", false, false, 14754300297);
 	Button = MM:CreateButton({SectionParent=Sectionjoingamemm,Name="Join Murder Mystery 2",Interact="Click",Callback=function()
 		game:GetService("TeleportService"):Teleport(142823291, LocalPlayer);
-		effecttrue();
-		NSUI:Notify({Title="Teleported",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 	end});
 	Label = MM:CreateLabel("Join The Game To See The Button's!", Sectionjoingamemm);
 end
