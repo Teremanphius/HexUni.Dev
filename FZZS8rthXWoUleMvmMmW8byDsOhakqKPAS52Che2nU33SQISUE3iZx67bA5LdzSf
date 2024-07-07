@@ -29,6 +29,7 @@ ChatService = game:GetService("Chat");
 ProximityPromptService = game:GetService("ProximityPromptService");
 StatsService = game:GetService("Stats");
 MaterialService = game:GetService("MaterialService");
+ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent")
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
@@ -345,7 +346,7 @@ task.spawn(function()
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
-Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false);
+Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
 Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
@@ -4512,7 +4513,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 	end);
 end});
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
-SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false);
+SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610);
 PJLNF = 1.3;
@@ -5519,7 +5520,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation's", 1114393432);
-Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false);
+Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
@@ -7031,8 +7032,8 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 local TDS = Window:CreateTab("Tower Defense\nSimulator", 14716927183);
-Sectiontdstotal = TDS:CreateSection("Total Scripts : 6", true);
-Paragraph = TDS:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"});
+Sectiontdstotal = TDS:CreateSection("Total Script's : 6", false, false, 7743869612);
+Paragraph = TDS:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontdstotal);
 if (game.PlaceId == 5591597781) then
 	Sectionautomatic = TDS:CreateSection("Automatic Script's", false, false, 10723415766);
 	Button = TDS:CreateButton({SectionParent=Sectionautomatic,Name="Auto Commander Chain",Interact="Click",Callback=function()
@@ -7143,124 +7144,84 @@ else
 	end});
 	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
 end
-MP = Window:CreateTab("Meepcity", 7072984974);
-	Sectiontotalscmp = MP:CreateSection("Total Script's: 3", false);
-	Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."});
+MP = Window:CreateTab("Meepcity", 7733701625);
+	Sectiontotalscmp = MP:CreateSection("Total Script's: 3", false, false, 7743869612);
+	Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
 	if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
-		Sectionavmp = MP:CreateSection("Avatar Script's", false);
-		pcall(function()
-			function colorToTable(clr)
-				return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
-			end
-			l__ReplicatedStorage__2 = game:GetService("ReplicatedStorage");
-			Constants = require(l__ReplicatedStorage__2:FindFirstChild("Constants"));
-			Connection = l__ReplicatedStorage__2:FindFirstChild("Connection");
-			ConnectionEvent = l__ReplicatedStorage__2:FindFirstChild("ConnectionEvent");
-			data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			humdes = game:GetService("Players"):GetHumanoidDescriptionFromUserId(userId);
-			ava = {};
-			for _, v in pairs({"WidthScale","HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
-				ava[v] = colorToTable(humdes[v]);
-			end
-			for _, v in pairs({"GraphicTShirt","Shirt","Pants"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
-				ava[v .. "Accessory"] = humdes[v .. "Accessory"];
-			end
-			ava.Emotes = humdes:GetEmotes();
-			ConnectionEvent:FireServer(315, ava, true);
-		function ExtractData(humdes)
-			function colorToTable(clr)
-				return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
-			end
-			ava = {};
-			for _, v in pairs({"WidthScale","HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
-				ava[v] = colorToTable(humdes[v]);
-			end
-			for _, v in pairs({"GraphicTShirt","Shirt","Pants"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
-				ava[v] = humdes[v];
-			end
-			for _, v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
-				ava[v .. "Accessory"] = humdes[v .. "Accessory"];
-			end
-			ava.Emotes = humdes:GetEmotes();
-			layered = humdes:GetAccessories(false);
-			for i, v in pairs(layered) do
-				if (v.AccessoryType and (typeof(v.AccessoryType) == "EnumItem")) then
-					v.AccessoryType = v.AccessoryType.Name;
-				end
-			end
-			ava.AccessoryBlob = layered;
-			return ava;
+		Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740);
+local function colorToTable(clr) return {tostring(clr.R*255),tostring(clr.G*255),tostring(clr.B*255)} end
+local function ExtractData(humdes)
+	local ava = {}
+	for _,v in pairs({"WidthScale", "HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
+		ava[v] = humdes[v]
+	end
+	for _,v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
+		ava[v] = humdes[v]
+	end
+	for _,v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
+		ava[v] = colorToTable(humdes[v])
+	end
+	for _,v in pairs({"GraphicTShirt","Shirt","Pants"}) do
+		ava[v] = humdes[v]
+	end
+	for _,v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
+		ava[v] = humdes[v]
+	end
+	for _,v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
+		ava[v .. "Accessory"] = humdes[v .. "Accessory"]
+	end
+	ava.Emotes = humdes:GetEmotes()
+	local layered = humdes:GetAccessories(false)
+	for i,v in pairs(layered) do
+		if v.AccessoryType and typeof(v.AccessoryType) == "EnumItem" then
+			v.AccessoryType = v.AccessoryType.Name
 		end
-	end);
-		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From Player ID",PlaceholderText="",RemoveTextAfterFocusLost=false,Callback=function(Text)
-			userId = Text;
+	end
+	ava.AccessoryBlob = layered
+	return ava
+end
+		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",PlaceholderText="Player ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
+			userid = Text
 			if userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid)) then
 				local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)))
 				ConnectionEvent:FireServer(315,data,true)
 			end
 		end});
-		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From Player Username",PlaceholderText="",RemoveTextAfterFocusLost=false,Callback=function(Text)
-			usernameofplr = Text
-			ConnectionEvent = game.ReplicatedStorage:FindFirstChild("ConnectionEvent");
-			if (usernameofplr and Players:GetUserIdFromNameAsync(usernameofplr)) then
-				data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(usernameofplr)));
-				ConnectionEvent:FireServer(315, data, true);
+		Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
+			username = Text
+			if username and Players:GetUserIdFromNameAsync(username) then
+				local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)))
+				ConnectionEvent:FireServer(315,data,true)
 			end
 		end});
-		Toggle = MP:CreateToggle({SectionParent=Sectionavmp,Name="No Outfit Max",CurrentValue=false,Callback=function(Max)
-			Constants = require(game.ReplicatedStorage:FindFirstChild("Constants"));
-			outfitfunc = Max;
-			if outfitfunc then
-				Constants.stats.MAXAvatarEditorCustomOutfits = 999999;
-			end
-			if not outfitfunc then
-				Constants.stats.MAXAvatarEditorCustomOutfits = 3;
-			end
-		end});
-		Sectionothermp = MP:CreateSection("Other Script's", false);
-		Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Made Offsale Assets Onsale",Interact = 'Click',Callback=function()
+		Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
+		local onsaleran = false
+		Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact = 'Click',Callback=function()
 			if not onsaleran then
-				onsaleran = true;
-				function onsale(module)
-					fd = require(module);
-					id = 666;
-					fd.Categories[id] = {CategoryId=id,Image=5277185610,CatTitle="offsale ;)"};
-					for i, v in pairs(fd.Assets) do
+				onsaleran = true
+				local function onsale(module)
+					local fd = require(module)
+					local id = 666
+					fd.Categories[id] = {
+						CategoryId = id,
+						Image = 5277185610,
+						CatTitle = "offsale ;)"
+					}
+					for i,v in pairs(fd.Assets) do
 						if not fd.Assets[i].ForSale then
-							fd.Assets[i].ForSale = true;
+							fd.Assets[i].ForSale = true
 							if fd.Assets[i].Details.Price.HalloweenCandy then
-								fd.Assets[i].Details.Price.HalloweenCandy = nil;
+								fd.Assets[i].Details.Price.HalloweenCandy = nil
 							end
-							fd.Assets[i].CatId = id;
-							fd.Assets[i].Desc = "this is an offsale item that got brought back to life";
+							fd.Assets[i].CatId = id
+							fd.Assets[i].Desc = "this is an offsale item that got brought back to life"
 						end
 					end
 				end
-				onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"));
-				onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"));
-				onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"));
-				onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"))
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"))
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"))
+				onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"))
 			end
 		end});
 	else
@@ -7271,8 +7232,8 @@ MP = Window:CreateTab("Meepcity", 7072984974);
 		end});
 	end
 DH = Window:CreateTab("DaHood", 14367231837);
-Sectiontotaldh = DH:CreateSection("Total Scripts : 13", true);
-Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"});
+Sectiontotaldh = DH:CreateSection("Total Script's : 13", false, false, 7743869612);
+Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotaldh);
 if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
 	Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610);
 	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
@@ -7882,8 +7843,8 @@ else
 	Label = DH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamedh);
 end
 TOH = Window:CreateTab("Tower Of Hell", 14367002464);
-Sectiontotlatoh = TOH:CreateSection("Total Scripts: 5", true);
-Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nIf You Get Banned It's Not My Fault.\nExecute Bypass Anti-Cheat First."});
+Sectiontotlatoh = TOH:CreateSection("Total Script's: 5", false, false, 7743869612);
+Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nIf You Get Banned It's Not My Fault.\nExecute Bypass Anti-Cheat First."}, Sectiontotlatoh);
 if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566)) then
 	Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610);
 	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
@@ -8001,8 +7962,8 @@ else
 	Label = TOH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegametoh);
 end
 CM = Window:CreateTab("Combat Warrior's", 9616983018);
-Sectiontotalsccm = CM:CreateSection("Total Scripts: 2", true);
-Paragraph = CM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"});
+Sectiontotalsccm = CM:CreateSection("Total Script's: 2", false, false, 7743869612);
+Paragraph = CM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotalsccm);
 if (game.PlaceId == 4282985734) then
 	Sectionhubscm = CM:CreateSection("Hub's", false, false, 10709759610);
 	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Max Hub",Interact="Click",Callback=function()
@@ -8023,8 +7984,8 @@ else
 	Label = CM:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamecm);
 end
 DO = Window:CreateTab("Doors", 12771027845);
-Sectiontotaldoors = DO:CreateSection("Total Scripts: 2", true);
-Paragraph = DO:CreateParagraph({Title="Note",Content=("Some Menus have Right Shift or Right Ctrl to Close or Open." .. "Some Scripts Are Not Guaranteed To Work 100%. They Can Break!")});
+Sectiontotaldoors = DO:CreateSection("Total Script's: 2", false, false, 7743869612);
+Paragraph = DO:CreateParagraph({Title="Note",Content=("Some Menus have Right Shift or Right Ctrl to Close or Open.\nSome Scripts Are Not Guaranteed To Work 100%. They Can Break!")}, Sectiontotaldoors);
 if (game.PlaceId == 6839171747) then
 	Sectiondoorshub = DO:CreateSection("Hub's", false, false, 10709759610);
 	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Vynixius",Interact="Click",Callback=function()
@@ -8072,8 +8033,8 @@ else
 	Label = DO:CreateLabel("Join The Game To See The Button's!", Sectionjoingamedoors);
 end
 MM = Window:CreateTab("Murder Mystery 2", 2992801749);
-Sectiontotmm = MM:CreateSection("Total Scripts: 3", true);
-Paragraph = MM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"});
+Sectiontotmm = MM:CreateSection("Total Script's: 3", false, false, 7743869612);
+Paragraph = MM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotmm);
 if (game.PlaceId == 142823291) then
 	Sectionhubmm = MM:CreateSection("Hub's", false, false, 10709759610);
 	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Nexus",Interact="Click",Callback=function()
