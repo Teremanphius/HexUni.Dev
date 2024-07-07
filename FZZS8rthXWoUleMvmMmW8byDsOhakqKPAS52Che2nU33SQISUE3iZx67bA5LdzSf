@@ -206,9 +206,9 @@ local function onPlayerAdded(Player)
             NSUI:Notify({Title = (Player.Name .. " Joined!"),Content = (Player.Name .. " (Your Friend) Has Joined The Server."),Duration = 6,Image = NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")})
             effectfriendjoin()
         end)
-		wait(5)
+		task.wait(5)
         playerAddedConnection:Disconnect()
-        wait(1)
+        task.wait(1)
         playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded)
     end
 end
@@ -420,13 +420,6 @@ Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop 
 	end);
 end});
 Sectionfeplayerelatedanti = Misc:CreateSection("FE LocalPlayer / Player Related Script's | Anti's", false, true, 10734951847);
-if (game.PlaceId == 417267366) then
-	Button = Misc:CreateButton({SectionParent=Sectionfeplayerelatedanti,Name="DollHouse Anti Bot Fling",Interact="Click",Callback=function()
-		effecttrue();
-		NSUI:Notify({Title="Running!",Content="Script Is Running!",Duration=3,Image=7733715400});
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/tonumber/pastes/main/antiflingbot.lua"))();
-	end});
-end
 antiflingClip = true;
 Toggleantiflinng = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Fling",CurrentValue=false,Callback=function(Value)
 	antiflinggg = Value;
