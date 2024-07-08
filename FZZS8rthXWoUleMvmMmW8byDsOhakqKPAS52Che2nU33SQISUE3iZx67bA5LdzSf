@@ -798,7 +798,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",P
 					notifyyw("Now Standing", "Standing On " .. StandFoundPlr.Name, 2, 10709790644);
 					while StandOnHead do
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+						speaker.Character.HumanoidRootPart.CFrame = StandFoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -955,55 +955,6 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 				effectfalse();
 			end
 		end
-	end);
-end});
-local bangfrfrfrf = false;
-amplitudeofbang = 1.2;
-frequencyofbang = 1;
-minuss1 = -1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		plrName = Text;
-		bangv1foundplr = getPlr(plrName);
-		if bangv1foundplr then
-			if (bangv1foundplr.Character and bangv1foundplr.Character:FindFirstChild("Humanoid")) then
-				if ((bangfrfrfrf == true) or (bangv1foundplr == speaker)) then
-					bangfrfrfrf = false;
-					effectfalse();
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. bangv1foundplr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					bangfrfrfrf = true;
-					notifyyw("Now Banging", "Banging " .. bangv1foundplr.Name, 2, 10709790644);
-					effecttrue();
-					while bangfrfrfrf do
-						time = tick();
-						xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						speaker.Character.HumanoidRootPart.CFrame = (bangv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(Vector3.new(0, 0, xOffset))) + (bangv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
-			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
-		end
-	end);
-end});
-bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		frequencyofbang = Value;
-	end);
-end});
-Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		frequencyofbang = Text;
 	end);
 end});
 local Bang = false;
@@ -1193,6 +1144,56 @@ end});
 Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		bang69:AdjustSpeed(Text);
+	end);
+end});
+local Humping = false;
+amplitudeofbang = 1.2;
+frequencyofbang = 1;
+minuss1 = -1;
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		plrName = Text;
+		Humpv1foundplr = getPlr(plrName);
+		if Humpv1foundplr then
+			if (Humpv1foundplr.Character and Humpv1foundplr.Character:FindFirstChild("Humanoid")) then
+				if ((Humping == true) or (Humpv1foundplr == speaker)) then
+					Humping = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Banging The Player", "Not Banging " .. Humpv1foundplr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					Humping = true;
+					notifyyw("Now Banging", "Banging " .. Humpv1foundplr.Name, 2, 10709790644);
+					effecttrue();
+					while Humping do
+						local time = tick()
+						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time)
+						local newCFrame = Humpv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset) + (Humpv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1)
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+						speaker.Character.HumanoidRootPart.CFrame = newCFrame
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new()
+						game:GetService("RunService").Heartbeat:Wait()
+					end
+				end
+			else
+				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+				effectfalse();
+			end
+		else
+			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+			effectfalse();
+		end
+	end);
+end});
+bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		frequencyofbang = Value;
+	end);
+end});
+Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		frequencyofbang = Text;
 	end);
 end});
 local ffc1hump = false;
@@ -1820,41 +1821,46 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 		end
 	end);
 end});
-local spinaround = false;
-local radiusfromplayer = 10;
-local spinSpeed = 1;
-local angle = 0;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		plrName = Text;
-		SpinaroundPlr = getPlr(plrName);
-		if SpinaroundPlr then
-			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
-				effectfalse();
-				notifyyw("No Longer Spining Around The Player", "Not Spining Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
-				spinaround = false;
-				return;
-			else
-				spinaround = true;
-				effecttrue();
-				notifyyw("Now Spining Around", "Spining Around " .. SpinaroundPlr.Name, 2, 10709790644);
-				while spinaround do
-					game:GetService("RunService").Heartbeat:Wait();
-					angle = angle + (spinSpeed * game:GetService("RunService").Heartbeat:Wait());
-					if (angle > (2 * math.pi)) then
-						angle = angle - (2 * math.pi);
-					end
-					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
-					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
-					Character.HumanoidRootPart.CFrame = newCFrame;
-				end
-			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
-		end
-	end);
-end});
+local spinaround = false
+local radiusfromplayer = 10
+local spinSpeed = 1
+local angle = 0
+Input = Misc:CreateInput({
+    SectionParent = Sectionplayrerelatedtp,
+    Name = "Spin Around",
+    PlaceholderText = "Player",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Text)
+            plrName = Text
+            SpinaroundPlr = getPlr(plrName)
+            if SpinaroundPlr then
+                if spinaround == true or SpinaroundPlr == speaker then
+                    effectfalse()
+                    notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394)
+                    spinaround = false
+                    return
+                else
+                    spinaround = true
+                    effecttrue()
+                    notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644)
+                    while spinaround do
+                        local deltaTime = game:GetService("RunService").Heartbeat:Wait()
+                        angle = angle + (spinSpeed * deltaTime)
+                        if angle > 2 * math.pi then
+                            angle = angle - 2 * math.pi
+                        end
+                        local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer)
+                        local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position)
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+                        Character.HumanoidRootPart.CFrame = newCFrame
+                    end
+                end
+            else
+                notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394)
+                effectfalse()
+            end
+    end
+})
 SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
