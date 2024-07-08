@@ -29,7 +29,6 @@ ChatService = game:GetService("Chat");
 ProximityPromptService = game:GetService("ProximityPromptService");
 StatsService = game:GetService("Stats");
 MaterialService = game:GetService("MaterialService");
-ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
@@ -7184,6 +7183,7 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 	end
 	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",PlaceholderText="Player ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 		userid = Text;
+        ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)));
 			ConnectionEvent:FireServer(315, data, true);
@@ -7191,6 +7191,7 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 	end});
 	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
 		username = Text;
+        ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (username and Players:GetUserIdFromNameAsync(username)) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)));
 			ConnectionEvent:FireServer(315, data, true);
