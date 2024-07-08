@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "179";
+Scriptcount = "180";
 ScriptcountAnim = "66";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -1825,12 +1825,7 @@ local spinaround = false
 local radiusfromplayer = 10
 local spinSpeed = 1
 local angle = 0
-Input = Misc:CreateInput({
-    SectionParent = Sectionplayrerelatedtp,
-    Name = "Spin Around",
-    PlaceholderText = "Player",
-    RemoveTextAfterFocusLost = false,
-    Callback = function(Text)
+Input = Misc:CreateInput({SectionParent = Sectionplayrerelatedtp,Name = "Spin Around",PlaceholderText = "Player",RemoveTextAfterFocusLost = false,Callback = function(Text)
             plrName = Text
             SpinaroundPlr = getPlr(plrName)
             if SpinaroundPlr then
@@ -2985,18 +2980,17 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 			effecttrue();
 			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 		end
+		ifuserdiedar = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			pcall(function()
+				Toggleupsidedown:Set(false);
+			end);
+		end);
 	end
 	if not upsidedown then
-		if (speaker.Character and speaker.Character:FindFirstChild("Humanoid")) then
-			speaker.Character.Humanoid.Health = 0;
-		end
+		ifuserdiedar:Disconnect()
+		charresettopos()
 	end
 end});
-ifuserdieda = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-	pcall(function()
-		Toggleupsidedown:Set(false);
-	end);
-end);
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
 	freezeyourself = Value;
 	if freezeyourself then
@@ -3206,11 +3200,15 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 					setupCharacter();
 				end);
 			end
+			ifuserdiedag = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleCrawl:Set(false);
+				end);
+			end);
 		end
 		if not Crawlingornot then
-			if (speaker.Character and speaker.Character:FindFirstChild("Humanoid")) then
-				speaker.Character.Humanoid.Health = 0;
-			end
+			ifuserdiedag:Disconnect()
+				charresettopos()
 			if climbTrack then
 				climbTrack:Stop();
 			end
@@ -3246,8 +3244,14 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 			anims.walk:FindFirstChildOfClass("Animation").AnimationId = sit;
 			anims.run:FindFirstChildOfClass("Animation").AnimationId = sit;
 			anims.jump:FindFirstChildOfClass("Animation").AnimationId = sit;
+			ifuserdiedaq = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				pcall(function()
+					Togglestiwalk:Set(false);
+				end);
+			end);
 		end
 		if not sitwalkerr then
+			ifuserdiedaq:Disconnect()
 			charresettopos();
 		end
 	end);
@@ -3461,6 +3465,90 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 	end);
 end});
 Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478);
+ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyblade",CurrentValue=false,Callback=function(Value)
+		beyblader = Value;
+		if beyblader then
+			local BeyBladee = Instance.new("BodyAngularVelocity")
+			BeyBladee.Name = "BeyBlading"
+			BeyBladee.Parent = getRoot(speaker.Character)
+			BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0)
+			local function updateAngularVelocity()
+				BeyBladee.AngularVelocity = Vector3.new(0, 20, 0)
+			end
+			updateAngularVelocity()
+			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleBeyBlade:Set(false)
+				end)
+			end)
+			if not r15(speaker) then
+				local Character = game.Players.LocalPlayer.Character
+				local c = Character
+				local hrp0 = c:FindFirstChild("HumanoidRootPart")
+				local hrp1 = hrp0:Clone()
+				c.Parent = nil
+				hrp0.Parent = hrp1
+				hrp0.RootJoint.Part0 = nil
+				hrp1.Parent = c
+				c.Parent = workspace
+				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
+				local h = game:GetService("RunService").Heartbeat
+				hrp0.Transparency = 0.85
+				hrp0.Material = Enum.Material.ForceField
+				hrp0.Color = Color3.fromRGB(25, 25, 25)
+				while h:Wait() and c and c.Parent do
+					hrp0.CFrame = hrp1.CFrame
+					hrp0.Orientation += Vector3.new(-90, 0, 0)
+					hrp0.Position -= Vector3.new(0, 0, 0)
+					hrp0.Velocity = hrp1.Velocity
+				end
+			else
+				local Players = game:GetService("Players")
+				local RunService = game:GetService("RunService")
+				local LocalPlayer = Players.LocalPlayer
+				local Character = LocalPlayer.Character
+				local c = Character
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart")
+					if hrp0 then
+						local hrp1 = hrp0:Clone()
+						c.Parent = nil
+						hrp0.Parent = hrp1
+						hrp1.Parent = c
+						c.Parent = workspace
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, 1.2);
+						hrp0.Transparency = 0.85
+						hrp0.Material = Enum.Material.ForceField
+						hrp0.Color = Color3.fromRGB(25, 25, 25)
+						RunService.Heartbeat:Connect(function()
+							if c and c.Parent then
+								hrp0.CFrame = hrp1.CFrame
+								hrp0.Orientation += Vector3.new(-90, 0, 0)
+								hrp0.Position -= Vector3.new(0, 0, 0)
+								hrp0.Velocity = hrp1.Velocity
+							end
+						end)
+					end
+				end
+				setupCharacter()
+				Players.LocalPlayer.CharacterAdded:Connect(function(char)
+					c = char
+					setupCharacter()
+				end)
+			end
+		end
+		if not beyblader then
+			pcall(function()
+			ifuserdied2:Disconnect()
+			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
+				if v.Name == "BeyBlading" then
+					v:Destroy()
+				end
+			end
+			charresettopos()
+		end)
+		end
+end});
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
 	flippa = Value;
@@ -8455,7 +8543,6 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Toggledoubleflipppping:Set(false);
 		Togglecartwheel:Set(false);
 		Togglestunned:Set(false);
-		Togglestiwalk:Set(false);
 		Toggleslider:Set(false);
 		Toggleedgerjumper:Set(false);
 		Toggleweaken:Set(false);
