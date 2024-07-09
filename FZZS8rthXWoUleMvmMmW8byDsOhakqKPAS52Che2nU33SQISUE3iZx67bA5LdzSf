@@ -50,10 +50,12 @@ httprequest = (syn and syn.request) or (http and http.request) or http_request o
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "180";
 ScriptcountAnim = "66";
+pcall(function()
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
 end
+end)
 function randomString()
 	length = math.random(10, 20);
 	array = {};
@@ -3465,6 +3467,7 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 	end);
 end});
 Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478);
+Paragraph = Misc:CreateParagraph({Title="Beyblade Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings);
 ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyblade",CurrentValue=false,Callback=function(Value)
 		beyblader = Value;
 		if beyblader then
