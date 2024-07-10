@@ -7241,7 +7241,7 @@ else
 	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
 end
 MP = Window:CreateTab("Meepcity", 7733701625);
-Sectiontotalscmp = MP:CreateSection("Total Script's: 3", false, false, 7743869612);
+Sectiontotalscmp = MP:CreateSection("Total Script's: 5", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
 if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
 	Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740);
@@ -7294,8 +7294,19 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 			ConnectionEvent:FireServer(315, data, true);
 		end
 	end});
+	Toggle = MP:CreateToggle({SectionParent=Sectionavmp,Name="No Outfit Max",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		Constants = require(ReplicatedStorage:WaitForChild("Constants"))
+		Maxoutfitremove = Value
+		if Maxoutfitremove then
+			Constants.STATS.MAXAvatarEditorCustomOutfits = 9e9
+		elseif not Maxoutfitremove then
+			Constants.STATS.MAXAvatarEditorCustomOutfits = 3
+		end
+	end)
+	end});
 	Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
-	local onsaleran = false;
+	onsaleran = false;
 	Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
 		if not onsaleran then
 			onsaleran = true;
@@ -7319,6 +7330,24 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 			onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"));
 			onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
 		end
+	end});
+	oldplusfunc = nil
+	Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
+		pcall(function()
+		local v9 = require(ReplicatedStorage:WaitForChild("Global"));
+	oldplusfunc = hookfunction(v9.IsPlayerPLUS,function(p80)
+		local v110 = Players:GetPlayerByUserId(p80);
+		if not v110 then
+			return;
+		end;
+		if v110 == Players.LocalPlayer then
+			v110:SetAttribute("PLUS",true)
+			return true;
+		else
+			return v110:GetAttribute("PLUS") and false;
+		end
+	end)
+end)
 	end});
 else
 	Sectiojointhegamemp = MP:CreateSection("Join The Game", false);
