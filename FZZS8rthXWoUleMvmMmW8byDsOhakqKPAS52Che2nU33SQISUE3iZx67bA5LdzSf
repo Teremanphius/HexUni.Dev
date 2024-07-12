@@ -51,11 +51,11 @@ PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "180";
 ScriptcountAnim = "66";
 pcall(function()
-function getRoot(char)
-	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
-	return rootPart;
-end
-end)
+	function getRoot(char)
+		local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
+		return rootPart;
+	end
+end);
 function randomString()
 	length = math.random(10, 20);
 	array = {};
@@ -219,7 +219,6 @@ QEfly = false;
 flying = false;
 flyysspeed = 3;
 vehicleflyspeed = 3;
-flykeybind = "";
 function sFLY(vfly)
 	repeat
 		task.wait();
@@ -591,14 +590,14 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	foundPlr = getPlr(plrName);
 	Character:PivotTo(foundPlr.Character:GetPivot());
 end});
 tweenSpeedtp = 1;
 Paragraph = Misc:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritps);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To / Goto",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To / Goto",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		foundPlr = getPlr(plrName);
@@ -618,18 +617,18 @@ Slidertweenspeedtp = Misc:CreateSlider({SectionParent=Sectiontpscritps,Name="Twe
 		tweenSpeedtp = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To /.. Speed",PlaceholderText=tweenSpeedtp,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To /.. Speed",OnEnter=true,PlaceholderText=tweenSpeedtp,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		tweenSpeedtp = Text;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game",PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game",PlaceholderText="ID",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		game:GetService("TeleportService"):Teleport(Text, speaker);
 	end);
 end});
-Paragraph = Misc:CreateParagraph({Title="Spectate Info",Content="Leave The Player Box Empty To Unspectate."}, Sectiontpscritps);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Spectate",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Paragraph = Misc:CreateParagraph({Title="Spectate Info",Content="Leave The Player Box Empty And Press Enter To Unspectate."}, Sectiontpscritps);
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Spectate",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	foundPlr = getPlr(plrName);
 	game.Workspace.Camera.CameraSubject = foundPlr.Character.Humanoid;
@@ -648,26 +647,22 @@ local function clicktpFunc()
 		rootPart.CFrame = newCFrame + Vector3.new(0, hipHeight or 4, 0);
 	end);
 end
-presstotpkeybind = "";
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position."}, Sectiontpscritps);
-Buttonpresstotp = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Press To Teleport",Interact="Click",Callback=function()
-	Buttonpresstotp:Set("Press To Teleport (Exed)");
-	if (presstotpkeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	JMouse.KeyDown:connect(function(key)
-		if (key == presstotpkeybind) then
-			if JMouse.Target then
-				clicktpFunc();
-			end
+PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
+	presstpff = KeyBind;
+	presstpff = not presstpff;
+	if presstpff then
+		if JMouse.Target then
+			clicktpFunc();
 		end
-	end);
-	effecttrue();
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Change Press To TP Keybind",PlaceholderText="Keybind",RemoveTextAfterFocusLost=false,CharacterLimit=1,Callback=function(Text)
-	presstotpkeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Press to TP Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		PressToTpKeybind:Set("Set Keybind");
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Lowest Player's Server",Interact="Click",Callback=function()
 	pcall(function()
@@ -750,7 +745,7 @@ end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Bang's, Headsit & Other", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter"}, Sectionplayrerelatedtp);
 local Annoy = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		annoyfoundPlr = getPlr(plrName);
@@ -782,7 +777,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 	end);
 end});
 local StandOnHead = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		StandFoundPlr = getPlr(plrName);
@@ -816,7 +811,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",P
 	end);
 end});
 Paragraph = Misc:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
 	plrName = Text;
 	foundPlr = getPlr(plrName);
@@ -831,7 +826,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",Plac
 	end
 end});
 local Follow = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		folloawafoundplr = getPlr(plrName);
@@ -865,7 +860,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 end});
 local LoopHello = false;
 local trueforanim = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		foundPlr = getPlr(plrName);
@@ -920,7 +915,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave /
 	end);
 end});
 local Carpettion = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		carpetfoundPlr = getPlr(plrName);
@@ -960,7 +955,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 	end);
 end});
 local Bang = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		bangingfoundplrv2v2 = getPlr(plrName);
@@ -1008,14 +1003,14 @@ bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Anim 
 		v2banger:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Bang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		v2banger:AdjustSpeed(Text);
 	end);
 end});
 Paragraph = Misc:CreateParagraph({Title="69 Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
 local Bang69 = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	r69foundplr = getPlr(plrName);
 	if r69foundplr then
@@ -1143,7 +1138,7 @@ bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="69 
 		bang69:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Speed",PlaceholderText="1",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		bang69:AdjustSpeed(Text);
 	end);
@@ -1152,7 +1147,7 @@ local Humping = false;
 amplitudeofbang = 1.2;
 frequencyofbang = 1;
 minuss1 = -1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		Humpv1foundplr = getPlr(plrName);
@@ -1169,13 +1164,13 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump",Place
 					notifyyw("Now Banging", "Banging " .. Humpv1foundplr.Name, 2, 10709790644);
 					effecttrue();
 					while Humping do
-						local time = tick()
-						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time)
-						local newCFrame = Humpv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset) + (Humpv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1)
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-						speaker.Character.HumanoidRootPart.CFrame = newCFrame
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new()
-						game:GetService("RunService").Heartbeat:Wait()
+						local time = tick();
+						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
+						local newCFrame = (Humpv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset)) + (Humpv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						speaker.Character.HumanoidRootPart.CFrame = newCFrame;
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").Heartbeat:Wait();
 					end
 				end
 			else
@@ -1193,7 +1188,7 @@ bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Hum
 		frequencyofbang = Value;
 	end);
 end});
-Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		frequencyofbang = Text;
 	end);
@@ -1201,7 +1196,7 @@ end});
 local ffc1hump = false;
 amplitudeof69hump = 1.2;
 frequencyof69hump = 1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		humpfoundPlr69 = getPlr(plrName);
@@ -1311,7 +1306,7 @@ facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name=
 		frequencyof69hump = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="69 Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		frequencyof69hump = Text;
 	end);
@@ -1319,7 +1314,7 @@ end});
 local ffc1 = false;
 amplitudeofbangface = 1.2;
 frequencyofbangface = 1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		facebangv1foundPlr = getPlr(plrName);
@@ -1359,13 +1354,13 @@ facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name=
 		frequencyofbangface = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Facebang Speed",PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hump Facebang Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		frequencyofbangface = Text;
 	end);
 end});
 local ff = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		facebangfoundPlr = getPlr(plrName);
@@ -1399,7 +1394,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Sit Faceban
 	end);
 end});
 local ffhugger = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		local plrName = Text;
 		huggingfoundPlr = getPlr(plrName);
@@ -1463,7 +1458,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 	end);
 end});
 local ff2 = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local plrName = Text;
 	facebangv3foundPlr = getPlr(plrName);
 	if facebangv3foundPlr then
@@ -1507,13 +1502,13 @@ facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="A
 		facebanger:AdjustSpeed(Value);
 	end);
 end});
-Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang Speed",PlaceholderText="3",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Facebang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		facebanger:AdjustSpeed(Text);
 	end);
 end});
 local actualpb = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		piggybackfoundPlr = getPlr(plrName);
@@ -1547,7 +1542,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 	end);
 end});
 local besomebackpack = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		BackpackFoundPlr = getPlr(plrName);
@@ -1581,7 +1576,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",P
 	end);
 end});
 local headsits = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		headsitfoundPlr = getPlr(plrName);
@@ -1615,7 +1610,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 	end);
 end});
 local ActualHeadsit = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		headsitfoundPlr = getPlr(plrName);
@@ -1651,7 +1646,7 @@ end});
 local animsync;
 issyncinganim = false;
 Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	plrName = Text;
 	foundPlr = getPlr(plrName);
 	if foundPlr then
@@ -1693,7 +1688,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",
 	end
 end});
 local orbitingfuck = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		orbitfoundPlr = getPlr(plrName);
@@ -1752,7 +1747,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Plac
 	end);
 end});
 local closeorbitingfuck = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		closeorbitfoundPlr = getPlr(plrName);
@@ -1798,7 +1793,7 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit
 end});
 Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		plrName = Text;
 		LookAtfoundPlr = getPlr(plrName);
@@ -1823,47 +1818,46 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 		end
 	end);
 end});
-local spinaround = false
-local radiusfromplayer = 10
-local spinSpeed = 1
-local angle = 0
-Input = Misc:CreateInput({SectionParent = Sectionplayrerelatedtp,Name = "Spin Around",PlaceholderText = "Player",RemoveTextAfterFocusLost = false,Callback = function(Text)
-            plrName = Text
-            SpinaroundPlr = getPlr(plrName)
-            if SpinaroundPlr then
-                if spinaround == true or SpinaroundPlr == speaker then
-                    effectfalse()
-                    notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394)
-                    spinaround = false
-                    return
-                else
-                    spinaround = true
-                    effecttrue()
-                    notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644)
-                    while spinaround do
-                        local deltaTime = game:GetService("RunService").Heartbeat:Wait()
-                        angle = angle + (spinSpeed * deltaTime)
-                        if angle > 2 * math.pi then
-                            angle = angle - 2 * math.pi
-                        end
-                        local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer)
-                        local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position)
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-                        Character.HumanoidRootPart.CFrame = newCFrame
-                    end
-                end
-            else
-                notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394)
-                effectfalse()
-            end
-    end
-})
+local spinaround = false;
+local radiusfromplayer = 10;
+local spinSpeed = 1;
+local angle = 0;
+Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	plrName = Text;
+	SpinaroundPlr = getPlr(plrName);
+	if SpinaroundPlr then
+		if ((spinaround == true) or (SpinaroundPlr == speaker)) then
+			effectfalse();
+			notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
+			spinaround = false;
+			return;
+		else
+			spinaround = true;
+			effecttrue();
+			notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644);
+			while spinaround do
+				local deltaTime = game:GetService("RunService").Heartbeat:Wait();
+				angle = angle + (spinSpeed * deltaTime);
+				if (angle > (2 * math.pi)) then
+					angle = angle - (2 * math.pi);
+				end
+				local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
+				local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
+				speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+				Character.HumanoidRootPart.CFrame = newCFrame;
+			end
+		end
+	else
+		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
+		effectfalse();
+	end
+end});
 SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
 	end);
 end});
-SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",PlaceholderText=spinSpeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",OnEnter=true,PlaceholderText=spinSpeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		spinSpeed = Text;
 	end);
@@ -1873,7 +1867,7 @@ SpinaroundSliderRadius = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp
 		radiusfromplayer = Value;
 	end);
 end});
-SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",OnEnter=true,PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		radiusfromplayer = Text;
 	end);
@@ -1996,7 +1990,6 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 	end);
 end});
 CFspeed = 50;
-cframeflykeybind = "";
 Paragraph = Misc:CreateParagraph({Title="CFrame Fly Info",Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights);
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2029,57 +2022,42 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",C
 		end
 	end);
 end});
-Buttoncframefly = Misc:CreateButton({SectionParent=Sectionflights,Name="CFrame Fly",Interact="Click",Callback=function()
-	pcall(function()
-		NSUI:Notify({Title="Wait..",Content="Loading...",Duration=3,Image=7733715400});
-		task.wait(3);
-		Buttoncframefly:Set("CFrame Fly (Exed)");
-		effecttrue();
-		if (cframeflykeybind == "") then
-			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-		else
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+	cffffly = KeyBind;
+	cffffly = not cffffly;
+	if cffffly then
+		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+		local Head = speaker.Character:WaitForChild("Head");
+		Head.Anchored = true;
+		if CFloop then
+			CFloop:Disconnect();
 		end
-		repeat
-			task.wait();
-		until JMouse 
-		togcfly = false;
-		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == cframeflykeybind) then
-				if togcfly then
-					togcfly = false;
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-					local Head = speaker.Character:WaitForChild("Head");
-					Head.Anchored = true;
-					if CFloop then
-						CFloop:Disconnect();
-					end
-					CFloop = RunService.Heartbeat:Connect(function(deltaTime)
-						moveDirection = speaker.Character:FindFirstChildOfClass("Humanoid").MoveDirection * CFspeed * deltaTime;
-						headCFrame = Head.CFrame;
-						local cameraCFrame = workspace.CurrentCamera.CFrame;
-						cameraOffset = headCFrame:ToObjectSpace(cameraCFrame).Position;
-						cameraCFrame = cameraCFrame * CFrame.new(-cameraOffset.X, -cameraOffset.Y, -cameraOffset.Z + 1);
-						local cameraPosition = cameraCFrame.Position;
-						local headPosition = headCFrame.Position;
-						objectSpaceVelocity = CFrame.new(cameraPosition, Vector3.new(headPosition.X, cameraPosition.Y, headPosition.Z)):VectorToObjectSpace(moveDirection);
-						Head.CFrame = CFrame.new(headPosition) * (cameraCFrame - cameraPosition) * CFrame.new(objectSpaceVelocity);
-					end);
-				else
-					pcall(function()
-						togcfly = true;
-						CFloop:Disconnect();
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-						Head = speaker.Character:WaitForChild("Head");
-						Head.Anchored = false;
-					end);
-				end
-			end
+		CFloop = RunService.Heartbeat:Connect(function(deltaTime)
+			moveDirection = speaker.Character:FindFirstChildOfClass("Humanoid").MoveDirection * CFspeed * deltaTime;
+			headCFrame = Head.CFrame;
+			local cameraCFrame = workspace.CurrentCamera.CFrame;
+			cameraOffset = headCFrame:ToObjectSpace(cameraCFrame).Position;
+			cameraCFrame = cameraCFrame * CFrame.new(-cameraOffset.X, -cameraOffset.Y, -cameraOffset.Z + 1);
+			local cameraPosition = cameraCFrame.Position;
+			local headPosition = headCFrame.Position;
+			objectSpaceVelocity = CFrame.new(cameraPosition, Vector3.new(headPosition.X, cameraPosition.Y, headPosition.Z)):VectorToObjectSpace(moveDirection);
+			Head.CFrame = CFrame.new(headPosition) * (cameraCFrame - cameraPosition) * CFrame.new(objectSpaceVelocity);
 		end);
-	end);
+	else
+		pcall(function()
+			CFloop:Disconnect();
+			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+			Head = speaker.Character:WaitForChild("Head");
+			Head.Anchored = false;
+		end);
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectionflights,Name="Change CFrame Fly Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	cframeflykeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset CFrame Fly Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		CframeFlyKeybind:Set("Set Keybind");
+	end);
 end});
 Slidercfspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="CFrame Fly Speed",Range={1,500},Increment=1,Suffix="CFrame Speed",CurrentValue=50,Callback=function(Value)
 	pcall(function()
@@ -2100,29 +2078,22 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 		end
 	end);
 end});
-Buttonnormalfly = Misc:CreateButton({SectionParent=Sectionflights,Name="Fly",Callback=function()
-	Buttonnormalfly:Set("Fly (Exed)");
-	effecttrue();
-	if (flykeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+	normalfly = KeyBind;
+	normalfly = not normalfly;
+	if normalfly then
+		flying = true;
+		sFLY();
 	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+		flying = false;
 	end
-	pcall(function()
-		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == flykeybind) then
-				if flying then
-					flying = false;
-				else
-					flying = true;
-					sFLY();
-				end
-			end
-		end);
-	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionflights,Name="Change Fly Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	flykeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		fLYKeybind:Set("Set Keybind");
+	end);
 end});
 Sliderflyspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="Fly Speed",Range={1,15},Increment=1,Suffix="Fly Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
@@ -2132,7 +2103,6 @@ end});
 Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",PlaceholderText=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	flyysspeed = Text;
 end});
-vehicleflykeybind = "";
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -2143,28 +2113,21 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",
 		end
 	end);
 end});
-Buttonvefly = Misc:CreateButton({SectionParent=Sectionflights,Name="Vehicle Fly",Interact="Click",Callback=function()
-	Buttonvefly:Set("Vehicle Fly (Exed)");
-	effecttrue();
-	if (vehicleflykeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+	normalvehiclefly = KeyBind;
+	normalvehiclefly = not normalvehiclefly;
+	if normalvehiclefly then
+		sFLY(true);
 	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+		flying = false;
 	end
-	pcall(function()
-		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == vehicleflykeybind) then
-				if flying then
-					flying = false;
-				else
-					sFLY(true);
-				end
-			end
-		end);
-	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionflights,Name="Change Vehicle Fly Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	vehicleflykeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle Fly Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		vehicleFLYKeybind:Set("Set Keybind");
+	end);
 end});
 Slidervehicleflyspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="Vehicle Fly Speed",Range={1,15},Increment=1,Suffix="Vehicle Fly Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
@@ -2189,29 +2152,29 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 	effecttrue();
 	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
 end});
-freezekeybind = "";
-Buttonfreezee = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Freeze / Anchor Yourself",Interact="Click",Callback=function()
-	Buttonfreezee:Set("Freeze / Anchor Yourself (Exed)");
-	effecttrue();
-	if (freezekeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	local freezeanchor = false;
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == freezekeybind) then
-			freezeanchor = not freezeanchor;
-			for _, v in pairs(speaker.Character:GetChildren()) do
-				if v:IsA("BasePart") then
-					v.Anchored = freezeanchor;
-				end
+anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	freeyourselfs = KeyBind;
+	freeyourselfs = not freeyourselfs;
+	if freeyourselfs then
+		for _, v in pairs(speaker.Character:GetChildren()) do
+			if v:IsA("BasePart") then
+				v.Anchored = true;
 			end
 		end
-	end);
+	else
+		for _, v in pairs(speaker.Character:GetChildren()) do
+			if v:IsA("BasePart") then
+				v.Anchored = false;
+			end
+		end
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Freeze /.. Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	freezekeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Freeze /.. Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		anchorKeybind:Set("Set Keybind");
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthen Character",Interact="Click",Callback=function()
 	for i, player in pairs(speaker.Character:GetChildren()) do
@@ -2222,74 +2185,57 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthe
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
 end});
-tripkeybind = "";
-Buttontrip = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Trip",Interact="Click",Callback=function()
-	Buttontrip:Set("Trip (Exed)");
-	effecttrue();
-	if (tripkeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == tripkeybind) then
-			if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
-				hum = speaker.Character:FindFirstChildOfClass("Humanoid");
-				root = getRoot(speaker.Character);
-				hum:ChangeState(0);
-				root.Velocity = root.CFrame.LookVector * 30;
-			end
+tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	trippingf = KeyBind;
+	trippingf = not trippingf;
+	if trippingf then
+		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
+			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
+			root = getRoot(speaker.Character);
+			hum:ChangeState(0);
+			root.Velocity = root.CFrame.LookVector * 30;
 		end
-	end);
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Trip Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	tripkeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Trip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		tripKeybind:Set("Set Keybind");
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Sit",Interact="Click",Callback=function()
 	speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
 end});
-sitkeybind = "";
-Buttonsitvers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Sit Keybind Version",Interact="Click",Callback=function()
-	Buttonsitvers:Set("Sit Keybind Version (Exed)");
-	effecttrue();
-	if (sitkeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	sittingf = KeyBind;
+	sittingf = not sittingf;
+	if sittingf then
+		speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
 	end
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == sitkeybind) then
-			speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
-		end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		sitKeybind:Set("Set Keybind");
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Sit Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	sitkeybind = Text;
-end});
-stunkeybindder = "";
-Buttonstunnar = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Stun",Interact="Click",Callback=function()
-	stunnedno = false;
-	Buttonstunnar:Set("Stun (Exed)");
-	effecttrue();
-	if (stunkeybindder == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
+stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	Stunff = KeyBind;
+	Stunff = not Stunff;
+	if Stunff then
+		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
+		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 	end
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == stunkeybindder) then
-			if stunnedno then
-				stunnedno = false;
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-			else
-				stunnedno = true;
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-			end
-		end
-	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Stun Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	stunkeybindder = Text;
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Stun Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		stunKeybind:Set("Set Keybind");
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode",Interact="Click",Callback=function()
 	effecttrue();
@@ -2313,68 +2259,59 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	end
 	nHuman.Health = nHuman.MaxHealth;
 end});
-godmodekeybind = "";
-Buttongodmodevers = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode Keybind Version",Interact="Click",Callback=function()
-	Buttongodmodevers:Set("God Mode Keybind Version (Exed)");
-	effecttrue();
-	if (godmodekeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == godmodekeybind) then
-			NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400});
-			Cam = workspace.CurrentCamera;
-			Pos, Char = Cam.CFrame, speaker.Character;
-			Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid");
-			nHuman = Human.Clone(Human);
-			nHuman.Parent, speaker.Character = Char, nil;
-			nHuman.SetStateEnabled(nHuman, 15, false);
-			nHuman.SetStateEnabled(nHuman, 1, false);
-			nHuman.SetStateEnabled(nHuman, 0, false);
-			nHuman.BreakJointsOnDeath, Human = true, Human.Destroy(Human);
-			speaker.Character, Cam.CameraSubject, Cam.CFrame = Char, nHuman, wait() and Pos;
-			nHuman.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
-			Script = Character.FindFirstChild(Char, "Animate");
-			if Script then
-				Script.Disabled = true;
-				task.wait();
-				Script.Disabled = false;
-			end
-			nHuman.Health = nHuman.MaxHealth;
+godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	Godff = KeyBind;
+	Godff = not Godff;
+	if Godff then
+		Cam = workspace.CurrentCamera;
+		Pos, Char = Cam.CFrame, speaker.Character;
+		Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid");
+		nHuman = Human.Clone(Human);
+		nHuman.Parent, speaker.Character = Char, nil;
+		nHuman.SetStateEnabled(nHuman, 15, false);
+		nHuman.SetStateEnabled(nHuman, 1, false);
+		nHuman.SetStateEnabled(nHuman, 0, false);
+		nHuman.BreakJointsOnDeath, Human = true, Human.Destroy(Human);
+		speaker.Character, Cam.CameraSubject, Cam.CFrame = Char, nHuman, wait() and Pos;
+		nHuman.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None;
+		Script = Character.FindFirstChild(Char, "Animate");
+		if Script then
+			Script.Disabled = true;
+			task.wait();
+			Script.Disabled = false;
 		end
+		nHuman.Health = nHuman.MaxHealth;
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God Mode Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		godmodeKeybind:Set("Set Keybind");
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change God Mode Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	godmodekeybind = Text;
-end});
-zerogravtripkey = "";
-Buttonzerogravo = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Zero Grav Trip W/ Sit",Interact="Click",Callback=function()
-	Buttonzerogravo:Set("Zero Grav Trip W/ Sit (Exed)");
-	effecttrue();
-	if (zerogravtripkey == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == zerogravtripkey) then
-			if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
-				hum = speaker.Character:FindFirstChildOfClass("Humanoid");
-				root = getRoot(speaker.Character);
-				game.Workspace.Gravity = 0;
-				root.Velocity = root.CFrame.LookVector * 17;
-				speaker.Character.Humanoid.Sit = true;
-			end
-		else
-			speaker.Character.Humanoid.Sit = false;
-			game.Workspace.Gravity = oldgrav;
+zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	zerogravsit = KeyBind;
+	zerogravsit = not zerogravsit;
+	if zerogravsit then
+		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
+			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
+			root = getRoot(speaker.Character);
+			game.Workspace.Gravity = 0;
+			root.Velocity = root.CFrame.LookVector * 17;
+			speaker.Character.Humanoid.Sit = true;
 		end
-	end);
+	else
+		speaker.Character.Humanoid.Sit = false;
+		game.Workspace.Gravity = oldgrav;
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Change Zero Grav Trip W/ Sit Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	zerogravtripkey = Text;
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zero Grav Trip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		zerogravtripKeybind:Set("Set Keybind");
+	end);
 end});
 carParts = {};
 Sectionnoclip = Misc:CreateSection("FE LocalPlayer Related | NoClip", false, false, 14385986465);
@@ -2402,49 +2339,40 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 		Clip = true;
 	end
 end});
-Buttonnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="NoClip",Interact="Click",Callback=function()
-	pcall(function()
-		Buttonnoclip:Set("Noclip (Exed)");
-		effecttrue();
-		if (noclippkeybind == "") then
-			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-		else
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-		end
-		repeat
-			task.wait();
-		until JMouse 
-		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == noclippkeybind) then
-				pcall(function()
-					Clip = false;
-					task.wait(0.1);
-					local function NoclipLoop()
-						if ((Clip == false) and (speaker.Character ~= nil)) then
-							for _, child in pairs(speaker.Character:GetDescendants()) do
-								if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
-									child.CanCollide = false;
-								end
-							end
+NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+	noclipff = KeyBind;
+	noclipff = not noclipff;
+	if noclipff then
+		pcall(function()
+			Clip = false;
+			task.wait(0.1);
+			local function NoclipLoop()
+				if ((Clip == false) and (speaker.Character ~= nil)) then
+					for _, child in pairs(speaker.Character:GetDescendants()) do
+						if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
+							child.CanCollide = false;
 						end
 					end
-					Noclipping = RunService.Stepped:Connect(NoclipLoop);
-				end);
-			else
-				pcall(function()
-					if Noclipping then
-						Noclipping:Disconnect();
-					end
-					Clip = true;
-				end);
+				end
 			end
+			Noclipping = RunService.Stepped:Connect(NoclipLoop);
 		end);
+	else
+		pcall(function()
+			if Noclipping then
+				Noclipping:Disconnect();
+			end
+			Clip = true;
+		end);
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset NoClip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		NoClipKeybind:Set("Set Keybind");
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionnoclip,Name="Change NoClip Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	noclippkeybind = Text;
-end});
-vehiclenoclippkeybind = "";
 ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehicle NoClip",CurrentValue=false,Callback=function(Value)
 	ToggleVehiclenoclipnnoclipping = Value;
 	pcall(function()
@@ -2469,51 +2397,36 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 		end
 	end);
 end});
-Buttonvnoclip = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Vehicle NoClip",Interact="Click",Callback=function()
-	pcall(function()
-		Buttonvnoclip:Set("Vehicle Noclip (Exed)");
-		effecttrue();
-		if (vehiclenoclippkeybind == "") then
-			NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-		else
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-		end
-		repeat
-			task.wait();
-		until JMouse 
-		JMouse.KeyDown:connect(function(key)
-			if (key:lower() == vehiclenoclippkeybind) then
-				Buttonvnoclip:Set("Vehicle Noclip (Exed) (ON)");
-				pcall(function()
-					local Car = speaker.Character.Humanoid.SeatPart;
-					for i, v in pairs(Car.Parent.Parent:GetDescendants()) do
-						if v:IsA("BasePart") then
-							if v.CanCollide then
-								v.CanCollide = false;
-								table.insert(carParts, v);
-							end
-						end
-					end
-				end);
-			else
-				pcall(function()
-					Buttonvnoclip:Set("Vehicle Noclip (Exed) (OFF)");
-					local Car = speaker.Character.Humanoid.SeatPart;
-					for i, v in pairs(carParts) do
-						if v:IsA("BasePart") then
-							v.CanCollide = true;
-						end
-					end
-				end);
+vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+	vehnoclipff = KeyBind;
+	vehnoclipff = not vehnoclipff;
+	if vehnoclipff then
+		local Car = speaker.Character.Humanoid.SeatPart;
+		for i, v in pairs(Car.Parent.Parent:GetDescendants()) do
+			if v:IsA("BasePart") then
+				if v.CanCollide then
+					v.CanCollide = false;
+					table.insert(carParts, v);
+				end
 			end
-		end);
+		end
+	else
+		local Car = speaker.Character.Humanoid.SeatPart;
+		for i, v in pairs(carParts) do
+			if v:IsA("BasePart") then
+				v.CanCollide = true;
+			end
+		end
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoClip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		vehNoClipKeybind:Set("Set Keybind");
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionnoclip,Name="Change Vehicle Noclip Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	vehiclenoclippkeybind = Text;
-end});
 Sectioninvisible = Misc:CreateSection("FE LocalPlayer Related | Invisible's", false, false, 14386256326);
-inviskeybind = "";
 invisRunning = false;
 Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Invisible",CurrentValue=false,Callback=function(Value)
 	invisibleeee = Value;
@@ -2654,154 +2567,149 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 		end
 	end);
 end});
-Buttoninvis = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible",Interact="Click",Callback=function()
-	Buttoninvis:Set("Invisible (Exed)");
-	effecttrue();
-	if (inviskeybind == "") then
-		NSUI:Notify({Title="Setup A Keybind!",Content="Setup a Keybind To Use This Function!",Duration=3,Image=7733715400});
-	else
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=5,Image=7733715400});
-	end
-	repeat
-		task.wait();
-	until JMouse 
-	toginvis = false;
-	JMouse.KeyDown:connect(function(key)
-		if (key:lower() == inviskeybind) then
-			if toginvis then
-				toginvis = false;
-				TurnVisible();
-			else
-				toginvis = true;
-				local Player = speaker;
-				repeat
-					task.wait(0.1);
-				until Player.Character 
-				local Character = Player.Character;
-				Character.Archivable = true;
-				local IsInvis = false;
-				local IsRunning = true;
-				local InvisibleCharacter = Character:Clone();
-				InvisibleCharacter.Parent = Lighting;
-				local Void = workspace.FallenPartsDestroyHeight;
-				InvisibleCharacter.Name = "";
-				local CF;
-				local invisFix = RunService.Stepped:Connect(function()
-					pcall(function()
-						local IsInteger;
-						if tostring(Void):find("-") then
-							IsInteger = true;
-						else
-							IsInteger = false;
-						end
-						local Pos = Player.Character.HumanoidRootPart.Position;
-						local Pos_String = tostring(Pos);
-						local Pos_Seperate = Pos_String:split(", ");
-						local X = tonumber(Pos_Seperate[1]);
-						local Y = tonumber(Pos_Seperate[2]);
-						local Z = tonumber(Pos_Seperate[3]);
-						if (IsInteger == true) then
-							if (Y <= Void) then
-								Respawn();
-							end
-						elseif (IsInteger == false) then
-							if (Y >= Void) then
-								Respawn();
-							end
-						end
-					end);
-				end);
-				for i, v in pairs(InvisibleCharacter:GetDescendants()) do
-					if v:IsA("BasePart") then
-						if (v.Name == "HumanoidRootPart") then
-							v.Transparency = 1;
-						else
-							v.Material = Enum.Material.ForceField;
-							v.Color = Color3.fromRGB(25, 25, 25);
-						end
-					end
+InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
+	invisff = KeyBind;
+	invisff = not invisff;
+	if invisff then
+		if invisRunning then
+			return;
+		end
+		invisRunning = true;
+		local Player = speaker;
+		repeat
+			task.wait(0.1);
+		until Player.Character 
+		local Character = Player.Character;
+		Character.Archivable = true;
+		local IsInvis = false;
+		local IsRunning = true;
+		local InvisibleCharacter = Character:Clone();
+		InvisibleCharacter.Parent = Lighting;
+		local Void = workspace.FallenPartsDestroyHeight;
+		InvisibleCharacter.Name = "";
+		local CF;
+		local invisFix = RunService.Stepped:Connect(function()
+			pcall(function()
+				local IsInteger;
+				if tostring(Void):find("-") then
+					IsInteger = true;
+				else
+					IsInteger = false;
 				end
-				function Respawn()
-					IsRunning = false;
-					if (IsInvis == true) then
-						pcall(function()
-							Player.Character = Character;
-							task.wait();
-							Character.Parent = workspace;
-							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
-							IsInvis = false;
-							InvisibleCharacter.Parent = nil;
-						end);
-					elseif (IsInvis == false) then
-						pcall(function()
-							Player.Character = Character;
-							task.wait();
-							Character.Parent = workspace;
-							Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
-							TurnVisible();
-						end);
-					end
-				end
-				local invisDied;
-				invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					Respawn();
-					invisDied:Disconnect();
-				end);
-				if (IsInvis == true) then
-					return;
-				end
-				IsInvis = true;
-				CF = workspace.CurrentCamera.CFrame;
-				local CF_1 = Player.Character.HumanoidRootPart.CFrame;
-				Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
-				workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
-				task.wait(0.2);
-				workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
-				InvisibleCharacter = InvisibleCharacter;
-				Character.Parent = Lighting;
-				InvisibleCharacter.Parent = workspace;
-				InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
-				Player.Character = InvisibleCharacter;
-				workspace.CurrentCamera:remove();
-				task.wait(0.1);
-				repeat
-					task.wait();
-				until speaker.Character ~= nil 
-				workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
-				workspace.CurrentCamera.CameraType = "Custom";
-				speaker.CameraMinZoomDistance = 0.5;
-				speaker.CameraMaxZoomDistance = 400;
-				speaker.CameraMode = "Classic";
-				speaker.Character.Head.Anchored = false;
-				Player.Character.Animate.Disabled = true;
-				Player.Character.Animate.Disabled = false;
-				function TurnVisible()
-					if (IsInvis == false) then
-						return;
-					end
-					invisFix:Disconnect();
-					invisDied:Disconnect();
-					CF = workspace.CurrentCamera.CFrame;
-					Character = Character;
-					local CF_1 = Player.Character.HumanoidRootPart.CFrame;
-					Character.HumanoidRootPart.CFrame = CF_1;
-					InvisibleCharacter:Destroy();
-					Player.Character = Character;
-					Character.Parent = workspace;
-					IsInvis = false;
-					Player.Character.Animate.Disabled = true;
-					Player.Character.Animate.Disabled = false;
-					invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				local Pos = Player.Character.HumanoidRootPart.Position;
+				local Pos_String = tostring(Pos);
+				local Pos_Seperate = Pos_String:split(", ");
+				local X = tonumber(Pos_Seperate[1]);
+				local Y = tonumber(Pos_Seperate[2]);
+				local Z = tonumber(Pos_Seperate[3]);
+				if (IsInteger == true) then
+					if (Y <= Void) then
 						Respawn();
-						invisDied:Disconnect();
-					end);
+					end
+				elseif (IsInteger == false) then
+					if (Y >= Void) then
+						Respawn();
+					end
+				end
+			end);
+		end);
+		for i, v in pairs(InvisibleCharacter:GetDescendants()) do
+			if v:IsA("BasePart") then
+				if (v.Name == "HumanoidRootPart") then
+					v.Transparency = 1;
+				else
+					v.Material = Enum.Material.ForceField;
+					v.Color = Color3.fromRGB(25, 25, 25);
 				end
 			end
 		end
-	end);
+		function Respawn()
+			IsRunning = false;
+			if (IsInvis == true) then
+				pcall(function()
+					Player.Character = Character;
+					task.wait();
+					Character.Parent = workspace;
+					Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+					IsInvis = false;
+					InvisibleCharacter.Parent = nil;
+					invisRunning = false;
+				end);
+			elseif (IsInvis == false) then
+				pcall(function()
+					Player.Character = Character;
+					task.wait();
+					Character.Parent = workspace;
+					Character:FindFirstChildWhichIsA("Humanoid"):Destroy();
+					TurnVisible();
+				end);
+			end
+		end
+		local invisDied;
+		invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			Respawn();
+			invisDied:Disconnect();
+		end);
+		if (IsInvis == true) then
+			return;
+		end
+		IsInvis = true;
+		CF = workspace.CurrentCamera.CFrame;
+		local CF_1 = Player.Character.HumanoidRootPart.CFrame;
+		Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0));
+		workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable;
+		task.wait(0.2);
+		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
+		InvisibleCharacter = InvisibleCharacter;
+		Character.Parent = Lighting;
+		InvisibleCharacter.Parent = workspace;
+		InvisibleCharacter.HumanoidRootPart.CFrame = CF_1;
+		Player.Character = InvisibleCharacter;
+		workspace.CurrentCamera:remove();
+		task.wait(0.1);
+		repeat
+			task.wait();
+		until speaker.Character ~= nil 
+		workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid");
+		workspace.CurrentCamera.CameraType = "Custom";
+		speaker.CameraMinZoomDistance = 0.5;
+		speaker.CameraMaxZoomDistance = 400;
+		speaker.CameraMode = "Classic";
+		speaker.Character.Head.Anchored = false;
+		Player.Character.Animate.Disabled = true;
+		Player.Character.Animate.Disabled = false;
+		function TurnVisible()
+			if (IsInvis == false) then
+				return;
+			end
+			invisFix:Disconnect();
+			invisDied:Disconnect();
+			CF = workspace.CurrentCamera.CFrame;
+			Character = Character;
+			local CF_1 = Player.Character.HumanoidRootPart.CFrame;
+			Character.HumanoidRootPart.CFrame = CF_1;
+			InvisibleCharacter:Destroy();
+			Player.Character = Character;
+			Character.Parent = workspace;
+			IsInvis = false;
+			Player.Character.Animate.Disabled = true;
+			Player.Character.Animate.Disabled = false;
+			invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				Respawn();
+				invisDied:Disconnect();
+			end);
+			invisRunning = false;
+		end
+	else
+		TurnVisible();
+	end
 end});
-Input = Misc:CreateInput({SectionParent=Sectioninvisible,Name="Change Invisible Keybind",PlaceholderText="Keybind",CharacterLimit=1,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	inviskeybind = Text;
+Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Reset Invisible Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		InvisKeybind:Set("Set Keybind");
+	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool)",Interact="Click",Callback=function()
 	offset = 1100;
@@ -2989,8 +2897,8 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 		end);
 	end
 	if not upsidedown then
-		ifuserdiedar:Disconnect()
-		charresettopos()
+		ifuserdiedar:Disconnect();
+		charresettopos();
 	end
 end});
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
@@ -3209,8 +3117,8 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 			end);
 		end
 		if not Crawlingornot then
-			ifuserdiedag:Disconnect()
-				charresettopos()
+			ifuserdiedag:Disconnect();
+			charresettopos();
 			if climbTrack then
 				climbTrack:Stop();
 			end
@@ -3253,7 +3161,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 			end);
 		end
 		if not sitwalkerr then
-			ifuserdiedaq:Disconnect()
+			ifuserdiedaq:Disconnect();
 			charresettopos();
 		end
 	end);
@@ -3469,88 +3377,88 @@ end});
 Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478);
 Paragraph = Misc:CreateParagraph({Title="Beyblade Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings);
 ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyblade",CurrentValue=false,Callback=function(Value)
-		beyblader = Value;
-		if beyblader then
-			local BeyBladee = Instance.new("BodyAngularVelocity")
-			BeyBladee.Name = "BeyBlading"
-			BeyBladee.Parent = getRoot(speaker.Character)
-			BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0)
-			local function updateAngularVelocity()
-				BeyBladee.AngularVelocity = Vector3.new(0, 20, 0)
-			end
-			updateAngularVelocity()
-			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleBeyBlade:Set(false)
-				end)
-			end)
-			if not r15(speaker) then
-				local Character = game.Players.LocalPlayer.Character
-				local c = Character
-				local hrp0 = c:FindFirstChild("HumanoidRootPart")
-				local hrp1 = hrp0:Clone()
-				c.Parent = nil
-				hrp0.Parent = hrp1
-				hrp0.RootJoint.Part0 = nil
-				hrp1.Parent = c
-				c.Parent = workspace
-				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
-				local h = game:GetService("RunService").Heartbeat
-				hrp0.Transparency = 0.85
-				hrp0.Material = Enum.Material.ForceField
-				hrp0.Color = Color3.fromRGB(25, 25, 25)
-				while h:Wait() and c and c.Parent do
-					hrp0.CFrame = hrp1.CFrame
-					hrp0.Orientation += Vector3.new(-90, 0, 0)
-					hrp0.Position -= Vector3.new(0, 0, 0)
-					hrp0.Velocity = hrp1.Velocity
-				end
-			else
-				local Players = game:GetService("Players")
-				local RunService = game:GetService("RunService")
-				local LocalPlayer = Players.LocalPlayer
-				local Character = LocalPlayer.Character
-				local c = Character
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart")
-					if hrp0 then
-						local hrp1 = hrp0:Clone()
-						c.Parent = nil
-						hrp0.Parent = hrp1
-						hrp1.Parent = c
-						c.Parent = workspace
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, 1.2);
-						hrp0.Transparency = 0.85
-						hrp0.Material = Enum.Material.ForceField
-						hrp0.Color = Color3.fromRGB(25, 25, 25)
-						RunService.Heartbeat:Connect(function()
-							if c and c.Parent then
-								hrp0.CFrame = hrp1.CFrame
-								hrp0.Orientation += Vector3.new(-90, 0, 0)
-								hrp0.Position -= Vector3.new(0, 0, 0)
-								hrp0.Velocity = hrp1.Velocity
-							end
-						end)
-					end
-				end
-				setupCharacter()
-				Players.LocalPlayer.CharacterAdded:Connect(function(char)
-					c = char
-					setupCharacter()
-				end)
-			end
+	beyblader = Value;
+	if beyblader then
+		local BeyBladee = Instance.new("BodyAngularVelocity");
+		BeyBladee.Name = "BeyBlading";
+		BeyBladee.Parent = getRoot(speaker.Character);
+		BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0);
+		local function updateAngularVelocity()
+			BeyBladee.AngularVelocity = Vector3.new(0, 20, 0);
 		end
-		if not beyblader then
+		updateAngularVelocity();
+		ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			pcall(function()
-			ifuserdied2:Disconnect()
-			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
-				if v.Name == "BeyBlading" then
-					v:Destroy()
+				ToggleBeyBlade:Set(false);
+			end);
+		end);
+		if not r15(speaker) then
+			local Character = game.Players.LocalPlayer.Character;
+			local c = Character;
+			local hrp0 = c:FindFirstChild("HumanoidRootPart");
+			local hrp1 = hrp0:Clone();
+			c.Parent = nil;
+			hrp0.Parent = hrp1;
+			hrp0.RootJoint.Part0 = nil;
+			hrp1.Parent = c;
+			c.Parent = workspace;
+			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
+			local h = game:GetService("RunService").Heartbeat;
+			hrp0.Transparency = 0.85;
+			hrp0.Material = Enum.Material.ForceField;
+			hrp0.Color = Color3.fromRGB(25, 25, 25);
+			while h:Wait() and c and c.Parent do
+				hrp0.CFrame = hrp1.CFrame;
+				hrp0.Orientation += Vector3.new(-90, 0, 0)
+				hrp0.Position -= Vector3.new(0, 0, 0)
+				hrp0.Velocity = hrp1.Velocity;
+			end
+		else
+			local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
+				local hrp0 = c:FindFirstChild("HumanoidRootPart");
+				if hrp0 then
+					local hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, 1.2);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(-90, 0, 0)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
 				end
 			end
-			charresettopos()
-		end)
+			setupCharacter();
+			Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+			end);
 		end
+	end
+	if not beyblader then
+		pcall(function()
+			ifuserdied2:Disconnect();
+			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
+				if (v.Name == "BeyBlading") then
+					v:Destroy();
+				end
+			end
+			charresettopos();
+		end);
+	end
 end});
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
@@ -7280,7 +7188,7 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 	end
 	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",PlaceholderText="Player ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 		userid = Text;
-        ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
+		ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)));
 			ConnectionEvent:FireServer(315, data, true);
@@ -7288,22 +7196,22 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 	end});
 	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
 		username = Text;
-        ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
+		ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (username and Players:GetUserIdFromNameAsync(username)) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)));
 			ConnectionEvent:FireServer(315, data, true);
 		end
 	end});
 	Toggle = MP:CreateToggle({SectionParent=Sectionavmp,Name="No Outfit Max",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		Constants = require(ReplicatedStorage:WaitForChild("Constants"))
-		Maxoutfitremove = Value
-		if Maxoutfitremove then
-			Constants.STATS.MAXAvatarEditorCustomOutfits = 9e9
-		elseif not Maxoutfitremove then
-			Constants.STATS.MAXAvatarEditorCustomOutfits = 3
-		end
-	end)
+		pcall(function()
+			Constants = require(ReplicatedStorage:WaitForChild("Constants"));
+			Maxoutfitremove = Value;
+			if Maxoutfitremove then
+				Constants.STATS.MAXAvatarEditorCustomOutfits = 8999999488;
+			elseif not Maxoutfitremove then
+				Constants.STATS.MAXAvatarEditorCustomOutfits = 3;
+			end
+		end);
 	end});
 	Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
 	onsaleran = false;
@@ -7331,23 +7239,23 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 			onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
 		end
 	end});
-	oldplusfunc = nil
+	oldplusfunc = nil;
 	Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
 		pcall(function()
-		local v9 = require(ReplicatedStorage:WaitForChild("Global"));
-	oldplusfunc = hookfunction(v9.IsPlayerPLUS,function(p80)
-		local v110 = Players:GetPlayerByUserId(p80);
-		if not v110 then
-			return;
-		end;
-		if v110 == Players.LocalPlayer then
-			v110:SetAttribute("PLUS",true)
-			return true;
-		else
-			return v110:GetAttribute("PLUS") and false;
-		end
-	end)
-end)
+			local v9 = require(ReplicatedStorage:WaitForChild("Global"));
+			oldplusfunc = hookfunction(v9.IsPlayerPLUS, function(p80)
+				local v110 = Players:GetPlayerByUserId(p80);
+				if not v110 then
+					return;
+				end
+				if (v110 == Players.LocalPlayer) then
+					v110:SetAttribute("PLUS", true);
+					return true;
+				else
+					return v110:GetAttribute("PLUS") and false;
+				end
+			end);
+		end);
 	end});
 else
 	Sectiojointhegamemp = MP:CreateSection("Join The Game", false);
