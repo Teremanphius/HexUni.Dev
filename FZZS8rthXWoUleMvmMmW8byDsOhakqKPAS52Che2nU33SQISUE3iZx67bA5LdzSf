@@ -49,7 +49,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "180";
-ScriptcountAnim = "66";
+ScriptcountAnim = "63";
 pcall(function()
 	function getRoot(char)
 		local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -647,14 +647,12 @@ local function clicktpFunc()
 		rootPart.CFrame = newCFrame + Vector3.new(0, hipHeight or 4, 0);
 	end);
 end
-Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position."}, Sectiontpscritps);
+Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	presstpff = KeyBind;
 	presstpff = not presstpff;
-	if presstpff then
-		if JMouse.Target then
-			clicktpFunc();
-		end
+	if presstpff and JMouse.Target then
+		clicktpFunc();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Press to TP Keybind",Callback=function()
@@ -6785,114 +6783,6 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",I
 	end
 end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
-Paragraph = Animations:CreateParagraph({Title="Giant Info",Content="Body Size's: \nBodyHeightScale: 105%\nHeadScale: 100%\nBodyWidthScale: 100%\nBodyProportionScale: 0%"}, Sectionotherfeanimssc);
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Giant R15",Interact="Click",Callback=function()
-	pcall(function()
-		if r15(speaker) then
-			local LocalPlayer = game:GetService("Players").LocalPlayer;
-			local Character = speaker.Character;
-			local Humanoid = Character:FindFirstChildOfClass("Humanoid");
-			function rm()
-				for i, v in pairs(Character:GetDescendants()) do
-					if v:IsA("BasePart") then
-						if ((v.Name == "Handle") or (v.Name == "Head")) then
-							if Character.Head:FindFirstChild("OriginalSize") then
-								Character.Head.OriginalSize:Destroy();
-							end
-						else
-							for i, cav in pairs(v:GetDescendants()) do
-								if cav:IsA("Attachment") then
-									if cav:FindFirstChild("OriginalPosition") then
-										cav.OriginalPosition:Destroy();
-									end
-								end
-							end
-							v:FindFirstChild("OriginalSize"):Destroy();
-							if v:FindFirstChild("AvatarPartScaleType") then
-								v:FindFirstChild("AvatarPartScaleType"):Destroy();
-							end
-						end
-					end
-				end
-			end
-			rm();
-			task.wait(0.05);
-			Humanoid:FindFirstChild("BodyProportionScale"):Destroy();
-			task.wait(1);
-			rm();
-			task.wait(0.05);
-			Humanoid:FindFirstChild("BodyHeightScale"):Destroy();
-			task.wait(1);
-			rm();
-			task.wait(0.05);
-			Humanoid:FindFirstChild("BodyWidthScale"):Destroy();
-			task.wait(1);
-			rm();
-			task.wait(0.05);
-			Humanoid:FindFirstChild("BodyDepthScale"):Destroy();
-			task.wait(1);
-			rm();
-			task.wait(0.05);
-			Humanoid:FindFirstChild("HeadScale"):Destroy();
-			task.wait(1);
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
-		else
-			effectfalse();
-			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
-		end
-	end);
-end});
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Giant Leg R15",Interact="Click",Callback=function()
-	pcall(function()
-		if r15(speaker) then
-			local Hum = {"BodyTypeScale","BodyProportionScale","BodyWidthScale","BodyHeightScale","BodyDepthScale","HeadScale"};
-			function Remove()
-				repeat
-					task.wait();
-				until Character.LeftFoot:FindFirstChild("OriginalSize") 
-				Character.LeftFoot.OriginalSize:Destroy();
-				Character.LeftLowerLeg.OriginalSize:Destroy();
-				Character.LeftUpperLeg.OriginalSize:Destroy();
-			end
-			Character.LeftLowerLeg.LeftKneeRigAttachment.OriginalPosition:Destroy();
-			Character.LeftUpperLeg.LeftKneeRigAttachment.OriginalPosition:Destroy();
-			Character.LeftLowerLeg.LeftKneeRigAttachment:Destroy();
-			Character.LeftUpperLeg.LeftKneeRigAttachment:Destroy();
-			for i = 1, 6 do
-				Remove();
-				Character.Humanoid[Hum[i]]:Destroy();
-			end
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
-		else
-			effectfalse();
-			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
-		end
-	end);
-end});
-Paragraph = Animations:CreateParagraph({Title="Big Head Info",Content="You'll Need A Rthro Head For This To Work."}, Sectionotherfeanimssc);
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Big Head R15",Interact="Click",Callback=function()
-	pcall(function()
-		if r15(speaker) then
-			for i, v in pairs(Character.Humanoid:GetChildren()) do
-				if (string.find(v.Name, "Scale") and (v.Name ~= "HeadScale")) then
-					repeat
-						task.wait(HeadGrowSpeed);
-					until Character.Head:FindFirstChild("OriginalSize") 
-					Character.Head.OriginalSize:Destroy();
-					v:Destroy();
-					Character.Head:WaitForChild("OriginalSize");
-				end
-			end
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You Have Executed It " .. speaker.DisplayName .. "!\nBy The Way If It Doesn't Work it Should!"),Duration=3,Image=7733715400});
-		else
-			effectfalse();
-			NSUI:Notify({Title="R15 Needed!",Content="Bro your R6..",Duration=3,Image=7733715400});
-		end
-	end);
-end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Invisible Skateboard R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-3/main/invisible%20skateboard.lua", true))();
@@ -8405,7 +8295,7 @@ end});
 local CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", true);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, nil);
-Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nAnd You!\nUI: Array Field Library (Modified)"}, nil);
+Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, nil);
 Sectionchangelog = CRD:CreateSection("Changelog", true);
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Made Some Improvement's."}, nil);
 Sectionother = CRD:CreateSection("Point", true);
