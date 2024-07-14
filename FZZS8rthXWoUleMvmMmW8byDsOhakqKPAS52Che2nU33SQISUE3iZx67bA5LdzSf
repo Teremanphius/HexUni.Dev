@@ -615,7 +615,7 @@ local function updatePlayerList()
 			table.insert(gotoplayersList, player.Name);
 		end
 	end
-	gotodropdown:Refresh(gotoplayersList);
+	gotodropdown:Refresh(gotoplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -649,7 +649,7 @@ local function updatePlayerList()
 			table.insert(gotoplayersList, player.Name);
 		end
 	end
-	gotodropdown:Refresh(gotoplayersList);
+	gotodropdown:Refresh(gotoplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -701,7 +701,7 @@ local function updatePlayerList()
 			table.insert(spectateplayersList, player.Name);
 		end
 	end
-	spectatedropdown:Refresh(spectateplayersList);
+	spectatedropdown:Refresh(spectateplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -849,7 +849,7 @@ local function updatePlayerList()
 			table.insert(AnnoyplayersList, player.Name);
 		end
 	end
-	Annoydropdown:Refresh(AnnoyplayersList);
+	Annoydropdown:Refresh(AnnoyplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -890,7 +890,7 @@ local function updatePlayerList()
 			table.insert(StandOnplayersList, player.Name);
 		end
 	end
-	StandOndropdown:Refresh(StandOnplayersList);
+	StandOndropdown:Refresh(StandOnplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -918,7 +918,7 @@ local function updatePlayerList()
 			table.insert(SpookplayersList, player.Name);
 		end
 	end
-	Spookdropdown:Refresh(SpookplayersList);
+	Spookdropdown:Refresh(SpookplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -958,7 +958,7 @@ local function updatePlayerList()
 			table.insert(followplayersList, player.Name);
 		end
 	end
-	followdropdown:Refresh(followplayersList);
+	followdropdown:Refresh(followplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1021,7 +1021,7 @@ local function updatePlayerList()
 			table.insert(loopwaveplayersList, player.Name);
 		end
 	end
-	loopwavedropdown:Refresh(loopwaveplayersList);
+	loopwavedropdown:Refresh(loopwaveplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1071,7 +1071,7 @@ local function updatePlayerList()
 			table.insert(CarpetplayersList, player.Name);
 		end
 	end
-	Carpetdropdown:Refresh(CarpetplayersList);
+	Carpetdropdown:Refresh(CarpetplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1142,7 +1142,7 @@ local function updatePlayerList()
 			table.insert(HugplayersList, player.Name);
 		end
 	end
-	Hugdropdown:Refresh(HugplayersList);
+	Hugdropdown:Refresh(HugplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1183,7 +1183,7 @@ local function updatePlayerList()
 			table.insert(PiggybackplayersList, player.Name);
 		end
 	end
-	Piggybackdropdown:Refresh(PiggybackplayersList);
+	Piggybackdropdown:Refresh(PiggybackplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1224,7 +1224,7 @@ local function updatePlayerList()
 			table.insert(backpackplayersList, player.Name);
 		end
 	end
-	backpackdropdown:Refresh(backpackplayersList);
+	backpackdropdown:Refresh(backpackplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1265,7 +1265,7 @@ local function updatePlayerList()
 			table.insert(headsitplayersList, player.Name);
 		end
 	end
-	Headsitdropdown:Refresh(headsitplayersList);
+	Headsitdropdown:Refresh(headsitplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1306,7 +1306,7 @@ local function updatePlayerList()
 			table.insert(actualheadsitplayersList, player.Name);
 		end
 	end
-	ActualHeadsitdropdown:Refresh(actualheadsitplayersList);
+	ActualHeadsitdropdown:Refresh(actualheadsitplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1359,7 +1359,7 @@ local function updatePlayerList()
 			table.insert(animsyncplayersList, player.Name);
 		end
 	end
-	animsyncdropdown:Refresh(animsyncplayersList);
+	animsyncdropdown:Refresh(animsyncplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1428,7 +1428,7 @@ local function updatePlayerList()
 			table.insert(orbitplayersList, player.Name);
 		end
 	end
-	orbitdropdown:Refresh(orbitplayersList);
+	orbitdropdown:Refresh(orbitplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1483,7 +1483,7 @@ local function updatePlayerList()
 			table.insert(closeorbitplayersList, player.Name);
 		end
 	end
-	closeorbitdropdown:Refresh(closeorbitplayersList);
+	closeorbitdropdown:Refresh(closeorbitplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1520,7 +1520,7 @@ local function updatePlayerList()
 			table.insert(lookatplayersList, player.Name);
 		end
 	end
-	lookatdropdown:Refresh(lookatplayersList);
+	lookatdropdown:Refresh(lookatplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1566,7 +1566,7 @@ local function updatePlayerList()
 			table.insert(spinaroundplayersList, player.Name);
 		end
 	end
-	spinarounddropdown:Refresh(spinaroundplayersList);
+	spinarounddropdown:Refresh(spinaroundplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1718,7 +1718,7 @@ local function updatePlayerList()
 			table.insert(a69playersList, player.Name);
 		end
 	end
-	a69dropdown:Refresh(a69playersList);
+	a69dropdown:Refresh(a69playersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1843,7 +1843,7 @@ local function updatePlayerList()
 			table.insert(a69humpplayersList, player.Name);
 		end
 	end
-	a69humpdropdown:Refresh(a69humpplayersList);
+	a69humpdropdown:Refresh(a69humpplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1905,7 +1905,7 @@ local function updatePlayerList()
 			table.insert(bangplayersList, player.Name);
 		end
 	end
-	bangdropdown:Refresh(bangplayersList);
+	bangdropdown:Refresh(bangplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1964,7 +1964,7 @@ local function updatePlayerList()
 			table.insert(facebangplayersList, player.Name);
 		end
 	end
-	facebangdropdown:Refresh(facebangplayersList);
+	facebangdropdown:Refresh(facebangplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -2015,7 +2015,7 @@ local function updatePlayerList()
 			table.insert(sitfacebangplayersList, player.Name);
 		end
 	end
-	sitfacebangdropdown:Refresh(sitfacebangplayersList);
+	sitfacebangdropdown:Refresh(sitfacebangplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -2063,7 +2063,7 @@ local function updatePlayerList()
 			table.insert(humpplayersList, player.Name);
 		end
 	end
-	humpdropdown:Refresh(humpplayersList);
+	humpdropdown:Refresh(humpplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -2118,7 +2118,7 @@ local function updatePlayerList()
 			table.insert(hump2playersList, player.Name);
 		end
 	end
-	hump2dropdown:Refresh(hump2playersList);
+	hump2dropdown:Refresh(hump2playersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -8609,7 +8609,7 @@ local function updatePlayerList()
 			table.insert(useridplayersList, player.Name);
 		end
 	end
-	useriddropdown:Refresh(useridplayersList);
+	useriddropdown:Refresh(useridplayersList,"Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
