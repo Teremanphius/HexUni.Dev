@@ -29,8 +29,8 @@ ChatService = game:GetService("Chat");
 ProximityPromptService = game:GetService("ProximityPromptService");
 StatsService = game:GetService("Stats");
 MaterialService = game:GetService("MaterialService");
-AvatarEditorService = game:GetService("AvatarEditorService")
-GameSettings = UserSettings():GetService("UserGameSettings")
+AvatarEditorService = game:GetService("AvatarEditorService");
+GameSettings = UserSettings():GetService("UserGameSettings");
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
@@ -574,22 +574,22 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	pcall(function()
 		antiafkidle = Value;
 		if antiafkidle then
-			local gc = getconnections or get_signal_cons
+			local gc = getconnections or get_signal_cons;
 			if gc then
-				for i,v in pairs(gc(Players.LocalPlayer.Idled)) do
-					if v["Disable"] then
-						v["Disable"](v)
-					elseif v["Disconnect"] then
-						v["Disconnect"](v)
+				for i, v in pairs(gc(Players.LocalPlayer.Idled)) do
+					if v['Disable'] then
+						v['Disable'](v);
+					elseif v['Disconnect'] then
+						v['Disconnect'](v);
 					end
 				end
 			else
-				local vu = game:GetService("VirtualUser")
-				local disableidle
+				local vu = game:GetService("VirtualUser");
+				local disableidle;
 				disableidle = Players.LocalPlayer.Idled:Connect(function()
-					vu:CaptureController()
-					vu:ClickButton2(Vector2.new())
-				end)
+					vu:CaptureController();
+					vu:ClickButton2(Vector2.new());
+				end);
 			end
 		end
 		if not antiafkidle then
@@ -598,28 +598,62 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To / Goto",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	foundPlr = getPlr(plrName);
-	Character:PivotTo(foundPlr.Character:GetPivot());
+gotoplayersList = {};
+gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		foundPlr = getPlr(plrName);
+		Character:PivotTo(foundPlr.Character:GetPivot());
+		effecttrue();
+		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
+	end);
 end});
+local function updatePlayerList()
+	gotoplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(gotoplayersList, player.Name);
+		end
+	end
+	gotodropdown:Refresh(gotoplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 tweenSpeedtp = 1;
 Paragraph = Misc:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritps);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Teleport To / Goto",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+gotoplayersList = {};
+gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		foundPlr = getPlr(plrName);
 		if (foundPlr.Character ~= nil) then
 			if (Humanoid and Humanoid.SeatPart) then
 				Humanoid.Sit = false;
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
+				effecttrue();
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
 			else
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
+				effecttrue();
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
 			end
 		end
 		breakvelocity();
 	end);
 end});
+local function updatePlayerList()
+	gotoplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(gotoplayersList, player.Name);
+		end
+	end
+	gotodropdown:Refresh(gotoplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 Slidertweenspeedtp = Misc:CreateSlider({SectionParent=Sectiontpscritps,Name="Tween Teleport To /.. Speed",Range={0,10},Increment=0.1,Suffix="Speed",CurrentValue=tweenSpeedtp,Callback=function(Value)
 	pcall(function()
 		tweenSpeedtp = Value;
@@ -635,12 +669,43 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game"
 		game:GetService("TeleportService"):Teleport(Text, speaker);
 	end);
 end});
-Paragraph = Misc:CreateParagraph({Title="Spectate Info",Content="Leave The Player Box Empty And Press Enter To Unspectate."}, Sectiontpscritps);
-Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Spectate",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	foundPlr = getPlr(plrName);
-	game.Workspace.Camera.CameraSubject = foundPlr.Character.Humanoid;
+local spectateing = false;
+spectateplayersList = {};
+spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spectate",Options=spectateplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (spectateing == true) then
+				spectateing = false;
+				effectfalse();
+				game.Workspace.Camera.CameraSubject = speaker.Character;
+				notifyyw("No Longer Spectating The Player ", "Not Spectating " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				return;
+			else
+				spectateing = true;
+				effecttrue();
+				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name, 2, 10709790644);
+				while spectateing do
+					game.Workspace.Camera.CameraSubject = foundPlr.Character;
+					task.wait();
+				end
+			end
+		end
+	end);
 end});
+local function updatePlayerList()
+	spectateplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(spectateplayersList, player.Name);
+		end
+	end
+	spectatedropdown:Refresh(spectateplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local function clicktpFunc()
 	pcall(function()
 		if (Humanoid and Humanoid.SeatPart) then
@@ -659,7 +724,7 @@ Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	presstpff = KeyBind;
 	presstpff = not presstpff;
-	if presstpff and JMouse.Target then
+	if (presstpff and JMouse.Target) then
 		clicktpFunc();
 	end
 end});
@@ -751,9 +816,10 @@ end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter"}, Sectionplayrerelatedtp);
 local Annoy = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+AnnoyplayersList = {};
+Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=AnnoyplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		annoyfoundPlr = getPlr(plrName);
 		if annoyfoundPlr then
 			if (annoyfoundPlr.Character and annoyfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -772,20 +838,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Plac
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	AnnoyplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(AnnoyplayersList, player.Name);
+		end
+	end
+	Annoydropdown:Refresh(AnnoyplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local StandOnHead = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+StandOnplayersList = {};
+StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=StandOnplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		StandFoundPlr = getPlr(plrName);
 		if StandFoundPlr then
 			if (StandFoundPlr.Character and StandFoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -806,22 +879,29 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stand On",P
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	StandOnplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(StandOnplayersList, player.Name);
+		end
+	end
+	StandOndropdown:Refresh(StandOnplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 Paragraph = Misc:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-	plrName = Text;
-	foundPlr = getPlr(plrName);
-	if (plrName ~= "") then
+SpookplayersList = {};
+Spookdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=SpookplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+		plrName = Option;
+		foundPlr = getPlr(plrName);
 		if foundPlr then
 			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
 			wait(0.9);
@@ -829,12 +909,25 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spook",Plac
 		elseif (foundPlr == speaker) then
 			return nil;
 		end
-	end
+	end);
 end});
+local function updatePlayerList()
+	SpookplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(SpookplayersList, player.Name);
+		end
+	end
+	Spookdropdown:Refresh(SpookplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local Follow = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+followplayersList = {};
+followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=followplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		folloawafoundplr = getPlr(plrName);
 		if folloawafoundplr then
 			flwnum = -5;
@@ -854,21 +947,28 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Plac
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	followplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(followplayersList, player.Name);
+		end
+	end
+	followdropdown:Refresh(followplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local LoopHello = false;
 local trueforanim = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+loopwaveplayersList = {};
+loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=loopwaveplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -910,20 +1010,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave /
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	loopwaveplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(loopwaveplayersList, player.Name);
+		end
+	end
+	loopwavedropdown:Refresh(loopwaveplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local Carpettion = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+CarpetplayersList = {};
+Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=CarpetplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		carpetfoundPlr = getPlr(plrName);
 		if carpetfoundPlr then
 			if not r15(speaker) then
@@ -949,9 +1056,6 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 							game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
-				else
-					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-					effectfalse();
 				end
 			else
 				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
@@ -960,10 +1064,23 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Pla
 		end
 	end);
 end});
+local function updatePlayerList()
+	CarpetplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(CarpetplayersList, player.Name);
+		end
+	end
+	Carpetdropdown:Refresh(CarpetplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local ffhugger = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+HugplayersList = {};
+Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=HugplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		local plrName = Text;
+		plrName = Option;
 		huggingfoundPlr = getPlr(plrName);
 		if huggingfoundPlr then
 			if not r15(speaker) then
@@ -990,9 +1107,6 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 							game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
-				else
-					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-					effectfalse();
 				end
 			elseif ((ffhugger == true) or (huggingfoundPlr == speaker)) then
 				ffhugger = false;
@@ -1018,16 +1132,26 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Hug",Placeh
 					game:GetService("RunService").RenderStepped:Wait();
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	HugplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(HugplayersList, player.Name);
+		end
+	end
+	Hugdropdown:Refresh(HugplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local actualpb = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+PiggybackplayersList = {};
+Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=PiggybackplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		piggybackfoundPlr = getPlr(plrName);
 		if piggybackfoundPlr then
 			if (piggybackfoundPlr.Character and piggybackfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1048,20 +1172,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	PiggybackplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(PiggybackplayersList, player.Name);
+		end
+	end
+	Piggybackdropdown:Refresh(PiggybackplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local besomebackpack = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+backpackplayersList = {};
+backpackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=backpackplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		BackpackFoundPlr = getPlr(plrName);
 		if BackpackFoundPlr then
 			if (BackpackFoundPlr.Character and BackpackFoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1082,20 +1213,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Backpack",P
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	backpackplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(backpackplayersList, player.Name);
+		end
+	end
+	backpackdropdown:Refresh(backpackplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local headsits = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+headsitplayersList = {};
+Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=headsitplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		headsitfoundPlr = getPlr(plrName);
 		if headsitfoundPlr then
 			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1116,20 +1254,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Pl
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	headsitplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(headsitplayersList, player.Name);
+		end
+	end
+	Headsitdropdown:Refresh(headsitplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local ActualHeadsit = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+actualheadsitplayersList = {};
+ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=actualheadsitplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		headsitfoundPlr = getPlr(plrName);
 		if headsitfoundPlr then
 			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1150,64 +1295,80 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Actual Head
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	actualheadsitplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(actualheadsitplayersList, player.Name);
+		end
+	end
+	ActualHeadsitdropdown:Refresh(actualheadsitplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local animsync;
 issyncinganim = false;
 Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	foundPlr = getPlr(plrName);
-	if foundPlr then
-		if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-			if ((issyncinganim == true) or (foundPlr == speaker)) then
-				charresettopos();
-				issyncinganim = false;
-				notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				effectfalse();
-				animsync:Disconnect();
-				return;
-			else
-				issyncinganim = true;
-				effecttrue();
-				notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
-				animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
-					local animID = track.Animation.AnimationId;
-					for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-						animationTrack:Stop();
-					end
-					Character.Animate.Disabled = true;
-					local Anim = Instance.new("Animation");
-					Anim.AnimationId = animID;
-					local syncinganim = Character.Humanoid:LoadAnimation(Anim);
-					syncinganim:Play();
-					syncinganim:AdjustWeight(10);
-					syncinganim.Stopped:Connect(function()
-						Character.Animate.Disabled = false;
-					end);
-				end);
-			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
-		end
-	else
-		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-		effectfalse();
-	end
-end});
-local orbitingfuck = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+animsyncplayersList = {};
+animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=animsyncplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((issyncinganim == true) or (foundPlr == speaker)) then
+					charresettopos();
+					issyncinganim = false;
+					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					animsync:Disconnect();
+					return;
+				else
+					issyncinganim = true;
+					effecttrue();
+					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
+					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+						local animID = track.Animation.AnimationId;
+						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+							animationTrack:Stop();
+						end
+						Character.Animate.Disabled = true;
+						local Anim = Instance.new("Animation");
+						Anim.AnimationId = animID;
+						local syncinganim = Character.Humanoid:LoadAnimation(Anim);
+						syncinganim:Play();
+						syncinganim:AdjustWeight(10);
+						syncinganim.Stopped:Connect(function()
+							Character.Animate.Disabled = false;
+						end);
+					end);
+				end
+			end
+		end
+	end);
+end});
+local function updatePlayerList()
+	animsyncplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(animsyncplayersList, player.Name);
+		end
+	end
+	animsyncdropdown:Refresh(animsyncplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
+local orbitingfuck = false;
+orbitplayersList = {};
+orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=orbitplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
 		orbitfoundPlr = getPlr(plrName);
 		if orbitfoundPlr then
 			if ((orbitingfuck == true) or (orbitfoundPlr == speaker)) then
@@ -1257,16 +1418,26 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Plac
 					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	orbitplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(orbitplayersList, player.Name);
+		end
+	end
+	orbitdropdown:Refresh(orbitplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local closeorbitingfuck = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+closeorbitplayersList = {};
+closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=closeorbitplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		closeorbitfoundPlr = getPlr(plrName);
 		if closeorbitfoundPlr then
 			if ((closeorbitingfuck == true) or (closeorbitfoundPlr == speaker)) then
@@ -1302,17 +1473,27 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit
 					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	closeorbitplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(closeorbitplayersList, player.Name);
+		end
+	end
+	closeorbitdropdown:Refresh(closeorbitplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+lookatplayersList = {};
+lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=lookatplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		LookAtfoundPlr = getPlr(plrName);
 		if LookAtfoundPlr then
 			if ((lookingAt == true) or (LookAtfoundPlr == speaker)) then
@@ -1329,46 +1510,67 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Look At",Pl
 					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, LookAtfoundPlr.Character.HumanoidRootPart.Position);
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	lookatplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(lookatplayersList, player.Name);
+		end
+	end
+	lookatdropdown:Refresh(lookatplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 local spinaround = false;
 local radiusfromplayer = 10;
 local spinSpeed = 1;
 local angle = 0;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	SpinaroundPlr = getPlr(plrName);
-	if SpinaroundPlr then
-		if ((spinaround == true) or (SpinaroundPlr == speaker)) then
-			effectfalse();
-			notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
-			spinaround = false;
-			return;
-		else
-			spinaround = true;
-			effecttrue();
-			notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644);
-			while spinaround do
-				local deltaTime = game:GetService("RunService").Heartbeat:Wait();
-				angle = angle + (spinSpeed * deltaTime);
-				if (angle > (2 * math.pi)) then
-					angle = angle - (2 * math.pi);
+spinaroundplayersList = {};
+spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=spinaroundplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		SpinaroundPlr = getPlr(plrName);
+		if SpinaroundPlr then
+			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
+				effectfalse();
+				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
+				spinaround = false;
+				return;
+			else
+				spinaround = true;
+				effecttrue();
+				notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644);
+				while spinaround do
+					local deltaTime = game:GetService("RunService").Heartbeat:Wait();
+					angle = angle + (spinSpeed * deltaTime);
+					if (angle > (2 * math.pi)) then
+						angle = angle - (2 * math.pi);
+					end
+					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
+					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					Character.HumanoidRootPart.CFrame = newCFrame;
 				end
-				local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
-				local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
-				speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-				Character.HumanoidRootPart.CFrame = newCFrame;
 			end
 		end
-	else
-		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-		effectfalse();
-	end
+	end);
 end});
+local function updatePlayerList()
+	spinaroundplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(spinaroundplayersList, player.Name);
+		end
+	end
+	spinarounddropdown:Refresh(spinaroundplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value;
@@ -1390,14 +1592,59 @@ SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,N
 	end);
 end});
 Sectionplayrerelatedtp69 = Misc:CreateSection("FE Player Related | 69", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="69 Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
 local Bang69 = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	r69foundplr = getPlr(plrName);
-	if r69foundplr then
-		if not r15(speaker) then
-			if ((Bang69 == true) or (r69foundplr == speaker)) then
+a69playersList = {};
+a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=a69playersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		r69foundplr = getPlr(plrName);
+		if r69foundplr then
+			if not r15(speaker) then
+				if ((Bang69 == true) or (r69foundplr == speaker)) then
+					Bang69 = false;
+					notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					bang69:Stop();
+					bangAnim:Destroy();
+					Bang69 = false;
+					charresettopos();
+					return;
+				else
+					Bang69 = true;
+					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
+					effecttrue();
+					c = Character;
+					hrp0 = c:FindFirstChild("HumanoidRootPart");
+					hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp0.RootJoint.Part0 = nil;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					f69lwnum = 1;
+					bangAnim = Instance.new("Animation");
+					bangAnim.AnimationId = "rbxassetid://148840371";
+					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
+					bang69:Play(0.1, 1, 1);
+					if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
+						Bang69 = true;
+						while Bang69 and c and c.Parent do
+							speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+							game:GetService("RunService").RenderStepped:Wait();
+						end
+					end
+				end
+			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
 				Bang69 = false;
 				notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
@@ -1410,111 +1657,72 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69",Place
 				Bang69 = true;
 				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
 				effecttrue();
-				c = Character;
-				hrp0 = c:FindFirstChild("HumanoidRootPart");
-				hrp1 = hrp0:Clone();
-				c.Parent = nil;
-				hrp0.Parent = hrp1;
-				hrp0.RootJoint.Part0 = nil;
-				hrp1.Parent = c;
-				c.Parent = workspace;
-				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-				hrp0.Transparency = 0.85;
-				hrp0.Material = Enum.Material.ForceField;
-				hrp0.Color = Color3.fromRGB(25, 25, 25);
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, -0.5, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				Players.LocalPlayer.CharacterAdded:Connect(function(char)
+					c = char;
+					setupCharacter();
+				end);
 				f69lwnum = 1;
 				bangAnim = Instance.new("Animation");
-				bangAnim.AnimationId = "rbxassetid://148840371";
+				bangAnim.AnimationId = "rbxassetid://5918726674";
 				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
 				bang69:Play(0.1, 1, 1);
 				if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true;
-					while Bang69 and c and c.Parent do
+					while Bang69 do
 						speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						hrp0.CFrame = hrp1.CFrame;
-						hrp0.Orientation += Vector3.new(0, 0, 180)
-						hrp0.Position -= Vector3.new(0, 0, 0)
-						hrp0.Velocity = hrp1.Velocity;
 						game:GetService("RunService").RenderStepped:Wait();
 					end
-				else
-					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-					effectfalse();
 				end
 			end
-		elseif ((Bang69 == true) or (r69foundplr == speaker)) then
-			Bang69 = false;
-			notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
-			effectfalse();
+		end
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			bang69:Stop();
 			bangAnim:Destroy();
 			Bang69 = false;
-			charresettopos();
-			return;
-		else
-			Bang69 = true;
-			notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
-			effecttrue();
-			local Players = game:GetService("Players");
-			local RunService = game:GetService("RunService");
-			local LocalPlayer = Players.LocalPlayer;
-			local Character = LocalPlayer.Character;
-			local c = Character;
-			local function setupCharacter()
-				local hrp0 = c:FindFirstChild("HumanoidRootPart");
-				if hrp0 then
-					local hrp1 = hrp0:Clone();
-					c.Parent = nil;
-					hrp0.Parent = hrp1;
-					hrp1.Parent = c;
-					c.Parent = workspace;
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
-					hrp0.Transparency = 0.85;
-					hrp0.Material = Enum.Material.ForceField;
-					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, -0.5, 0)
-							hrp0.Velocity = hrp1.Velocity;
-						end
-					end);
-				end
-			end
-			setupCharacter();
-			Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char;
-				setupCharacter();
-			end);
-			f69lwnum = 1;
-			bangAnim = Instance.new("Animation");
-			bangAnim.AnimationId = "rbxassetid://5918726674";
-			bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
-			bang69:Play(0.1, 1, 1);
-			if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
-				Bang69 = true;
-				while Bang69 do
-					speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					game:GetService("RunService").RenderStepped:Wait();
-				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
-			end
-		end
-	else
-		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-		effectfalse();
-	end
-	ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-		bang69:Stop();
-		bangAnim:Destroy();
-		Bang69 = false;
+		end);
 	end);
 end});
+local function updatePlayerList()
+	a69playersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(a69playersList, player.Name);
+		end
+	end
+	a69dropdown:Refresh(a69playersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		bang69:AdjustSpeed(Value);
@@ -1528,9 +1736,10 @@ end});
 local ffc1hump = false;
 amplitudeof69hump = 1.2;
 frequencyof69hump = 1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+a69humpplayersList = {};
+a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=a69humpplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		humpfoundPlr69 = getPlr(plrName);
 		if humpfoundPlr69 then
 			if not r15(speaker) then
@@ -1571,9 +1780,6 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",
 							game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
-				else
-					notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-					effectfalse();
 				end
 			elseif ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
 				ffc1hump = false;
@@ -1627,12 +1833,21 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",
 					game:GetService("RunService").RenderStepped:Wait();
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	a69humpplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(a69humpplayersList, player.Name);
+		end
+	end
+	a69humpdropdown:Refresh(a69humpplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyof69hump = Value;
@@ -1645,9 +1860,10 @@ faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelated
 end});
 Sectionplayrerelatedtpbang = Misc:CreateSection("FE Player Related | Bang", false, false, 10686489468);
 local Bang = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+bangplayersList = {};
+bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=bangplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		bangingfoundplrv2v2 = getPlr(plrName);
 		if bangingfoundplrv2v2 then
 			flwnum = -1;
@@ -1678,16 +1894,22 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Ba
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	bangplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(bangplayersList, player.Name);
+		end
+	end
+	bangdropdown:Refresh(bangplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
 		v2banger:AdjustSpeed(Value);
@@ -1699,45 +1921,54 @@ Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang
 	end);
 end});
 local ff2 = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	local plrName = Text;
-	facebangv3foundPlr = getPlr(plrName);
-	if facebangv3foundPlr then
-		if (facebangv3foundPlr.Character and facebangv3foundPlr.Character:FindFirstChild("Humanoid")) then
-			if ((ff2 == true) or (facebangv3foundPlr == speaker)) then
-				ff2 = false;
-				facebanger:Stop();
-				facebangerAnim:Destroy();
-				notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv3foundPlr.Name .. " Anymore", 2, 10747384394);
-				effectfalse();
-				return;
-			else
-				ff2 = true;
-				facebangerAnim = Instance.new("Animation");
-				if not r15(speaker) then
-					facebangerAnim.AnimationId = "rbxassetid://148840371";
+facebangplayersList = {};
+facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=facebangplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		facebangv3foundPlr = getPlr(plrName);
+		if facebangv3foundPlr then
+			if (facebangv3foundPlr.Character and facebangv3foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ff2 == true) or (facebangv3foundPlr == speaker)) then
+					ff2 = false;
+					facebanger:Stop();
+					facebangerAnim:Destroy();
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv3foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
 				else
-					facebangerAnim.AnimationId = "rbxassetid://5918726674";
-				end
-				facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
-				facebanger:Play(0.1, 1, 3);
-				notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
-				effecttrue();
-				while ff2 do
-					speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					game:GetService("RunService").RenderStepped:Wait();
+					ff2 = true;
+					facebangerAnim = Instance.new("Animation");
+					if not r15(speaker) then
+						facebangerAnim.AnimationId = "rbxassetid://148840371";
+					else
+						facebangerAnim.AnimationId = "rbxassetid://5918726674";
+					end
+					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
+					facebanger:Play(0.1, 1, 3);
+					notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
+					effecttrue();
+					while ff2 do
+						speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
 				end
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
-	else
-		notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-		effectfalse();
-	end
+	end);
 end});
+local function updatePlayerList()
+	facebangplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(facebangplayersList, player.Name);
+		end
+	end
+	facebangdropdown:Refresh(facebangplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
 		facebanger:AdjustSpeed(Value);
@@ -1749,9 +1980,10 @@ Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Nam
 	end);
 end});
 local ff = false;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+sitfacebangplayersList = {};
+sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=sitfacebangplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		facebangfoundPlr = getPlr(plrName);
 		if facebangfoundPlr then
 			if (facebangfoundPlr.Character and facebangfoundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1772,24 +2004,31 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Fac
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	sitfacebangplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(sitfacebangplayersList, player.Name);
+		end
+	end
+	sitfacebangdropdown:Refresh(sitfacebangplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 Sectionplayrerelatedtphump = Misc:CreateSection("FE Player Related | Hump", false, false, 10686489468);
 local Humping = false;
 amplitudeofbang = 1.2;
 frequencyofbang = 1;
 minuss1 = -1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+humpplayersList = {};
+humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=humpplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		Humpv1foundplr = getPlr(plrName);
 		if Humpv1foundplr then
 			if (Humpv1foundplr.Character and Humpv1foundplr.Character:FindFirstChild("Humanoid")) then
@@ -1813,16 +2052,22 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump",P
 						game:GetService("RunService").Heartbeat:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	humpplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(humpplayersList, player.Name);
+		end
+	end
+	humpdropdown:Refresh(humpplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyofbang = Value;
@@ -1836,9 +2081,10 @@ end});
 local ffc1 = false;
 amplitudeofbangface = 1.2;
 frequencyofbangface = 1;
-Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",PlaceholderText="Player",OnEnter=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+hump2playersList = {};
+hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=hump2playersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Text;
+		plrName = Option;
 		facebangv1foundPlr = getPlr(plrName);
 		if facebangv1foundPlr then
 			if (facebangv1foundPlr.Character and facebangv1foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1861,16 +2107,22 @@ Input = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Fa
 						game:GetService("RunService").RenderStepped:Wait();
 					end
 				end
-			else
-				notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-				effectfalse();
 			end
-		else
-			notifyyw("Player Does Not Exist!", "Bro Does Not Exist!", 2, 10747384394);
-			effectfalse();
 		end
 	end);
 end});
+local function updatePlayerList()
+	hump2playersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(hump2playersList, player.Name);
+		end
+	end
+	hump2dropdown:Refresh(hump2playersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyofbangface = Value;
@@ -2161,23 +2413,23 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 	effecttrue();
 	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
 end});
-promptNewRig = function(speaker, rig)
-	local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+function promptNewRig(speaker, rig)
+	local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid");
 	if humanoid then
-		AvatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, Enum.HumanoidRigType[rig])
-		local result = AvatarEditorService.PromptSaveAvatarCompleted:Wait()
-		if result == Enum.AvatarPromptResult.Success then
-			charresettopos()
+		AvatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, Enum.HumanoidRigType[rig]);
+		local result = AvatarEditorService.PromptSaveAvatarCompleted:Wait();
+		if (result == Enum.AvatarPromptResult.Success) then
+			charresettopos();
 		end
 	end
 end
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R6",Interact="Click",Callback=function()
-	promptNewRig(speaker, "R6")
+	promptNewRig(speaker, "R6");
 	effecttrue();
 	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R6!",Duration=3,Image=7733715400});
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R15",Interact="Click",Callback=function()
-	promptNewRig(speaker, "R15")
+	promptNewRig(speaker, "R15");
 	effecttrue();
 	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400});
 end});
@@ -8291,7 +8543,7 @@ Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit);
 Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit);
 Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612);
-Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Added A Lot Of Thing's.\n> Made Keybind's Better."}, Sectionchangelog);
+Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Added A Lot Of Thing's.\n> Made Keybind's Better\n> Made Dropdown's Instead of Input's"}, Sectionchangelog);
 Sectionpointofhub = CRD:CreateSection("Point", false, false, 8997386648);
 Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I Created This Hub To Save You Time And Effort In Finding And Using Scripts.\nIt's An All-In-One Place With Scripts From The Internet And Ones I've Made."}, Sectionpointofhub);
 Button = CRD:CreateButton({SectionParent=Sectionpointofhub,Name="Destroy Hub UI",Interact="Click",Callback=function()
@@ -8323,7 +8575,7 @@ task.spawn(function()
 	while task.wait() do
 		Paragraphcrddfriendrelated:Set({Title="Friend Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")});
 	end
-end)
+end);
 Sectioncopysc = CRD:CreateSection("Copy Script's", false, false, 10709799288);
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Interact="Click",Callback=function()
 	toClipboard("https://discord.gg/PhEH8uh9pR");
@@ -8340,12 +8592,28 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer Us
 	effecttrue();
 	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
-Paragraphchangelog = CRD:CreateParagraph({Title="Copy Player ID Info",Content="Basically You Enter Some Player's Username And You Press Enter, You'll Have Their ID Copied."}, Sectioncopysc);
-Input = CRD:CreateInput({SectionParent=Sectioncopysc,Name="Copy Player's UserId",PlaceholderText="Player",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	plrName = Text;
-	foundPlr = getPlr(plrName);
-	toClipboard("" .. foundPlr.UserId .. "");
+useridplayersList = {};
+useriddropdown = Misc:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=useridplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option;
+		foundPlr = getPlr(plrName);
+		toClipboard("" .. foundPlr.UserId .. "");
+		effecttrue();
+		notifyyw("Copied Player's UserID", "Copied " .. foundPlr.Name .. "'s UserID", 2, 10709790644);
+	end);
 end});
+local function updatePlayerList()
+	useridplayersList = {};
+	for _, player in pairs(game.Players:GetPlayers()) do
+		if (player ~= speaker) then
+			table.insert(useridplayersList, player.Name);
+		end
+	end
+	useriddropdown:Refresh(useridplayersList);
+end
+game.Players.PlayerAdded:Connect(updatePlayerList);
+game.Players.PlayerRemoving:Connect(updatePlayerList);
+updatePlayerList();
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Interact="Click",Callback=function()
 	soundnotification = Instance.new("Sound");
 	effecttrue();
