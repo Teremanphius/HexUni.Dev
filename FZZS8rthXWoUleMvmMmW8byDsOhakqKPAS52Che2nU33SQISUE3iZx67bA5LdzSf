@@ -48,7 +48,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "180";
+Scriptcount = "182";
 ScriptcountAnim = "62";
 pcall(function()
 	function getRoot(char)
@@ -2149,6 +2149,26 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 	end
 	effecttrue();
 	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
+end});
+promptNewRig = function(speaker, rig)
+	local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+	if humanoid then
+		AvatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, Enum.HumanoidRigType[rig])
+		local result = AvatarEditorService.PromptSaveAvatarCompleted:Wait()
+		if result == Enum.AvatarPromptResult.Success then
+			charresettopos()
+		end
+	end
+end
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R6",Interact="Click",Callback=function()
+	promptNewRig(speaker, "R6")
+	effecttrue();
+	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R6!",Duration=3,Image=7733715400});
+end});
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R15",Interact="Click",Callback=function()
+	promptNewRig(speaker, "R15")
+	effecttrue();
+	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400});
 end});
 anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind;
