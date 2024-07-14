@@ -49,7 +49,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "180";
-ScriptcountAnim = "63";
+ScriptcountAnim = "62";
 pcall(function()
 	function getRoot(char)
 		local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -6783,16 +6783,6 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",I
 	end
 end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Invisible Skateboard R6",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rouxhaver/scripts-3/main/invisible%20skateboard.lua", true))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	else
-		effectfalse();
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
-	end
-end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))();
@@ -8292,45 +8282,45 @@ end});
 Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
 	Sense.teamSettings.friendly.chamsOutlineColor = Value;
 end});
-local CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
-Sectioncredit = CRD:CreateSection("Credit's", true);
-Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, nil);
-Paragraphim = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, nil);
-Sectionchangelog = CRD:CreateSection("Changelog", true);
-Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Made Some Improvement's."}, nil);
-Sectionother = CRD:CreateSection("Point", true);
-Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I've Made This Hub So You Don't Have To Look For Script's And Waste Executor Tab Space And Time Looking For The Right One. \nBasically This is a All-in-one Hub With Script's From The Internet / Script's By Me."}, nil);
-Button = CRD:CreateButton({SectionParent=Sectionother,Name="Destroy Hub UI",Interact="Click",Callback=function()
+CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
+Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054);
+Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit);
+Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit);
+Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612);
+Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Added A Lot Of Thing's.\n> Made Keybind's Better."}, Sectionchangelog);
+Sectionpointofhub = CRD:CreateSection("Point", false, false, 8997386648);
+Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I Created This Hub To Save You Time And Effort In Finding And Using Scripts.\nIt's An All-In-One Place With Scripts From The Internet And Ones I've Made."}, Sectionpointofhub);
+Button = CRD:CreateButton({SectionParent=Sectionpointofhub,Name="Destroy Hub UI",Interact="Click",Callback=function()
 	NSUI:Destroy();
 end});
-Sectionclientinfo = CRD:CreateSection("Client Information", true);
+Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962);
 DTinfo = DateTime.fromUnixTimestamp(86400 * speaker.AccountAge);
 Daysinfo = tonumber(DTinfo:FormatUniversalTime("DD", "en-us"));
 Monthsinfo = tonumber(DTinfo:FormatUniversalTime("MM", "en-us"));
 Yearsinfo = tonumber(DTinfo:FormatUniversalTime("YYYY", "en-us")) - 1970;
-function timeme()
-	totalSeconds = math.floor(workspace.DistributedGameTime);
-	hours = math.floor(totalSeconds / 3600);
-	minutes = math.floor((totalSeconds % 3600) / 60);
-	seconds = totalSeconds % 60;
-end
-timeme();
-Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. speaker.Name .. " | " .. speaker.DisplayName .. "" .. "\nUserId: " .. speaker.UserId .. "" .. "\nAccount Age | In Days:\n" .. Daysinfo .. " Day('s)\n" .. Monthsinfo .. " Month('s)\n" .. Yearsinfo .. " Year('s)\n" .. speaker.AccountAge .. " In Day's" .. "\nPlaceId: " .. game.PlaceId .. "")});
-Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
+totalSeconds = math.floor(workspace.DistributedGameTime);
+hours = math.floor(totalSeconds / 3600);
+minutes = math.floor((totalSeconds % 3600) / 60);
+seconds = totalSeconds % 60;
+Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. speaker.Name .. " | " .. speaker.DisplayName .. "" .. "\nUserId: " .. speaker.UserId .. "" .. "\nAccount Age | In Days:\n" .. Daysinfo .. " Day('s)\n" .. Monthsinfo .. " Month('s)\n" .. Yearsinfo .. " Year('s)\n" .. speaker.AccountAge .. " In Day's" .. "\nPlaceId: " .. game.PlaceId .. "")}, Sectionclientinfo);
+Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")}, Sectionclientinfo);
 task.spawn(function()
 	while task.wait() do
-		timeme();
+		totalSeconds = math.floor(workspace.DistributedGameTime);
+		hours = math.floor(totalSeconds / 3600);
+		minutes = math.floor((totalSeconds % 3600) / 60);
+		seconds = totalSeconds % 60;
 		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 	end
 end);
-Sectionfriendinfo = CRD:CreateSection("Friend Information", true);
-Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")});
+Sectionfriendinfo = CRD:CreateSection("Friend Information", false, false, 7743876054);
+Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")}, Sectionfriendinfo);
 task.spawn(function()
 	while task.wait() do
 		Paragraphcrddfriendrelated:Set({Title="Friend Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")});
 	end
 end);
-Sectioncopysc = CRD:CreateSection("Copy Script's", false, true, 10709799288);
+Sectioncopysc = CRD:CreateSection("Copy Script's", false, false, 10709799288);
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Interact="Click",Callback=function()
 	toClipboard("https://discord.gg/PhEH8uh9pR");
 	effecttrue();
