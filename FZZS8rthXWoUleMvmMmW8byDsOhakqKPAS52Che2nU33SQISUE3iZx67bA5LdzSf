@@ -29,6 +29,7 @@ ChatService = game:GetService("Chat");
 ProximityPromptService = game:GetService("ProximityPromptService");
 StatsService = game:GetService("Stats");
 MaterialService = game:GetService("MaterialService");
+AvatarEditorService = game:GetService("AvatarEditorService")
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
