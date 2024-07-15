@@ -50,8 +50,8 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "184";
-ScriptcountAnim = "61";
+Scriptcount = "185";
+ScriptcountAnim = "60";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -4694,6 +4694,103 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontF
 		FrontflipKeybind:Set("Set Keybind");
 	end);
 end});
+Sectionhamsterball = Misc:CreateSection("FE LocalPlayer Related | Hamster Ball", false, false, 9134761478);
+Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionhamsterball);
+SPEED_MULTIPLIER = 30;
+JUMP_POWER = 60;
+JUMP_GAP = 0.3;
+Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Hamster Ball",CurrentValue=false,Callback=function(Value)
+	hamsterballs = Value;
+	if hamsterballs then
+		character = speaker.Character;
+		for i, v in ipairs(character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = false;
+			end
+		end
+		ball = character.HumanoidRootPart;
+		ball.Shape = Enum.PartType.Ball;
+		ball.Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+		ball.Size = Vector3.new(7, 7, 7);
+		ball.Transparency = 0.5;
+		humanoid = character:WaitForChild("Humanoid");
+		params = RaycastParams.new();
+		params.FilterType = Enum.RaycastFilterType.Blacklist;
+		params.FilterDescendantsInstances = {character};
+		tc = RunService.RenderStepped:Connect(function(delta)
+			ball.CanCollide = true;
+			humanoid.PlatformStand = true;
+			if UserInputService:GetFocusedTextBox() then
+				return;
+			end
+			if UserInputService:IsKeyDown("W") then
+				ball.RotVelocity -= (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
+			end
+			if UserInputService:IsKeyDown("A") then
+				ball.RotVelocity -= (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
+			end
+			if UserInputService:IsKeyDown("S") then
+				ball.RotVelocity += (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
+			end
+			if UserInputService:IsKeyDown("D") then
+				ball.RotVelocity += (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
+			end
+		end);
+		UserInputService.JumpRequest:Connect(function()
+			local result = workspace:Raycast(ball.Position, Vector3.new(0, -((ball.Size.Y / 2) + JUMP_GAP), 0), params);
+			if result then
+				ball.Velocity = ball.Velocity + Vector3.new(0, JUMP_POWER, 0);
+			end
+		end);
+		Camera.CameraSubject = ball;
+		local hamDied
+		hamDied = humanoid.Died:Connect(function()
+			tc:Disconnect();
+			hamDied:Disconnect()
+		end);
+	end
+	if not hamsterballs then
+		pcall(function()
+		charresettopos()
+		tc:Disconnect();
+		hamDied:Disconnect()
+		end)
+	end
+end});
+Buttonresethamval = Misc:CreateButton({SectionParent=Sectionhamsterball,Name="Reset Hamster Ball Values",Interact="Click",Callback=function()
+	pcall(function()
+		Sliderspeedmultiham:Set(30)
+		Sliderhamjp:Set(60)
+		Sliderjgham:Set(0.3)
+		SPEED_MULTIPLIER = 30;
+		JUMP_POWER = 60;
+		JUMP_GAP = 0.3;
+	end);
+end});
+Sliderspeedmultiham = Misc:CreateSlider({SectionParent=Sectionhamsterball,Name="Hamster Ball Speed",Range={0,250},Increment=1,Suffix="Speed",CurrentValue=30,Callback=function(Value)
+	pcall(function()
+		SPEED_MULTIPLIER = Value;
+	end);
+end});
+Inputpeedmultiham = Misc:CreateInput({SectionParent=Sectionhamsterball,Name="Hamster Ball Speed",PlaceholderText=30,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	SPEED_MULTIPLIER = Text;
+end});
+Sliderhamjp = Misc:CreateSlider({SectionParent=Sectionhamsterball,Name="Hamster Ball Jump Power",Range={0,250},Increment=1,Suffix="Jump Power",CurrentValue=60,Callback=function(Value)
+	pcall(function()
+		JUMP_POWER = Value;
+	end);
+end});
+Inputspinspeed = Misc:CreateInput({SectionParent=Sectionhamsterball,Name="Hamster Ball Jump Power",PlaceholderText=60,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	JUMP_POWER = Text;
+end});
+Sliderjgham = Misc:CreateSlider({SectionParent=Sectionhamsterball,Name="Hamster Ball Jump Gap",Range={0,15},Increment=0.1,Suffix="Jump Gap",CurrentValue=0.3,Callback=function(Value)
+	pcall(function()
+		JUMP_GAP = Value;
+	end);
+end});
+Inputspinspeed = Misc:CreateInput({SectionParent=Sectionhamsterball,Name="Hamster Ball Speed",PlaceholderText=0.3,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	JUMP_GAP = Text;
+end});
 Sectionspin = Misc:CreateSection("FE LocalPlayer Related | Spin", false, false, 9134761478);
 spinSpeed = 20;
 Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",CurrentValue=false,Callback=function(Value)
@@ -7173,10 +7270,12 @@ end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
 Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
 Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Rewind R6 & R15",Interact="Click",Callback=function()
+	pcall(function()
 	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
-	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT", true))();
+	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT"))();
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+	end)
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
@@ -7187,60 +7286,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car 
 		effectfalse();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
-end});
-Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionotherfeanimssc);
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hamster Ball R6 & R15",Interact="Click",Callback=function()
-	UserInputService = game:GetService("UserInputService");
-	RunService = game:GetService("RunService");
-	Camera = workspace.CurrentCamera;
-	SPEED_MULTIPLIER = 30;
-	JUMP_POWER = 60;
-	JUMP_GAP = 0.3;
-	character = speaker.Character;
-	for i, v in ipairs(character:GetDescendants()) do
-		if v:IsA("BasePart") then
-			v.CanCollide = false;
-		end
-	end
-	ball = character.HumanoidRootPart;
-	ball.Shape = Enum.PartType.Ball;
-	ball.Size = Vector3.new(7, 7, 7);
-	ball.Transparency = 0.5;
-	humanoid = character:WaitForChild("Humanoid");
-	params = RaycastParams.new();
-	params.FilterType = Enum.RaycastFilterType.Blacklist;
-	params.FilterDescendantsInstances = {character};
-	tc = RunService.RenderStepped:Connect(function(delta)
-		ball.CanCollide = true;
-		humanoid.PlatformStand = true;
-		if UserInputService:GetFocusedTextBox() then
-			return;
-		end
-		if UserInputService:IsKeyDown("W") then
-			ball.RotVelocity -= (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
-		end
-		if UserInputService:IsKeyDown("A") then
-			ball.RotVelocity -= (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
-		end
-		if UserInputService:IsKeyDown("S") then
-			ball.RotVelocity += (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
-		end
-		if UserInputService:IsKeyDown("D") then
-			ball.RotVelocity += (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
-		end
-	end);
-	UserInputService.JumpRequest:Connect(function()
-		local result = workspace:Raycast(ball.Position, Vector3.new(0, -((ball.Size.Y / 2) + JUMP_GAP), 0), params);
-		if result then
-			ball.Velocity = ball.Velocity + Vector3.new(0, JUMP_POWER, 0);
-		end
-	end);
-	Camera.CameraSubject = ball;
-	humanoid.Died:Connect(function()
-		tc:Disconnect();
-	end);
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
 	if not r15(speaker) then
