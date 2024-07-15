@@ -50,7 +50,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "189";
+Scriptcount = "190";
 ScriptcountAnim = "60";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -2248,6 +2248,22 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
 	pcall(function()
 		anchorKeybind:Set("Set Keybind");
+	end);
+end});
+SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	sprints = KeyBind;
+	sprints = not sprints;
+	if sprints then
+		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {WalkSpeed=32}):Play();
+	else
+		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {WalkSpeed=16}):Play();
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sprint Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		SprintKeybind:Set("Set Keybind");
 	end);
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthen Character",Interact="Click",Callback=function()
