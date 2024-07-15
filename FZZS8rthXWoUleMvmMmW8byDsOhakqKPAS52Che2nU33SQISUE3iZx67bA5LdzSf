@@ -597,62 +597,52 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
+AlldropdownRefresh = {}
 gotoplayersList = {};
-gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		Character:PivotTo(foundPlr.Character:GetPivot());
 		effecttrue();
-		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
+		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 	end);
 end});
-local function updatePlayerList()
+local function updateAllPlayerLists()
 	gotoplayersList = {};
 	for _, player in pairs(game.Players:GetPlayers()) do
 		if (player ~= speaker) then
-			table.insert(gotoplayersList, player.Name);
+			table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
 		end
 	end
-	gotodropdown:Refresh(gotoplayersList, "Select an option");
+	for _,v in AlldropdownRefresh do
+		v:Refresh(gotoplayersList, "Select an option");
+	end
 end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
+game.Players.PlayerAdded:Connect(updateAllPlayerLists)
+game.Players.PlayerRemoving:Connect(updateAllPlayerLists)
+updateAllPlayerLists()
 tweenSpeedtp = 1;
 Paragraph = Misc:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritps);
-gotoplayersList = {};
-gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.tweegotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if (foundPlr.Character ~= nil) then
 			if (Humanoid and Humanoid.SeatPart) then
 				Humanoid.Sit = false;
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
 				effecttrue();
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 			else
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
 				effecttrue();
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 			end
 		end
 		breakvelocity();
 	end);
 end});
-local function updatePlayerList()
-	gotoplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(gotoplayersList, player.Name);
-		end
-	end
-	gotodropdown:Refresh(gotoplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 Slidertweenspeedtp = Misc:CreateSlider({SectionParent=Sectiontpscritps,Name="Tween Teleport To /.. Speed",Range={0,10},Increment=0.1,Suffix="Speed",CurrentValue=tweenSpeedtp,Callback=function(Value)
 	pcall(function()
 		tweenSpeedtp = Value;
@@ -669,10 +659,9 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game"
 	end);
 end});
 local spectateing = false;
-spectateplayersList = {};
-spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spectate",Options=spectateplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spectate",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (spectateing == true) then
@@ -684,7 +673,7 @@ spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spe
 			else
 				spectateing = true;
 				effecttrue();
-				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name, 4, 10709790644);
+				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				while spectateing do
 					game.Workspace.Camera.CameraSubject = foundPlr.Character;
 					task.wait();
@@ -693,18 +682,6 @@ spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spe
 		end
 	end);
 end});
-local function updatePlayerList()
-	spectateplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(spectateplayersList, player.Name);
-		end
-	end
-	spectatedropdown:Refresh(spectateplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local function clicktpFunc()
 	pcall(function()
 		if (Humanoid and Humanoid.SeatPart) then
@@ -722,7 +699,7 @@ end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	presstpff = KeyBind;
-	presstpff = not presstpff;
+	presstpff = not presstpff
 	if (presstpff and JMouse.Target) then
 		clicktpFunc();
 	end
@@ -815,24 +792,23 @@ end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
 local Annoy = false;
-AnnoyplayersList = {};
-Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=AnnoyplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		annoyfoundPlr = getPlr(plrName);
-		if annoyfoundPlr then
-			if (annoyfoundPlr.Character and annoyfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Annoy == true) or (annoyfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Annoy == true) or (foundPlr == speaker)) then
 					Annoy = false;
 					effectfalse();
-					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. annoyfoundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
 				else
 					Annoy = true;
 					effecttrue();
-					notifyyw("Now Annoying", "Annoying " .. annoyfoundPlr.Name, 4, 10709790644);
+					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					while Annoy do
-						speaker.Character.HumanoidRootPart.CFrame = annoyfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -841,39 +817,26 @@ Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 		end
 	end);
 end});
-local function updatePlayerList()
-	AnnoyplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(AnnoyplayersList, player.Name);
-		end
-	end
-	Annoydropdown:Refresh(AnnoyplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local StandOnHead = false;
-StandOnplayersList = {};
-StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=StandOnplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		StandFoundPlr = getPlr(plrName);
-		if StandFoundPlr then
-			if (StandFoundPlr.Character and StandFoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((StandOnHead == true) or (StandFoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((StandOnHead == true) or (foundPlr == speaker)) then
 					StandOnHead = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. StandFoundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
 				else
 					StandOnHead = true;
 					effecttrue();
-					notifyyw("Now Standing", "Standing On " .. StandFoundPlr.Name, 4, 10709790644);
+					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					while StandOnHead do
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						speaker.Character.HumanoidRootPart.CFrame = StandFoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -882,24 +845,11 @@ StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name
 		end
 	end);
 end});
-local function updatePlayerList()
-	StandOnplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(StandOnplayersList, player.Name);
-		end
-	end
-	StandOndropdown:Refresh(StandOnplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 Paragraph = Misc:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
-SpookplayersList = {};
-Spookdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=SpookplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Spookdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
@@ -910,38 +860,25 @@ Spookdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 		end
 	end);
 end});
-local function updatePlayerList()
-	SpookplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(SpookplayersList, player.Name);
-		end
-	end
-	Spookdropdown:Refresh(SpookplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local Follow = false;
-followplayersList = {};
-followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=followplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		folloawafoundplr = getPlr(plrName);
-		if folloawafoundplr then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			flwnum = -5;
-			if (folloawafoundplr.Character and folloawafoundplr.Character:FindFirstChild("Humanoid")) then
-				if ((Follow == true) or (folloawafoundplr == speaker)) then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Follow == true) or (foundPlr == speaker)) then
 					Follow = false;
-					notifyyw("No Longer Stalking The Player", "Not Stalking " .. folloawafoundplr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
 					Follow = true;
-					notifyyw("Now Stalking", "Stalking " .. folloawafoundplr.Name, 4, 10709790644);
+					notifyyw("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while Follow do
-						speaker.Character.HumanoidRootPart.CFrame = folloawafoundplr.Character.HumanoidRootPart.CFrame + (folloawafoundplr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -950,24 +887,11 @@ followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 		end
 	end);
 end});
-local function updatePlayerList()
-	followplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(followplayersList, player.Name);
-		end
-	end
-	followdropdown:Refresh(followplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local LoopHello = false;
 local trueforanim = false;
-loopwaveplayersList = {};
-loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=loopwaveplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -983,7 +907,7 @@ loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 				else
 					LoopHello = true;
 					trueforanim = true;
-					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name, 4, 10709790644);
+					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					WaveAnim = Instance.new("Animation");
 					if not r15(speaker) then
@@ -1013,31 +937,18 @@ loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 		end
 	end);
 end});
-local function updatePlayerList()
-	loopwaveplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(loopwaveplayersList, player.Name);
-		end
-	end
-	loopwavedropdown:Refresh(loopwaveplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local Carpettion = false;
-CarpetplayersList = {};
-Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=CarpetplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		carpetfoundPlr = getPlr(plrName);
-		if carpetfoundPlr then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			if not r15(speaker) then
-				if (carpetfoundPlr.Character and carpetfoundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((Carpettion == true) or (carpetfoundPlr == speaker)) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((Carpettion == true) or (foundPlr == speaker)) then
 						Carpettion = false;
 						effectfalse();
-						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. carpetfoundPlr.Name .. " Anymore", 2, 10747384394);
+						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						carpete:Stop();
 						carpetAnim:Destroy();
 						return;
@@ -1048,9 +959,9 @@ Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim);
 						carpete:Play(0.1, 1, 1);
 						effecttrue();
-						notifyyw("Now Carpeting", "Carpeting " .. carpetfoundPlr.Name, 4, 10709790644);
+						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 						while Carpettion do
-							speaker.Character.HumanoidRootPart.CFrame = carpetfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							game:GetService("RunService").RenderStepped:Wait();
 						end
@@ -1063,30 +974,17 @@ Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 		end
 	end);
 end});
-local function updatePlayerList()
-	CarpetplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(CarpetplayersList, player.Name);
-		end
-	end
-	Carpetdropdown:Refresh(CarpetplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local ffhugger = false;
-HugplayersList = {};
-Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=HugplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		huggingfoundPlr = getPlr(plrName);
-		if huggingfoundPlr then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			if not r15(speaker) then
-				if (huggingfoundPlr.Character and huggingfoundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffhugger == true) or (huggingfoundPlr == speaker)) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((ffhugger == true) or (foundPlr == speaker)) then
 						ffhugger = false;
-						notifyyw("No Longer Hugging The Player", "Not Hugging " .. huggingfoundPlr.Name .. " Anymore", 2, 10747384394);
+						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						zomearm:Stop();
 						zombiearmsAnim:Destroy();
@@ -1098,18 +996,18 @@ Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hu
 						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
 						zomearm:Play();
 						zomearm:AdjustSpeed(0);
-						notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 4, 10709790644);
+						notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 						effecttrue();
 						while ffhugger do
-							speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							game:GetService("RunService").RenderStepped:Wait();
 						end
 					end
 				end
-			elseif ((ffhugger == true) or (huggingfoundPlr == speaker)) then
+			elseif ((ffhugger == true) or (foundPlr == speaker)) then
 				ffhugger = false;
-				notifyyw("No Longer Hugging The Player", "Not Hugging " .. huggingfoundPlr.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				zomearm:Stop();
 				zombiearmsAnim:Destroy();
@@ -1123,10 +1021,10 @@ Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hu
 				zomearm:Play();
 				zomearm:AdjustSpeed(0);
 				speaker.Character.Animate.Disabled = true;
-				notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 4, 10709790644);
+				notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
 				while ffhugger do
-					speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 					game:GetService("RunService").RenderStepped:Wait();
 				end
@@ -1134,39 +1032,26 @@ Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hu
 		end
 	end);
 end});
-local function updatePlayerList()
-	HugplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(HugplayersList, player.Name);
-		end
-	end
-	Hugdropdown:Refresh(HugplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local actualpb = false;
-PiggybackplayersList = {};
-Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=PiggybackplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		piggybackfoundPlr = getPlr(plrName);
-		if piggybackfoundPlr then
-			if (piggybackfoundPlr.Character and piggybackfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((actualpb == true) or (piggybackfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((actualpb == true) or (foundPlr == speaker)) then
 					actualpb = false;
-					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. piggybackfoundPlr.Name .. "", 2, 10747384394);
+					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
 					actualpb = true;
-					notifyyw("Now PiggyBacking", "PiggyBacking " .. piggybackfoundPlr.Name, 4, 10709790644);
+					notifyyw("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while actualpb do
 						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = piggybackfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1175,39 +1060,26 @@ Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Na
 		end
 	end);
 end});
-local function updatePlayerList()
-	PiggybackplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(PiggybackplayersList, player.Name);
-		end
-	end
-	Piggybackdropdown:Refresh(PiggybackplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local besomebackpack = false;
-backpackplayersList = {};
-backpackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=backpackplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.backpackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		BackpackFoundPlr = getPlr(plrName);
-		if BackpackFoundPlr then
-			if (BackpackFoundPlr.Character and BackpackFoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((besomebackpack == true) or (BackpackFoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((besomebackpack == true) or (foundPlr == speaker)) then
 					besomebackpack = false;
-					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. BackpackFoundPlr.Name .. "", 2, 10747384394);
+					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
 					besomebackpack = true;
-					notifyyw("Now Backpacking", "Being " .. BackpackFoundPlr.Name .. " Backpack", 2, 10709790644);
+					notifyyw("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, 10709790644);
 					effecttrue();
 					while besomebackpack do
 						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = BackpackFoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1216,39 +1088,26 @@ backpackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 		end
 	end);
 end});
-local function updatePlayerList()
-	backpackplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(backpackplayersList, player.Name);
-		end
-	end
-	backpackdropdown:Refresh(backpackplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local headsits = false;
-headsitplayersList = {};
-Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=headsitplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		headsitfoundPlr = getPlr(plrName);
-		if headsitfoundPlr then
-			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((headsits == true) or (headsitfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((headsits == true) or (foundPlr == speaker)) then
 					headsits = false;
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. headsitfoundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
 					headsits = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 4, 10709790644);
+					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while headsits do
 						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1257,39 +1116,26 @@ Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name
 		end
 	end);
 end});
-local function updatePlayerList()
-	headsitplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(headsitplayersList, player.Name);
-		end
-	end
-	Headsitdropdown:Refresh(headsitplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local ActualHeadsit = false;
-actualheadsitplayersList = {};
-ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=actualheadsitplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		headsitfoundPlr = getPlr(plrName);
-		if headsitfoundPlr then
-			if (headsitfoundPlr.Character and headsitfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ActualHeadsit == true) or (headsitfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ActualHeadsit == true) or (foundPlr == speaker)) then
 					ActualHeadsit = false;
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. headsitfoundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
 					return;
 				else
 					ActualHeadsit = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 4, 10709790644);
+					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while ActualHeadsit do
 						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = headsitfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1298,25 +1144,12 @@ ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedt
 		end
 	end);
 end});
-local function updatePlayerList()
-	actualheadsitplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(actualheadsitplayersList, player.Name);
-		end
-	end
-	ActualHeadsitdropdown:Refresh(actualheadsitplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local animsync;
 issyncinganim = false;
 Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
-animsyncplayersList = {};
-animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=animsyncplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
@@ -1330,7 +1163,7 @@ animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 				else
 					issyncinganim = true;
 					effecttrue();
-					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 4, 10709790644);
+					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
 						local animID = track.Animation.AnimationId;
 						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
@@ -1351,29 +1184,16 @@ animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 		end
 	end);
 end});
-local function updatePlayerList()
-	animsyncplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(animsyncplayersList, player.Name);
-		end
-	end
-	animsyncdropdown:Refresh(animsyncplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local orbitingfuck = false;
-orbitplayersList = {};
-orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=orbitplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		orbitfoundPlr = getPlr(plrName);
-		if orbitfoundPlr then
-			if ((orbitingfuck == true) or (orbitfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((orbitingfuck == true) or (foundPlr == speaker)) then
 				effectfalse();
 				orbitingfuck = false;
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. orbitfoundPlr.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
@@ -1385,15 +1205,15 @@ orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 			else
 				orbitingfuck = true;
 				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. orbitfoundPlr.Name, 4, 10709790644);
-				local P = Instance.new("Part", orbitfoundPlr.Character);
+				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				local P = Instance.new("Part", foundPlr.Character);
 				P.Transparency = 1;
 				P.Name = "ThePart";
 				P.Size = Vector3.new(1.7, 1.7, 1.7);
 				P.Massless = true;
 				P.CanCollide = false;
 				local W = Instance.new("Weld", P);
-				W.Part1 = orbitfoundPlr.Character.HumanoidRootPart;
+				W.Part1 = foundPlr.Character.HumanoidRootPart;
 				W.Part0 = P;
 				local sine = 0;
 				local change = 1;
@@ -1406,7 +1226,7 @@ orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 				rp.MaxSpeed = 100;
 				rp.ThrustP = 5000;
 				rp.Name = "OrbitalDestructionPart";
-				rp.Target = orbitfoundPlr.Character.ThePart;
+				rp.Target = foundPlr.Character.ThePart;
 				rp:Fire();
 				speaker.Character.Humanoid.PlatformStand = true;
 				while orbitingfuck do
@@ -1420,29 +1240,16 @@ orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 		end
 	end);
 end});
-local function updatePlayerList()
-	orbitplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(orbitplayersList, player.Name);
-		end
-	end
-	orbitdropdown:Refresh(orbitplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local closeorbitingfuck = false;
-closeorbitplayersList = {};
-closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=closeorbitplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		closeorbitfoundPlr = getPlr(plrName);
-		if closeorbitfoundPlr then
-			if ((closeorbitingfuck == true) or (closeorbitfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((closeorbitingfuck == true) or (foundPlr == speaker)) then
 				effectfalse();
 				closeorbitingfuck = false;
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. closeorbitfoundPlr.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy();
@@ -1453,7 +1260,7 @@ closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,N
 			else
 				closeorbitingfuck = true;
 				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. closeorbitfoundPlr.Name, 4, 10709790644);
+				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				local rp = Instance.new("RocketPropulsion");
 				rp.Parent = speaker.Character.HumanoidRootPart;
 				rp.CartoonFactor = 1;
@@ -1461,7 +1268,7 @@ closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,N
 				rp.MaxSpeed = 100;
 				rp.ThrustP = 5000;
 				rp.Name = "OrbitalDestruction";
-				rp.Target = closeorbitfoundPlr.Character.HumanoidRootPart;
+				rp.Target = foundPlr.Character.HumanoidRootPart;
 				rp:Fire();
 				speaker.Character.Humanoid.Sit = true;
 				while closeorbitingfuck do
@@ -1475,97 +1282,59 @@ closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,N
 		end
 	end);
 end});
-local function updatePlayerList()
-	closeorbitplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(closeorbitplayersList, player.Name);
-		end
-	end
-	closeorbitdropdown:Refresh(closeorbitplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
-lookatplayersList = {};
-lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=lookatplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		LookAtfoundPlr = getPlr(plrName);
-		if LookAtfoundPlr then
-			if ((lookingAt == true) or (LookAtfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((lookingAt == true) or (foundPlr == speaker)) then
 				lookingAt = false;
 				effectfalse();
-				notifyyw("No Longer Looking At The Player", "Not Looking At " .. LookAtfoundPlr.Name .. "Anymore", 2, 10747384394);
+				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
 				return;
 			else
 				lookingAt = true;
 				effecttrue();
-				notifyyw("Now Looking At", "Looking At " .. LookAtfoundPlr.Name, 4, 10709790644);
+				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				while lookingAt do
 					game:GetService("RunService").Heartbeat:Wait();
-					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, LookAtfoundPlr.Character.HumanoidRootPart.Position);
+					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, foundPlr.Character.HumanoidRootPart.Position);
 				end
 			end
 		end
 	end);
 end});
-local function updatePlayerList()
-	lookatplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(lookatplayersList, player.Name);
-		end
-	end
-	lookatdropdown:Refresh(lookatplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 local spinaround = false;
 local spinaroundrotation = 0;
 local spinaroundspeed = 0.2;
 local spinarounddistance = 6;
-local root = getRoot(speaker.Character);
-spinaroundplayersList = {};
-spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=spinaroundplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		SpinaroundPlr = getPlr(plrName);
-		if (SpinaroundPlr and SpinaroundPlr.Character and getRoot(SpinaroundPlr.Character) and root and humanoid) then
-			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
+		local root = getRoot(speaker.Character);
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
+			if ((spinaround == true) or (foundPlr == speaker)) then
 				effectfalse();
-				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
 				return;
 			else
 				spinaround = true;
 				effecttrue();
-				notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 4, 10709790644);
+				notifyyw("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				while spinaround do
 					spinaroundrotation = spinaroundrotation + spinaroundspeed;
-					root.CFrame = CFrame.new(getRoot(SpinaroundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
-					root.CFrame = CFrame.new(root.Position, getRoot(SpinaroundPlr.Character).Position);
+					root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
+					root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position);
 					RunService.RenderStepped:Wait();
 				end
 			end
 		end
 	end);
 end});
-local function updatePlayerList()
-	spinaroundplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(spinaroundplayersList, player.Name);
-		end
-	end
-	spinarounddropdown:Refresh(spinaroundplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
 	pcall(function()
 		spinaroundspeed = Value;
@@ -1589,16 +1358,15 @@ end});
 Sectionplayrerelatedtp69 = Misc:CreateSection("FE Player Related | 69", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle.\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
 local Bang69 = false;
-a69playersList = {};
-a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=a69playersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		r69foundplr = getPlr(plrName);
-		if r69foundplr then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			if not r15(speaker) then
-				if ((Bang69 == true) or (r69foundplr == speaker)) then
+				if ((Bang69 == true) or (foundPlr == speaker)) then
 					Bang69 = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					bang69:Stop();
 					bangAnim:Destroy();
@@ -1607,7 +1375,7 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 					return;
 				else
 					Bang69 = true;
-					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 4, 10709790644);
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					c = Character;
 					hrp0 = c:FindFirstChild("HumanoidRootPart");
@@ -1626,10 +1394,10 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 					bangAnim.AnimationId = "rbxassetid://148840371";
 					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
 					bang69:Play(0.1, 1, 1);
-					if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						Bang69 = true;
 						while Bang69 and c and c.Parent do
-							speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(0, 0, 180)
@@ -1639,9 +1407,9 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 						end
 					end
 				end
-			elseif ((Bang69 == true) or (r69foundplr == speaker)) then
+			elseif ((Bang69 == true) or (foundPlr == speaker)) then
 				Bang69 = false;
-				notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				bang69:Stop();
 				a69upsideown:Disconnect();
@@ -1651,7 +1419,7 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 				return;
 			else
 				Bang69 = true;
-				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 4, 10709790644);
+				notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
 				local Players = game:GetService("Players");
 				local RunService = game:GetService("RunService");
@@ -1693,10 +1461,10 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 				bangAnim.AnimationId = "rbxassetid://5918726674";
 				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
 				bang69:Play(0.1, 1, 1);
-				if (r69foundplr.Character and r69foundplr.Character:FindFirstChild("Humanoid")) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true;
 					while Bang69 do
-						speaker.Character.HumanoidRootPart.CFrame = (r69foundplr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (r69foundplr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+						speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1711,18 +1479,6 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 		end);
 	end);
 end});
-local function updatePlayerList()
-	a69playersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(a69playersList, player.Name);
-		end
-	end
-	a69dropdown:Refresh(a69playersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		bang69:AdjustSpeed(Value);
@@ -1736,24 +1492,23 @@ end});
 local ffc1hump = false;
 amplitudeof69hump = 1.2;
 frequencyof69hump = 1;
-a69humpplayersList = {};
-a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=a69humpplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		humpfoundPlr69 = getPlr(plrName);
-		if humpfoundPlr69 then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			if not r15(speaker) then
-				if (humpfoundPlr69.Character and humpfoundPlr69.Character:FindFirstChild("Humanoid")) then
-					if ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((ffc1hump == true) or (foundPlr == speaker)) then
 						ffc1hump = false;
 						speaker.Character.Humanoid.PlatformStand = false;
-						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
+						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						charresettopos();
 						return;
 					else
 						ffc1hump = true;
-						notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 4, 10709790644);
+						notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 						effecttrue();
 						c = Character;
 						hrp0 = c:FindFirstChild("HumanoidRootPart");
@@ -1771,7 +1526,7 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 							speaker.Character.Humanoid.PlatformStand = true;
 							time = tick();
 							xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-							speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(0, 0, 180)
@@ -1781,17 +1536,17 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 						end
 					end
 				end
-			elseif ((ffc1hump == true) or (humpfoundPlr69 == speaker)) then
+			elseif ((ffc1hump == true) or (foundPlr == speaker)) then
 				ffc1hump = false;
 				speaker.Character.Humanoid.PlatformStand = false;
-				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
+				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				a69humper:Disconnect();
 				charresettopos();
 				return;
 			else
 				ffc1hump = true;
-				notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 4, 10709790644);
+				notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
 				local Players = game:GetService("Players");
 				local RunService = game:GetService("RunService");
@@ -1832,7 +1587,7 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 					speaker.Character.Humanoid.PlatformStand = true;
 					time = tick();
 					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-					speaker.Character.HumanoidRootPart.CFrame = humpfoundPlr69.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
 					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 					game:GetService("RunService").RenderStepped:Wait();
 				end
@@ -1840,18 +1595,6 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 		end
 	end);
 end});
-local function updatePlayerList()
-	a69humpplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(a69humpplayersList, player.Name);
-		end
-	end
-	a69humpdropdown:Refresh(a69humpplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyof69hump = Value;
@@ -1865,20 +1608,19 @@ end});
 Sectionplayrerelatedtpbang = Misc:CreateSection("FE Player Related | Bang", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtpbang);
 local Bang = false;
-bangplayersList = {};
-bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=bangplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		bangingfoundplrv2v2 = getPlr(plrName);
-		if bangingfoundplrv2v2 then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
 			flwnum = -1;
-			if (bangingfoundplrv2v2.Character and bangingfoundplrv2v2.Character:FindFirstChild("Humanoid")) then
-				if ((Bang == true) or (bangingfoundplrv2v2 == speaker)) then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Bang == true) or (foundPlr == speaker)) then
 					Follow = false;
 					v2banger:Stop();
 					v2bangerAnim:Destroy();
 					Bang = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. bangingfoundplrv2v2.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
@@ -1891,10 +1633,10 @@ bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Nam
 					end
 					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
 					v2banger:Play(0.1, 1, 3);
-					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name, 4, 10709790644);
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while Bang do
-						speaker.Character.HumanoidRootPart.CFrame = bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame + (bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1903,18 +1645,6 @@ bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Nam
 		end
 	end);
 end});
-local function updatePlayerList()
-	bangplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(bangplayersList, player.Name);
-		end
-	end
-	bangdropdown:Refresh(bangplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
 		v2banger:AdjustSpeed(Value);
@@ -1926,18 +1656,17 @@ Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang
 	end);
 end});
 local ff2 = false;
-facebangplayersList = {};
-facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=facebangplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		facebangv3foundPlr = getPlr(plrName);
-		if facebangv3foundPlr then
-			if (facebangv3foundPlr.Character and facebangv3foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff2 == true) or (facebangv3foundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ff2 == true) or (foundPlr == speaker)) then
 					ff2 = false;
 					facebanger:Stop();
 					facebangerAnim:Destroy();
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv3foundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
@@ -1950,10 +1679,10 @@ facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang
 					end
 					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
 					facebanger:Play(0.1, 1, 3);
-					notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 4, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while ff2 do
-						speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -1962,18 +1691,6 @@ facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang
 		end
 	end);
 end});
-local function updatePlayerList()
-	facebangplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(facebangplayersList, player.Name);
-		end
-	end
-	facebangdropdown:Refresh(facebangplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
 		facebanger:AdjustSpeed(Value);
@@ -1985,26 +1702,25 @@ Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Nam
 	end);
 end});
 local ff = false;
-sitfacebangplayersList = {};
-sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=sitfacebangplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		facebangfoundPlr = getPlr(plrName);
-		if facebangfoundPlr then
-			if (facebangfoundPlr.Character and facebangfoundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff == true) or (facebangfoundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ff == true) or (foundPlr == speaker)) then
 					ff = false;
 					Character.Humanoid.Sit = false;
-					notifyyw("No Longer Facebanging ", "Not Facebanging " .. facebangfoundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
 					ff = true;
-					notifyyw("Now Facebanging", "Facebanging " .. facebangfoundPlr.Name, 4, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while ff do
 						Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = facebangfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -2013,45 +1729,32 @@ sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpb
 		end
 	end);
 end});
-local function updatePlayerList()
-	sitfacebangplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(sitfacebangplayersList, player.Name);
-		end
-	end
-	sitfacebangdropdown:Refresh(sitfacebangplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 Sectionplayrerelatedtphump = Misc:CreateSection("FE Player Related | Hump", false, false, 10686489468);
 Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
 amplitudeofbang = 1.2;
 frequencyofbang = 1;
 minuss1 = -1;
-humpplayersList = {};
-humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=humpplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		Humpv1foundplr = getPlr(plrName);
-		if Humpv1foundplr then
-			if (Humpv1foundplr.Character and Humpv1foundplr.Character:FindFirstChild("Humanoid")) then
-				if ((Humping == true) or (Humpv1foundplr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Humping == true) or (foundPlr == speaker)) then
 					Humping = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. Humpv1foundplr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
 				else
 					Humping = true;
-					notifyyw("Now Banging", "Banging " .. Humpv1foundplr.Name, 4, 10709790644);
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while Humping do
 						local time = tick();
 						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
-						local newCFrame = (Humpv1foundplr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset)) + (Humpv1foundplr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
+						local newCFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						speaker.Character.HumanoidRootPart.CFrame = newCFrame;
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
@@ -2062,18 +1765,6 @@ humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Nam
 		end
 	end);
 end});
-local function updatePlayerList()
-	humpplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(humpplayersList, player.Name);
-		end
-	end
-	humpdropdown:Refresh(humpplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyofbang = Value;
@@ -2087,28 +1778,27 @@ end});
 local ffc1 = false;
 amplitudeofbangface = 1.2;
 frequencyofbangface = 1;
-hump2playersList = {};
-hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=hump2playersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
-		facebangv1foundPlr = getPlr(plrName);
-		if facebangv1foundPlr then
-			if (facebangv1foundPlr.Character and facebangv1foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ffc1 == true) or (facebangv1foundPlr == speaker)) then
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ffc1 == true) or (foundPlr == speaker)) then
 					ffc1 = false;
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. facebangv1foundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
 					ffc1 = true;
-					notifyyw("Now Facebanging", "Facebanging " .. facebangv1foundPlr.Name, 4, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					while ffc1 do
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						time = tick();
 						xOffset = amplitudeofbangface * math.sin(2 * math.pi * frequencyofbangface * time);
-						speaker.Character.HumanoidRootPart.CFrame = facebangv1foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						game:GetService("RunService").RenderStepped:Wait();
 					end
@@ -2117,18 +1807,6 @@ hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Na
 		end
 	end);
 end});
-local function updatePlayerList()
-	hump2playersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(hump2playersList, player.Name);
-		end
-	end
-	hump2dropdown:Refresh(hump2playersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		frequencyofbangface = Value;
@@ -4695,7 +4373,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontF
 	end);
 end});
 Sectionhamsterball = Misc:CreateSection("FE LocalPlayer Related | Hamster Ball", false, false, 9134761478);
-Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionhamsterball);
+Paragraph = Misc:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionhamsterball);
 SPEED_MULTIPLIER = 30;
 JUMP_POWER = 60;
 JUMP_GAP = 0.3;
@@ -8723,28 +8401,15 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer Us
 	effecttrue();
 	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
-useridplayersList = {};
-useriddropdown = Misc:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=useridplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.useriddropdown = Misc:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option;
+		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		toClipboard("" .. foundPlr.UserId .. "");
 		effecttrue();
 		notifyyw("Copied Player's UserID", "Copied " .. foundPlr.Name .. "'s UserID", 2, 10709790644);
 	end);
 end});
-local function updatePlayerList()
-	useridplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(useridplayersList, player.Name);
-		end
-	end
-	useriddropdown:Refresh(useridplayersList, "Select an option");
-end
-game.Players.PlayerAdded:Connect(updatePlayerList);
-game.Players.PlayerRemoving:Connect(updatePlayerList);
-updatePlayerList();
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Interact="Click",Callback=function()
 	soundnotification = Instance.new("Sound");
 	effecttrue();
