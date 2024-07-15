@@ -237,10 +237,10 @@ function sFLY(vfly)
 		BG.P = 90000;
 		BG.Parent = T;
 		BV.Parent = T;
-		BG.maxTorque = Vector3.one * 8999999488;
+		BG.maxTorque = Vector3.new(8999999488, 8999999488, 8999999488);
 		BG.cframe = T.CFrame;
 		BV.velocity = Vector3.new(0, 0, 0);
-		BV.maxForce = Vector3.one * 8999999488;
+		BV.maxForce = Vector3.new(8999999488, 8999999488, 8999999488);
 		task.spawn(function()
 			repeat
 				task.wait();
@@ -319,7 +319,6 @@ end
 function NOFLY()
 	flying = false;
 	if (flyKeyDown or flyKeyUp) then
-		flyspeedloop:Disconnect();
 		flyKeyDown:Disconnect();
 		flyKeyUp:Disconnect();
 	end
@@ -605,7 +604,7 @@ gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Telepor
 		foundPlr = getPlr(plrName);
 		Character:PivotTo(foundPlr.Character:GetPivot());
 		effecttrue();
-		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
+		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
 	end);
 end});
 local function updatePlayerList()
@@ -615,7 +614,7 @@ local function updatePlayerList()
 			table.insert(gotoplayersList, player.Name);
 		end
 	end
-	gotodropdown:Refresh(gotoplayersList,"Select an option");
+	gotodropdown:Refresh(gotoplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -632,11 +631,11 @@ gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Tween T
 				Humanoid.Sit = false;
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
 				effecttrue();
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
 			else
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play();
 				effecttrue();
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 2, 10709790644);
+				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name, 4, 10709790644);
 			end
 		end
 		breakvelocity();
@@ -649,7 +648,7 @@ local function updatePlayerList()
 			table.insert(gotoplayersList, player.Name);
 		end
 	end
-	gotodropdown:Refresh(gotoplayersList,"Select an option");
+	gotodropdown:Refresh(gotoplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -685,7 +684,7 @@ spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spe
 			else
 				spectateing = true;
 				effecttrue();
-				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name, 2, 10709790644);
+				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name, 4, 10709790644);
 				while spectateing do
 					game.Workspace.Camera.CameraSubject = foundPlr.Character;
 					task.wait();
@@ -701,7 +700,7 @@ local function updatePlayerList()
 			table.insert(spectateplayersList, player.Name);
 		end
 	end
-	spectatedropdown:Refresh(spectateplayersList,"Select an option");
+	spectatedropdown:Refresh(spectateplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -814,7 +813,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
 end});
 Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter"}, Sectionplayrerelatedtp);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
 local Annoy = false;
 AnnoyplayersList = {};
 Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=AnnoyplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -831,7 +830,7 @@ Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 				else
 					Annoy = true;
 					effecttrue();
-					notifyyw("Now Annoying", "Annoying " .. annoyfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now Annoying", "Annoying " .. annoyfoundPlr.Name, 4, 10709790644);
 					while Annoy do
 						speaker.Character.HumanoidRootPart.CFrame = annoyfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
@@ -849,7 +848,7 @@ local function updatePlayerList()
 			table.insert(AnnoyplayersList, player.Name);
 		end
 	end
-	Annoydropdown:Refresh(AnnoyplayersList,"Select an option");
+	Annoydropdown:Refresh(AnnoyplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -871,7 +870,7 @@ StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name
 				else
 					StandOnHead = true;
 					effecttrue();
-					notifyyw("Now Standing", "Standing On " .. StandFoundPlr.Name, 2, 10709790644);
+					notifyyw("Now Standing", "Standing On " .. StandFoundPlr.Name, 4, 10709790644);
 					while StandOnHead do
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						speaker.Character.HumanoidRootPart.CFrame = StandFoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
@@ -890,7 +889,7 @@ local function updatePlayerList()
 			table.insert(StandOnplayersList, player.Name);
 		end
 	end
-	StandOndropdown:Refresh(StandOnplayersList,"Select an option");
+	StandOndropdown:Refresh(StandOnplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -918,7 +917,7 @@ local function updatePlayerList()
 			table.insert(SpookplayersList, player.Name);
 		end
 	end
-	Spookdropdown:Refresh(SpookplayersList,"Select an option");
+	Spookdropdown:Refresh(SpookplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -939,7 +938,7 @@ followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 					return;
 				else
 					Follow = true;
-					notifyyw("Now Stalking", "Stalking " .. folloawafoundplr.Name, 2, 10709790644);
+					notifyyw("Now Stalking", "Stalking " .. folloawafoundplr.Name, 4, 10709790644);
 					effecttrue();
 					while Follow do
 						speaker.Character.HumanoidRootPart.CFrame = folloawafoundplr.Character.HumanoidRootPart.CFrame + (folloawafoundplr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
@@ -958,7 +957,7 @@ local function updatePlayerList()
 			table.insert(followplayersList, player.Name);
 		end
 	end
-	followdropdown:Refresh(followplayersList,"Select an option");
+	followdropdown:Refresh(followplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -984,7 +983,7 @@ loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 				else
 					LoopHello = true;
 					trueforanim = true;
-					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name, 2, 10709790644);
+					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name, 4, 10709790644);
 					effecttrue();
 					WaveAnim = Instance.new("Animation");
 					if not r15(speaker) then
@@ -1021,7 +1020,7 @@ local function updatePlayerList()
 			table.insert(loopwaveplayersList, player.Name);
 		end
 	end
-	loopwavedropdown:Refresh(loopwaveplayersList,"Select an option");
+	loopwavedropdown:Refresh(loopwaveplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1049,7 +1048,7 @@ Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim);
 						carpete:Play(0.1, 1, 1);
 						effecttrue();
-						notifyyw("Now Carpeting", "Carpeting " .. carpetfoundPlr.Name, 2, 10709790644);
+						notifyyw("Now Carpeting", "Carpeting " .. carpetfoundPlr.Name, 4, 10709790644);
 						while Carpettion do
 							speaker.Character.HumanoidRootPart.CFrame = carpetfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
@@ -1071,7 +1070,7 @@ local function updatePlayerList()
 			table.insert(CarpetplayersList, player.Name);
 		end
 	end
-	Carpetdropdown:Refresh(CarpetplayersList,"Select an option");
+	Carpetdropdown:Refresh(CarpetplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1099,7 +1098,7 @@ Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hu
 						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
 						zomearm:Play();
 						zomearm:AdjustSpeed(0);
-						notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+						notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 4, 10709790644);
 						effecttrue();
 						while ffhugger do
 							speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
@@ -1124,7 +1123,7 @@ Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hu
 				zomearm:Play();
 				zomearm:AdjustSpeed(0);
 				speaker.Character.Animate.Disabled = true;
-				notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 2, 10709790644);
+				notifyyw("Now Hugging", "Hugging " .. huggingfoundPlr.Name, 4, 10709790644);
 				effecttrue();
 				while ffhugger do
 					speaker.Character.HumanoidRootPart.CFrame = huggingfoundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
@@ -1142,7 +1141,7 @@ local function updatePlayerList()
 			table.insert(HugplayersList, player.Name);
 		end
 	end
-	Hugdropdown:Refresh(HugplayersList,"Select an option");
+	Hugdropdown:Refresh(HugplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1163,7 +1162,7 @@ Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Na
 					return;
 				else
 					actualpb = true;
-					notifyyw("Now PiggyBacking", "PiggyBacking " .. piggybackfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now PiggyBacking", "PiggyBacking " .. piggybackfoundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while actualpb do
 						speaker.Character.Humanoid.Sit = true;
@@ -1183,7 +1182,7 @@ local function updatePlayerList()
 			table.insert(PiggybackplayersList, player.Name);
 		end
 	end
-	Piggybackdropdown:Refresh(PiggybackplayersList,"Select an option");
+	Piggybackdropdown:Refresh(PiggybackplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1224,7 +1223,7 @@ local function updatePlayerList()
 			table.insert(backpackplayersList, player.Name);
 		end
 	end
-	backpackdropdown:Refresh(backpackplayersList,"Select an option");
+	backpackdropdown:Refresh(backpackplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1245,7 +1244,7 @@ Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name
 					return;
 				else
 					headsits = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while headsits do
 						speaker.Character.Humanoid.Sit = true;
@@ -1265,7 +1264,7 @@ local function updatePlayerList()
 			table.insert(headsitplayersList, player.Name);
 		end
 	end
-	Headsitdropdown:Refresh(headsitplayersList,"Select an option");
+	Headsitdropdown:Refresh(headsitplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1286,7 +1285,7 @@ ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedt
 					return;
 				else
 					ActualHeadsit = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now HeadSitting", "HeadSitting " .. headsitfoundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while ActualHeadsit do
 						speaker.Character.Humanoid.Sit = true;
@@ -1306,7 +1305,7 @@ local function updatePlayerList()
 			table.insert(actualheadsitplayersList, player.Name);
 		end
 	end
-	ActualHeadsitdropdown:Refresh(actualheadsitplayersList,"Select an option");
+	ActualHeadsitdropdown:Refresh(actualheadsitplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1331,7 +1330,7 @@ animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Nam
 				else
 					issyncinganim = true;
 					effecttrue();
-					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 2, 10709790644);
+					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name, 4, 10709790644);
 					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
 						local animID = track.Animation.AnimationId;
 						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
@@ -1359,7 +1358,7 @@ local function updatePlayerList()
 			table.insert(animsyncplayersList, player.Name);
 		end
 	end
-	animsyncdropdown:Refresh(animsyncplayersList,"Select an option");
+	animsyncdropdown:Refresh(animsyncplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1386,7 +1385,7 @@ orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="
 			else
 				orbitingfuck = true;
 				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. orbitfoundPlr.Name, 2, 10709790644);
+				notifyyw("Now Orbiting", "Orbiting Around " .. orbitfoundPlr.Name, 4, 10709790644);
 				local P = Instance.new("Part", orbitfoundPlr.Character);
 				P.Transparency = 1;
 				P.Name = "ThePart";
@@ -1428,7 +1427,7 @@ local function updatePlayerList()
 			table.insert(orbitplayersList, player.Name);
 		end
 	end
-	orbitdropdown:Refresh(orbitplayersList,"Select an option");
+	orbitdropdown:Refresh(orbitplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1454,7 +1453,7 @@ closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,N
 			else
 				closeorbitingfuck = true;
 				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. closeorbitfoundPlr.Name, 2, 10709790644);
+				notifyyw("Now Orbiting", "Orbiting Around " .. closeorbitfoundPlr.Name, 4, 10709790644);
 				local rp = Instance.new("RocketPropulsion");
 				rp.Parent = speaker.Character.HumanoidRootPart;
 				rp.CartoonFactor = 1;
@@ -1483,7 +1482,7 @@ local function updatePlayerList()
 			table.insert(closeorbitplayersList, player.Name);
 		end
 	end
-	closeorbitdropdown:Refresh(closeorbitplayersList,"Select an option");
+	closeorbitdropdown:Refresh(closeorbitplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1504,7 +1503,7 @@ lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name=
 			else
 				lookingAt = true;
 				effecttrue();
-				notifyyw("Now Looking At", "Looking At " .. LookAtfoundPlr.Name, 2, 10709790644);
+				notifyyw("Now Looking At", "Looking At " .. LookAtfoundPlr.Name, 4, 10709790644);
 				while lookingAt do
 					game:GetService("RunService").Heartbeat:Wait();
 					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, LookAtfoundPlr.Character.HumanoidRootPart.Position);
@@ -1520,21 +1519,22 @@ local function updatePlayerList()
 			table.insert(lookatplayersList, player.Name);
 		end
 	end
-	lookatdropdown:Refresh(lookatplayersList,"Select an option");
+	lookatdropdown:Refresh(lookatplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
 updatePlayerList();
 local spinaround = false;
-local radiusfromplayer = 10;
-local spinSpeed = 1;
-local angle = 0;
+local spinaroundrotation = 0;
+local spinaroundspeed = 0.2;
+local spinarounddistance = 6;
+local root = getRoot(speaker.Character);
 spinaroundplayersList = {};
 spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=spinaroundplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option;
 		SpinaroundPlr = getPlr(plrName);
-		if SpinaroundPlr then
+		if (SpinaroundPlr and SpinaroundPlr.Character and getRoot(SpinaroundPlr.Character) and root and humanoid) then
 			if ((spinaround == true) or (SpinaroundPlr == speaker)) then
 				effectfalse();
 				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. SpinaroundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1543,17 +1543,12 @@ spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,N
 			else
 				spinaround = true;
 				effecttrue();
-				notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 2, 10709790644);
+				notifyyw("Now Spinning Around", "Spinning Around " .. SpinaroundPlr.Name, 4, 10709790644);
 				while spinaround do
-					local deltaTime = game:GetService("RunService").Heartbeat:Wait();
-					angle = angle + (spinSpeed * deltaTime);
-					if (angle > (2 * math.pi)) then
-						angle = angle - (2 * math.pi);
-					end
-					local offset = Vector3.new(math.cos(angle) * radiusfromplayer, 0, math.sin(angle) * radiusfromplayer);
-					local newCFrame = CFrame.new(SpinaroundPlr.Character.HumanoidRootPart.Position + offset, SpinaroundPlr.Character.HumanoidRootPart.Position);
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					Character.HumanoidRootPart.CFrame = newCFrame;
+					spinaroundrotation = spinaroundrotation + spinaroundspeed;
+					root.CFrame = CFrame.new(getRoot(SpinaroundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
+					root.CFrame = CFrame.new(root.Position, getRoot(SpinaroundPlr.Character).Position);
+					RunService.RenderStepped:Wait();
 				end
 			end
 		end
@@ -1566,33 +1561,33 @@ local function updatePlayerList()
 			table.insert(spinaroundplayersList, player.Name);
 		end
 	end
-	spinarounddropdown:Refresh(spinaroundplayersList,"Select an option");
+	spinarounddropdown:Refresh(spinaroundplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
 updatePlayerList();
-SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinSpeed,Callback=function(Value)
+SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
 	pcall(function()
-		spinSpeed = Value;
+		spinaroundspeed = Value;
 	end);
 end});
-SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",OnEnter=true,PlaceholderText=spinSpeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",OnEnter=true,PlaceholderText=spinaroundspeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		spinSpeed = Text;
+		spinaroundspeed = Text;
 	end);
 end});
-SpinaroundSliderRadius = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",Range={1,999},Increment=1,Suffix="Radius",CurrentValue=radiusfromplayer,Callback=function(Value)
+SpinaroundSliderRadius = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",Range={1,350},Increment=1,Suffix="Radius / Distance",CurrentValue=spinarounddistance,Callback=function(Value)
 	pcall(function()
-		radiusfromplayer = Value;
+		spinarounddistance = Value;
 	end);
 end});
-SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius",OnEnter=true,PlaceholderText=radiusfromplayer,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",OnEnter=true,PlaceholderText=spinarounddistance,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		radiusfromplayer = Text;
+		spinarounddistance = Text;
 	end);
 end});
 Sectionplayrerelatedtp69 = Misc:CreateSection("FE Player Related | 69", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="To Enable : Enter Their Username First Then Press Enter\nTo Disable : Press On The Text You Entered And Press Enter\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle.\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
 local Bang69 = false;
 a69playersList = {};
 a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=a69playersList,CurrentOption="Select an option",Callback=function(Option)
@@ -1612,7 +1607,7 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 					return;
 				else
 					Bang69 = true;
-					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
+					notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 4, 10709790644);
 					effecttrue();
 					c = Character;
 					hrp0 = c:FindFirstChild("HumanoidRootPart");
@@ -1649,13 +1644,14 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 				notifyyw("No Longer Banging The Player", "Not Banging " .. r69foundplr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				bang69:Stop();
+				a69upsideown:Disconnect();
 				bangAnim:Destroy();
 				Bang69 = false;
 				charresettopos();
 				return;
 			else
 				Bang69 = true;
-				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 2, 10709790644);
+				notifyyw("Now Banging", "Banging " .. r69foundplr.Name, 4, 10709790644);
 				effecttrue();
 				local Players = game:GetService("Players");
 				local RunService = game:GetService("RunService");
@@ -1685,10 +1681,13 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 					end
 				end
 				setupCharacter();
-				Players.LocalPlayer.CharacterAdded:Connect(function(char)
-					c = char;
-					setupCharacter();
-				end);
+				if r15(speaker) then
+					local a69upsideown;
+					a69upsideown = Players.LocalPlayer.CharacterAdded:Connect(function(char)
+						c = char;
+						setupCharacter();
+					end);
+				end
 				f69lwnum = 1;
 				bangAnim = Instance.new("Animation");
 				bangAnim.AnimationId = "rbxassetid://5918726674";
@@ -1707,6 +1706,7 @@ a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="
 		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 			bang69:Stop();
 			bangAnim:Destroy();
+			a69upsideown:Disconnect();
 			Bang69 = false;
 		end);
 	end);
@@ -1718,7 +1718,7 @@ local function updatePlayerList()
 			table.insert(a69playersList, player.Name);
 		end
 	end
-	a69dropdown:Refresh(a69playersList,"Select an option");
+	a69dropdown:Refresh(a69playersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1753,7 +1753,7 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 						return;
 					else
 						ffc1hump = true;
-						notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 2, 10709790644);
+						notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 4, 10709790644);
 						effecttrue();
 						c = Character;
 						hrp0 = c:FindFirstChild("HumanoidRootPart");
@@ -1786,11 +1786,12 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 				speaker.Character.Humanoid.PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. humpfoundPlr69.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
+				a69humper:Disconnect();
 				charresettopos();
 				return;
 			else
 				ffc1hump = true;
-				notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 2, 10709790644);
+				notifyyw("Now 69 Humping", "69 Humping " .. humpfoundPlr69.Name, 4, 10709790644);
 				effecttrue();
 				local Players = game:GetService("Players");
 				local RunService = game:GetService("RunService");
@@ -1820,10 +1821,13 @@ a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Na
 					end
 				end
 				setupCharacter();
-				Players.LocalPlayer.CharacterAdded:Connect(function(char)
-					c = char;
-					setupCharacter();
-				end);
+				if r15(speaker) then
+					local a69humper;
+					a69humper = Players.LocalPlayer.CharacterAdded:Connect(function(char)
+						c = char;
+						setupCharacter();
+					end);
+				end
 				while ffc1hump do
 					speaker.Character.Humanoid.PlatformStand = true;
 					time = tick();
@@ -1843,7 +1847,7 @@ local function updatePlayerList()
 			table.insert(a69humpplayersList, player.Name);
 		end
 	end
-	a69humpdropdown:Refresh(a69humpplayersList,"Select an option");
+	a69humpdropdown:Refresh(a69humpplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1859,6 +1863,7 @@ faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelated
 	end);
 end});
 Sectionplayrerelatedtpbang = Misc:CreateSection("FE Player Related | Bang", false, false, 10686489468);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtpbang);
 local Bang = false;
 bangplayersList = {};
 bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=bangplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -1886,7 +1891,7 @@ bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Nam
 					end
 					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
 					v2banger:Play(0.1, 1, 3);
-					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name, 2, 10709790644);
+					notifyyw("Now Banging", "Banging " .. bangingfoundplrv2v2.Name, 4, 10709790644);
 					effecttrue();
 					while Bang do
 						speaker.Character.HumanoidRootPart.CFrame = bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame + (bangingfoundplrv2v2.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
@@ -1905,7 +1910,7 @@ local function updatePlayerList()
 			table.insert(bangplayersList, player.Name);
 		end
 	end
-	bangdropdown:Refresh(bangplayersList,"Select an option");
+	bangdropdown:Refresh(bangplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1945,7 +1950,7 @@ facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang
 					end
 					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
 					facebanger:Play(0.1, 1, 3);
-					notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 2, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. facebangv3foundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while ff2 do
 						speaker.Character.HumanoidRootPart.CFrame = facebangv3foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
@@ -1964,7 +1969,7 @@ local function updatePlayerList()
 			table.insert(facebangplayersList, player.Name);
 		end
 	end
-	facebangdropdown:Refresh(facebangplayersList,"Select an option");
+	facebangdropdown:Refresh(facebangplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -1995,7 +2000,7 @@ sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpb
 					return;
 				else
 					ff = true;
-					notifyyw("Now Facebanging", "Facebanging " .. facebangfoundPlr.Name, 2, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. facebangfoundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while ff do
 						Character.Humanoid.Sit = true;
@@ -2015,12 +2020,13 @@ local function updatePlayerList()
 			table.insert(sitfacebangplayersList, player.Name);
 		end
 	end
-	sitfacebangdropdown:Refresh(sitfacebangplayersList,"Select an option");
+	sitfacebangdropdown:Refresh(sitfacebangplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
 updatePlayerList();
 Sectionplayrerelatedtphump = Misc:CreateSection("FE Player Related | Hump", false, false, 10686489468);
+Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
 amplitudeofbang = 1.2;
 frequencyofbang = 1;
@@ -2040,7 +2046,7 @@ humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Nam
 					return;
 				else
 					Humping = true;
-					notifyyw("Now Banging", "Banging " .. Humpv1foundplr.Name, 2, 10709790644);
+					notifyyw("Now Banging", "Banging " .. Humpv1foundplr.Name, 4, 10709790644);
 					effecttrue();
 					while Humping do
 						local time = tick();
@@ -2063,7 +2069,7 @@ local function updatePlayerList()
 			table.insert(humpplayersList, player.Name);
 		end
 	end
-	humpdropdown:Refresh(humpplayersList,"Select an option");
+	humpdropdown:Refresh(humpplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -2096,7 +2102,7 @@ hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Na
 					return;
 				else
 					ffc1 = true;
-					notifyyw("Now Facebanging", "Facebanging " .. facebangv1foundPlr.Name, 2, 10709790644);
+					notifyyw("Now Facebanging", "Facebanging " .. facebangv1foundPlr.Name, 4, 10709790644);
 					effecttrue();
 					while ffc1 do
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
@@ -2118,7 +2124,7 @@ local function updatePlayerList()
 			table.insert(hump2playersList, player.Name);
 		end
 	end
-	hump2dropdown:Refresh(hump2playersList,"Select an option");
+	hump2dropdown:Refresh(hump2playersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
@@ -3110,10 +3116,17 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468);
+Paragraph = Misc:CreateParagraph({Title="Upside Down Character & Crawl Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionlprtog);
 Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
 	upsidedown = Value;
 	if upsidedown then
 		if not r15(speaker) then
+			ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+				pcall(function()
+					Toggleupsidedown:Set(false);
+					ifuserdiedar:Disconnect();
+				end);
+			end);
 			effecttrue();
 			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 			c = Character;
@@ -3135,7 +3148,15 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 				hrp0.Position -= Vector3.new(0, 0, 0)
 				hrp0.Velocity = hrp1.Velocity;
 			end
-		else
+		elseif r15(speaker) then
+			ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+				pcall(function()
+					Toggleupsidedown:Set(false);
+					ifuserdiedar:Disconnect();
+				end);
+			end);
+			effecttrue();
+			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 			local Players = game:GetService("Players");
 			local RunService = game:GetService("RunService");
 			local LocalPlayer = Players.LocalPlayer;
@@ -3168,18 +3189,12 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 				c = char;
 				setupCharacter();
 			end);
-			effecttrue();
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400});
 		end
-		ifuserdiedar = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			pcall(function()
-				Toggleupsidedown:Set(false);
-			end);
-		end);
 	end
 	if not upsidedown then
-		ifuserdiedar:Disconnect();
 		charresettopos();
+		task.wait(1);
+		ifuserdiedar:Disconnect();
 	end
 end});
 Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
@@ -3278,127 +3293,135 @@ Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",C
 	end);
 end});
 ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		Crawlingornot = Value;
-		if Crawlingornot then
-			if not r15(speaker) then
-				local climbAnim = Instance.new("Animation");
-				climbAnim.AnimationId = "rbxassetid://180436334";
-				local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim);
-				local function playIdleClimbingAnimation()
-					if not climbTrack.IsPlaying then
-						climbTrack:Play(0, 10, 0);
-					else
-						climbTrack:AdjustSpeed(0);
-					end
-				end
-				local function playWalkingClimbingAnimation()
-					if not climbTrack.IsPlaying then
-						climbTrack:Play(0, 10, 1);
-					else
-						climbTrack:AdjustSpeed(1);
-					end
-				end
-				local humrunr6;
-				humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
-					if (speed == 0) then
-						playIdleClimbingAnimation();
-					else
-						playWalkingClimbingAnimation();
-					end
+	Crawlingornot = Value;
+	if Crawlingornot then
+		if not r15(speaker) then
+			ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleCrawl:Set(false);
+					ifuserdiedar2:Disconnect();
 				end);
-				local c = speaker.Character;
+			end);
+			local climbAnim = Instance.new("Animation");
+			climbAnim.AnimationId = "rbxassetid://180436334";
+			local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim);
+			local function playIdleClimbingAnimation()
+				if not climbTrack.IsPlaying then
+					climbTrack:Play(0, 10, 0);
+				else
+					climbTrack:AdjustSpeed(0);
+				end
+			end
+			local function playWalkingClimbingAnimation()
+				if not climbTrack.IsPlaying then
+					climbTrack:Play(0, 10, 1);
+				else
+					climbTrack:AdjustSpeed(1);
+				end
+			end
+			local humrunr6;
+			humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
+				if (speed == 0) then
+					playIdleClimbingAnimation();
+				else
+					playWalkingClimbingAnimation();
+				end
+			end);
+			local c = speaker.Character;
+			local hrp0 = c:FindFirstChild("HumanoidRootPart");
+			if hrp0 then
+				local hrp1 = hrp0:Clone();
+				c.Parent = nil;
+				hrp0.Parent = hrp1;
+				hrp0.RootJoint.Part0 = nil;
+				hrp1.Parent = c;
+				c.Parent = workspace;
+				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
+				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0);
+				local h = game:GetService("RunService").Heartbeat;
+				hrp0.Transparency = 0.85;
+				hrp0.Material = Enum.Material.ForceField;
+				hrp0.Color = Color3.fromRGB(25, 25, 25);
+				while h:Wait() and c and c.Parent do
+					hrp0.CFrame = hrp1.CFrame;
+					hrp0.Orientation += Vector3.new(-90, 0, 0)
+					hrp0.Position -= Vector3.new(0, 1.5, 0)
+					hrp0.Velocity = hrp1.Velocity;
+				end
+			end
+		elseif r15(speaker) then
+			ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleCrawl:Set(false);
+					ifuserdiedar2:Disconnect();
+				end);
+			end);
+			local player = speaker;
+			local character = player.Character or player.CharacterAdded:Wait();
+			local humanoid = character:WaitForChild("Humanoid");
+			local climbAnim = Instance.new("Animation");
+			climbAnim.AnimationId = "rbxassetid://507765644";
+			local climbTrack = humanoid:LoadAnimation(climbAnim);
+			local function playIdleClimbingAnimation()
+				if not climbTrack.IsPlaying then
+					climbTrack:Play(0, 10, 0);
+				else
+					climbTrack:AdjustSpeed(0);
+				end
+			end
+			local function playWalkingClimbingAnimation()
+				if not climbTrack.IsPlaying then
+					climbTrack:Play(0, 10, 1);
+				else
+					climbTrack:AdjustSpeed(1);
+				end
+			end
+			local humrunr15;
+			humrunr15 = humanoid.Running:Connect(function(speed)
+				if (speed == 0) then
+					playIdleClimbingAnimation();
+				else
+					playWalkingClimbingAnimation();
+				end
+			end);
+			local Players = game:GetService("Players");
+			local RunService = game:GetService("RunService");
+			local LocalPlayer = Players.LocalPlayer;
+			local Character = LocalPlayer.Character;
+			local c = Character;
+			local function setupCharacter()
 				local hrp0 = c:FindFirstChild("HumanoidRootPart");
 				if hrp0 then
 					local hrp1 = hrp0:Clone();
 					c.Parent = nil;
 					hrp0.Parent = hrp1;
-					hrp0.RootJoint.Part0 = nil;
 					hrp1.Parent = c;
 					c.Parent = workspace;
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0);
-					local h = game:GetService("RunService").Heartbeat;
+					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, -1, -1.2);
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					while h:Wait() and c and c.Parent do
-						hrp0.CFrame = hrp1.CFrame;
-						hrp0.Orientation += Vector3.new(-90, 0, 0)
-						hrp0.Position -= Vector3.new(0, 1.5, 0)
-						hrp0.Velocity = hrp1.Velocity;
-					end
+					RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(-90, 0, 0)
+							hrp0.Position -= Vector3.new(0, 1.5, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
 				end
-			else
-				local player = speaker;
-				local character = player.Character or player.CharacterAdded:Wait();
-				local humanoid = character:WaitForChild("Humanoid");
-				local climbAnim = Instance.new("Animation");
-				climbAnim.AnimationId = "rbxassetid://507765644";
-				local climbTrack = humanoid:LoadAnimation(climbAnim);
-				local function playIdleClimbingAnimation()
-					if not climbTrack.IsPlaying then
-						climbTrack:Play(0, 10, 0);
-					else
-						climbTrack:AdjustSpeed(0);
-					end
-				end
-				local function playWalkingClimbingAnimation()
-					if not climbTrack.IsPlaying then
-						climbTrack:Play(0, 10, 1);
-					else
-						climbTrack:AdjustSpeed(1);
-					end
-				end
-				local humrunr15;
-				humrunr15 = humanoid.Running:Connect(function(speed)
-					if (speed == 0) then
-						playIdleClimbingAnimation();
-					else
-						playWalkingClimbingAnimation();
-					end
-				end);
-				local Players = game:GetService("Players");
-				local RunService = game:GetService("RunService");
-				local LocalPlayer = Players.LocalPlayer;
-				local Character = LocalPlayer.Character;
-				local c = Character;
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart");
-					if hrp0 then
-						local hrp1 = hrp0:Clone();
-						c.Parent = nil;
-						hrp0.Parent = hrp1;
-						hrp1.Parent = c;
-						c.Parent = workspace;
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, -1, -1.2);
-						hrp0.Transparency = 0.85;
-						hrp0.Material = Enum.Material.ForceField;
-						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame;
-								hrp0.Orientation += Vector3.new(-90, 0, 0)
-								hrp0.Position -= Vector3.new(0, 1.5, 0)
-								hrp0.Velocity = hrp1.Velocity;
-							end
-						end);
-					end
-				end
-				setupCharacter();
-				Players.LocalPlayer.CharacterAdded:Connect(function(char)
-					c = char;
-					setupCharacter();
-				end);
 			end
-			ifuserdiedag = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleCrawl:Set(false);
-				end);
+			setupCharacter();
+			r15charaddedcrawl = Players.LocalPlayer.CharacterAdded:Connect(function(char)
+				c = char;
+				setupCharacter();
+				r15charaddedcrawl:Disconnect();
 			end);
 		end
-		if not Crawlingornot then
-			ifuserdiedag:Disconnect();
+	end
+	if not Crawlingornot then
+		pcall(function()
+			ifuserdiedar2:Disconnect();
 			charresettopos();
 			if climbTrack then
 				climbTrack:Stop();
@@ -3406,10 +3429,14 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 			if climbAnim then
 				climbAnim:Destroy();
 			end
-			humrunr6:Disconnect();
-			humrunr15:Disconnect();
-		end
-	end);
+			if r15(speaker) then
+				humrunr6:Disconnect();
+			else
+				humrunr15:Disconnect();
+				r15charaddedcrawl:Disconnect();
+			end
+		end);
+	end
 end});
 Floating = false;
 floatName = randomString();
@@ -3668,12 +3695,14 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 			BeyBladee.AngularVelocity = Vector3.new(0, 20, 0);
 		end
 		updateAngularVelocity();
-		ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			pcall(function()
-				ToggleBeyBlade:Set(false);
-			end);
-		end);
+		local ifuserdied2;
 		if not r15(speaker) then
+			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleBeyBlade:Set(false);
+					ifuserdied2:Disconnect();
+				end);
+			end);
 			local Character = game.Players.LocalPlayer.Character;
 			local c = Character;
 			local hrp0 = c:FindFirstChild("HumanoidRootPart");
@@ -3694,7 +3723,13 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 				hrp0.Position -= Vector3.new(0, 0, 0)
 				hrp0.Velocity = hrp1.Velocity;
 			end
-		else
+		elseif r15(speaker) then
+			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+				pcall(function()
+					ToggleBeyBlade:Set(false);
+					ifuserdied2:Disconnect();
+				end);
+			end);
 			local Players = game:GetService("Players");
 			local RunService = game:GetService("RunService");
 			local LocalPlayer = Players.LocalPlayer;
@@ -3731,13 +3766,13 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 	end
 	if not beyblader then
 		pcall(function()
+			charresettopos();
 			ifuserdied2:Disconnect();
 			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
 				if (v.Name == "BeyBlading") then
 					v:Destroy();
 				end
 			end
-			charresettopos();
 		end);
 	end
 end});
@@ -3787,7 +3822,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					task.wait();
+					wait();
 				end
 				ml:Remove();
 			end
@@ -3814,17 +3849,17 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 				Gyro.Parent = Torso;
 				for i = 2, 28 do
 					Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -16, 0, 0);
-					task.wait();
+					wait();
 				end
 				Gyro.cframe = CF;
-				task.wait();
+				wait();
 				Gyro:Remove();
 				Human.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while Flipping do
-				task.wait();
+				wait();
 				Flip2();
 			end
 		else
@@ -3872,7 +3907,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 			function Down(ml)
 				for i = 1, ml.Velocity.y / 3 do
 					ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-					task.wait();
+					wait();
 				end
 				ml:Destroy();
 			end
@@ -3900,10 +3935,10 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 					Gyro.Parent = Torso;
 					for i = 2, 28 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0);
-						task.wait();
+						wait();
 					end
 					Gyro.CFrame = CF;
-					task.wait();
+					wait();
 					Gyro:Destroy();
 					Human.PlatformStand = false;
 					_restoreproperties();
@@ -3911,7 +3946,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 				end
 			end
 			while Flipping do
-				task.wait();
+				wait();
 				Flip2();
 			end
 		end
@@ -3967,7 +4002,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						task.wait();
+						wait();
 					end
 					ml:Remove();
 				end
@@ -3994,17 +4029,17 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 					Gyro.Parent = Torso;
 					for i = 2, 28 do
 						Gyro.cframe = Gyro.cframe * CFrame.fromEulerAnglesXYZ(math.pi / -8, 0, 0);
-						task.wait();
+						wait();
 					end
 					Gyro.cframe = CF;
-					task.wait();
+					wait();
 					Gyro:Remove();
 					Human.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while doubleFlipping do
-					task.wait();
+					wait();
 					Flip3();
 				end
 			else
@@ -4049,7 +4084,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 				function Down(ml)
 					for i = 1, ml.Velocity.Y / 3 do
 						ml.Velocity = ml.Velocity + Vector3.new(0, -4.25, 0);
-						task.wait();
+						wait();
 					end
 					ml:Destroy();
 				end
@@ -4077,10 +4112,10 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 						Gyro.Parent = Torso;
 						for i = 2, 20 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0);
-							task.wait();
+							wait();
 						end
 						Gyro.CFrame = CF;
-						task.wait();
+						wait();
 						Gyro:Destroy();
 						Human.PlatformStand = false;
 						_restoreproperties();
@@ -4088,7 +4123,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 					end
 				end
 				while doubleFlipping do
-					task.wait();
+					wait();
 					Flip3();
 				end
 			end
@@ -4123,7 +4158,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						task.wait();
+						wait();
 					end
 					ml:Remove();
 				end
@@ -4139,17 +4174,17 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 					Gyro.Parent = speaker.Character.Torso;
 					for i = 0, 50 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / -29, 0, 0);
-						task.wait();
+						wait();
 					end
 					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					task.wait();
+					wait();
 					Gyro:Remove();
 					speaker.Character.Humanoid.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while cwFlipping do
-					task.wait();
+					wait();
 					Flip();
 				end
 			else
@@ -4192,10 +4227,10 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 						Gyro.Parent = Torso;
 						for i = 0, 50 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-7), 0, 0);
-							task.wait();
+							wait();
 						end
 						Gyro.CFrame = Torso.CFrame;
-						task.wait();
+						wait();
 						Gyro:Remove();
 						speaker.Character.Humanoid.PlatformStand = false;
 						_restoreproperties();
@@ -4203,7 +4238,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 					end
 				end
 				while cwFlipping do
-					task.wait();
+					wait();
 					Flip();
 				end
 			end
@@ -4238,7 +4273,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						task.wait();
+						wait();
 					end
 					ml:Remove();
 				end
@@ -4254,17 +4289,17 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 					Gyro.Parent = speaker.Character.Torso;
 					for i = 0, 50 do
 						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / -29);
-						task.wait();
+						wait();
 					end
 					Gyro.CFrame = speaker.Character.Torso.CFrame;
-					task.wait();
+					wait();
 					Gyro:Remove();
 					speaker.Character.Humanoid.PlatformStand = false;
 					_restoreproperties();
 					debounce = false;
 				end
 				while StarRoll do
-					task.wait();
+					wait();
 					Flip();
 				end
 			else
@@ -4289,7 +4324,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 				function Down(ml)
 					for i = 1, ml.velocity.y / 3 do
 						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-						task.wait();
+						wait();
 					end
 					ml:Remove();
 				end
@@ -4307,7 +4342,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 						Gyro.Parent = Torso;
 						for i = 0, 50 do
 							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, 0, math.rad(-7));
-							task.wait();
+							wait();
 						end
 						Gyro.CFrame = Torso.CFrame;
 						task.wait();
@@ -4318,7 +4353,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 					end
 				end
 				while StarRoll do
-					task.wait();
+					wait();
 					Flip();
 				end
 			end
@@ -4352,7 +4387,7 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					task.wait();
+					wait();
 				end
 				ml:Remove();
 			end
@@ -4372,10 +4407,10 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 				Gyro.Parent = Character.Torso;
 				for i = 1, 16 do
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 9, math.pi / -18, 0);
-					task.wait();
+					wait();
 				end
 				Gyro.CFrame = Character.Torso.CFrame;
-				task.wait();
+				wait();
 				Gyro:Remove();
 				Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
@@ -4411,7 +4446,7 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 			local function Down(ml)
 				for i = 1, ml.Velocity.Y / 3 do
 					ml.Velocity = ml.Velocity + Vector3.new(0, -0.25, 0);
-					task.wait();
+					wait();
 				end
 				ml:Destroy();
 			end
@@ -4436,17 +4471,17 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 					local randomRotationY = math.random(-math.pi, math.pi) / 9;
 					local randomRotationZ = math.random(-math.pi, math.pi) / 9;
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(randomRotationX, randomRotationY, randomRotationZ);
-					task.wait();
+					wait();
 				end
 				Gyro.CFrame = Character.HumanoidRootPart.CFrame;
-				task.wait();
+				wait();
 				Gyro:Destroy();
 				Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while seizureFlipping do
-				task.wait();
+				wait();
 				Flip5();
 			end
 		end
@@ -4480,7 +4515,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 			function Down(ml)
 				for i = 1, ml.velocity.y / 3 do
 					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0);
-					task.wait();
+					wait();
 				end
 				ml:Remove();
 			end
@@ -4495,21 +4530,22 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 				Gyro.maxTorque = Vector3.new(99999997952, 99999997952, 99999997952) * 8999999488;
 				Gyro.CFrame = speaker.Character.Torso.CFrame;
 				Gyro.Parent = speaker.Character.Torso;
-				local initialCFrame = speaker.Character.Torso.CFrame;
-				Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2);
+				local initialPosition = speaker.Character.Torso.Position;
+				local initialOrientation = speaker.Character.Torso.CFrame - speaker.Character.Torso.Position;
+				Gyro.CFrame = (initialOrientation * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2)) + initialPosition;
 				while Looproll do
 					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0);
-					task.wait();
+					wait();
 				end
-				Gyro.CFrame = speaker.Character.Torso.CFrame;
-				task.wait();
+				speaker.Character.Torso.CFrame = initialOrientation + initialPosition;
+				wait();
 				Gyro:Remove();
 				speaker.Character.Humanoid.PlatformStand = false;
 				_restoreproperties();
 				debounce = false;
 			end
 			while BarrelRoll do
-				task.wait();
+				wait();
 				Flip();
 			end
 		else
@@ -8609,7 +8645,7 @@ local function updatePlayerList()
 			table.insert(useridplayersList, player.Name);
 		end
 	end
-	useriddropdown:Refresh(useridplayersList,"Select an option");
+	useriddropdown:Refresh(useridplayersList, "Select an option");
 end
 game.Players.PlayerAdded:Connect(updatePlayerList);
 game.Players.PlayerRemoving:Connect(updatePlayerList);
