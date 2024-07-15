@@ -50,8 +50,12 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "181";
-ScriptcountAnim = "62";
+Scriptcount = "184";
+ScriptcountAnim = "61";
+function getRoot(char)
+	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
+	return rootPart;
+end
 function randomString()
 	length = math.random(10, 20);
 	array = {};
@@ -328,10 +332,6 @@ function NOFLY()
 	pcall(function()
 		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
 	end);
-end
-function getRoot(char)
-	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
-	return rootPart;
 end
 UpdatedFPS = false;
 RunService.RenderStepped:Connect(function(step)
@@ -4612,6 +4612,88 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 		Looproll = false;
 	end
 end});
+hbackflipnfrontflip = 0.0174533;
+BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	backflips = KeyBind;
+	backflips = not backflips;
+	if backflips then
+		function speakerBackflip()
+				speaker.Character.Humanoid:ChangeState("Jumping");
+				task.wait();
+				speaker.Character.Humanoid.Sit = true;
+				for i = 1, 360 do
+					delay(i / 720, function()
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(hbackflipnfrontflip, 0, 0);
+					end);
+				end
+				task.wait(0.55);
+				speaker.Character.Humanoid.Sit = false;
+		end
+		speakerBackflip()
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFlip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		BackflipKeybind:Set("Set Keybind");
+	end);
+end});
+SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	sideflips = KeyBind;
+	sideflips = not sideflips;
+	if sideflips then
+		function speakerSideflip()
+				speaker.Character.Humanoid:ChangeState("Jumping");
+				task.wait();
+				speaker.Character.Humanoid.Sit = true;
+				for i = 1, 360 do
+					delay(i / 720, function()
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, -hbackflipnfrontflip);
+					end);
+				end
+				task.wait(0.55);
+				speaker.Character.Humanoid.Sit = false;
+		end
+		speakerSideflip()
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFlip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		SideflipKeybind:Set("Set Keybind");
+	end);
+end});
+FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	frontflips = KeyBind;
+	frontflips = not frontflips;
+	if frontflips then
+		function speakerFrontflip()
+				speaker.Character.Humanoid:ChangeState("Jumping");
+				task.wait();
+				speaker.Character.Humanoid.Sit = true;
+				for i = 1, 360 do
+					delay(i / 720, function()
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-hbackflipnfrontflip, 0, 0);
+					end);
+				end
+				task.wait(0.55);
+				speaker.Character.Humanoid.Sit = false;
+		end
+		speakerFrontflip()
+	end
+end});
+Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontFlip Keybind",Callback=function()
+	effecttrue();
+	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400});
+	pcall(function()
+		FrontflipKeybind:Set("Set Keybind");
+	end);
+end});
 Sectionspin = Misc:CreateSection("FE LocalPlayer Related | Spin", false, false, 9134761478);
 spinSpeed = 20;
 Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",CurrentValue=false,Callback=function(Value)
@@ -5817,6 +5899,18 @@ Animations = Window:CreateTab("Animation's", 1114393432);
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
+Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Current Anim Values",Interact="Click",Callback=function()
+	Char = speaker.Character;
+	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
+	Slidercuranimspeed:Set(1)
+	for i, v in next, Hum:GetPlayingAnimationTracks() do
+		task.spawn(function()
+			while task.wait() do
+				v:AdjustSpeed(1);
+			end
+		end);
+	end
+end});
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		freezeanims = Value;
@@ -5828,27 +5922,29 @@ Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHub
 		end
 	end);
 end});
-Slider = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name="Current Animation Speed",Range={1,60},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name="Current Animation Speed",Range={1,60},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	Char = speaker.Character;
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
-	for i, v in next, Hum:GetPlayingAnimationTracks() do
-		task.spawn(function()
-			while task.wait() do
-				v:AdjustSpeed(Value);
+	task.spawn(function()
+		while true do
+			for i, v in next, Hum:GetPlayingAnimationTracks() do
+				v:AdjustSpeed(Value)
 			end
-		end);
-	end
+			task.wait()
+		end
+	end)
 end});
 Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Animation Speed",PlaceholderText=1,RemoveTextAfterFocusLost=false,NumbersOnly=true,CharacterLimit=2,Callback=function(Text)
 	Char = speaker.Character;
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
-	for i, v in next, Hum:GetPlayingAnimationTracks() do
-		task.spawn(function()
-			while task.wait() do
-				v:AdjustSpeed(Text);
+	task.spawn(function()
+		while true do
+			for i, v in next, Hum:GetPlayingAnimationTracks() do
+				v:AdjustSpeed(Text)
 			end
-		end);
-	end
+			task.wait()
+		end
+	end)
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
 	local AnimationTracks = Humanoid:GetPlayingAnimationTracks();
@@ -7075,6 +7171,13 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",I
 	end
 end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
+Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
+Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Rewind R6 & R15",Interact="Click",Callback=function()
+	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
+	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT", true))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))();
@@ -7084,13 +7187,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car 
 		effectfalse();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
-end});
-Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
-Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Rewind R6 & R15",Interact="Click",Callback=function()
-	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
-	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT", true))();
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 Paragraph = Animations:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, Sectionotherfeanimssc);
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Hamster Ball R6 & R15",Interact="Click",Callback=function()
@@ -7155,52 +7251,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Robl
 		effecttrue();
 		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
 	end
-end});
-Paragraph = Animations:CreateParagraph({Title="BackFlip, FrontFlip Info",Content="Z = FrontFlip, \nX = BackFlip"}, Sectionotherfeanimssc);
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="BackFlip, FrontFlip R6 & R15",Interact="Click",Callback=function()
-	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=4.5,Image=7733715400});
-	task.wait(5);
-	pcall(function()
-		FrontflipKey = Enum.KeyCode.Z;
-		BackflipKey = Enum.KeyCode.X;
-		ca = game:GetService("ContextActionService");
-		h = 0.0174533;
-		local antigrav;
-		function speakerFrontflip(act, inp, obj)
-			if (inp == Enum.UserInputState.Begin) then
-				speaker.Character.Humanoid:ChangeState("Jumping");
-				task.wait();
-				speaker.Character.Humanoid.Sit = true;
-				for i = 1, 360 do
-					delay(i / 720, function()
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h, 0, 0);
-					end);
-				end
-				task.wait(0.55);
-				speaker.Character.Humanoid.Sit = false;
-			end
-		end
-		function speakerBackflip(act, inp, obj)
-			if (inp == Enum.UserInputState.Begin) then
-				speaker.Character.Humanoid:ChangeState("Jumping");
-				task.wait();
-				speaker.Character.Humanoid.Sit = true;
-				for i = 1, 360 do
-					delay(i / 720, function()
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(h, 0, 0);
-					end);
-				end
-				task.wait(0.55);
-				speaker.Character.Humanoid.Sit = false;
-			end
-		end
-		ca:BindAction("speakerFrontflip", speakerFrontflip, false, FrontflipKey);
-		ca:BindAction("speakerBackflip", speakerBackflip, false, BackflipKey);
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk On Walls R6 & R15",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))();
