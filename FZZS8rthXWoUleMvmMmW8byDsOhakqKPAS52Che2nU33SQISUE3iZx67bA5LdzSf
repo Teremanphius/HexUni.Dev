@@ -50,7 +50,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "186";
+Scriptcount = "189";
 ScriptcountAnim = "60";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -120,20 +120,20 @@ function getPlr(name)
 	return x;
 end
 function effecttrue()
-	soundnotification = Instance.new("Sound");
-	soundnotification.SoundId = "rbxassetid://1555493683";
-	soundnotification.Looped = false;
-	soundnotification.Volume = 1;
-	soundnotification.Parent = workspace;
-	soundnotification:Play();
+	soundnotificationtrue = Instance.new("Sound");
+	soundnotificationtrue.SoundId = "rbxassetid://1555493683";
+	soundnotificationtrue.Looped = false;
+	soundnotificationtrue.Volume = 1;
+	soundnotificationtrue.Parent = workspace;
+	soundnotificationtrue:Play();
 end
 function effectfalse()
-	soundnotification = Instance.new("Sound");
-	soundnotification.SoundId = "rbxassetid://1555324499";
-	soundnotification.Looped = false;
-	soundnotification.Volume = 1;
-	soundnotification.Parent = workspace;
-	soundnotification:Play();
+	soundnotificationfalse = Instance.new("Sound");
+	soundnotificationfalse.SoundId = "rbxassetid://1555324499";
+	soundnotificationfalse.Looped = false;
+	soundnotificationfalse.Volume = 1;
+	soundnotificationfalse.Parent = workspace;
+	soundnotificationfalse:Play();
 end
 function CheckFriends()
 	friendsId = speaker.UserId;
@@ -172,12 +172,12 @@ end
 pcall(CheckFriends);
 _G.connections = {};
 function effecttime()
-	soundnotification = Instance.new("Sound");
-	soundnotification.SoundId = "rbxassetid://6963032794";
-	soundnotification.Looped = false;
-	soundnotification.Volume = 1;
-	soundnotification.Parent = workspace;
-	soundnotification:Play();
+	soundnotificationtime = Instance.new("Sound");
+	soundnotificationtime.SoundId = "rbxassetid://6963032794";
+	soundnotificationtime.Looped = false;
+	soundnotificationtime.Volume = 1;
+	soundnotificationtime.Parent = workspace;
+	soundnotificationtime:Play();
 end
 function effectfriendjoin()
 	soundfriendjoin = Instance.new("Sound");
@@ -798,7 +798,7 @@ AlldropdownRefresh.Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionpla
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Annoy == true) or (foundPlr == speaker)) then
+				if ((Annoy == true) ) then
 					Annoy = false;
 					effectfalse();
 					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -817,6 +817,59 @@ AlldropdownRefresh.Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionpla
 		end
 	end);
 end});
+local glued = false
+AlldropdownRefresh.GluetoPLRdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((glued == true) ) then
+					glued = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					glued = true;
+					effecttrue();
+					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while glued do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X,foundPlr.Character.HumanoidRootPart.Size.Y,speaker.Character.HumanoidRootPart.CFrame.lookVector.Z)
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local walkto = false;
+AlldropdownRefresh.WalkTodropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Walk To",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((walkto == true) ) then
+					walkto = false;
+					effectfalse();
+					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					walkto = true;
+					effecttrue();
+					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while walkto do
+						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position)
+						task.wait()
+					end
+				end
+			end
+		end
+	end);
+end});
 local StandOnHead = false;
 AlldropdownRefresh.StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -824,7 +877,7 @@ AlldropdownRefresh.StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionp
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((StandOnHead == true) or (foundPlr == speaker)) then
+				if ((StandOnHead == true) ) then
 					StandOnHead = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -868,7 +921,7 @@ AlldropdownRefresh.followdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 		if foundPlr then
 			flwnum = -5;
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Follow == true) or (foundPlr == speaker)) then
+				if ((Follow == true) ) then
 					Follow = false;
 					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -895,7 +948,7 @@ AlldropdownRefresh.loopwavedropdown = Misc:CreateDropdown({SectionParent=Section
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (((LoopHello == true) and (trueforanim == true)) or (foundPlr == speaker)) then
+				if (((LoopHello == true) and (trueforanim == true)) ) then
 					LoopHello = false;
 					trueforanim = false;
 					WaverDied:Disconnect();
@@ -945,7 +998,7 @@ AlldropdownRefresh.Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((Carpettion == true) or (foundPlr == speaker)) then
+					if ((Carpettion == true) ) then
 						Carpettion = false;
 						effectfalse();
 						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -982,7 +1035,7 @@ AlldropdownRefresh.Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayr
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffhugger == true) or (foundPlr == speaker)) then
+					if ((ffhugger == true) ) then
 						ffhugger = false;
 						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
@@ -1005,7 +1058,7 @@ AlldropdownRefresh.Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayr
 						end
 					end
 				end
-			elseif ((ffhugger == true) or (foundPlr == speaker)) then
+			elseif ((ffhugger == true) ) then
 				ffhugger = false;
 				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
@@ -1039,7 +1092,7 @@ AlldropdownRefresh.Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectio
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((actualpb == true) or (foundPlr == speaker)) then
+				if ((actualpb == true) ) then
 					actualpb = false;
 					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -1067,7 +1120,7 @@ AlldropdownRefresh.backpackdropdown = Misc:CreateDropdown({SectionParent=Section
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((besomebackpack == true) or (foundPlr == speaker)) then
+				if ((besomebackpack == true) ) then
 					besomebackpack = false;
 					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -1095,7 +1148,7 @@ AlldropdownRefresh.Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionp
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((headsits == true) or (foundPlr == speaker)) then
+				if ((headsits == true) ) then
 					headsits = false;
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -1123,7 +1176,7 @@ AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 	if foundPlr then
 		if not r15(speaker) then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((baskets == true) or (foundPlr == speaker)) then
+				if ((baskets == true) ) then
 					baskets = false;
 					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -1144,7 +1197,7 @@ AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 					end
 				end
 			end
-		elseif ((baskets == true) or (foundPlr == speaker)) then
+		elseif ((baskets == true) ) then
 			baskets = false;
 			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 			zomearm:Stop();
@@ -1179,7 +1232,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Se
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ActualHeadsit == true) or (foundPlr == speaker)) then
+				if ((ActualHeadsit == true) ) then
 					ActualHeadsit = false;
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -1209,7 +1262,7 @@ AlldropdownRefresh.animsyncdropdown = Misc:CreateDropdown({SectionParent=Section
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((issyncinganim == true) or (foundPlr == speaker)) then
+				if ((issyncinganim == true) ) then
 					charresettopos();
 					issyncinganim = false;
 					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1246,7 +1299,7 @@ AlldropdownRefresh.orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionpla
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((orbitingfuck == true) or (foundPlr == speaker)) then
+			if ((orbitingfuck == true) ) then
 				effectfalse();
 				orbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1302,7 +1355,7 @@ AlldropdownRefresh.closeorbitdropdown = Misc:CreateDropdown({SectionParent=Secti
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((closeorbitingfuck == true) or (foundPlr == speaker)) then
+			if ((closeorbitingfuck == true) ) then
 				effectfalse();
 				closeorbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1345,7 +1398,7 @@ AlldropdownRefresh.lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((lookingAt == true) or (foundPlr == speaker)) then
+			if ((lookingAt == true) ) then
 				lookingAt = false;
 				effectfalse();
 				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
@@ -1372,7 +1425,7 @@ AlldropdownRefresh.spinarounddropdown = Misc:CreateDropdown({SectionParent=Secti
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
-			if ((spinaround == true) or (foundPlr == speaker)) then
+			if ((spinaround == true) ) then
 				effectfalse();
 				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
@@ -1420,7 +1473,7 @@ AlldropdownRefresh.a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayr
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if not r15(speaker) then
-				if ((Bang69 == true) or (foundPlr == speaker)) then
+				if ((Bang69 == true) ) then
 					Bang69 = false;
 					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -1463,7 +1516,7 @@ AlldropdownRefresh.a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayr
 						end
 					end
 				end
-			elseif ((Bang69 == true) or (foundPlr == speaker)) then
+			elseif ((Bang69 == true) ) then
 				Bang69 = false;
 				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
@@ -1555,7 +1608,7 @@ AlldropdownRefresh.a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionp
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffc1hump == true) or (foundPlr == speaker)) then
+					if ((ffc1hump == true) ) then
 						ffc1hump = false;
 						speaker.Character.Humanoid.PlatformStand = false;
 						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1592,7 +1645,7 @@ AlldropdownRefresh.a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionp
 						end
 					end
 				end
-			elseif ((ffc1hump == true) or (foundPlr == speaker)) then
+			elseif ((ffc1hump == true) ) then
 				ffc1hump = false;
 				speaker.Character.Humanoid.PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1671,7 +1724,7 @@ AlldropdownRefresh.bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplay
 		if foundPlr then
 			flwnum = -1;
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Bang == true) or (foundPlr == speaker)) then
+				if ((Bang == true) ) then
 					Follow = false;
 					v2banger:Stop();
 					v2bangerAnim:Destroy();
@@ -1718,7 +1771,7 @@ AlldropdownRefresh.facebangdropdown = Misc:CreateDropdown({SectionParent=Section
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff2 == true) or (foundPlr == speaker)) then
+				if ((ff2 == true) ) then
 					ff2 = false;
 					facebanger:Stop();
 					facebangerAnim:Destroy();
@@ -1764,7 +1817,7 @@ AlldropdownRefresh.sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff == true) or (foundPlr == speaker)) then
+				if ((ff == true) ) then
 					ff = false;
 					Character.Humanoid.Sit = false;
 					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -1797,7 +1850,7 @@ AlldropdownRefresh.humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplay
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Humping == true) or (foundPlr == speaker)) then
+				if ((Humping == true) ) then
 					Humping = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -1840,7 +1893,7 @@ AlldropdownRefresh.hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionpla
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ffc1 == true) or (foundPlr == speaker)) then
+				if ((ffc1 == true) ) then
 					ffc1 = false;
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4824,6 +4877,20 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Netw
 	end
 	if not nonetworkclaimer then
 		workspace.FallenPartsDestroyHeight = DHSaved;
+	end
+end});
+Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt Overlay",CurrentValue=false,Callback=function(Value)
+	nohurtov = Value;
+	if nohurtov then
+		hurtOverlay = true
+		game:GetService("CoreGui").TopBar.FullScreenFrame.HurtOverlay:GetPropertyChangedSignal("Visible"):Connect(function()
+		if hurtOverlay == true then
+			game:GetService("CoreGui").TopBar.FullScreenFrame.HurtOverlay.Visible = false
+		end
+	end)
+	end
+	if not nohurtov then
+		hurtOverlay = false
 	end
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts);
