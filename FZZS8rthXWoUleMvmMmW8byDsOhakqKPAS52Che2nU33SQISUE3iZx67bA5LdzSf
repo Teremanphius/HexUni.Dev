@@ -597,7 +597,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 Sectiontpscritps = Misc:CreateSection("FE LocalPlayer / Player Related | Teleport", false, false, 6723742952);
-AlldropdownRefresh = {}
+AlldropdownRefresh = {};
 gotoplayersList = {};
 AlldropdownRefresh.gotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -615,13 +615,13 @@ local function updateAllPlayerLists()
 			table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
 		end
 	end
-	for _,v in AlldropdownRefresh do
+	for _, v in AlldropdownRefresh do
 		v:Refresh(gotoplayersList, "Select an option");
 	end
 end
-game.Players.PlayerAdded:Connect(updateAllPlayerLists)
-game.Players.PlayerRemoving:Connect(updateAllPlayerLists)
-updateAllPlayerLists()
+game.Players.PlayerAdded:Connect(updateAllPlayerLists);
+game.Players.PlayerRemoving:Connect(updateAllPlayerLists);
+updateAllPlayerLists();
 tweenSpeedtp = 1;
 Paragraph = Misc:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritps);
 AlldropdownRefresh.tweegotodropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -699,7 +699,7 @@ end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	presstpff = KeyBind;
-	presstpff = not presstpff
+	presstpff = not presstpff;
 	if (presstpff and JMouse.Target) then
 		clicktpFunc();
 	end
@@ -1118,10 +1118,10 @@ AlldropdownRefresh.Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionp
 end});
 local baskets = false;
 AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if not r15(speaker) then 
+	plrName = Option:match("^(.-) %(");
+	foundPlr = getPlr(plrName);
+	if foundPlr then
+		if not r15(speaker) then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if ((baskets == true) or (foundPlr == speaker)) then
 					baskets = false;
@@ -1144,35 +1144,33 @@ AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionpl
 					end
 				end
 			end
+		elseif ((baskets == true) or (foundPlr == speaker)) then
+			baskets = false;
+			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
+			zomearm:Stop();
+			zombiearmsAnim:Destroy();
+			speaker.Character.Animate.Disabled = false;
+			effectfalse();
+			return;
 		else
-			if ((baskets == true) or (foundPlr == speaker)) then
-				baskets = false;
-				notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
-				zomearm:Stop();
-				zombiearmsAnim:Destroy();
-				speaker.Character.Animate.Disabled = false;
-				effectfalse();
-				return;
-			else
-				baskets = true;
-				notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
-				effecttrue();
-				zombiearmsAnim = Instance.new("Animation");
-				zombiearmsAnim.AnimationId = "rbxassetid://10714360343";
-				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-				zomearm:Play(0, 10, 0);
-				speaker.Character.Animate.Disabled = true;
-				while baskets do
-					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
-					if targetArm then
-						speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					end
-					game:GetService("RunService").RenderStepped:Wait();
+			baskets = true;
+			notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
+			effecttrue();
+			zombiearmsAnim = Instance.new("Animation");
+			zombiearmsAnim.AnimationId = "rbxassetid://10714360343";
+			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+			zomearm:Play(0, 10, 0);
+			speaker.Character.Animate.Disabled = true;
+			while baskets do
+				local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
+				if targetArm then
+					speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 				end
+				game:GetService("RunService").RenderStepped:Wait();
 			end
 		end
-		end
+	end
 end});
 local ActualHeadsit = false;
 AlldropdownRefresh.ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -4354,19 +4352,19 @@ BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Se
 	backflips = not backflips;
 	if backflips then
 		function speakerBackflip()
-				speaker.Character.Humanoid:ChangeState("Jumping");
-				task.wait();
-				speaker.Character.Humanoid.Sit = true;
-				for i = 1, 360 do
-					delay(i / 720, function()
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(hbackflipnfrontflip, 0, 0);
-					end);
-				end
-				task.wait(0.55);
-				speaker.Character.Humanoid.Sit = false;
+			speaker.Character.Humanoid:ChangeState("Jumping");
+			task.wait();
+			speaker.Character.Humanoid.Sit = true;
+			for i = 1, 360 do
+				delay(i / 720, function()
+					speaker.Character.Humanoid.Sit = true;
+					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(hbackflipnfrontflip, 0, 0);
+				end);
+			end
+			task.wait(0.55);
+			speaker.Character.Humanoid.Sit = false;
 		end
-		speakerBackflip()
+		speakerBackflip();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFlip Keybind",Callback=function()
@@ -4381,19 +4379,19 @@ SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Se
 	sideflips = not sideflips;
 	if sideflips then
 		function speakerSideflip()
-				speaker.Character.Humanoid:ChangeState("Jumping");
-				task.wait();
-				speaker.Character.Humanoid.Sit = true;
-				for i = 1, 360 do
-					delay(i / 720, function()
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, -hbackflipnfrontflip);
-					end);
-				end
-				task.wait(0.55);
-				speaker.Character.Humanoid.Sit = false;
+			speaker.Character.Humanoid:ChangeState("Jumping");
+			task.wait();
+			speaker.Character.Humanoid.Sit = true;
+			for i = 1, 360 do
+				delay(i / 720, function()
+					speaker.Character.Humanoid.Sit = true;
+					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, -hbackflipnfrontflip);
+				end);
+			end
+			task.wait(0.55);
+			speaker.Character.Humanoid.Sit = false;
 		end
-		speakerSideflip()
+		speakerSideflip();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFlip Keybind",Callback=function()
@@ -4408,19 +4406,19 @@ FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="
 	frontflips = not frontflips;
 	if frontflips then
 		function speakerFrontflip()
-				speaker.Character.Humanoid:ChangeState("Jumping");
-				task.wait();
-				speaker.Character.Humanoid.Sit = true;
-				for i = 1, 360 do
-					delay(i / 720, function()
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-hbackflipnfrontflip, 0, 0);
-					end);
-				end
-				task.wait(0.55);
-				speaker.Character.Humanoid.Sit = false;
+			speaker.Character.Humanoid:ChangeState("Jumping");
+			task.wait();
+			speaker.Character.Humanoid.Sit = true;
+			for i = 1, 360 do
+				delay(i / 720, function()
+					speaker.Character.Humanoid.Sit = true;
+					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-hbackflipnfrontflip, 0, 0);
+				end);
+			end
+			task.wait(0.55);
+			speaker.Character.Humanoid.Sit = false;
 		end
-		speakerFrontflip()
+		speakerFrontflip();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontFlip Keybind",Callback=function()
@@ -4446,7 +4444,7 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 		end
 		ball = character.HumanoidRootPart;
 		ball.Shape = Enum.PartType.Ball;
-		ball.Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
+		ball.Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255));
 		ball.Size = Vector3.new(7, 7, 7);
 		ball.Transparency = 0.5;
 		humanoid = character:WaitForChild("Humanoid");
@@ -4479,25 +4477,25 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 			end
 		end);
 		Camera.CameraSubject = ball;
-		local hamDied
+		local hamDied;
 		hamDied = humanoid.Died:Connect(function()
 			tc:Disconnect();
-			hamDied:Disconnect()
+			hamDied:Disconnect();
 		end);
 	end
 	if not hamsterballs then
 		pcall(function()
-		charresettopos()
-		tc:Disconnect();
-		hamDied:Disconnect()
-		end)
+			charresettopos();
+			tc:Disconnect();
+			hamDied:Disconnect();
+		end);
 	end
 end});
 Buttonresethamval = Misc:CreateButton({SectionParent=Sectionhamsterball,Name="Reset Hamster Ball Values",Interact="Click",Callback=function()
 	pcall(function()
-		Sliderspeedmultiham:Set(30)
-		Sliderhamjp:Set(60)
-		Sliderjgham:Set(0.3)
+		Sliderspeedmultiham:Set(30);
+		Sliderhamjp:Set(60);
+		Sliderjgham:Set(0.3);
 		SPEED_MULTIPLIER = 30;
 		JUMP_POWER = 60;
 		JUMP_GAP = 0.3;
@@ -4604,7 +4602,7 @@ Sliderwalkloop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name
 		walkspeedsped = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	walkspeedsped = Text;
 end});
 jpower = 50;
@@ -4656,7 +4654,7 @@ Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name
 		jpower = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	jpower = Text;
 end});
 function getJumpValue()
@@ -4705,7 +4703,7 @@ Sliderwalk = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Walk Sp
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Walk Speed",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Walk Speed",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text;
 	end);
@@ -4715,7 +4713,7 @@ Sliderhip = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Hip Heig
 		speaker.Character.Humanoid.HipHeight = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",NumbersOnly=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		speaker.Character.Humanoid.HipHeight = Text;
 	end);
@@ -4729,7 +4727,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 		end
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,OnEnter=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Text;
@@ -4743,7 +4741,7 @@ Slidergrav = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Gravity
 		game.Workspace.Gravity = Value;
 	end);
 end});
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",NumbersOnly=true,PlaceholderText=math.floor(game.Workspace.Gravity),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(game.Workspace.Gravity),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		game.Workspace.Gravity = Text;
 	end);
@@ -4784,7 +4782,7 @@ Sliderpj = Miscclient:CreateSlider({SectionParent=Sectionmiscscripts,Name="Playe
 		PJLNF = Value;
 	end);
 end});
-Inputpj = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Player Join/.. Notify Duration",PlaceholderText=PJLNF,CharacterLimit=3,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputpj = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Player Join/.. Notify Duration",OnEnter=true,PlaceholderText=PJLNF,CharacterLimit=3,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	PJLNF = Text;
 end});
 Slider = Miscclient:CreateSlider({SectionParent=Sectionmiscscripts,Name="Set FPS Cap",Range={1,GameSettings.FramerateCap},Increment=1,Suffix="FPS",CurrentValue=GameSettings.FramerateCap,Callback=function(Value)
@@ -4792,7 +4790,7 @@ Slider = Miscclient:CreateSlider({SectionParent=Sectionmiscscripts,Name="Set FPS
 		setfpscap(Value);
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Set FPS Cap",PlaceholderText=GameSettings.FramerateCap,CharacterLimit=3,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Set FPS Cap",OnEnter=true,PlaceholderText=GameSettings.FramerateCap,CharacterLimit=3,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	setfpscap(Text);
 end});
 xNamingTbl = {};
@@ -4842,10 +4840,10 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Kick Yo
 	game:GetService("Players").LocalPlayer:Kick("You've Kicked Yourself!");
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself W/ A MSG Info",Content="In The Box First Type In The Message You Want To Be Kicked With And Press Enter."}, Sectionmiscscripts);
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom MSG",PlaceholderText="Enter Message",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom MSG",OnEnter=true,PlaceholderText="Enter Message",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game:GetService("Players").LocalPlayer:Kick(Text);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom Ban MSG",PlaceholderText="Enter Reason",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Yourself W/ A Custom Ban MSG",OnEnter=true,PlaceholderText="Enter Reason",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game:GetService("Players").LocalPlayer:Kick("You have been banned for: " .. Text);
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
@@ -4978,7 +4976,7 @@ Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Na
 		game.Lighting.Brightness = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Brightness",PlaceholderText=math.floor(game.Lighting.Brightness),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Brightness",OnEnter=true,PlaceholderText=math.floor(game.Lighting.Brightness),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game.Lighting.Brightness = Text;
 end});
 Colorpickerskybox = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworldscripts,Name="Ambient Color Picker",Color=Color3.fromRGB(0, 0, 0),Callback=function(Value)
@@ -4992,7 +4990,7 @@ SliderTOD = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name=
 		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Value}):Play();
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Time Of Day",PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Time Of Day",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
 	end);
@@ -5085,13 +5083,13 @@ end});
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Change Light Brightness",Range={0,20},Increment=1,Suffix="Brightness",CurrentValue=5,Callback=function(Value)
 	lightbrightness = Value;
 end});
-Inputbrgiht = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Change Light Brightness",PlaceholderText=lightbrightness,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbrgiht = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Change Light Brightness",OnEnter=true,PlaceholderText=lightbrightness,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	lightbrightness = Text;
 end});
 Sliderranggerrr = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Change Light Range",Range={0,60},Increment=1,Suffix="Range",CurrentValue=30,Callback=function(Value)
 	lightrangee = Value;
 end});
-Inputrangerrr = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Change Light Range",PlaceholderText=lightrangee,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputrangerrr = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Change Light Range",OnEnter=true,PlaceholderText=lightrangee,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	lightrangee = Text;
 end});
 Toggleremovefogga = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
@@ -5151,7 +5149,7 @@ Sliderxrayvalue = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts
 		transprencypartxray = Value;
 	end);
 end});
-Inputxrayvalue = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="X-Ray Part Transparency",PlaceholderText=transprencypartxray,NumbersOnly=false,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputxrayvalue = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="X-Ray Part Transparency",OnEnter=true,PlaceholderText=transprencypartxray,NumbersOnly=false,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	transprencypartxray = Text;
 end});
 Pxrts = {};
@@ -5194,7 +5192,7 @@ Sliderf = Miscclient:CreateSlider({SectionParent=Sectiontodloop,Name="Time Of Da
 		todvalue = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day Loop",PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day Loop",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	todvalue = Text;
 end});
 Sectioncamera = Miscclient:CreateSection("LocalPlayer Related | Camera (Client)", false, false, 10709789686);
@@ -5246,7 +5244,7 @@ Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of 
 		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {FieldOfView=Value}):Play();
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View",PlaceholderText=math.floor(game:GetService("Workspace").Camera.FieldOfView),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View",OnEnter=true,PlaceholderText=math.floor(game:GetService("Workspace").Camera.FieldOfView),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	game:GetService("Workspace").Camera.FieldOfView = Text;
 end});
 Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freecam",Interact="Click",Callback=function()
@@ -5616,7 +5614,7 @@ Slidermaxzoomnoloop = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name=
 		speaker.CameraMaxZoomDistance = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Max Zoom",PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),RemoveTextAfterFocusLost=false,NumbersOnly=true,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Max Zoom",OnEnter=true,PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),RemoveTextAfterFocusLost=false,NumbersOnly=true,Callback=function(Text)
 	speaker.CameraMaxZoomDistance = Text;
 end});
 Sliderminimalzoomnoloop = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Change Minimal Zoom",Range={0,9999},Increment=1,Suffix="Zoom",CurrentValue=math.floor(speaker.CameraMinZoomDistance),Callback=function(Value)
@@ -5624,7 +5622,7 @@ Sliderminimalzoomnoloop = Miscclient:CreateSlider({SectionParent=Sectioncamera,N
 		speaker.CameraMinZoomDistance = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Minimal Zoom",PlaceholderText=math.floor(speaker.CameraMinZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Minimal Zoom",OnEnter=true,PlaceholderText=math.floor(speaker.CameraMinZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.CameraMinZoomDistance = Text;
 end});
 maxzoomvalue = 128;
@@ -5654,7 +5652,7 @@ Sliderloopmaxzoom = Miscclient:CreateSlider({SectionParent=Sectioncameraloops,Na
 		maxzoomvalue = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Max Zoom",PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Max Zoom",OnEnter=true,PlaceholderText=math.floor(speaker.CameraMaxZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	maxzoomvalue = Text;
 end});
 minzoomvalue = 0;
@@ -5676,7 +5674,7 @@ Sliderloopminzoom = Miscclient:CreateSlider({SectionParent=Sectioncameraloops,Na
 		minzoomvalue = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Min Zoom",PlaceholderText=math.floor(speaker.CameraMinZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectioncameraloops,Name="Change Min Zoom",OnEnter=true,PlaceholderText=math.floor(speaker.CameraMinZoomDistance),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	minzoomvalue = Text;
 end});
 Sectiontaudio = Miscclient:CreateSection("LocalPlayer Related | Audio (Client)", false, true, 10747375679);
@@ -5688,7 +5686,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 audioid = nil;
-Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Enter Audio",OnEnter=true,PlaceholderText="ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	audioid = Text;
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Play Audio",Interact="Click",Callback=function()
@@ -5725,7 +5723,7 @@ Sliderbright = Miscclient:CreateSlider({SectionParent=Sectiontaudio,Name="Audio 
 		Soundplayaudio.Volume = Value;
 	end);
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",PlaceholderText=1,NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",OnEnter=true,PlaceholderText=1,NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	Soundplayaudio.Volume = Text;
 end});
 Animations = Window:CreateTab("Animation's", 1114393432);
@@ -5735,7 +5733,7 @@ SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Ani
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Current Anim Values",Interact="Click",Callback=function()
 	Char = speaker.Character;
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
-	Slidercuranimspeed:Set(1)
+	Slidercuranimspeed:Set(1);
 	for i, v in next, Hum:GetPlayingAnimationTracks() do
 		task.spawn(function()
 			while task.wait() do
@@ -5761,23 +5759,23 @@ Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name
 	task.spawn(function()
 		while true do
 			for i, v in next, Hum:GetPlayingAnimationTracks() do
-				v:AdjustSpeed(Value)
+				v:AdjustSpeed(Value);
 			end
-			task.wait()
+			task.wait();
 		end
-	end)
+	end);
 end});
-Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Animation Speed",PlaceholderText=1,RemoveTextAfterFocusLost=false,NumbersOnly=true,CharacterLimit=2,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Animation Speed",OnEnter=true,PlaceholderText=1,RemoveTextAfterFocusLost=false,NumbersOnly=true,CharacterLimit=2,Callback=function(Text)
 	Char = speaker.Character;
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
 	task.spawn(function()
 		while true do
 			for i, v in next, Hum:GetPlayingAnimationTracks() do
-				v:AdjustSpeed(Text)
+				v:AdjustSpeed(Text);
 			end
-			task.wait()
+			task.wait();
 		end
-	end)
+	end);
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
 	local AnimationTracks = Humanoid:GetPlayingAnimationTracks();
@@ -6072,7 +6070,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Oldschool
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
-Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		Animplr = Instance.new("Animation");
 		Animplr.AnimationId = "rbxassetid://" .. Text .. "";
@@ -6103,7 +6101,7 @@ Slider = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim
 		animpla:AdjustSpeed(Value);
 	end);
 end});
-Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		animpla:AdjustSpeed(Text);
 	end);
@@ -6163,7 +6161,7 @@ edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Na
 		edance1:AdjustSpeed(Value);
 	end);
 end});
-edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance1 Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance1 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		edance1:AdjustSpeed(Text);
 	end);
@@ -6202,7 +6200,7 @@ edance2Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Na
 		edance2:AdjustSpeed(Value);
 	end);
 end});
-edance2Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance2 Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+edance2Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance2 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		edance2:AdjustSpeed(Text);
 	end);
@@ -6241,7 +6239,7 @@ edance3Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Na
 		edance3:AdjustSpeed(Value);
 	end);
 end});
-edance3Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance3 Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+edance3Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance3 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		edance3:AdjustSpeed(Text);
 	end);
@@ -6304,7 +6302,7 @@ bangerSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Bang 
 		cbanger:AdjustSpeed(Value);
 	end);
 end});
-bangerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Bang Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+bangerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Bang Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		cbanger:AdjustSpeed(Text);
 	end);
@@ -6344,7 +6342,7 @@ Slidermovindanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Mo
 		dancerr:AdjustSpeed(Value);
 	end);
 end});
-dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Moving Dance Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Moving Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		dancerr:AdjustSpeed(Text);
 	end);
@@ -6382,7 +6380,7 @@ Sliderrandance = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Ran
 		randance:AdjustSpeed(Value);
 	end);
 end});
-Inputrandance = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Random Dance Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputrandance = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Random Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		randance:AdjustSpeed(Text);
 	end);
@@ -6422,7 +6420,7 @@ Slidermonsterdanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="
 		monsterdancerr:AdjustSpeed(Value);
 	end);
 end});
-Inputmonster = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputmonster = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		monsterdancerr:AdjustSpeed(Text);
 	end);
@@ -6463,7 +6461,7 @@ Sliderfulsiwing = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Fu
 		fullswingr:AdjustSpeed(Value);
 	end);
 end});
-Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Full Swing Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Full Swing Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		fullswingr:AdjustSpeed(Text);
 	end);
@@ -6504,7 +6502,7 @@ Sliderpuncha = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Punch
 		punchr:AdjustSpeed(Value);
 	end);
 end});
-Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Punch Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Punch Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		punchr:AdjustSpeed(Text);
 	end);
@@ -6544,7 +6542,7 @@ Sliderdinowalk = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Din
 		dinowalkerr:AdjustSpeed(Value);
 	end);
 end});
-Inputdinowalker = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Dino Walk Speed",PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputdinowalker = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Dino Walk Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		dinowalkerr:AdjustSpeed(Text);
 	end);
@@ -7007,11 +7005,11 @@ Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", 
 Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
 Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Rewind R6 & R15",Interact="Click",Callback=function()
 	pcall(function()
-	Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
-	loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT"))();
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end)
+		Buttonrewinb:Set("Rewind R6 & R15 (Exed)");
+		loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT"))();
+		effecttrue();
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
@@ -7152,12 +7150,21 @@ else
 	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
 end
 MP = Window:CreateTab("Meepcity", 7733701625);
-Sectiontotalscmp = MP:CreateSection("Total Script's: 5", false, false, 7743869612);
+Sectiontotalscmp = MP:CreateSection("Total Script's: 17", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
 if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
+	Constants = require(ReplicatedStorage:WaitForChild("Constants"));
+	MarketplaceService = game:GetService("MarketplaceService");
+	Connection = ReplicatedStorage:WaitForChild("Connection");
+	ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 	Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740);
 	local function colorToTable(clr)
 		return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
+	end
+	local function AddAccessoryString(str, id)
+		local ids = string.split(str or "", ",") or {};
+		table.insert(ids, id);
+		return table.concat(ids, ",");
 	end
 	local function ExtractData(humdes)
 		local ava = {};
@@ -7189,17 +7196,15 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 		ava.AccessoryBlob = layered;
 		return ava;
 	end
-	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",PlaceholderText="Player ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 		userid = Text;
-		ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)));
 			ConnectionEvent:FireServer(315, data, true);
 		end
 	end});
-	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
 		username = Text;
-		ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
 		if (username and Players:GetUserIdFromNameAsync(username)) then
 			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)));
 			ConnectionEvent:FireServer(315, data, true);
@@ -7215,6 +7220,117 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 				Constants.STATS.MAXAvatarEditorCustomOutfits = 3;
 			end
 		end);
+	end});
+	Sectionavatareditor = MP:CreateSection("Avatar Editor", false, false, 13285615740);
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Hat Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.HeadAccessory = AddAccessoryString(wearing.HeadAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Hair Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.HairAccessory = AddAccessoryString(wearing.HairAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Face Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.FaceAccessory = AddAccessoryString(wearing.FaceAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Neck Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.NeckAccessory = AddAccessoryString(wearing.NeckAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Shoulder Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.ShoulderAccessory = AddAccessoryString(wearing.ShoulderAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Front Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.FrontAccessory = AddAccessoryString(wearing.FrontAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Back Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.BackAccessory = AddAccessoryString(wearing.BackAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Waist Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.WaistAccessory = AddAccessoryString(wearing.WaistAccessory, assetid);
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Shirt",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.Shirt = assetid;
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Pants",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.Pants = assetid;
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
+	end});
+	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="T-Shirt",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+		assetid = tonumber(Text);
+		if assetid then
+			local info = MarketplaceService:GetProductInfo(assetid);
+			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
+			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
+			wearing.GraphicTShirt = assetid;
+			ConnectionEvent:FireServer(315, wearing, true);
+		end
 	end});
 	Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
 	onsaleran = false;
