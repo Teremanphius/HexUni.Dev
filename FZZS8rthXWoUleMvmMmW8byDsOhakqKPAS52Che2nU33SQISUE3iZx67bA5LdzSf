@@ -50,7 +50,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "185";
+Scriptcount = "186";
 ScriptcountAnim = "60";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -1115,6 +1115,64 @@ AlldropdownRefresh.Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionp
 			end
 		end
 	end);
+end});
+local baskets = false;
+AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if not r15(speaker) then 
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((baskets == true) or (foundPlr == speaker)) then
+					baskets = false;
+					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					baskets = true;
+					notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
+					effecttrue();
+					while baskets do
+						speaker.Character.Humanoid.Sit = true;
+						local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
+						if targetArm then
+							speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						end
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		else
+			if ((baskets == true) or (foundPlr == speaker)) then
+				baskets = false;
+				notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
+				zomearm:Stop();
+				zombiearmsAnim:Destroy();
+				speaker.Character.Animate.Disabled = false;
+				effectfalse();
+				return;
+			else
+				baskets = true;
+				notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
+				effecttrue();
+				zombiearmsAnim = Instance.new("Animation");
+				zombiearmsAnim.AnimationId = "rbxassetid://10714360343";
+				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+				zomearm:Play(0, 10, 0);
+				speaker.Character.Animate.Disabled = true;
+				while baskets do
+					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
+					if targetArm then
+						speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					end
+					game:GetService("RunService").RenderStepped:Wait();
+				end
+			end
+		end
+		end
 end});
 local ActualHeadsit = false;
 AlldropdownRefresh.ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
