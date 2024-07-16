@@ -51,7 +51,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "190";
-ScriptcountAnim = "60";
+ScriptcountAnim = "61";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -6352,6 +6352,7 @@ Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values
 		Sliderfulsiwing:Set(1);
 		Sliderpuncha:Set(1);
 		Sliderdinowalk:Set(1);
+		Slidersidetoside:Set(1)
 	end);
 end});
 Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Bang R6 & R15",CurrentValue=false,Callback=function(Value)
@@ -6391,26 +6392,25 @@ bangerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Bang Sp
 	end);
 end});
 dancerion = false;
-Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Moving Dance R6",CurrentValue=false,Callback=function(Value)
+Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Moving Dance R6 & R15",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		dancer = Value;
 		if dancer then
 			dancerion = true;
+			dancerAnim = Instance.new("Animation");
 			if not r15(speaker) then
-				dancerAnim = Instance.new("Animation");
 				dancerAnim.AnimationId = "rbxassetid://429703734";
+			else
+				dancerAnim.AnimationId = "rbxassetid://1379432998";
+			end
 				dancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(dancerAnim);
-				dancerr:Play(0.1, 1, 1);
+				dancerr:Play(0.1, 10, 1);
 				dancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 					dancerrr:Disconnect();
 					dancerr:Stop();
 					dancerAnim:Destroy();
 					Togglemovingdancer:Set(false);
 				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
 		end
 		if not dancer then
 			dancerion = false;
@@ -6428,6 +6428,46 @@ end});
 dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Moving Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		dancerr:AdjustSpeed(Text);
+	end);
+end});
+dancesidetoside = false;
+Togglesidedancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Side To Side Dance R6",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		sidedancer = Value;
+		if sidedancer then
+			dancesidetoside = true;
+			if not r15(speaker) then
+				sidedancerAnim = Instance.new("Animation");
+				sidedancerAnim.AnimationId = "rbxassetid://429699657";
+				sidedancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(sidedancerAnim);
+				sidedancerr:Play(0.1, 10, 1);
+				sidedancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+					sidedancerrr:Disconnect();
+					sidedancerr:Stop();
+					sidedancerAnim:Destroy();
+					Togglesidedancer:Set(false);
+				end);
+			else
+				effectfalse();
+				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
+			end
+		end
+		if not sidedancer then
+			dancesidetoside = false;
+			sidedancerrr:Disconnect();
+			sidedancerr:Stop();
+			sidedancerAnim:Destroy();
+		end
+	end);
+end});
+Slidersidetoside = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Side To Side Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		sidedancerr:AdjustSpeed(Value);
+	end);
+end});
+dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Side To Side Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		sidedancerr:AdjustSpeed(Text);
 	end);
 end});
 Togglerandance = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Random Dance R6 & R15",CurrentValue=false,Callback=function(Value)
