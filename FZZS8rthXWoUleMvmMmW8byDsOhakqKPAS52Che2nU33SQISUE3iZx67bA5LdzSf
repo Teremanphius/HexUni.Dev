@@ -221,10 +221,10 @@ flyysspeed = 3;
 vehicleflyspeed = 3;
 function sFLY(vfly)
 	repeat
-		task.wait();
+		wait();
 	until speakers.LocalPlayer and speaker.Character and getRoot(speaker.Character) and speaker.Character:FindFirstChildOfClass("Humanoid") 
 	repeat
-		task.wait();
+		wait();
 	until JMouse 
 	if (flyKeyDown or flyKeyUp) then
 		flyKeyDown:Disconnect();
@@ -247,7 +247,7 @@ function sFLY(vfly)
 		BV.maxForce = Vector3.new(8999999488, 8999999488, 8999999488);
 		task.spawn(function()
 			repeat
-				task.wait();
+				wait();
 				if (not vfly and speaker.Character:FindFirstChildOfClass("Humanoid")) then
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 				end
@@ -684,6 +684,7 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 end});
 local function clicktpFunc()
 	pcall(function()
+		if JMouse.Target then
 		if (Humanoid and Humanoid.SeatPart) then
 			Humanoid.Sit = false;
 			task.wait(0.1);
@@ -694,13 +695,14 @@ local function clicktpFunc()
 		local hitPosition = JMouse.Hit.Position;
 		local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) * CFrame.Angles(0, math.pi, 0);
 		rootPart.CFrame = newCFrame + Vector3.new(0, hipHeight or 4, 0);
+	end
 	end);
 end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	presstpff = KeyBind;
 	presstpff = not presstpff;
-	if (presstpff and JMouse.Target) then
+	if presstpff then
 		clicktpFunc();
 	end
 end});
@@ -1811,7 +1813,7 @@ Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Nam
 	end);
 end});
 local ff = false;
-AlldropdownRefresh.sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
