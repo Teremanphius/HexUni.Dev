@@ -50,7 +50,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "190";
+Scriptcount = "191";
 ScriptcountAnim = "61";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -791,1143 +791,6 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	end);
 	game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer);
 end});
-Sectionplayrerelatedtp = Misc:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
-local Annoy = false;
-AlldropdownRefresh.Annoydropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Annoy == true) ) then
-					Annoy = false;
-					effectfalse();
-					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					Annoy = true;
-					effecttrue();
-					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					while Annoy do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local glued = false
-AlldropdownRefresh.GluetoPLRdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((glued == true) ) then
-					glued = false;
-					effectfalse();
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					glued = true;
-					effecttrue();
-					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					while glued do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X,foundPlr.Character.HumanoidRootPart.Size.Y,speaker.Character.HumanoidRootPart.CFrame.lookVector.Z)
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local walkto = false;
-AlldropdownRefresh.WalkTodropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Walk To",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((walkto == true) ) then
-					walkto = false;
-					effectfalse();
-					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					walkto = true;
-					effecttrue();
-					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					while walkto do
-						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position)
-						task.wait()
-					end
-				end
-			end
-		end
-	end);
-end});
-local StandOnHead = false;
-AlldropdownRefresh.StandOndropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((StandOnHead == true) ) then
-					StandOnHead = false;
-					effectfalse();
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					StandOnHead = true;
-					effecttrue();
-					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					while StandOnHead do
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-Paragraph = Misc:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
-AlldropdownRefresh.Spookdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
-			wait(0.9);
-			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
-		elseif (foundPlr == speaker) then
-			return nil;
-		end
-	end);
-end});
-local Follow = false;
-AlldropdownRefresh.followdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			flwnum = -5;
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Follow == true) ) then
-					Follow = false;
-					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					Follow = true;
-					notifyyw("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while Follow do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local LoopHello = false;
-local trueforanim = false;
-AlldropdownRefresh.loopwavedropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (((LoopHello == true) and (trueforanim == true)) ) then
-					LoopHello = false;
-					trueforanim = false;
-					WaverDied:Disconnect();
-					Waver:Stop();
-					WaveAnim:Destroy();
-					notifyyw("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					LoopHello = true;
-					trueforanim = true;
-					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					WaveAnim = Instance.new("Animation");
-					if not r15(speaker) then
-						WaveAnim.AnimationId = "rbxassetid://128777973";
-					else
-						WaveAnim.AnimationId = "rbxassetid://507770239";
-					end
-					Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim);
-					WaverDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-						WaverDied:Disconnect();
-						Waver:Stop();
-						WaveAnim:Destroy();
-					end);
-					while LoopHello do
-						if (speaker.Character and foundPlr.Character) then
-							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						end
-						if trueforanim then
-							Waver:Play(0.1, 10, 1);
-							task.wait(1.8);
-						end
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local Carpettion = false;
-AlldropdownRefresh.Carpetdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((Carpettion == true) ) then
-						Carpettion = false;
-						effectfalse();
-						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-						carpete:Stop();
-						carpetAnim:Destroy();
-						return;
-					else
-						Carpettion = true;
-						carpetAnim = Instance.new("Animation");
-						carpetAnim.AnimationId = "rbxassetid://282574440";
-						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim);
-						carpete:Play(0.1, 1, 1);
-						effecttrue();
-						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-						while Carpettion do
-							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							game:GetService("RunService").RenderStepped:Wait();
-						end
-					end
-				end
-			else
-				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
-				effectfalse();
-			end
-		end
-	end);
-end});
-local ffhugger = false;
-AlldropdownRefresh.Hugdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffhugger == true) ) then
-						ffhugger = false;
-						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-						effectfalse();
-						zomearm:Stop();
-						zombiearmsAnim:Destroy();
-						return;
-					else
-						ffhugger = true;
-						zombiearmsAnim = Instance.new("Animation");
-						zombiearmsAnim.AnimationId = "rbxassetid://183294396";
-						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-						zomearm:Play();
-						zomearm:AdjustSpeed(0);
-						notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-						effecttrue();
-						while ffhugger do
-							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							game:GetService("RunService").RenderStepped:Wait();
-						end
-					end
-				end
-			elseif ((ffhugger == true) ) then
-				ffhugger = false;
-				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				effectfalse();
-				zomearm:Stop();
-				zombiearmsAnim:Destroy();
-				speaker.Character.Animate.Disabled = false;
-				return;
-			else
-				ffhugger = true;
-				zombiearmsAnim = Instance.new("Animation");
-				zombiearmsAnim.AnimationId = "rbxassetid://708553116";
-				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-				zomearm:Play();
-				zomearm:AdjustSpeed(0);
-				speaker.Character.Animate.Disabled = true;
-				notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				effecttrue();
-				while ffhugger do
-					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					game:GetService("RunService").RenderStepped:Wait();
-				end
-			end
-		end
-	end);
-end});
-local actualpb = false;
-AlldropdownRefresh.Piggybackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((actualpb == true) ) then
-					actualpb = false;
-					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
-					speaker.Character.Humanoid.Sit = false;
-					effectfalse();
-					return;
-				else
-					actualpb = true;
-					notifyyw("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while actualpb do
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local besomebackpack = false;
-AlldropdownRefresh.backpackdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((besomebackpack == true) ) then
-					besomebackpack = false;
-					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
-					speaker.Character.Humanoid.Sit = false;
-					effectfalse();
-					return;
-				else
-					besomebackpack = true;
-					notifyyw("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, 10709790644);
-					effecttrue();
-					while besomebackpack do
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local headsits = false;
-AlldropdownRefresh.Headsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((headsits == true) ) then
-					headsits = false;
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					speaker.Character.Humanoid.Sit = false;
-					effectfalse();
-					return;
-				else
-					headsits = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while headsits do
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local baskets = false;
-AlldropdownRefresh.Basketdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	plrName = Option:match("^(.-) %(");
-	foundPlr = getPlr(plrName);
-	if foundPlr then
-		if not r15(speaker) then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((baskets == true) ) then
-					baskets = false;
-					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
-					speaker.Character.Humanoid.Sit = false;
-					effectfalse();
-					return;
-				else
-					baskets = true;
-					notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
-					effecttrue();
-					while baskets do
-						speaker.Character.Humanoid.Sit = true;
-						local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
-						if targetArm then
-							speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						end
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		elseif ((baskets == true) ) then
-			baskets = false;
-			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
-			zomearm:Stop();
-			zombiearmsAnim:Destroy();
-			speaker.Character.Animate.Disabled = false;
-			effectfalse();
-			return;
-		else
-			baskets = true;
-			notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
-			effecttrue();
-			zombiearmsAnim = Instance.new("Animation");
-			zombiearmsAnim.AnimationId = "rbxassetid://10714360343";
-			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-			zomearm:Play(0, 10, 0);
-			speaker.Character.Animate.Disabled = true;
-			while baskets do
-				local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
-				if targetArm then
-					speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-				end
-				game:GetService("RunService").RenderStepped:Wait();
-			end
-		end
-	end
-end});
-local ActualHeadsit = false;
-AlldropdownRefresh.ActualHeadsitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ActualHeadsit == true) ) then
-					ActualHeadsit = false;
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					speaker.Character.Humanoid.Sit = false;
-					effectfalse();
-					return;
-				else
-					ActualHeadsit = true;
-					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while ActualHeadsit do
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-local animsync;
-issyncinganim = false;
-Paragraph = Misc:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
-AlldropdownRefresh.animsyncdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((issyncinganim == true) ) then
-					charresettopos();
-					issyncinganim = false;
-					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					animsync:Disconnect();
-					return;
-				else
-					issyncinganim = true;
-					effecttrue();
-					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
-						local animID = track.Animation.AnimationId;
-						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-							animationTrack:Stop();
-						end
-						Character.Animate.Disabled = true;
-						local Anim = Instance.new("Animation");
-						Anim.AnimationId = animID;
-						local syncinganim = Character.Humanoid:LoadAnimation(Anim);
-						syncinganim:Play();
-						syncinganim:AdjustWeight(10);
-						syncinganim.Stopped:Connect(function()
-							Character.Animate.Disabled = false;
-						end);
-					end);
-				end
-			end
-		end
-	end);
-end});
-local orbitingfuck = false;
-AlldropdownRefresh.orbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if ((orbitingfuck == true) ) then
-				effectfalse();
-				orbitingfuck = false;
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				for i, v in pairs(speaker.Character:GetDescendants()) do
-					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-						v:Destroy();
-					end
-				end
-				speaker.Character.Humanoid.PlatformStand = false;
-				speaker.Character.Humanoid.Sit = false;
-				return;
-			else
-				orbitingfuck = true;
-				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				local P = Instance.new("Part", foundPlr.Character);
-				P.Transparency = 1;
-				P.Name = "ThePart";
-				P.Size = Vector3.new(1.7, 1.7, 1.7);
-				P.Massless = true;
-				P.CanCollide = false;
-				local W = Instance.new("Weld", P);
-				W.Part1 = foundPlr.Character.HumanoidRootPart;
-				W.Part0 = P;
-				local sine = 0;
-				local change = 1;
-				local spin = 0;
-				local spin2 = 0;
-				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = speaker.Character.HumanoidRootPart;
-				rp.CartoonFactor = 1;
-				rp.MaxThrust = 5000;
-				rp.MaxSpeed = 100;
-				rp.ThrustP = 5000;
-				rp.Name = "OrbitalDestructionPart";
-				rp.Target = foundPlr.Character.ThePart;
-				rp:Fire();
-				speaker.Character.Humanoid.PlatformStand = true;
-				while orbitingfuck do
-					game:GetService("RunService").RenderStepped:wait();
-					sine = sine + change;
-					spin2 = spin2 + 0.6;
-					spin = spin + 1;
-					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
-				end
-			end
-		end
-	end);
-end});
-local closeorbitingfuck = false;
-AlldropdownRefresh.closeorbitdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if ((closeorbitingfuck == true) ) then
-				effectfalse();
-				closeorbitingfuck = false;
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				for i, v in pairs(speaker.Character:GetDescendants()) do
-					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-						v:Destroy();
-					end
-				end
-				speaker.Character.Humanoid.Sit = false;
-				return;
-			else
-				closeorbitingfuck = true;
-				effecttrue();
-				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = speaker.Character.HumanoidRootPart;
-				rp.CartoonFactor = 1;
-				rp.MaxThrust = 5000;
-				rp.MaxSpeed = 100;
-				rp.ThrustP = 5000;
-				rp.Name = "OrbitalDestruction";
-				rp.Target = foundPlr.Character.HumanoidRootPart;
-				rp:Fire();
-				speaker.Character.Humanoid.Sit = true;
-				while closeorbitingfuck do
-					game:GetService("RunService").RenderStepped:wait();
-					sine = sine + change;
-					spin2 = spin2 + 0.6;
-					spin = spin + 1;
-					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
-				end
-			end
-		end
-	end);
-end});
-Paragraph = Misc:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
-local lookingAt = false;
-AlldropdownRefresh.lookatdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if ((lookingAt == true) ) then
-				lookingAt = false;
-				effectfalse();
-				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
-				return;
-			else
-				lookingAt = true;
-				effecttrue();
-				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				while lookingAt do
-					game:GetService("RunService").Heartbeat:Wait();
-					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, foundPlr.Character.HumanoidRootPart.Position);
-				end
-			end
-		end
-	end);
-end});
-local spinaround = false;
-local spinaroundrotation = 0;
-local spinaroundspeed = 0.2;
-local spinarounddistance = 6;
-AlldropdownRefresh.spinarounddropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		local root = getRoot(speaker.Character);
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
-			if ((spinaround == true) ) then
-				effectfalse();
-				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				spinaround = false;
-				return;
-			else
-				spinaround = true;
-				effecttrue();
-				notifyyw("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				while spinaround do
-					spinaroundrotation = spinaroundrotation + spinaroundspeed;
-					root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
-					root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position);
-					RunService.RenderStepped:Wait();
-				end
-			end
-		end
-	end);
-end});
-SpinaroundSliderSpeed = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
-	pcall(function()
-		spinaroundspeed = Value;
-	end);
-end});
-SpinaroundInputSpeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",OnEnter=true,PlaceholderText=spinaroundspeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		spinaroundspeed = Text;
-	end);
-end});
-SpinaroundSliderRadius = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",Range={1,350},Increment=1,Suffix="Radius / Distance",CurrentValue=spinarounddistance,Callback=function(Value)
-	pcall(function()
-		spinarounddistance = Value;
-	end);
-end});
-SpinaroundInputRadius = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",OnEnter=true,PlaceholderText=spinarounddistance,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		spinarounddistance = Text;
-	end);
-end});
-Sectionplayrerelatedtp69 = Misc:CreateSection("FE Player Related | 69", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle.\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
-local Bang69 = false;
-AlldropdownRefresh.a69dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if not r15(speaker) then
-				if ((Bang69 == true) ) then
-					Bang69 = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					bang69:Stop();
-					bangAnim:Destroy();
-					Bang69 = false;
-					charresettopos();
-					return;
-				else
-					Bang69 = true;
-					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					c = Character;
-					hrp0 = c:FindFirstChild("HumanoidRootPart");
-					hrp1 = hrp0:Clone();
-					c.Parent = nil;
-					hrp0.Parent = hrp1;
-					hrp0.RootJoint.Part0 = nil;
-					hrp1.Parent = c;
-					c.Parent = workspace;
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-					hrp0.Transparency = 0.85;
-					hrp0.Material = Enum.Material.ForceField;
-					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					f69lwnum = 1;
-					bangAnim = Instance.new("Animation");
-					bangAnim.AnimationId = "rbxassetid://148840371";
-					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
-					bang69:Play(0.1, 1, 1);
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						Bang69 = true;
-						while Bang69 and c and c.Parent do
-							speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity;
-							game:GetService("RunService").RenderStepped:Wait();
-						end
-					end
-				end
-			elseif ((Bang69 == true) ) then
-				Bang69 = false;
-				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				effectfalse();
-				bang69:Stop();
-				a69upsideown:Disconnect();
-				bangAnim:Destroy();
-				Bang69 = false;
-				charresettopos();
-				return;
-			else
-				Bang69 = true;
-				notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				effecttrue();
-				local Players = game:GetService("Players");
-				local RunService = game:GetService("RunService");
-				local LocalPlayer = Players.LocalPlayer;
-				local Character = LocalPlayer.Character;
-				local c = Character;
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart");
-					if hrp0 then
-						local hrp1 = hrp0:Clone();
-						c.Parent = nil;
-						hrp0.Parent = hrp1;
-						hrp1.Parent = c;
-						c.Parent = workspace;
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
-						hrp0.Transparency = 0.85;
-						hrp0.Material = Enum.Material.ForceField;
-						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame;
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, -0.5, 0)
-								hrp0.Velocity = hrp1.Velocity;
-							end
-						end);
-					end
-				end
-				setupCharacter();
-				if r15(speaker) then
-					local a69upsideown;
-					a69upsideown = Players.LocalPlayer.CharacterAdded:Connect(function(char)
-						c = char;
-						setupCharacter();
-					end);
-				end
-				f69lwnum = 1;
-				bangAnim = Instance.new("Animation");
-				bangAnim.AnimationId = "rbxassetid://5918726674";
-				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
-				bang69:Play(0.1, 1, 1);
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					Bang69 = true;
-					while Bang69 do
-						speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			bang69:Stop();
-			bangAnim:Destroy();
-			a69upsideown:Disconnect();
-			Bang69 = false;
-		end);
-	end);
-end});
-bangSlider69 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		bang69:AdjustSpeed(Value);
-	end);
-end});
-Inputbangerionspeed69 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",PlaceholderText="1",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		bang69:AdjustSpeed(Text);
-	end);
-end});
-local ffc1hump = false;
-amplitudeof69hump = 1.2;
-frequencyof69hump = 1;
-AlldropdownRefresh.a69humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffc1hump == true) ) then
-						ffc1hump = false;
-						speaker.Character.Humanoid.PlatformStand = false;
-						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-						effectfalse();
-						charresettopos();
-						return;
-					else
-						ffc1hump = true;
-						notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-						effecttrue();
-						c = Character;
-						hrp0 = c:FindFirstChild("HumanoidRootPart");
-						hrp1 = hrp0:Clone();
-						c.Parent = nil;
-						hrp0.Parent = hrp1;
-						hrp0.RootJoint.Part0 = nil;
-						hrp1.Parent = c;
-						c.Parent = workspace;
-						c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-						hrp0.Transparency = 0.85;
-						hrp0.Material = Enum.Material.ForceField;
-						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						while ffc1hump and c and c.Parent do
-							speaker.Character.Humanoid.PlatformStand = true;
-							time = tick();
-							xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity;
-							game:GetService("RunService").RenderStepped:Wait();
-						end
-					end
-				end
-			elseif ((ffc1hump == true) ) then
-				ffc1hump = false;
-				speaker.Character.Humanoid.PlatformStand = false;
-				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-				effectfalse();
-				a69humper:Disconnect();
-				charresettopos();
-				return;
-			else
-				ffc1hump = true;
-				notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				effecttrue();
-				local Players = game:GetService("Players");
-				local RunService = game:GetService("RunService");
-				local LocalPlayer = Players.LocalPlayer;
-				local Character = LocalPlayer.Character;
-				local c = Character;
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart");
-					if hrp0 then
-						local hrp1 = hrp0:Clone();
-						c.Parent = nil;
-						hrp0.Parent = hrp1;
-						hrp1.Parent = c;
-						c.Parent = workspace;
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0);
-						hrp0.Transparency = 0.85;
-						hrp0.Material = Enum.Material.ForceField;
-						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame;
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, 0, 0)
-								hrp0.Velocity = hrp1.Velocity;
-							end
-						end);
-					end
-				end
-				setupCharacter();
-				if r15(speaker) then
-					local a69humper;
-					a69humper = Players.LocalPlayer.CharacterAdded:Connect(function(char)
-						c = char;
-						setupCharacter();
-					end);
-				end
-				while ffc1hump do
-					speaker.Character.Humanoid.PlatformStand = true;
-					time = tick();
-					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					game:GetService("RunService").RenderStepped:Wait();
-				end
-			end
-		end
-	end);
-end});
-facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		frequencyof69hump = Value;
-	end);
-end});
-faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		frequencyof69hump = Text;
-	end);
-end});
-Sectionplayrerelatedtpbang = Misc:CreateSection("FE Player Related | Bang", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtpbang);
-local Bang = false;
-AlldropdownRefresh.bangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			flwnum = -1;
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Bang == true) ) then
-					Follow = false;
-					v2banger:Stop();
-					v2bangerAnim:Destroy();
-					Bang = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					Bang = true;
-					v2bangerAnim = Instance.new("Animation");
-					if not r15(speaker) then
-						v2bangerAnim.AnimationId = "rbxassetid://148840371";
-					else
-						v2bangerAnim.AnimationId = "rbxassetid://5918726674";
-					end
-					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
-					v2banger:Play(0.1, 1, 3);
-					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while Bang do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-bangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
-	pcall(function()
-		v2banger:AdjustSpeed(Value);
-	end);
-end});
-Inputbangerionspeed = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		v2banger:AdjustSpeed(Text);
-	end);
-end});
-local ff2 = false;
-AlldropdownRefresh.facebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff2 == true) ) then
-					ff2 = false;
-					facebanger:Stop();
-					facebangerAnim:Destroy();
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					ff2 = true;
-					facebangerAnim = Instance.new("Animation");
-					if not r15(speaker) then
-						facebangerAnim.AnimationId = "rbxassetid://148840371";
-					else
-						facebangerAnim.AnimationId = "rbxassetid://5918726674";
-					end
-					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
-					facebanger:Play(0.1, 1, 3);
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while ff2 do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-facebangSlider = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=3,Callback=function(Value)
-	pcall(function()
-		facebanger:AdjustSpeed(Value);
-	end);
-end});
-Inputbangerions = Misc:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		facebanger:AdjustSpeed(Text);
-	end);
-end});
-local ff = false;
-AlldropdownRefresh.sitfacebangdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff == true) ) then
-					ff = false;
-					Character.Humanoid.Sit = false;
-					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					ff = true;
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while ff do
-						Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-Sectionplayrerelatedtphump = Misc:CreateSection("FE Player Related | Hump", false, false, 10686489468);
-Paragraph = Misc:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
-local Humping = false;
-amplitudeofbang = 1.2;
-frequencyofbang = 1;
-minuss1 = -1;
-AlldropdownRefresh.humpdropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Humping == true) ) then
-					Humping = false;
-					effectfalse();
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					Humping = true;
-					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while Humping do
-						local time = tick();
-						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
-						local newCFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						speaker.Character.HumanoidRootPart.CFrame = newCFrame;
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").Heartbeat:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-bangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		frequencyofbang = Value;
-	end);
-end});
-Inputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		frequencyofbang = Text;
-	end);
-end});
-local ffc1 = false;
-amplitudeofbangface = 1.2;
-frequencyofbangface = 1;
-AlldropdownRefresh.hump2dropdown = Misc:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ffc1 == true) ) then
-					ffc1 = false;
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					effectfalse();
-					return;
-				else
-					ffc1 = true;
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					while ffc1 do
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						time = tick();
-						xOffset = amplitudeofbangface * math.sin(2 * math.pi * frequencyofbangface * time);
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
-				end
-			end
-		end
-	end);
-end});
-facebangSliderv1 = Misc:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		frequencyofbangface = Value;
-	end);
-end});
-faceInputbangerionspeedf1 = Misc:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		frequencyofbangface = Text;
-	end);
-end});
 Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true, 9134761478);
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Enable Reset Button",Interact="Click",Callback=function()
 	game:GetService("StarterGui"):SetCore("ResetButtonCallback", true);
@@ -2123,6 +986,7 @@ end});
 Inputcfspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="CFrame Fly Speed",PlaceholderText=50,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	CFspeed = Text;
 end});
+Label = Misc:CreateLabel("Normal Fly",Sectionflights)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -2159,6 +1023,7 @@ end});
 Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",PlaceholderText=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	flyysspeed = Text;
 end});
+Label = Misc:CreateLabel("Vehicle Fly",Sectionflights)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -2256,9 +1121,11 @@ SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Ke
 	sprints = KeyBind;
 	sprints = not sprints;
 	if sprints then
-		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {WalkSpeed=32}):Play();
+		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2), {FieldOfView=95}):Play();
 	else
-		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {WalkSpeed=16}):Play();
+		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=16}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2), {FieldOfView=70}):Play();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sprint Keybind",Callback=function()
@@ -2407,7 +1274,6 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zer
 end});
 carParts = {};
 Sectionnoclip = Misc:CreateSection("FE LocalPlayer Related | NoClip", false, false, 14385986465);
-noclippkeybind = "";
 Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",CurrentValue=false,Callback=function(Value)
 	nnoclipping = Value;
 	if nnoclipping then
@@ -4515,7 +3381,8 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 		end
 		ball = character.HumanoidRootPart;
 		ball.Shape = Enum.PartType.Ball;
-		ball.Color = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255));
+		ballColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255));
+		ball.Color = ballColor
 		ball.Size = Vector3.new(7, 7, 7);
 		ball.Transparency = 0.5;
 		humanoid = character:WaitForChild("Humanoid");
@@ -4817,6 +3684,1146 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 		game.Workspace.Gravity = Text;
 	end);
 end});
+MiscPlayer = Window:CreateTab("Universal Player", 9080478424);
+Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
+Paragraphtotal = MiscPlayer:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
+Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
+Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
+local Annoy = false;
+AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Annoy == true) ) then
+					Annoy = false;
+					effectfalse();
+					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					Annoy = true;
+					effecttrue();
+					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while Annoy do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local glued = false
+AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((glued == true) ) then
+					glued = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					glued = true;
+					effecttrue();
+					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while glued do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X,foundPlr.Character.HumanoidRootPart.Size.Y,speaker.Character.HumanoidRootPart.CFrame.lookVector.Z)
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local walkto = false;
+AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Walk To",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((walkto == true) ) then
+					walkto = false;
+					effectfalse();
+					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					walkto = true;
+					effecttrue();
+					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while walkto do
+						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position)
+						task.wait()
+					end
+				end
+			end
+		end
+	end);
+end});
+local StandOnHead = false;
+AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((StandOnHead == true) ) then
+					StandOnHead = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					StandOnHead = true;
+					effecttrue();
+					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					while StandOnHead do
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+Paragraph = MiscPlayer:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp);
+AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+			wait(0.9);
+			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
+		elseif (foundPlr == speaker) then
+			return nil;
+		end
+	end);
+end});
+local Follow = false;
+AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			flwnum = -5;
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Follow == true) ) then
+					Follow = false;
+					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					Follow = true;
+					notifyyw("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while Follow do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local LoopHello = false;
+local trueforanim = false;
+AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if (((LoopHello == true) and (trueforanim == true)) ) then
+					LoopHello = false;
+					trueforanim = false;
+					WaverDied:Disconnect();
+					Waver:Stop();
+					WaveAnim:Destroy();
+					notifyyw("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					LoopHello = true;
+					trueforanim = true;
+					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					WaveAnim = Instance.new("Animation");
+					if not r15(speaker) then
+						WaveAnim.AnimationId = "rbxassetid://128777973";
+					else
+						WaveAnim.AnimationId = "rbxassetid://507770239";
+					end
+					Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim);
+					WaverDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+						WaverDied:Disconnect();
+						Waver:Stop();
+						WaveAnim:Destroy();
+					end);
+					while LoopHello do
+						if (speaker.Character and foundPlr.Character) then
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						end
+						if trueforanim then
+							Waver:Play(0.1, 10, 1);
+							task.wait(1.8);
+						end
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local Carpettion = false;
+AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if not r15(speaker) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((Carpettion == true) ) then
+						Carpettion = false;
+						effectfalse();
+						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+						carpete:Stop();
+						carpetAnim:Destroy();
+						return;
+					else
+						Carpettion = true;
+						carpetAnim = Instance.new("Animation");
+						carpetAnim.AnimationId = "rbxassetid://282574440";
+						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim);
+						carpete:Play(0.1, 1, 1);
+						effecttrue();
+						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+						while Carpettion do
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							game:GetService("RunService").RenderStepped:Wait();
+						end
+					end
+				end
+			else
+				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394);
+				effectfalse();
+			end
+		end
+	end);
+end});
+local ffhugger = false;
+AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if not r15(speaker) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((ffhugger == true) ) then
+						ffhugger = false;
+						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+						effectfalse();
+						zomearm:Stop();
+						zombiearmsAnim:Destroy();
+						return;
+					else
+						ffhugger = true;
+						zombiearmsAnim = Instance.new("Animation");
+						zombiearmsAnim.AnimationId = "rbxassetid://183294396";
+						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+						zomearm:Play();
+						zomearm:AdjustSpeed(0);
+						notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+						effecttrue();
+						while ffhugger do
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							game:GetService("RunService").RenderStepped:Wait();
+						end
+					end
+				end
+			elseif ((ffhugger == true) ) then
+				ffhugger = false;
+				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				effectfalse();
+				zomearm:Stop();
+				zombiearmsAnim:Destroy();
+				speaker.Character.Animate.Disabled = false;
+				return;
+			else
+				ffhugger = true;
+				zombiearmsAnim = Instance.new("Animation");
+				zombiearmsAnim.AnimationId = "rbxassetid://708553116";
+				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+				zomearm:Play();
+				zomearm:AdjustSpeed(0);
+				speaker.Character.Animate.Disabled = true;
+				notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				effecttrue();
+				while ffhugger do
+					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					game:GetService("RunService").RenderStepped:Wait();
+				end
+			end
+		end
+	end);
+end});
+local actualpb = false;
+AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((actualpb == true) ) then
+					actualpb = false;
+					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					actualpb = true;
+					notifyyw("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while actualpb do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local besomebackpack = false;
+AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((besomebackpack == true) ) then
+					besomebackpack = false;
+					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					besomebackpack = true;
+					notifyyw("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, 10709790644);
+					effecttrue();
+					while besomebackpack do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local headsits = false;
+AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((headsits == true) ) then
+					headsits = false;
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					headsits = true;
+					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while headsits do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local baskets = false;
+AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	plrName = Option:match("^(.-) %(");
+	foundPlr = getPlr(plrName);
+	if foundPlr then
+		if not r15(speaker) then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((baskets == true) ) then
+					baskets = false;
+					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					baskets = true;
+					notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
+					effecttrue();
+					while baskets do
+						speaker.Character.Humanoid.Sit = true;
+						local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
+						if targetArm then
+							speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						end
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		elseif ((baskets == true) ) then
+			baskets = false;
+			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
+			zomearm:Stop();
+			zombiearmsAnim:Destroy();
+			speaker.Character.Animate.Disabled = false;
+			effectfalse();
+			return;
+		else
+			baskets = true;
+			notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
+			effecttrue();
+			zombiearmsAnim = Instance.new("Animation");
+			zombiearmsAnim.AnimationId = "rbxassetid://10714360343";
+			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
+			zomearm:Play(0, 10, 0);
+			speaker.Character.Animate.Disabled = true;
+			while baskets do
+				local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
+				if targetArm then
+					speaker.Character.HumanoidRootPart.CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+				end
+				game:GetService("RunService").RenderStepped:Wait();
+			end
+		end
+	end
+end});
+local ActualHeadsit = false;
+AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ActualHeadsit == true) ) then
+					ActualHeadsit = false;
+					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					speaker.Character.Humanoid.Sit = false;
+					effectfalse();
+					return;
+				else
+					ActualHeadsit = true;
+					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while ActualHeadsit do
+						speaker.Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+local animsync;
+issyncinganim = false;
+Paragraph = MiscPlayer:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
+AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((issyncinganim == true) ) then
+					charresettopos();
+					issyncinganim = false;
+					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					animsync:Disconnect();
+					return;
+				else
+					issyncinganim = true;
+					effecttrue();
+					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+						local animID = track.Animation.AnimationId;
+						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
+							animationTrack:Stop();
+						end
+						Character.Animate.Disabled = true;
+						local Anim = Instance.new("Animation");
+						Anim.AnimationId = animID;
+						local syncinganim = Character.Humanoid:LoadAnimation(Anim);
+						syncinganim:Play();
+						syncinganim:AdjustWeight(10);
+						syncinganim.Stopped:Connect(function()
+							Character.Animate.Disabled = false;
+						end);
+					end);
+				end
+			end
+		end
+	end);
+end});
+local orbitingfuck = false;
+AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((orbitingfuck == true) ) then
+				effectfalse();
+				orbitingfuck = false;
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				for i, v in pairs(speaker.Character:GetDescendants()) do
+					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
+						v:Destroy();
+					end
+				end
+				speaker.Character.Humanoid.PlatformStand = false;
+				speaker.Character.Humanoid.Sit = false;
+				return;
+			else
+				orbitingfuck = true;
+				effecttrue();
+				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				local P = Instance.new("Part", foundPlr.Character);
+				P.Transparency = 1;
+				P.Name = "ThePart";
+				P.Size = Vector3.new(1.7, 1.7, 1.7);
+				P.Massless = true;
+				P.CanCollide = false;
+				local W = Instance.new("Weld", P);
+				W.Part1 = foundPlr.Character.HumanoidRootPart;
+				W.Part0 = P;
+				local sine = 0;
+				local change = 1;
+				local spin = 0;
+				local spin2 = 0;
+				local rp = Instance.new("RocketPropulsion");
+				rp.Parent = speaker.Character.HumanoidRootPart;
+				rp.CartoonFactor = 1;
+				rp.MaxThrust = 5000;
+				rp.MaxSpeed = 100;
+				rp.ThrustP = 5000;
+				rp.Name = "OrbitalDestructionPart";
+				rp.Target = foundPlr.Character.ThePart;
+				rp:Fire();
+				speaker.Character.Humanoid.PlatformStand = true;
+				while orbitingfuck do
+					game:GetService("RunService").RenderStepped:wait();
+					sine = sine + change;
+					spin2 = spin2 + 0.6;
+					spin = spin + 1;
+					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
+				end
+			end
+		end
+	end);
+end});
+local closeorbitingfuck = false;
+AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((closeorbitingfuck == true) ) then
+				effectfalse();
+				closeorbitingfuck = false;
+				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				for i, v in pairs(speaker.Character:GetDescendants()) do
+					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
+						v:Destroy();
+					end
+				end
+				speaker.Character.Humanoid.Sit = false;
+				return;
+			else
+				closeorbitingfuck = true;
+				effecttrue();
+				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				local rp = Instance.new("RocketPropulsion");
+				rp.Parent = speaker.Character.HumanoidRootPart;
+				rp.CartoonFactor = 1;
+				rp.MaxThrust = 5000;
+				rp.MaxSpeed = 100;
+				rp.ThrustP = 5000;
+				rp.Name = "OrbitalDestruction";
+				rp.Target = foundPlr.Character.HumanoidRootPart;
+				rp:Fire();
+				speaker.Character.Humanoid.Sit = true;
+				while closeorbitingfuck do
+					game:GetService("RunService").RenderStepped:wait();
+					sine = sine + change;
+					spin2 = spin2 + 0.6;
+					spin = spin + 1;
+					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
+				end
+			end
+		end
+	end);
+end});
+Paragraph = MiscPlayer:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
+local lookingAt = false;
+AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if ((lookingAt == true) ) then
+				lookingAt = false;
+				effectfalse();
+				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
+				return;
+			else
+				lookingAt = true;
+				effecttrue();
+				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				while lookingAt do
+					game:GetService("RunService").Heartbeat:Wait();
+					speaker.Character.HumanoidRootPart.CFrame = CFrame.new(speaker.Character.HumanoidRootPart.Position, foundPlr.Character.HumanoidRootPart.Position);
+				end
+			end
+		end
+	end);
+end});
+local spinaround = false;
+local spinaroundrotation = 0;
+local spinaroundspeed = 0.2;
+local spinarounddistance = 6;
+AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		local root = getRoot(speaker.Character);
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
+			if ((spinaround == true) ) then
+				effectfalse();
+				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				spinaround = false;
+				return;
+			else
+				spinaround = true;
+				effecttrue();
+				notifyyw("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				while spinaround do
+					spinaroundrotation = spinaroundrotation + spinaroundspeed;
+					root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
+					root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position);
+					RunService.RenderStepped:Wait();
+				end
+			end
+		end
+	end);
+end});
+SpinaroundSliderSpeed = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
+	pcall(function()
+		spinaroundspeed = Value;
+	end);
+end});
+SpinaroundInputSpeed = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",OnEnter=true,PlaceholderText=spinaroundspeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		spinaroundspeed = Text;
+	end);
+end});
+SpinaroundSliderRadius = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",Range={1,350},Increment=1,Suffix="Radius / Distance",CurrentValue=spinarounddistance,Callback=function(Value)
+	pcall(function()
+		spinarounddistance = Value;
+	end);
+end});
+SpinaroundInputRadius = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Radius / Distance",OnEnter=true,PlaceholderText=spinarounddistance,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		spinarounddistance = Text;
+	end);
+end});
+Sectionplayrerelatedtp69 = MiscPlayer:CreateSection("FE Player Related | 69", false, false, 10686489468);
+Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle.\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
+local Bang69 = false;
+AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if not r15(speaker) then
+				if ((Bang69 == true) ) then
+					Bang69 = false;
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					bang69:Stop();
+					bangAnim:Destroy();
+					Bang69 = false;
+					charresettopos();
+					return;
+				else
+					Bang69 = true;
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					c = Character;
+					hrp0 = c:FindFirstChild("HumanoidRootPart");
+					hrp1 = hrp0:Clone();
+					c.Parent = nil;
+					hrp0.Parent = hrp1;
+					hrp0.RootJoint.Part0 = nil;
+					hrp1.Parent = c;
+					c.Parent = workspace;
+					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+					hrp0.Transparency = 0.85;
+					hrp0.Material = Enum.Material.ForceField;
+					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					f69lwnum = 1;
+					bangAnim = Instance.new("Animation");
+					bangAnim.AnimationId = "rbxassetid://148840371";
+					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
+					bang69:Play(0.1, 1, 1);
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+						Bang69 = true;
+						while Bang69 and c and c.Parent do
+							speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+							game:GetService("RunService").RenderStepped:Wait();
+						end
+					end
+				end
+			elseif ((Bang69 == true) ) then
+				Bang69 = false;
+				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				effectfalse();
+				bang69:Stop();
+				a69upsideown:Disconnect();
+				bangAnim:Destroy();
+				Bang69 = false;
+				charresettopos();
+				return;
+			else
+				Bang69 = true;
+				notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				effecttrue();
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, -0.5, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				if r15(speaker) then
+					local a69upsideown;
+					a69upsideown = Players.LocalPlayer.CharacterAdded:Connect(function(char)
+						c = char;
+						setupCharacter();
+					end);
+				end
+				f69lwnum = 1;
+				bangAnim = Instance.new("Animation");
+				bangAnim.AnimationId = "rbxassetid://5918726674";
+				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim);
+				bang69:Play(0.1, 1, 1);
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					Bang69 = true;
+					while Bang69 do
+						speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			bang69:Stop();
+			bangAnim:Destroy();
+			a69upsideown:Disconnect();
+			Bang69 = false;
+		end);
+	end);
+end});
+bangSlider69 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		bang69:AdjustSpeed(Value);
+	end);
+end});
+Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",PlaceholderText="1",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		bang69:AdjustSpeed(Text);
+	end);
+end});
+local ffc1hump = false;
+amplitudeof69hump = 1.2;
+frequencyof69hump = 1;
+AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if not r15(speaker) then
+				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+					if ((ffc1hump == true) ) then
+						ffc1hump = false;
+						speaker.Character.Humanoid.PlatformStand = false;
+						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+						effectfalse();
+						charresettopos();
+						return;
+					else
+						ffc1hump = true;
+						notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+						effecttrue();
+						c = Character;
+						hrp0 = c:FindFirstChild("HumanoidRootPart");
+						hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp0.RootJoint.Part0 = nil;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						while ffc1hump and c and c.Parent do
+							speaker.Character.Humanoid.PlatformStand = true;
+							time = tick();
+							xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
+							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+							game:GetService("RunService").RenderStepped:Wait();
+						end
+					end
+				end
+			elseif ((ffc1hump == true) ) then
+				ffc1hump = false;
+				speaker.Character.Humanoid.PlatformStand = false;
+				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				effectfalse();
+				a69humper:Disconnect();
+				charresettopos();
+				return;
+			else
+				ffc1hump = true;
+				notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				effecttrue();
+				local Players = game:GetService("Players");
+				local RunService = game:GetService("RunService");
+				local LocalPlayer = Players.LocalPlayer;
+				local Character = LocalPlayer.Character;
+				local c = Character;
+				local function setupCharacter()
+					local hrp0 = c:FindFirstChild("HumanoidRootPart");
+					if hrp0 then
+						local hrp1 = hrp0:Clone();
+						c.Parent = nil;
+						hrp0.Parent = hrp1;
+						hrp1.Parent = c;
+						c.Parent = workspace;
+						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0);
+						hrp0.Transparency = 0.85;
+						hrp0.Material = Enum.Material.ForceField;
+						hrp0.Color = Color3.fromRGB(25, 25, 25);
+						RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, 0, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+					end
+				end
+				setupCharacter();
+				if r15(speaker) then
+					local a69humper;
+					a69humper = Players.LocalPlayer.CharacterAdded:Connect(function(char)
+						c = char;
+						setupCharacter();
+					end);
+				end
+				while ffc1hump do
+					speaker.Character.Humanoid.PlatformStand = true;
+					time = tick();
+					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
+					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
+					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+					game:GetService("RunService").RenderStepped:Wait();
+				end
+			end
+		end
+	end);
+end});
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		frequencyof69hump = Value;
+	end);
+end});
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		frequencyof69hump = Text;
+	end);
+end});
+Sectionplayrerelatedtpbang = MiscPlayer:CreateSection("FE Player Related | Bang", false, false, 10686489468);
+Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtpbang);
+local Bang = false;
+AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			flwnum = -1;
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Bang == true) ) then
+					Follow = false;
+					v2banger:Stop();
+					v2bangerAnim:Destroy();
+					Bang = false;
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					Bang = true;
+					v2bangerAnim = Instance.new("Animation");
+					if not r15(speaker) then
+						v2bangerAnim.AnimationId = "rbxassetid://148840371";
+					else
+						v2bangerAnim.AnimationId = "rbxassetid://5918726674";
+					end
+					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim);
+					v2banger:Play(0.1, 1, 3);
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while Bang do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+bangSlider = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
+	pcall(function()
+		v2banger:AdjustSpeed(Value);
+	end);
+end});
+Inputbangerionspeed = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		v2banger:AdjustSpeed(Text);
+	end);
+end});
+local ff2 = false;
+AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ff2 == true) ) then
+					ff2 = false;
+					facebanger:Stop();
+					facebangerAnim:Destroy();
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					ff2 = true;
+					facebangerAnim = Instance.new("Animation");
+					if not r15(speaker) then
+						facebangerAnim.AnimationId = "rbxassetid://148840371";
+					else
+						facebangerAnim.AnimationId = "rbxassetid://5918726674";
+					end
+					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim);
+					facebanger:Play(0.1, 1, 3);
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while ff2 do
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+facebangSlider = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=3,Callback=function(Value)
+	pcall(function()
+		facebanger:AdjustSpeed(Value);
+	end);
+end});
+Inputbangerions = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		facebanger:AdjustSpeed(Text);
+	end);
+end});
+local ff = false;
+AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ff == true) ) then
+					ff = false;
+					Character.Humanoid.Sit = false;
+					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					ff = true;
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while ff do
+						Character.Humanoid.Sit = true;
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468);
+Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
+local Humping = false;
+amplitudeofbang = 1.2;
+frequencyofbang = 1;
+minuss1 = -1;
+AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((Humping == true) ) then
+					Humping = false;
+					effectfalse();
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					return;
+				else
+					Humping = true;
+					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while Humping do
+						local time = tick();
+						local xOffset = amplitudeofbang * math.sin(2 * math.pi * frequencyofbang * time);
+						local newCFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, xOffset)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * minuss1);
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						speaker.Character.HumanoidRootPart.CFrame = newCFrame;
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").Heartbeat:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+bangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		frequencyofbang = Value;
+	end);
+end});
+Inputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		frequencyofbang = Text;
+	end);
+end});
+local ffc1 = false;
+amplitudeofbangface = 1.2;
+frequencyofbangface = 1;
+AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(");
+		foundPlr = getPlr(plrName);
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if ((ffc1 == true) ) then
+					ffc1 = false;
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					effectfalse();
+					return;
+				else
+					ffc1 = true;
+					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					effecttrue();
+					while ffc1 do
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						time = tick();
+						xOffset = amplitudeofbangface * math.sin(2 * math.pi * frequencyofbangface * time);
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 2, xOffset));
+						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
+						game:GetService("RunService").RenderStepped:Wait();
+					end
+				end
+			end
+		end
+	end);
+end});
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={0,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		frequencyofbangface = Value;
+	end);
+end});
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		frequencyofbangface = Text;
+	end);
+end});
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
 SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
@@ -5002,14 +5009,14 @@ Buttonresetworld = Miscclient:CreateButton({SectionParent=Sectionmiscworldscript
 		Sliderranggerrr:Set(30);
 	end);
 end});
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Day / Night",CurrentValue=false,Callback=function(Value)
+Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Night And Day",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		daytonight = Value;
 		if daytonight then
-			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=0}):Play();
+			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
 		end
 		if not daytonight then
-			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=12}):Play();
+			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=12}):Play();
 		end
 	end);
 end});
@@ -5302,7 +5309,18 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",
 	speaker.CameraMode = "Classic";
 	speaker.Character.Head.Anchored = false;
 end});
-Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camera",Interact="Click",Callback=function()
+Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		nccamsim = Value;
+		if nccamsim then
+			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 1
+		end
+		if not nccamsim then
+			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 0
+		end
+	end);
+end});
+Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="NoClip Camera",Interact="Click",Callback=function()
 	local sc = (debug and debug.setconstant) or setconstant;
 	local gc = (debug and debug.getconstants) or getconstants;
 	if (not sc or not getgc or not gc) then
@@ -5326,7 +5344,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Noclip Camer
 end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
-		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {FieldOfView=Value}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {FieldOfView=Value}):Play();
 	end);
 end});
 Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View",OnEnter=true,PlaceholderText=math.floor(game:GetService("Workspace").Camera.FieldOfView),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
@@ -5811,6 +5829,309 @@ end});
 Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",OnEnter=true,PlaceholderText=1,NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	Soundplayaudio.Volume = Text;
 end});
+ESPTAB = Window:CreateTab("ESP", 7072716095);
+Sectionesp = ESPTAB:CreateSection("ESP", false, false, 10723346959);
+Sense = {whitelist={},sharedSettings={textSize=13,textFont=2,limitDistance=false,maxDistance=150,useTeamColor=false},teamSettings={enemy={enabled=false,box=false,boxColor={Color3.new(1, 0, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(1, 0, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(1, 0, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(1, 0, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(1, 0, 0),0}},friendly={enabled=false,box=false,boxColor={Color3.new(0, 1, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(0, 1, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(0, 1, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(0, 1, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(0, 1, 0),0}}}};
+Sense = loadstring(game:HttpGet("https://sirius.menu/sense"))();
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionesp,Name="Main ESP",CurrentValue=false,Callback=function(ESP)
+	pcall(function()
+		espfunc = ESP;
+		if espfunc then
+			Sense:Load();
+		end
+		if not espfunc then
+			Sense:Unload();
+		end
+	end);
+end});
+Sectionshared = ESPTAB:CreateSection("ESP Shared Settings", false, false, 10709759610);
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=13,Callback=function(Value)
+	Sense.sharedSettings.textSize = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Font",Range={0,10},Increment=1,Suffix="Font",CurrentValue=2,Callback=function(Value)
+	Sense.sharedSettings.textFont = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Limit Distance",CurrentValue=false,Callback=function(Value)
+	Sense.sharedSettings.limitDistance = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Max Distance",Range={0,10000},Increment=10,Suffix="Distance",CurrentValue=150,Callback=function(Value)
+	Sense.sharedSettings.maxDistance = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Use Team Color",Callback=function(Value)
+	Sense.sharedSettings.useTeamColor = Value;
+end});
+Sectionenemy = ESPTAB:CreateSection("ESP Enemy Settings", false, true, 10709759610);
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Enabled",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.enabled = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.box = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.boxColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.boxOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
+	Sense.teamSettings.enemy.boxOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.boxFill = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.boxFillColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.healthBar = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.healthyColor = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.dyingColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.healthBarOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.healthBarOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.healthText = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.healthTextColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.healthTextOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.healthTextOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.box3d = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.box3dColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.name = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.nameColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.nameOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.nameOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.weapon = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.weaponColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.weaponOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.weaponOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.distance = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.distanceColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.distanceOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.distanceOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.tracer = Value;
+end});
+TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionenemy,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
+	Sense.teamSettings.enemy.tracerOrigin = Option;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.tracerColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.tracerOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.tracerOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrow = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrowColor = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrowSize = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrowRadius = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrowOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.offScreenArrowOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.enemy.chams = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.enemy.chamsVisibleOnly = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.chamsFillColor = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.enemy.chamsOutlineColor = Value;
+end});
+Sectionfriendly = ESPTAB:CreateSection("ESP Friendly Settings", false, true, 10709759610);
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Enabled",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.enabled = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.box = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.boxColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.boxOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
+	Sense.teamSettings.friendly.boxOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.boxFill = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.boxFillColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.healthBar = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.healthyColor = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.dyingColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.healthBarOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.healthBarOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.healthText = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.healthTextColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.healthTextOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.healthTextOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.box3d = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.box3dColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.name = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.nameColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.nameOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.nameOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.weapon = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.weaponColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.weaponOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.weaponOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.distance = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.distanceColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.distanceOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.distanceOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.tracer = Value;
+end});
+TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionfriendly,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
+	Sense.teamSettings.friendly.tracerOrigin = Option;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.tracerColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.tracerOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.tracerOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrow = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrowColor = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrowSize = Value;
+end});
+Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrowRadius = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrowOutline = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.offScreenArrowOutlineColor = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams",CurrentValue=true,Callback=function(Value)
+	Sense.teamSettings.friendly.chams = Value;
+end});
+Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
+	Sense.teamSettings.friendly.chamsVisibleOnly = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.chamsFillColor = Value;
+end});
+Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
+	Sense.teamSettings.friendly.chamsOutlineColor = Value;
+end});
 Animations = Window:CreateTab("Animation's", 1114393432);
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612);
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
@@ -5863,297 +6184,302 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
-	local AnimationTracks = Humanoid:GetPlayingAnimationTracks();
-	for i, track in pairs(AnimationTracks) do
-		local animationobject = track.Animation;
-		local animationid = animationobject.AnimationId;
-		toClipboard(animationid);
-	end
-	NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
-	effecttrue();
+	local copyAnimId = function(player)
+        local found = "Animations Copied"
+        for _, v in pairs(player.Character:FindFirstChildWhichIsA("Humanoid"):GetPlayingAnimationTracks()) do
+            local animationId = v.Animation.AnimationId
+            local assetId = animationId:find("rbxassetid://") and animationId:match("%d+")
+            if not string.find(animationId, "507768375") and not string.find(animationId, "180435571") then
+                if assetId then
+                    local success, result = pcall(function()
+                        return MarketplaceService:GetProductInfo(tonumber(assetId)).Name
+                    end)
+                    local name = success and result or "Failed to get name"
+                    found = found .. "\n\nName: " .. name .. "\nAnimation Id: " .. animationId
+                else
+                    found = found .. "\n\nAnimation Id: " .. animationId
+                end
+            end
+        end
+        if found ~= "Animations Copied" then
+            toClipboard(found)
+			effecttrue();
+			NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
+        else
+			NSUI:Notify({Title="Didn't Copy Anim!",Content="No Animation's To Copy!",Duration=2,Image=7733715400});
+			effectfalse();
+        end
+    end
+	copyAnimId(speaker)
 end});
 SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's R15", false, true, 11932783331);
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Sneaky",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1132461372";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1132469004";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1132473842";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1132477671";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1132489853";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1132494274";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1132500520";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1132506407";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1132510133";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bold",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=16738332169";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=16738333171";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=16738333868";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=16738334710";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=16738336650";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=16738337225";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=16738339158";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=16738339817";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=16738340646";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Toy",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=782843869";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=782846423";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=782841498";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=782845736";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=782847020";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=782842708";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=782844582";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=782845186";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=782843345";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Pirate",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=750779899";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=750780242";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=750781874";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=750782770";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=750782230";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=750783738";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=750784579";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=750785176";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=750785693";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Knight",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=658360781";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=657600338";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=657595757";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=657568135";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=658409194";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=657564596";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=657560551";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=657557095";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=657552124";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Astronaut",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=891609353";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=891617961";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=891621366";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=891633237";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=891627522";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=891639666";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=891663592";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=891636393";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Vampire",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083439238";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083443587";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083445855";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083450166";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083455352";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083462077";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1083464683";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083467779";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083473930";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Robot",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616086039";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616087089";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616088211";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616089559";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616090535";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616091570";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616092998";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616094091";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616095330";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Levitation",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616003713";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616005863";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616006778";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616008087";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616008936";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616010382";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616011509";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616012453";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616013216";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Bubbly",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=909997997";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=910001910";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=910004836";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=910009958";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=910016857";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=910025107";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=910028158";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=910030921";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=910034870";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Werewolf",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=1083182000";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=1083189019";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=1083195517";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=1083214717";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=1083218792";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=1083216690";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=1083222527";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=1083225406";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=1083178339";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Stylish",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616133594";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616134815";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616136790";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616138447";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616139451";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616140816";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616143378";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616144772";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616146177";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Mage",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=707826056";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=707829716";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=707742142";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=707855907";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=707853694";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=707861613";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=707876443";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=707894699";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=707897309";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Cartoony",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=742636889";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=742637151";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=742637544";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=742638445";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=742637942";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=742638842";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=742639220";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=742639812";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=742640026";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Zombie",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616156119";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616157476";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616158929";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616160636";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616161997";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616163682";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616165109";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616166655";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616168032";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Superhero",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=616104706";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=616108001";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=616111295";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=616113536";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=616115533";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=616117076";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=616119360";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=616120861";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=616122287";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Ninja",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=656114359";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=656115606";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=656117400";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=656118341";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=656117878";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=656118852";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=656119721";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=656121397";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=656121766";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Elder",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=845392038";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=845396048";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=845397899";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=845400520";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=845398858";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=845386501";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=845401742";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=845403127";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=845403856";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Oldschool",Interact="Click",Callback=function()
-	Character.Animate.climb.ClimbAnim.AnimationId = "http://www.roblox.com/asset/?id=5319816685";
-	Character.Animate.fall.FallAnim.AnimationId = "http://www.roblox.com/asset/?id=5319839762";
-	Character.Animate.idle.Animation1.AnimationId = "http://www.roblox.com/asset/?id=5319828216";
-	Character.Animate.idle.Animation1.Weight.Value = "9";
-	Character.Animate.idle.Animation2.AnimationId = "http://www.roblox.com/asset/?id=5319831086";
-	Character.Animate.idle.Animation2.Weight.Value = "1";
-	Character.Animate.jump.JumpAnim.AnimationId = "http://www.roblox.com/asset/?id=5319841935";
-	Character.Animate.run.RunAnim.AnimationId = "http://www.roblox.com/asset/?id=5319844329";
-	Character.Animate.swim.Swim.AnimationId = "http://www.roblox.com/asset/?id=5319850266";
-	Character.Animate.swimidle.SwimIdle.AnimationId = "http://www.roblox.com/asset/?id=5319852613";
-	Character.Animate.walk.WalkAnim.AnimationId = "http://www.roblox.com/asset/?id=5319847204";
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
+local animationPacks = {
+    Sneaky = {
+        climb = "1132461372",
+        fall = "1132469004",
+        idle1 = "1132473842",
+        idle2 = "1132477671",
+        jump = "1132489853",
+        run = "1132494274",
+        swim = "1132500520",
+        swimIdle = "1132506407",
+        walk = "1132510133"
+    },
+	Bold = {
+        climb = "16738332169",
+        fall = "16738333171",
+        idle1 = "16738333868",
+        idle2 = "16738334710",
+        jump = "16738336650",
+        run = "16738337225",
+        swim = "16738339158",
+        swimIdle = "16738339817",
+        walk = "16738340646"
+    },
+	Toy = {
+        climb = "782843869",
+        fall = "782846423",
+        idle1 = "782841498",
+        idle2 = "782845736",
+        jump = "782847020",
+        run = "782842708",
+        swim = "782844582",
+        swimIdle = "782845186",
+        walk = "782843345"
+    },
+	Pirate = {
+		climb = "750779899",
+		fall = "750780242",
+		idle1 = "750781874",
+		idle2 = "750782770",
+		jump = "750782230",
+		run = "750783738",
+		swim = "750784579",
+		swimIdle = "750785176",
+		walk = "750785693"
+	},
+	Knight = {
+		climb = "658360781",
+		fall = "657600338",
+		idle1 = "657595757",
+		idle2 = "657568135",
+		jump = "658409194",
+		run = "657564596",
+		swim = "657560551",
+		swimIdle = "657557095",
+		walk = "657552124"
+	},
+	Astronaut = {
+		climb = "891609353",
+		fall = "891617961",
+		idle1 = "891621366",
+		idle2 = "891633237",
+		jump = "891627522",
+		run = "891636393",
+		swim = "891639666",
+		swimIdle = "891663592",
+		walk = "891636393"
+	},
+	Vampire = {
+		climb = "1083439238",
+		fall = "1083443587",
+		idle1 = "1083445855",
+		idle2 = "1083450166",
+		jump = "1083455352",
+		run = "1083462077",
+		swim = "1083464683",
+		swimIdle = "1083467779",
+		walk = "1083473930"
+	},
+	Robot = {
+		climb = "616086039",
+		fall = "616087089",
+		idle1 = "616088211",
+		idle2 = "616089559",
+		jump = "616090535",
+		run = "616091570",
+		swim = "616092998",
+		swimIdle = "616094091",
+		walk = "616095330"
+	},
+	Levitation = {
+		climb = "616003713",
+		fall = "616005863",
+		idle1 = "616006778",
+		idle2 = "616008087",
+		jump = "616008936",
+		run = "616010382",
+		swim = "616011509",
+		swimIdle = "616012453",
+		walk = "616013216"
+	},
+	Bubbly = {
+		climb = "909997997",
+		fall = "910001910",
+		idle1 = "910004836",
+		idle2 = "910009958",
+		jump = "910016857",
+		run = "910025107",
+		swim = "910028158",
+		swimIdle = "910030921",
+		walk = "910034870"
+	},
+	Werewolf = {
+		climb = "1083182000",
+		fall = "1083189019",
+		idle1 = "1083195517",
+		idle2 = "1083214717",
+		jump = "1083218792",
+		run = "1083216690",
+		swim = "1083222527",
+		swimIdle = "1083225406",
+		walk = "1083178339"
+	},
+	Stylish = {
+		climb = "616133594",
+		fall = "616134815",
+		idle1 = "616136790",
+		idle2 = "616138447",
+		jump = "616139451",
+		run = "616140816",
+		swim = "616143378",
+		swimIdle = "616144772",
+		walk = "616146177"
+	},
+	Mage = {
+		climb = "707826056",
+		fall = "707829716",
+		idle1 = "707742142",
+		idle2 = "707855907",
+		jump = "707853694",
+		run = "707861613",
+		swim = "707876443",
+		swimIdle = "707894699",
+		walk = "707897309"
+	},
+	Cartoony = {
+		climb = "742636889",
+		fall = "742637151",
+		idle1 = "742637544",
+		idle2 = "742638445",
+		jump = "742637942",
+		run = "742638842",
+		swim = "742639220",
+		swimIdle = "742639812",
+		walk = "742640026"
+	},
+	Zombie = {
+		climb = "616156119",
+		fall = "616157476",
+		idle1 = "616158929",
+		idle2 = "616160636",
+		jump = "616161997",
+		run = "616163682",
+		swim = "616165109",
+		swimIdle = "616166655",
+		walk = "616168032"
+	},
+	Superhero = {
+		climb = "616104706",
+		fall = "616108001",
+		idle1 = "616111295",
+		idle2 = "616113536",
+		jump = "616115533",
+		run = "616117076",
+		swim = "616119360",
+		swimIdle = "616120861",
+		walk = "616122287"
+	},
+	Ninja = {
+		climb = "656114359",
+		fall = "656115606",
+		idle1 = "656117400",
+		idle2 = "656118341",
+		jump = "656117878",
+		run = "656118852",
+		swim = "656119721",
+		swimIdle = "656121397",
+		walk = "656121766"
+	},
+	Elder = {
+		climb = "845392038",
+		fall = "845396048",
+		idle1 = "845397899",
+		idle2 = "845400520",
+		jump = "845398858",
+		run = "845386501",
+		swim = "845401742",
+		swimIdle = "845403127",
+		walk = "845403856"
+	},
+	Oldschool = {
+		climb = "5319816685",
+		fall = "5319839762",
+		idle1 = "5319828216",
+		idle2 = "5319831086",
+		jump = "5319841935",
+		run = "5319844329",
+		swim = "5319850266",
+		swimIdle = "5319852613",
+		walk = "5319847204"
+	},
+	Adidas = {
+		climb = "18537363391",
+		fall = "18537367238",
+		idle1 = "18537376492",
+		idle2 = "18537371272",
+		jump = "18537380791",
+		run = "18537384940",
+		swim = "18537389531",
+		swimIdle = "18537387180",
+		walk = "18537392113"
+	}
+}
+local function setAnimation(character, animName, animId)
+    local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName)
+    if animObject then
+        if animObject:IsA("Animation") then
+            animObject.AnimationId = "http://www.roblox.com/asset/?id=" .. animId
+            if animObject:FindFirstChild("Weight") then
+                animObject.Weight.Value = 10
+            end
+        else
+            for _, child in ipairs(animObject:GetChildren()) do
+                if child:IsA("Animation") then
+                    child.AnimationId = "http://www.roblox.com/asset/?id=" .. animId
+                    if child:FindFirstChild("Weight") then
+                        child.Weight.Value = 10
+                    end
+                end
+            end
+        end
+    end
+end
+local selectedPack = nil
+Dropdown = Animations:CreateDropdown({SectionParent = SectionAnimpacks,Name = "Select Anim Pack",Options = {"Sneaky", "Bold", "Toy", "Knight", "Astronaut", "Vampire", "Robot", "Levitation", "Bubbly", "Werewolf", "Stylish", "Mage", "Cartoony", "Zombie", "Superhero", "Ninja", "Elder", "Oldschool", "Adidas"},CurrentOption = "Select an option",Callback = function(option)
+        selectedPack = option
+    end
+})
+Button = Animations:CreateButton({SectionParent = SectionAnimpacks,Name = "Apply Selected Anim Pack",Interact = "Click",Callback = function()
+	if r15(speaker) then
+        if selectedPack and animationPacks[selectedPack] then
+            local animations = animationPacks[selectedPack]
+            effecttrue()
+            NSUI:Notify({Title = "You've Executed The Script!",Content = ("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration = 3,Image = 7733715400})
+            local character = game.Players.LocalPlayer.Character
+            for animName, animId in pairs(animations) do
+                setAnimation(character, animName, animId)
+            end
+        else
+			effectfalse()
+            NSUI:Notify({Title = "Error!",Content = "Please Select A Valid Animation Pack.",Duration = 3,Image = 7733715400})
+        end
+	else
+		effectfalse()
+		NSUI:Notify({Title = "R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration = 3,Image = 7733715400})
+	end
+    end
+})
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -7161,119 +7487,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
-local TDS = Window:CreateTab("Tower Defense\nSimulator", 14716927183);
-Sectiontdstotal = TDS:CreateSection("Total Script's : 6", false, false, 7743869612);
-Paragraph = TDS:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontdstotal);
-if (game.PlaceId == 5591597781) then
-	Sectionautomatic = TDS:CreateSection("Automatic Script's", false, false, 10723415766);
-	Button = TDS:CreateButton({SectionParent=Sectionautomatic,Name="Auto Commander Chain",Interact="Click",Callback=function()
-		pcall(function()
-			loadstring(game:HttpGet("https://mmdevelopment.xyz/scripts/tdsautochain"))();
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-		end);
-	end});
-	Button = TDS:CreateButton({SectionParent=Sectionautomatic,Name="Auto Sell Farms At 40 , 50",Interact="Click",Callback=function()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-		effecttrue();
-		if not game:IsLoaded() then
-			game.Loaded:Wait();
-		end
-		if (game.PlaceId ~= 5591597781) then
-			return;
-		end
-		rf, id, StateReplicatorPath = game.ReplicatedStorage.RemoteFunction, speaker.UserId;
-		for i, v in pairs(game.ReplicatedStorage.StateReplicators:GetChildren()) do
-			if v:GetAttribute("Wave") then
-				StateReplicatorPath = v;
-				break;
-			end
-		end
-		StateReplicatorPath:GetAttributeChangedSignal("Wave"):Wait();
-		FinalWaveAtDifferentMode = {Easy=30,Normal=40,Insane=40,Hardcore=50};
-		FinalWave = FinalWaveAtDifferentMode[game.ReplicatedStorage.State.Difficulty.Value];
-		StateReplicatorPath:GetAttributeChangedSignal("Wave"):Connect(function()
-			if (StateReplicatorPath:GetAttribute("Wave") == FinalWave) then
-				for i, v in ipairs(workspace.Towers:GetChildren()) do
-					if ((v.Owner.Value == id) and (v.Replicator:GetAttribute("Type") == "Farm")) then
-						task.spawn(function()
-							rf:InvokeServer("Troops", "Sell", {Troop=v});
-						end);
-					end
-				end
-			end
-		end);
-	end});
-	Paragraph = TDS:CreateParagraph({Title="Auto Skip Note",Content="If The Skip Prompt Appears After You Enable It.\nYou Have To Click The Skip Button Then It Will Work"}, Sectionautomatic);
-	Toggle = TDS:CreateToggle({SectionParent=Sectionautomatic,Name="Auto Wave Skip",CurrentValue=false,Callback=function(Value)
-		shared.Autoskipenabled = Value;
-	end});
-	local SkipProperty = game:GetService("Players").LocalPlayer.PlayerGui.RoactGame.Vote.content.votes.vote;
-	SkipProperty:GetPropertyChangedSignal("IsNotOccluded"):Connect(function()
-		if (SkipProperty.IsNotOccluded and shared.Autoskipenabled) then
-			game:GetService("ReplicatedStorage").RemoteFunction:InvokeServer("Waves", "Skip");
-		end
-	end);
-	Sectionotherscriptstds = TDS:CreateSection("Other Script's", false, false, 10709759610);
-	Button = TDS:CreateButton({SectionParent=Sectionotherscriptstds,Name="Skip With E",Callback=function()
-		game:GetService("UserInputService").InputBegan:Connect(function(input, chatting)
-			if ((input.KeyCode == Enum.KeyCode.E) and not chatting) then
-				game.ReplicatedStorage.RemoteEvent:FireServer("Waves", "Skip");
-			end
-		end);
-	end});
-elseif (game.PlaceId == 3260590327) then
-	Sectiongointogametds = TDS:CreateSection("Go Into The Game!", true);
-	Label = TDS:CreateLabel("Go Into a Elevator / Game To See The Ingame Script's!", Sectiongojoibgametds);
-	Sectionlobbyscirpttds = TDS:CreateSection("Lobby Script's", false);
-	Button = TDS:CreateButton({SectionParent=Sectionlobbyscirpttds,Name="Show Everything That You Don't Own",Interact="Click",Callback=function()
-		Towers = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Root.Inventory.View.Frame.Frame.Frame;
-		for _, v in pairs(Towers:GetDescendants()) do
-			if v:IsA("ImageButton") then
-				v.Visible = true;
-			end
-		end
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content="Check Your Inventory!",Duration=3,Image=7733715400});
-	end});
-	Sectionlobbyscirpttdsplayerstats = TDS:CreateSection("Player Stat's", false);
-	Clickonplayer = TDS:CreateLabel("Click On a Player To Show Stat's", Sectionlobbyscirpttdsplayerstats);
-	Name = TDS:CreateLabel("Name: ", Sectionlobbyscirpttdsplayerstats);
-	Coins = TDS:CreateLabel("Coins: ", Sectionlobbyscirpttdsplayerstats);
-	Gems = TDS:CreateLabel("Gems: ", Sectionlobbyscirpttdsplayerstats);
-	Level = TDS:CreateLabel("Level: ", Sectionlobbyscirpttdsplayerstats);
-	Troops = TDS:CreateLabel("Troops: ", Sectionlobbyscirpttdsplayerstats);
-	JMouse.Button1Down:Connect(function()
-		model = JMouse.Target:FindFirstAncestorOfClass("Model");
-		player = speaker;
-		if model then
-			clickedPlayer = game.Players:GetPlayerFromCharacter(model);
-			if clickedPlayer then
-				player = game:GetService("Players")[clickedPlayer.Name];
-				Name:Set("Name: " .. clickedPlayer.Name);
-				Coins:Set("Coins: " .. player['Coins']['Value']);
-				Gems:Set("Gems: " .. player['Gems']['Value']);
-				Level:Set("Level: " .. player['Level']['Value']);
-				args = {[1]="Profiles",[2]="Download",[3]=player};
-				returnedPlayer = game:GetService("ReplicatedStorage").RemoteFunction:InvokeServer(unpack(args));
-				troopText = "Troops: ";
-				for i, v in pairs(returnedPlayer.Troops) do
-					if (i ~= 1) then
-						troopText = troopText .. ", ";
-					end
-					troopText = troopText .. v;
-				end
-				Troops:Set(troopText);
-			end
-		end
-	end);
-else
-	Sectiongojoibgametds = TDS:CreateSection("Go Join The Game", false, false, 14754300297);
-	Button = TDS:CreateButton({SectionParent=Sectiongojoibgametds,Name="Join Tower Defense",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(3260590327, LocalPlayer);
-	end});
-	Label = TDS:CreateLabel("Join The Game To See The Button's!", Sectiongojoibgametds);
-end
 MP = Window:CreateTab("Meepcity", 7733701625);
 Sectiontotalscmp = MP:CreateSection("Total Script's: 17", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
@@ -8343,313 +8556,10 @@ else
 	end});
 	Label = MM:CreateLabel("Join The Game To See The Button's!", Sectionjoingamemm);
 end
-local ESPTAB = Window:CreateTab("ESP", 7072716095);
-Sectionesp = ESPTAB:CreateSection("ESP", false, false, 10723346959);
-Sense = {whitelist={},sharedSettings={textSize=13,textFont=2,limitDistance=false,maxDistance=150,useTeamColor=false},teamSettings={enemy={enabled=false,box=false,boxColor={Color3.new(1, 0, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(1, 0, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(1, 0, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(1, 0, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(1, 0, 0),0}},friendly={enabled=false,box=false,boxColor={Color3.new(0, 1, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(0, 1, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(0, 1, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(0, 1, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(0, 1, 0),0}}}};
-Sense = loadstring(game:HttpGet("https://sirius.menu/sense"))();
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionesp,Name="Main ESP",CurrentValue=false,Callback=function(ESP)
-	pcall(function()
-		espfunc = ESP;
-		if espfunc then
-			Sense:Load();
-		end
-		if not espfunc then
-			Sense:Unload();
-		end
-	end);
-end});
-Sectionshared = ESPTAB:CreateSection("ESP Shared Settings", false, false, 10709759610);
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=13,Callback=function(Value)
-	Sense.sharedSettings.textSize = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Font",Range={0,10},Increment=1,Suffix="Font",CurrentValue=2,Callback=function(Value)
-	Sense.sharedSettings.textFont = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Limit Distance",CurrentValue=false,Callback=function(Value)
-	Sense.sharedSettings.limitDistance = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Max Distance",Range={0,10000},Increment=10,Suffix="Distance",CurrentValue=150,Callback=function(Value)
-	Sense.sharedSettings.maxDistance = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Use Team Color",Callback=function(Value)
-	Sense.sharedSettings.useTeamColor = Value;
-end});
-Sectionenemy = ESPTAB:CreateSection("ESP Enemy Settings", false, true, 10709759610);
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Enabled",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.enabled = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.box = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.boxColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.boxOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
-	Sense.teamSettings.enemy.boxOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.boxFill = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.boxFillColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthBar = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthyColor = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.dyingColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthBarOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthBarOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthText = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.box3d = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.box3dColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.name = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.nameColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.nameOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.nameOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.weapon = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.weaponColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.weaponOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.weaponOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.distance = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.distanceColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.distanceOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.distanceOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.tracer = Value;
-end});
-TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionenemy,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
-	Sense.teamSettings.enemy.tracerOrigin = Option;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.tracerColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.tracerOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.tracerOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrow = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowColor = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowSize = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowRadius = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.chams = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.chamsVisibleOnly = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.chamsFillColor = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.chamsOutlineColor = Value;
-end});
-Sectionfriendly = ESPTAB:CreateSection("ESP Friendly Settings", false, true, 10709759610);
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Enabled",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.enabled = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.box = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.boxColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.boxOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
-	Sense.teamSettings.friendly.boxOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.boxFill = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.boxFillColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthBar = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthyColor = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.dyingColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthBarOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthBarOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthText = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.box3d = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.box3dColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.name = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.nameColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.nameOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.nameOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.weapon = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.weaponColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.weaponOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.weaponOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.distance = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.distanceColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.distanceOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.distanceOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.tracer = Value;
-end});
-TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionfriendly,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
-	Sense.teamSettings.friendly.tracerOrigin = Option;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.tracerColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.tracerOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.tracerOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrow = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowColor = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowSize = Value;
-end});
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowRadius = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowOutline = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowOutlineColor = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.chams = Value;
-end});
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.chamsVisibleOnly = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.chamsFillColor = Value;
-end});
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.chamsOutlineColor = Value;
-end});
 CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit);
-Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Money Maker\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit);
+Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Shlex (For The ESP Called Sense)\nEdgeIY\nPigeon\nPeople From V3rmillion\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit);
 Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612);
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Added A Lot Of Thing's.\n> Made Keybind's Better\n> Made Dropdown's Instead of Input's"}, Sectionchangelog);
 Sectionpointofhub = CRD:CreateSection("Point", false, false, 8997386648);
@@ -8770,6 +8680,7 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderdinowalk:Set(1);
 	end);
 end);
+local hasAcceptedNightMode = false
 function CheckTimess()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
@@ -8777,12 +8688,17 @@ function CheckTimess()
 	elseif ((h >= 12) and (h < 20)) then
 		return;
 	else
+		if not hasAcceptedNightMode then
 		task.wait(5);
 		NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
-			TweenService:Create(game.Lighting, TweenInfo.new(0.7, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {ClockTime=0}):Play();
+			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+			hasAcceptedNightMode = true
 		end},nottrue={Name="Nah",Callback=function()
 			return;
 		end}}});
+	else
+		TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+	end
 		effectfriendjoin();
 	end
 end
