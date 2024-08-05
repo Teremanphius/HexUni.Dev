@@ -123,7 +123,7 @@ function effecttrue()
 	soundnotificationtrue = Instance.new("Sound");
 	soundnotificationtrue.SoundId = "rbxassetid://1555493683";
 	soundnotificationtrue.Looped = false;
-	soundnotificationtrue.Volume = 1;
+	soundnotificationtrue.Volume = 0.65;
 	soundnotificationtrue.Parent = workspace;
 	soundnotificationtrue:Play();
 end
@@ -131,7 +131,7 @@ function effectfalse()
 	soundnotificationfalse = Instance.new("Sound");
 	soundnotificationfalse.SoundId = "rbxassetid://1555324499";
 	soundnotificationfalse.Looped = false;
-	soundnotificationfalse.Volume = 1;
+	soundnotificationfalse.Volume = 0.65;
 	soundnotificationfalse.Parent = workspace;
 	soundnotificationfalse:Play();
 end
@@ -175,7 +175,7 @@ function effecttime()
 	soundnotificationtime = Instance.new("Sound");
 	soundnotificationtime.SoundId = "rbxassetid://6963032794";
 	soundnotificationtime.Looped = false;
-	soundnotificationtime.Volume = 1;
+	soundnotificationtime.Volume = 0.65;
 	soundnotificationtime.Parent = workspace;
 	soundnotificationtime:Play();
 end
@@ -183,7 +183,7 @@ function effectfriendjoin()
 	soundfriendjoin = Instance.new("Sound");
 	soundfriendjoin.SoundId = "rbxassetid://1862043663";
 	soundfriendjoin.Looped = false;
-	soundfriendjoin.Volume = 1;
+	soundfriendjoin.Volume = 0.65;
 	soundfriendjoin.Parent = workspace;
 	soundfriendjoin:Play();
 end
@@ -685,17 +685,17 @@ end});
 local function clicktpFunc()
 	pcall(function()
 		if JMouse.Target then
-		if (Humanoid and Humanoid.SeatPart) then
-			Humanoid.Sit = false;
-			task.wait(0.1);
+			if (Humanoid and Humanoid.SeatPart) then
+				Humanoid.Sit = false;
+				task.wait(0.1);
+			end
+			local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1);
+			local rootPart = getRoot(Character);
+			local rootPartPosition = rootPart.Position;
+			local hitPosition = JMouse.Hit.Position;
+			local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) * CFrame.Angles(0, math.pi, 0);
+			rootPart.CFrame = newCFrame + Vector3.new(0, hipHeight or 4, 0);
 		end
-		local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1);
-		local rootPart = getRoot(Character);
-		local rootPartPosition = rootPart.Position;
-		local hitPosition = JMouse.Hit.Position;
-		local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) * CFrame.Angles(0, math.pi, 0);
-		rootPart.CFrame = newCFrame + Vector3.new(0, hipHeight or 4, 0);
-	end
 	end);
 end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
@@ -986,7 +986,6 @@ end});
 Inputcfspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="CFrame Fly Speed",PlaceholderText=50,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	CFspeed = Text;
 end});
-Label = Misc:CreateLabel("Normal Fly",Sectionflights)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -1023,7 +1022,6 @@ end});
 Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",PlaceholderText=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	flyysspeed = Text;
 end});
-Label = Misc:CreateLabel("Vehicle Fly",Sectionflights)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -3382,7 +3380,7 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 		ball = character.HumanoidRootPart;
 		ball.Shape = Enum.PartType.Ball;
 		ballColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255));
-		ball.Color = ballColor
+		ball.Color = ballColor;
 		ball.Size = Vector3.new(7, 7, 7);
 		ball.Transparency = 0.5;
 		humanoid = character:WaitForChild("Humanoid");
@@ -3696,7 +3694,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Annoy == true) ) then
+				if (Annoy == true) then
 					Annoy = false;
 					effectfalse();
 					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -3715,14 +3713,14 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		end
 	end);
 end});
-local glued = false
+local glued = false;
 AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((glued == true) ) then
+				if (glued == true) then
 					glued = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -3733,7 +3731,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					effecttrue();
 					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					while glued do
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X,foundPlr.Character.HumanoidRootPart.Size.Y,speaker.Character.HumanoidRootPart.CFrame.lookVector.Z)
+						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X, foundPlr.Character.HumanoidRootPart.Size.Y, speaker.Character.HumanoidRootPart.CFrame.lookVector.Z);
 						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						game:GetService("RunService").RenderStepped:Wait();
@@ -3750,7 +3748,7 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((walkto == true) ) then
+				if (walkto == true) then
 					walkto = false;
 					effectfalse();
 					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -3760,8 +3758,8 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					effecttrue();
 					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					while walkto do
-						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position)
-						task.wait()
+						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position);
+						task.wait();
 					end
 				end
 			end
@@ -3775,7 +3773,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((StandOnHead == true) ) then
+				if (StandOnHead == true) then
 					StandOnHead = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -3819,7 +3817,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 		if foundPlr then
 			flwnum = -5;
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Follow == true) ) then
+				if (Follow == true) then
 					Follow = false;
 					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -3846,7 +3844,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (((LoopHello == true) and (trueforanim == true)) ) then
+				if ((LoopHello == true) and (trueforanim == true)) then
 					LoopHello = false;
 					trueforanim = false;
 					WaverDied:Disconnect();
@@ -3896,7 +3894,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((Carpettion == true) ) then
+					if (Carpettion == true) then
 						Carpettion = false;
 						effectfalse();
 						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -3933,7 +3931,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffhugger == true) ) then
+					if (ffhugger == true) then
 						ffhugger = false;
 						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
@@ -3956,7 +3954,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						end
 					end
 				end
-			elseif ((ffhugger == true) ) then
+			elseif (ffhugger == true) then
 				ffhugger = false;
 				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
@@ -3990,7 +3988,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((actualpb == true) ) then
+				if (actualpb == true) then
 					actualpb = false;
 					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -4018,7 +4016,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((besomebackpack == true) ) then
+				if (besomebackpack == true) then
 					besomebackpack = false;
 					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -4046,7 +4044,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((headsits == true) ) then
+				if (headsits == true) then
 					headsits = false;
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -4074,7 +4072,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 	if foundPlr then
 		if not r15(speaker) then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((baskets == true) ) then
+				if (baskets == true) then
 					baskets = false;
 					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -4095,7 +4093,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					end
 				end
 			end
-		elseif ((baskets == true) ) then
+		elseif (baskets == true) then
 			baskets = false;
 			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 			zomearm:Stop();
@@ -4130,7 +4128,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ActualHeadsit == true) ) then
+				if (ActualHeadsit == true) then
 					ActualHeadsit = false;
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
@@ -4160,7 +4158,7 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((issyncinganim == true) ) then
+				if (issyncinganim == true) then
 					charresettopos();
 					issyncinganim = false;
 					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4197,7 +4195,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((orbitingfuck == true) ) then
+			if (orbitingfuck == true) then
 				effectfalse();
 				orbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4253,7 +4251,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((closeorbitingfuck == true) ) then
+			if (closeorbitingfuck == true) then
 				effectfalse();
 				closeorbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4296,7 +4294,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			if ((lookingAt == true) ) then
+			if (lookingAt == true) then
 				lookingAt = false;
 				effectfalse();
 				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
@@ -4323,7 +4321,7 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
-			if ((spinaround == true) ) then
+			if (spinaround == true) then
 				effectfalse();
 				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
@@ -4371,7 +4369,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if not r15(speaker) then
-				if ((Bang69 == true) ) then
+				if (Bang69 == true) then
 					Bang69 = false;
 					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -4414,7 +4412,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						end
 					end
 				end
-			elseif ((Bang69 == true) ) then
+			elseif (Bang69 == true) then
 				Bang69 = false;
 				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
@@ -4506,7 +4504,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 		if foundPlr then
 			if not r15(speaker) then
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if ((ffc1hump == true) ) then
+					if (ffc1hump == true) then
 						ffc1hump = false;
 						speaker.Character.Humanoid.PlatformStand = false;
 						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4543,7 +4541,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						end
 					end
 				end
-			elseif ((ffc1hump == true) ) then
+			elseif (ffc1hump == true) then
 				ffc1hump = false;
 				speaker.Character.Humanoid.PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4622,7 +4620,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 		if foundPlr then
 			flwnum = -1;
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Bang == true) ) then
+				if (Bang == true) then
 					Follow = false;
 					v2banger:Stop();
 					v2bangerAnim:Destroy();
@@ -4669,7 +4667,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff2 == true) ) then
+				if (ff2 == true) then
 					ff2 = false;
 					facebanger:Stop();
 					facebangerAnim:Destroy();
@@ -4715,7 +4713,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ff == true) ) then
+				if (ff == true) then
 					ff = false;
 					Character.Humanoid.Sit = false;
 					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4748,7 +4746,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((Humping == true) ) then
+				if (Humping == true) then
 					Humping = false;
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -4791,7 +4789,7 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if ((ffc1 == true) ) then
+				if (ffc1 == true) then
 					ffc1 = false;
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4907,15 +4905,15 @@ end});
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt Overlay",CurrentValue=false,Callback=function(Value)
 	nohurtov = Value;
 	if nohurtov then
-		hurtOverlay = true
+		hurtOverlay = true;
 		game:GetService("CoreGui").TopBar.FullScreenFrame.HurtOverlay:GetPropertyChangedSignal("Visible"):Connect(function()
-		if hurtOverlay == true then
-			game:GetService("CoreGui").TopBar.FullScreenFrame.HurtOverlay.Visible = false
-		end
-	end)
+			if (hurtOverlay == true) then
+				game:GetService("CoreGui").TopBar.FullScreenFrame.HurtOverlay.Visible = false;
+			end
+		end);
 	end
 	if not nohurtov then
-		hurtOverlay = false
+		hurtOverlay = false;
 	end
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts);
@@ -5313,10 +5311,10 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoCli
 	pcall(function()
 		nccamsim = Value;
 		if nccamsim then
-			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 1
+			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 1;
 		end
 		if not nccamsim then
-			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 0
+			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 0;
 		end
 	end);
 end});
@@ -6185,301 +6183,104 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 end});
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
 	local copyAnimId = function(player)
-        local found = "Animations Copied"
-        for _, v in pairs(player.Character:FindFirstChildWhichIsA("Humanoid"):GetPlayingAnimationTracks()) do
-            local animationId = v.Animation.AnimationId
-            local assetId = animationId:find("rbxassetid://") and animationId:match("%d+")
-            if not string.find(animationId, "507768375") and not string.find(animationId, "180435571") then
-                if assetId then
-                    local success, result = pcall(function()
-                        return MarketplaceService:GetProductInfo(tonumber(assetId)).Name
-                    end)
-                    local name = success and result or "Failed to get name"
-                    found = found .. "\n\nName: " .. name .. "\nAnimation Id: " .. animationId
-                else
-                    found = found .. "\n\nAnimation Id: " .. animationId
-                end
-            end
-        end
-        if found ~= "Animations Copied" then
-            toClipboard(found)
+		local found = "Animations Copied";
+		for _, v in pairs(player.Character:FindFirstChildWhichIsA("Humanoid"):GetPlayingAnimationTracks()) do
+			local animationId = v.Animation.AnimationId;
+			local assetId = animationId:find("rbxassetid://") and animationId:match("%d+");
+			if (not string.find(animationId, "507768375") and not string.find(animationId, "180435571")) then
+				if assetId then
+					local success, result = pcall(function()
+						return MarketplaceService:GetProductInfo(tonumber(assetId)).Name;
+					end);
+					local name = (success and result) or "Failed to get name";
+					found = found .. "\n\nName: " .. name .. "\nAnimation Id: " .. animationId;
+				else
+					found = found .. "\n\nAnimation Id: " .. animationId;
+				end
+			end
+		end
+		if (found ~= "Animations Copied") then
+			toClipboard(found);
 			effecttrue();
 			NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400});
-        else
+		else
 			NSUI:Notify({Title="Didn't Copy Anim!",Content="No Animation's To Copy!",Duration=2,Image=7733715400});
 			effectfalse();
-        end
-    end
-	copyAnimId(speaker)
+		end
+	end;
+	copyAnimId(speaker);
 end});
 SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's R15", false, true, 11932783331);
-local animationPacks = {
-    Sneaky = {
-        climb = "1132461372",
-        fall = "1132469004",
-        idle1 = "1132473842",
-        idle2 = "1132477671",
-        jump = "1132489853",
-        run = "1132494274",
-        swim = "1132500520",
-        swimIdle = "1132506407",
-        walk = "1132510133"
-    },
-	Bold = {
-        climb = "16738332169",
-        fall = "16738333171",
-        idle1 = "16738333868",
-        idle2 = "16738334710",
-        jump = "16738336650",
-        run = "16738337225",
-        swim = "16738339158",
-        swimIdle = "16738339817",
-        walk = "16738340646"
-    },
-	Toy = {
-        climb = "782843869",
-        fall = "782846423",
-        idle1 = "782841498",
-        idle2 = "782845736",
-        jump = "782847020",
-        run = "782842708",
-        swim = "782844582",
-        swimIdle = "782845186",
-        walk = "782843345"
-    },
-	Pirate = {
-		climb = "750779899",
-		fall = "750780242",
-		idle1 = "750781874",
-		idle2 = "750782770",
-		jump = "750782230",
-		run = "750783738",
-		swim = "750784579",
-		swimIdle = "750785176",
-		walk = "750785693"
-	},
-	Knight = {
-		climb = "658360781",
-		fall = "657600338",
-		idle1 = "657595757",
-		idle2 = "657568135",
-		jump = "658409194",
-		run = "657564596",
-		swim = "657560551",
-		swimIdle = "657557095",
-		walk = "657552124"
-	},
-	Astronaut = {
-		climb = "891609353",
-		fall = "891617961",
-		idle1 = "891621366",
-		idle2 = "891633237",
-		jump = "891627522",
-		run = "891636393",
-		swim = "891639666",
-		swimIdle = "891663592",
-		walk = "891636393"
-	},
-	Vampire = {
-		climb = "1083439238",
-		fall = "1083443587",
-		idle1 = "1083445855",
-		idle2 = "1083450166",
-		jump = "1083455352",
-		run = "1083462077",
-		swim = "1083464683",
-		swimIdle = "1083467779",
-		walk = "1083473930"
-	},
-	Robot = {
-		climb = "616086039",
-		fall = "616087089",
-		idle1 = "616088211",
-		idle2 = "616089559",
-		jump = "616090535",
-		run = "616091570",
-		swim = "616092998",
-		swimIdle = "616094091",
-		walk = "616095330"
-	},
-	Levitation = {
-		climb = "616003713",
-		fall = "616005863",
-		idle1 = "616006778",
-		idle2 = "616008087",
-		jump = "616008936",
-		run = "616010382",
-		swim = "616011509",
-		swimIdle = "616012453",
-		walk = "616013216"
-	},
-	Bubbly = {
-		climb = "909997997",
-		fall = "910001910",
-		idle1 = "910004836",
-		idle2 = "910009958",
-		jump = "910016857",
-		run = "910025107",
-		swim = "910028158",
-		swimIdle = "910030921",
-		walk = "910034870"
-	},
-	Werewolf = {
-		climb = "1083182000",
-		fall = "1083189019",
-		idle1 = "1083195517",
-		idle2 = "1083214717",
-		jump = "1083218792",
-		run = "1083216690",
-		swim = "1083222527",
-		swimIdle = "1083225406",
-		walk = "1083178339"
-	},
-	Stylish = {
-		climb = "616133594",
-		fall = "616134815",
-		idle1 = "616136790",
-		idle2 = "616138447",
-		jump = "616139451",
-		run = "616140816",
-		swim = "616143378",
-		swimIdle = "616144772",
-		walk = "616146177"
-	},
-	Mage = {
-		climb = "707826056",
-		fall = "707829716",
-		idle1 = "707742142",
-		idle2 = "707855907",
-		jump = "707853694",
-		run = "707861613",
-		swim = "707876443",
-		swimIdle = "707894699",
-		walk = "707897309"
-	},
-	Cartoony = {
-		climb = "742636889",
-		fall = "742637151",
-		idle1 = "742637544",
-		idle2 = "742638445",
-		jump = "742637942",
-		run = "742638842",
-		swim = "742639220",
-		swimIdle = "742639812",
-		walk = "742640026"
-	},
-	Zombie = {
-		climb = "616156119",
-		fall = "616157476",
-		idle1 = "616158929",
-		idle2 = "616160636",
-		jump = "616161997",
-		run = "616163682",
-		swim = "616165109",
-		swimIdle = "616166655",
-		walk = "616168032"
-	},
-	Superhero = {
-		climb = "616104706",
-		fall = "616108001",
-		idle1 = "616111295",
-		idle2 = "616113536",
-		jump = "616115533",
-		run = "616117076",
-		swim = "616119360",
-		swimIdle = "616120861",
-		walk = "616122287"
-	},
-	Ninja = {
-		climb = "656114359",
-		fall = "656115606",
-		idle1 = "656117400",
-		idle2 = "656118341",
-		jump = "656117878",
-		run = "656118852",
-		swim = "656119721",
-		swimIdle = "656121397",
-		walk = "656121766"
-	},
-	Elder = {
-		climb = "845392038",
-		fall = "845396048",
-		idle1 = "845397899",
-		idle2 = "845400520",
-		jump = "845398858",
-		run = "845386501",
-		swim = "845401742",
-		swimIdle = "845403127",
-		walk = "845403856"
-	},
-	Oldschool = {
-		climb = "5319816685",
-		fall = "5319839762",
-		idle1 = "5319828216",
-		idle2 = "5319831086",
-		jump = "5319841935",
-		run = "5319844329",
-		swim = "5319850266",
-		swimIdle = "5319852613",
-		walk = "5319847204"
-	},
-	Adidas = {
-		climb = "18537363391",
-		fall = "18537367238",
-		idle1 = "18537376492",
-		idle2 = "18537371272",
-		jump = "18537380791",
-		run = "18537384940",
-		swim = "18537389531",
-		swimIdle = "18537387180",
-		walk = "18537392113"
-	}
-}
+local animationPacks = {Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"}};
 local function setAnimation(character, animName, animId)
-    local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName)
-    if animObject then
-        if animObject:IsA("Animation") then
-            animObject.AnimationId = "http://www.roblox.com/asset/?id=" .. animId
-            if animObject:FindFirstChild("Weight") then
-                animObject.Weight.Value = 10
-            end
-        else
-            for _, child in ipairs(animObject:GetChildren()) do
-                if child:IsA("Animation") then
-                    child.AnimationId = "http://www.roblox.com/asset/?id=" .. animId
-                    if child:FindFirstChild("Weight") then
-                        child.Weight.Value = 10
-                    end
-                end
-            end
-        end
-    end
-end
-local selectedPack = nil
-Dropdown = Animations:CreateDropdown({SectionParent = SectionAnimpacks,Name = "Select Anim Pack",Options = {"Sneaky", "Bold", "Toy", "Knight", "Astronaut", "Vampire", "Robot", "Levitation", "Bubbly", "Werewolf", "Stylish", "Mage", "Cartoony", "Zombie", "Superhero", "Ninja", "Elder", "Oldschool", "Adidas"},CurrentOption = "Select an option",Callback = function(option)
-        selectedPack = option
-    end
-})
-Button = Animations:CreateButton({SectionParent = SectionAnimpacks,Name = "Apply Selected Anim Pack",Interact = "Click",Callback = function()
-	if r15(speaker) then
-        if selectedPack and animationPacks[selectedPack] then
-            local animations = animationPacks[selectedPack]
-            effecttrue()
-            NSUI:Notify({Title = "You've Executed The Script!",Content = ("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration = 3,Image = 7733715400})
-            local character = game.Players.LocalPlayer.Character
-            for animName, animId in pairs(animations) do
-                setAnimation(character, animName, animId)
-            end
-        else
-			effectfalse()
-            NSUI:Notify({Title = "Error!",Content = "Please Select A Valid Animation Pack.",Duration = 3,Image = 7733715400})
-        end
-	else
-		effectfalse()
-		NSUI:Notify({Title = "R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration = 3,Image = 7733715400})
+	local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName);
+	if animObject then
+		if animObject:IsA("Animation") then
+			animObject.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
+			if animObject:FindFirstChild("Weight") then
+				animObject.Weight.Value = 10;
+			end
+		else
+			for _, child in ipairs(animObject:GetChildren()) do
+				if child:IsA("Animation") then
+					child.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
+					if child:FindFirstChild("Weight") then
+						child.Weight.Value = 10;
+					end
+				end
+			end
+		end
 	end
-    end
-})
+end
+local function applyIdleAnimations(character, idle1Id, idle2Id)
+	local animate = character:FindFirstChild("Animate");
+	if animate then
+		local idle = animate:FindFirstChild("idle");
+		if idle then
+			local idle1Anim = idle:FindFirstChild("Animation1");
+			local idle2Anim = idle:FindFirstChild("Animation2");
+			if idle1Anim then
+				idle1Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle1Id;
+				if idle1Anim:FindFirstChild("Weight") then
+					idle1Anim.Weight.Value = 10;
+				end
+			end
+			if idle2Anim then
+				idle2Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle2Id;
+				if idle2Anim:FindFirstChild("Weight") then
+					idle2Anim.Weight.Value = 10;
+				end
+			end
+		end
+	end
+end
+local selectedPack = nil;
+Dropdown = Animations:CreateDropdown({SectionParent=SectionAnimpacks,Name="Select Anim Pack",Options={"Sneaky","Bold","Toy","Knight","Astronaut","Vampire","Robot","Levitation","Bubbly","Werewolf","Stylish","Mage","Cartoony","Zombie","Superhero","Ninja","Elder","Oldschool","Adidas"},CurrentOption="Select an option",Callback=function(option)
+	selectedPack = option;
+end});
+Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Apply Selected Anim Pack",Interact="Click",Callback=function()
+	if r15(speaker) then
+		if (selectedPack and animationPacks[selectedPack]) then
+			local animations = animationPacks[selectedPack];
+			effecttrue();
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+			local character = game.Players.LocalPlayer.Character;
+			for animName, animId in pairs(animations) do
+				if ((animName == "idle1") or (animName == "idle2")) then
+					applyIdleAnimations(character, animations.idle1, animations.idle2);
+				else
+					setAnimation(character, animName, animId);
+				end
+			end
+		else
+			effectfalse();
+			NSUI:Notify({Title="Error!",Content="Please Select A Valid Animation Pack.",Duration=3,Image=7733715400});
+		end
+	else
+		effectfalse();
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
+	end
+end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -6534,125 +6335,53 @@ Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's"
 Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
 		edance1Slider:Set(1);
-		edance2Slider:Set(1);
-		edance3Slider:Set(1);
 	end);
 end});
-dance1on = false;
-Toggleedance1 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="/e Dance1 R6 & R15",CurrentValue=false,Callback=function(Value)
+local eedances = {Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"}};
+local selectedPackdance = nil;
+local currentAnimation = nil;
+local currentAnimationTrack = nil;
+local animationPlaying = false;
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name="Select /e Dance",Options={"Dance1","Dance2","Dance3"},CurrentOption="Select an option",Callback=function(option)
+	selectedPackdance = option;
+	if currentAnimationTrack then
+		currentAnimationTrack:Stop();
+		currentAnimationTrack:Destroy();
+		currentAnimationTrack = nil;
+	end
+	animationPlaying = false;
+	Toggleedance12:Set(false);
+end});
+Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="Play Selected /e Dance",CurrentValue=false,Callback=function(Value)
+	if not selectedPackdance then
+		return;
+	end
+	local danceIds = eedances[selectedPackdance];
+	if Value then
+		local animId = (r15(speaker) and danceIds.R15) or danceIds.R6;
+		currentAnimation = Instance.new("Animation");
+		currentAnimation.AnimationId = animId;
+		currentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(currentAnimation);
+		currentAnimationTrack:Play(0.1, 10, 1);
+		animationPlaying = true;
+		speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			Toggleedance1:Set(false);
+		end);
+	elseif currentAnimationTrack then
+		currentAnimationTrack:Stop();
+		currentAnimationTrack:Destroy();
+		currentAnimationTrack = nil;
+		animationPlaying = false;
+	end
+end});
+edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
-		eedancerfee = Value;
-		if eedancerfee then
-			dance1on = true;
-			edance1Anim = Instance.new("Animation");
-			if not r15(speaker) then
-				edance1Anim.AnimationId = "rbxassetid://182491065";
-			else
-				edance1Anim.AnimationId = "rbxassetid://507771955";
-			end
-			edance1 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(edance1Anim);
-			edance1:Play(0.1, 10, 1);
-			edance1Died = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				edance1Died:Disconnect();
-				edance1:Stop();
-				edance1Anim:Destroy();
-				Toggleedance1:Set(false);
-			end);
-		end
-		if not eedancerfee then
-			dance1on = false;
-			edance1Died:Disconnect();
-			edance1:Stop();
-			edance1Anim:Destroy();
-		end
+		currentAnimationTrack:AdjustSpeed(Value);
 	end);
 end});
-edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance1 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		edance1:AdjustSpeed(Value);
-	end);
-end});
-edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance1 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		edance1:AdjustSpeed(Text);
-	end);
-end});
-dance2on = false;
-Toggleedance2 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="/e Dance2 R6 & R15",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		eedancerfe = Value;
-		if eedancerfe then
-			dance2on = true;
-			edance2Anim = Instance.new("Animation");
-			if not r15(speaker) then
-				edance2Anim.AnimationId = "rbxassetid://182491277";
-			else
-				edance2Anim.AnimationId = "rbxassetid://507776879";
-			end
-			edance2 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(edance2Anim);
-			edance2:Play(0.1, 10, 1);
-			edance2Died = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				edance2Died:Disconnect();
-				edance2:Stop();
-				edance2Anim:Destroy();
-				Toggleedance2:Set(false);
-			end);
-		end
-		if not eedancerfe then
-			dance2on = false;
-			edance2Died:Disconnect();
-			edance2:Stop();
-			edance2Anim:Destroy();
-		end
-	end);
-end});
-edance2Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance2 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		edance2:AdjustSpeed(Value);
-	end);
-end});
-edance2Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance2 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		edance2:AdjustSpeed(Text);
-	end);
-end});
-dance3on = false;
-Toggleedance3 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="/e Dance3 R6 & R15",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		eedancerfe3 = Value;
-		if eedancerfe3 then
-			dance3on = true;
-			edance3Anim = Instance.new("Animation");
-			if not r15(speaker) then
-				edance3Anim.AnimationId = "rbxassetid://182491368";
-			else
-				edance3Anim.AnimationId = "rbxassetid://507777268";
-			end
-			edance3 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(edance3Anim);
-			edance3:Play(0.1, 10, 1);
-			edance3Died = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				edance3Died:Disconnect();
-				edance3:Stop();
-				edance2Anim:Destroy();
-				Toggleedance3:Set(false);
-			end);
-		end
-		if not eedancerfe3 then
-			dance3on = false;
-			edance3Died:Disconnect();
-			edance3:Stop();
-			edance3Anim:Destroy();
-		end
-	end);
-end});
-edance3Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance3 Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		edance3:AdjustSpeed(Value);
-	end);
-end});
-edance3Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance3 Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		edance3:AdjustSpeed(Text);
+		currentAnimationTrack:AdjustSpeed(Text);
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Cheer R6 & R15",Interact="Click",Callback=function()
@@ -6670,752 +6399,105 @@ Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e 
 		cheranim:Destroy();
 	end);
 end});
+Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Point R6 & R15",Interact="Click",Callback=function()
+	cheranim = Instance.new("Animation");
+	if not r15(speaker) then
+		cheranim.AnimationId = "rbxassetid://128853357";
+	else
+		cheranim.AnimationId = "rbxassetid://507770453";
+	end
+	ccheer = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cheranim);
+	ccheer:Play(0.1, 10, 1);
+	cherdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+		cherdied:Disconnect();
+		ccheer:Stop();
+		cheranim:Destroy();
+	end);
+end});
+Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Wave R6 & R15",Interact="Click",Callback=function()
+	cheranim = Instance.new("Animation");
+	if not r15(speaker) then
+		cheranim.AnimationId = "rbxassetid://128777973";
+	else
+		cheranim.AnimationId = "rbxassetid://507770239";
+	end
+	ccheer = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cheranim);
+	ccheer:Play(0.1, 10, 1);
+	cherdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+		cherdied:Disconnect();
+		ccheer:Stop();
+		cheranim:Destroy();
+	end);
+end});
 Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
 Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
-		bangerSlider:Set(1);
-		Slidermovindanc:Set(1);
-		Sliderrandance:Set(1);
-		Slidermonsterdanc:Set(1);
-		Sliderfulsiwing:Set(1);
-		Sliderpuncha:Set(1);
-		Sliderdinowalk:Set(1);
-		Slidersidetoside:Set(1)
+		AnimpSlider:Set(1)
 	end);
 end});
-Togglebanganim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Bang R6 & R15",CurrentValue=false,Callback=function(Value)
+Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
+Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
+local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true}};
+local selectedPackanim = nil;
+local acurrentAnimation = nil;
+local acurrentAnimationTrack = nil;
+local aanimationPlaying = false;
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms"},CurrentOption="Select an option",Callback=function(option)
+	selectedPackanim = option;
+	if acurrentAnimationTrack then
+		acurrentAnimationTrack:Stop();
+		acurrentAnimationTrack:Destroy();
+		acurrentAnimationTrack = nil;
+	end
+	aanimationPlaying = false;
+	Toggleeanimation:Set(false);
+	local danceIds = testdances[selectedPackanim];
+	if danceIds.AllowSpeedChange then
+		AnimpSlider:Unlock();
+		AnimpInput:Unlock();
+	else
+		AnimpSlider:Lock("Locked");
+		AnimpInput:Lock("Locked");
+	end
+end});
+Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Play Selected Anim",CurrentValue=false,Callback=function(Value)
+	if not selectedPackanim then
+		return;
+	end
+	local danceIds = testdances[selectedPackanim];
+	if Value then
+		local animId;
+		if (selectedPackanim == "Random Dance") then
+			local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)];
+			local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)];
+			animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6);
+		else
+			animId = (r15(speaker) and danceIds.R15) or danceIds.R6;
+		end
+		acurrentAnimation = Instance.new("Animation");
+		acurrentAnimation.AnimationId = animId;
+		acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation);
+		acurrentAnimationTrack:Play(0.1, 10, danceIds.Speed);
+		acurrentAnimationTrack.Looped = danceIds.Looped;
+		aanimationPlaying = true;
+		speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			Toggleeanimation:Set(false);
+		end);
+	elseif acurrentAnimationTrack then
+		acurrentAnimationTrack:Stop();
+		acurrentAnimationTrack:Destroy();
+		acurrentAnimationTrack = nil;
+		aanimationPlaying = false;
+	end
+end});
+AnimpSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
-		febangerion = Value;
-		if febangerion then
-			cbangerAnim = Instance.new("Animation");
-			if not r15(speaker) then
-				cbangerAnim.AnimationId = "rbxassetid://148840371";
-			else
-				cbangerAnim.AnimationId = "rbxassetid://5918726674";
-			end
-			cbanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cbangerAnim);
-			cbanger:Play(0.1, 1, 1);
-			cbangerDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				cbangerDied:Disconnect();
-				cbanger:Stop();
-				cbangerAnim:Destroy();
-				Togglebanganim:Set(false);
-			end);
-		end
-		if not febangerion then
-			cbangerDied:Disconnect();
-			cbanger:Stop();
-			cbangerAnim:Destroy();
-		end
+		acurrentAnimationTrack:AdjustSpeed(Value);
 	end);
 end});
-bangerSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+AnimpInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		cbanger:AdjustSpeed(Value);
-	end);
-end});
-bangerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Bang Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		cbanger:AdjustSpeed(Text);
-	end);
-end});
-dancerion = false;
-Togglemovingdancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Moving Dance R6 & R15",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		dancer = Value;
-		if dancer then
-			dancerion = true;
-			dancerAnim = Instance.new("Animation");
-			if not r15(speaker) then
-				dancerAnim.AnimationId = "rbxassetid://429703734";
-			else
-				dancerAnim.AnimationId = "rbxassetid://1379432998";
-			end
-				dancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(dancerAnim);
-				dancerr:Play(0.1, 10, 1);
-				dancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					dancerrr:Disconnect();
-					dancerr:Stop();
-					dancerAnim:Destroy();
-					Togglemovingdancer:Set(false);
-				end);
-		end
-		if not dancer then
-			dancerion = false;
-			dancerrr:Disconnect();
-			dancerr:Stop();
-			dancerAnim:Destroy();
-		end
-	end);
-end});
-Slidermovindanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Moving Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		dancerr:AdjustSpeed(Value);
-	end);
-end});
-dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Moving Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		dancerr:AdjustSpeed(Text);
-	end);
-end});
-dancesidetoside = false;
-Togglesidedancer = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Side To Side Dance R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		sidedancer = Value;
-		if sidedancer then
-			dancesidetoside = true;
-			if not r15(speaker) then
-				sidedancerAnim = Instance.new("Animation");
-				sidedancerAnim.AnimationId = "rbxassetid://429699657";
-				sidedancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(sidedancerAnim);
-				sidedancerr:Play(0.1, 10, 1);
-				sidedancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					sidedancerrr:Disconnect();
-					sidedancerr:Stop();
-					sidedancerAnim:Destroy();
-					Togglesidedancer:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not sidedancer then
-			dancesidetoside = false;
-			sidedancerrr:Disconnect();
-			sidedancerr:Stop();
-			sidedancerAnim:Destroy();
-		end
-	end);
-end});
-Slidersidetoside = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Side To Side Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		sidedancerr:AdjustSpeed(Value);
-	end);
-end});
-dancerInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Side To Side Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		sidedancerr:AdjustSpeed(Text);
-	end);
-end});
-Togglerandance = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Random Dance R6 & R15",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		randomizedance = Value;
-		if randomizedance then
-			if r15(speaker) then
-				randomstringdances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
-			else
-				randomstringdances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
-			end
-			animation = Instance.new("Animation");
-			animation.AnimationId = "rbxassetid://" .. randomstringdances[math.random(1, #randomstringdances)];
-			danceTrack = speaker.Character:FindFirstChildWhichIsA("Humanoid"):LoadAnimation(animation);
-			danceTrack.Looped = true;
-			danceTrack:Play(0.1, 10, 1);
-			randancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				randancerrr:Disconnect();
-				danceTrack:Stop();
-				animation:Destroy();
-				Togglerandance:Set(false);
-			end);
-		end
-		if not randomizedance then
-			danceTrack:Stop();
-			danceTrack:Destroy();
-			randancerrr:Disconnect();
-		end
-	end);
-end});
-Sliderrandance = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Random Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		randance:AdjustSpeed(Value);
-	end);
-end});
-Inputrandance = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Random Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		randance:AdjustSpeed(Text);
-	end);
-end});
-monsterdancefrrr = false;
-Togglemonstermasher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Monster Mash Dance R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		monsterdancer = Value;
-		if monsterdancer then
-			monsterdancefrrr = true;
-			if not r15(speaker) then
-				monsterdancerAnim = Instance.new("Animation");
-				monsterdancerAnim.AnimationId = "rbxassetid://35654637";
-				monsterdancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(monsterdancerAnim);
-				monsterdancerr:Play(0.1, 1, 1);
-				monsterdancerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					monsterdancerrr:Disconnect();
-					monsterdancerr:Stop();
-					monsterdancerAnim:Destroy();
-					Togglemonstermasher:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not monsterdancer then
-			monsterdancefrrr = false;
-			monsterdancerrr:Disconnect();
-			monsterdancerr:Stop();
-			monsterdancerAnim:Destroy();
-		end
-	end);
-end});
-Slidermonsterdanc = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		monsterdancerr:AdjustSpeed(Value);
-	end);
-end});
-Inputmonster = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Monster Mash Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		monsterdancerr:AdjustSpeed(Text);
-	end);
-end});
-fullswingrfr = false;
-Togglefullswing = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Full Swing R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		fullswingV = Value;
-		if fullswingV then
-			fullswingrfr = true;
-			if not r15(speaker) then
-				FullswAnim = Instance.new("Animation");
-				FullswAnim.AnimationId = "rbxassetid://218504594";
-				fullswingr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(FullswAnim);
-				fullswingr:Play(0.1, 1, 1);
-				fullswingr.Looped = true;
-				fullswinga = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					fullswinga:Disconnect();
-					fullswingr:Stop();
-					FullswAnim:Destroy();
-					Togglefullswing:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not fullswingV then
-			fullswingrfr = false;
-			fullswinga:Disconnect();
-			fullswingr:Stop();
-			FullswAnim:Destroy();
-		end
-	end);
-end});
-Sliderfulsiwing = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Full Swing Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		fullswingr:AdjustSpeed(Value);
-	end);
-end});
-Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Full Swing Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		fullswingr:AdjustSpeed(Text);
-	end);
-end});
-punchs = false;
-Togglepunch = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Punch R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		punchV = Value;
-		if punchV then
-			punchs = true;
-			if not r15(speaker) then
-				Punchanim = Instance.new("Animation");
-				Punchanim.AnimationId = "rbxassetid://204062532";
-				punchr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Punchanim);
-				punchr:Play(0.1, 1, 1);
-				punchr.Looped = true;
-				puncha = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					puncha:Disconnect();
-					punchr:Stop();
-					Punchanim:Destroy();
-					Togglepunch:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not punchV then
-			punchs = false;
-			puncha:Disconnect();
-			punchr:Stop();
-			Punchanim:Destroy();
-		end
-	end);
-end});
-Sliderpuncha = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Punch Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		punchr:AdjustSpeed(Value);
-	end);
-end});
-Input = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Punch Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		punchr:AdjustSpeed(Text);
-	end);
-end});
-dinowalkerrra = false;
-Toggledinowalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Dino Walk R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		dinowalker = Value;
-		if dinowalker then
-			dinowalkerrra = true;
-			if not r15(speaker) then
-				dinowalkerAnim = Instance.new("Animation");
-				dinowalkerAnim.AnimationId = "rbxassetid://204328711";
-				dinowalkerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(dinowalkerAnim);
-				dinowalkerr:Play(0.1, 1, 1);
-				dinowalkerrr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					dinowalkerrr:Disconnect();
-					dinowalkerr:Stop();
-					dinowalkerAnim:Destroy();
-					Toggledinowalk:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not dinowalker then
-			dinowalkerrra = false;
-			dinowalkerrr:Disconnect();
-			dinowalkerr:Stop();
-			dinowalkerAnim:Destroy();
-		end
-	end);
-end});
-Sliderdinowalk = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Dino Walk Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		dinowalkerr:AdjustSpeed(Value);
-	end);
-end});
-Inputdinowalker = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Dino Walk Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		dinowalkerr:AdjustSpeed(Text);
-	end);
-end});
-Togglecarpetanim = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Carpet R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		fecarpetion = Value;
-		if fecarpetion then
-			if not r15(speaker) then
-				carpetAnim = Instance.new("Animation");
-				carpetAnim.AnimationId = "rbxassetid://282574440";
-				carpet = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim);
-				carpet:Play(0.1, 1, 1);
-				carpetDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					carpet:Stop();
-					carpetAnim:Destroy();
-					carpetDied:Disconnect();
-					Togglecarpetanim:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not fecarpetion then
-			carpetDied:Disconnect();
-			carpet:Stop();
-			carpetAnim:Destroy();
-		end
-	end);
-end});
-ToggleStaffwalk = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Staff Walk R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		dinowalker = Value;
-		if dinowalker then
-			if not r15(speaker) then
-				staffwalkeranim = Instance.new("Animation");
-				staffwalkeranim.AnimationId = "rbxassetid://27759788";
-				staffwalker = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(staffwalkeranim);
-				staffwalker:Play(0.1, 1, 1);
-				staffwalkerr = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					staffwalkerr:Disconnect();
-					staffwalker:Stop();
-					staffwalkeranim:Destroy();
-					ToggleStaffwalk:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not dinowalker then
-			staffwalkerr:Disconnect();
-			staffwalker:Stop();
-			staffwalkeranim:Destroy();
-		end
-	end);
-end});
-Togglespasm = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Spasm R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		spastic = Value;
-		if spastic then
-			if not r15(speaker) then
-				spasmAnim = Instance.new("Animation");
-				spasmAnim.AnimationId = "rbxassetid://33796059";
-				spasmm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(spasmAnim);
-				spasmm:Play();
-				spasmm:AdjustSpeed(99);
-				spamisitic = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					spamisitic:Disconnect();
-					spasmm:Stop();
-					spasmAnim:Destroy();
-					Togglespasm:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not spastic then
-			spasmm:Stop();
-			spasmAnim:Destroy();
-			spamisitic:Disconnect();
-		end
-	end);
-end});
-Togglecloneillu = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Clone Illusion R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		clonerillusion = Value;
-		if clonerillusion then
-			if not r15(speaker) then
-				cloneillusionAnim = Instance.new("Animation");
-				cloneillusionAnim.AnimationId = "rbxassetid://215384594";
-				cloneillu = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cloneillusionAnim);
-				cloneillu:Play(0.5, 1, 10000000);
-				cloneillu:AdjustSpeed(9999);
-				colni = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					colni:Disconnect();
-					cloneillu:Stop();
-					cloneillusionAnim:Destroy();
-					Togglecloneillu:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not clonerillusion then
-			cloneillu:Stop();
-			cloneillusionAnim:Destroy();
-			colni:Disconnect();
-		end
-	end);
-end});
-Toggleglitchjump = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Glitch Jump R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		glitchingjump = Value;
-		if glitchingjump then
-			if not r15(speaker) then
-				glitchjumpAnim = Instance.new("Animation");
-				glitchjumpAnim.AnimationId = "rbxassetid://184574340";
-				glitchjump = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(glitchjumpAnim);
-				while task.wait() do
-					if (glitchjump.IsPlaying == false) then
-						if glitchingjump then
-							glitchjump:Play(0.5, 1, 40);
-						end
-					end
-				end
-				glithhhy = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					glithhhy:Disconnect();
-					glitchjump:Stop();
-					glitchjumpAnim:Destroy();
-					Toggleglitchjump:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not glitchingjump then
-			glitchjump:Stop();
-			glithhhy:Disconnect();
-			glitchjumpAnim:Destroy();
-		end
-	end);
-end});
-Toggleglitchlevi = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Glitch Levitate R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		glitchleviii = Value;
-		if glitchleviii then
-			if not r15(speaker) then
-				glitchleviAnim = Instance.new("Animation");
-				glitchleviAnim.AnimationId = "rbxassetid://313762630";
-				glitchlevi = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(glitchleviAnim);
-				glitchlevi:Play(0.5, 1, 10000000);
-				glitchlevi:AdjustSpeed(9999);
-				glithhhyee = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					glithhhyee:Disconnect();
-					glitchlevi:Stop();
-					glitchleviAnim:Destroy();
-					Toggleglitchlevi:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not glitchleviii then
-			glitchlevi:Stop();
-			glitchleviAnim:Destroy();
-			glithhhyee:Disconnect();
-		end
-	end);
-end});
-Togglefainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Faint R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		fainterrr = Value;
-		if fainterrr then
-			if not r15(speaker) then
-				faintAnim = Instance.new("Animation");
-				faintAnim.AnimationId = "rbxassetid://181526230";
-				faintt = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(faintAnim);
-				faintt:Play(0.5, 1, 10000000);
-				faintt:AdjustSpeed(9999);
-				faintntnt = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					faintntnt:Disconnect();
-					faintt:Stop();
-					faintAnim:Destroy();
-					Togglefainter:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not fainterrr then
-			faintt:Stop();
-			faintAnim:Destroy();
-			faintntnt:Disconnect();
-		end
-	end);
-end});
-Togglesuperfainter = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Super Faint R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		superfainterrr = Value;
-		if superfainterrr then
-			if not r15(speaker) then
-				superfaintAnim = Instance.new("Animation");
-				superfaintAnim.AnimationId = "rbxassetid://181525546";
-				superfaintt = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(superfaintAnim);
-				while task.wait() do
-					if (superfaintt.IsPlaying == false) then
-						if superfainterrr then
-							superfaintt:Play(0.5, 1, 40);
-						end
-					end
-				end
-				faintntssnt = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					faintntssnt:Disconnect();
-					superfaintt:Stop();
-					superfaintAnim:Destroy();
-					Togglesuperfainter:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not superfainterrr then
-			superfaintt:Stop();
-			superfaintAnim:Destroy();
-			faintntssnt:Disconnect();
-		end
-	end);
-end});
-Togglearmtubine = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Arm Turbine R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		armturbine = Value;
-		if armturbine then
-			if not r15(speaker) then
-				armturbineAnim = Instance.new("Animation");
-				armturbineAnim.AnimationId = "rbxassetid://259438880";
-				armturb = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(armturbineAnim);
-				armturb:Play(0.5, 1, 10000000);
-				armturb:AdjustSpeed(9999);
-				armturbsss = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					armturbsss:Disconnect();
-					armturb:Stop();
-					armturbineAnim:Destroy();
-					Togglearmtubine:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not armturbine then
-			armturb:Stop();
-			armturbineAnim:Destroy();
-			armturbsss:Disconnect();
-		end
-	end);
-end});
-Togglearmdetacher = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Arm Detach R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		armdetacherrr = Value;
-		if armdetacherrr then
-			if not r15(speaker) then
-				armdetachAnim = Instance.new("Animation");
-				armdetachAnim.AnimationId = "rbxassetid://33169583";
-				armdetach = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(armdetachAnim);
-				while task.wait() do
-					if (armdetach.IsPlaying == false) then
-						if armdetacherrr then
-							armdetach:Play(0.1, 1, 1000000);
-						end
-					end
-				end
-				armturbsssdeat = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					armturbsssdeat:Disconnect();
-					armdetach:Stop();
-					armdetachAnim:Destroy();
-					Togglearmdetacher:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not armdetacherrr then
-			armdetach:Stop();
-			armturbsssdeat:Disconnect();
-			armdetachAnim:Destroy();
-		end
-	end);
-end});
-Toggleinsanelegs = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Insane Leg's R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		insanelegger = Value;
-		if insanelegger then
-			if not r15(speaker) then
-				insanelegsAnim = Instance.new("Animation");
-				insanelegsAnim.AnimationId = "rbxassetid://87986341";
-				insanelegs = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(insanelegsAnim);
-				while task.wait() do
-					if (insanelegs.IsPlaying == false) then
-						if insanelegger then
-							insanelegs:Play(0.1, 1, 1000000);
-						end
-					end
-				end
-				insanelegsdi = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					insanelegsdi:Disconnect();
-					insanelegs:Stop();
-					insanelegsAnim:Destroy();
-					Toggleinsanelegs:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not insanelegger then
-			insanelegs:Stop();
-			insanelegsdi:Disconnect();
-			insanelegsAnim:Destroy();
-		end
-	end);
-end});
-Togglepinchnose = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Pinch Nose R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		pinchnoser = Value;
-		if pinchnoser then
-			if not r15(speaker) then
-				pinchnoseAnim = Instance.new("Animation");
-				pinchnoseAnim.AnimationId = "rbxassetid://30235165";
-				pinchnose = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(pinchnoseAnim);
-				while task.wait() do
-					if (pinchnose.IsPlaying == false) then
-						if pinchnoser then
-							pinchnose:Play(0.1, 1, 1);
-						end
-					end
-				end
-				pinchnosejg = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					pinchnosejg:Disconnect();
-					pinchnose:Stop();
-					pinchnoseAnim:Destroy();
-					Togglepinchnose:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not pinchnoser then
-			pinchnose:Stop();
-			pinchnosejg:Disconnect();
-			pinchnoseAnim:Destroy();
-		end
-	end);
-end});
-Togglefloatinghead = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Floating Head R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		floatingheader = Value;
-		if floatingheader then
-			if not r15(speaker) then
-				floatingheadAnim = Instance.new("Animation");
-				floatingheadAnim.AnimationId = "rbxassetid://121572214";
-				floathead = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(floatingheadAnim);
-				while task.wait() do
-					if (floathead.IsPlaying == false) then
-						if floatingheader then
-							floathead:Play(0.1, 1, 1);
-						end
-					end
-				end
-				floatingheheh = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					floatingheheh:Disconnect();
-					floathead:Stop();
-					floatingheadAnim:Destroy();
-					Togglefloatinghead:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not floatingheader then
-			floathead:Stop();
-			floatingheheh:Disconnect();
-			floatingheadAnim:Destroy();
-		end
-	end);
-end});
-Togglezombiearmss = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Zombie Arm's R6",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		zombiearmss = Value;
-		if zombiearmss then
-			if not r15(speaker) then
-				zombiearmsAnim = Instance.new("Animation");
-				zombiearmsAnim.AnimationId = "rbxassetid://183294396";
-				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
-				zomearm:Play();
-				zomearm:AdjustSpeed(0);
-				zomearmss = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					zomearmss:Disconnect();
-					zomearm:Stop();
-					zombiearmsAnim:Destroy();
-					Togglezombiearmss:Set(false);
-				end);
-			else
-				effectfalse();
-				NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-			end
-		end
-		if not zombiearmss then
-			zomearmss:Disconnect();
-			zomearm:Stop();
-			zombiearmsAnim:Destroy();
-		end
+		acurrentAnimationTrack:AdjustSpeed(Text);
 	end);
 end});
 Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="HeadThrow R6",Interact="Click",Callback=function()
@@ -8587,6 +7669,11 @@ task.spawn(function()
 		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 	end
 end);
+Button = CRD:CreateButton({SectionParent=Sectionclientinfo,Name="Print Executor Level",Interact="Click",Callback=function()
+	printidentity();
+	effecttrue();
+	NSUI:Notify({Title="Printed!",Content="Press F9 To see Your Executor Level!",Duration=3,Image=7733715400});
+end});
 Sectionfriendinfo = CRD:CreateSection("Friend Information", false, false, 7743876054);
 Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(friendsallfr .. "\n" .. friendsofflinefr .. "\n" .. friendsonlinefr .. "\n" .. friendsinserverfr .. "")}, Sectionfriendinfo);
 task.spawn(function()
@@ -8680,7 +7767,7 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderdinowalk:Set(1);
 	end);
 end);
-local hasAcceptedNightMode = false
+local hasAcceptedNightMode = false;
 function CheckTimess()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
@@ -8689,16 +7776,16 @@ function CheckTimess()
 		return;
 	else
 		if not hasAcceptedNightMode then
-		task.wait(5);
-		NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+			task.wait(5);
+			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+				hasAcceptedNightMode = true;
+			end},nottrue={Name="Nah",Callback=function()
+				return;
+			end}}});
+		else
 			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
-			hasAcceptedNightMode = true
-		end},nottrue={Name="Nah",Callback=function()
-			return;
-		end}}});
-	else
-		TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
-	end
+		end
 		effectfriendjoin();
 	end
 end
