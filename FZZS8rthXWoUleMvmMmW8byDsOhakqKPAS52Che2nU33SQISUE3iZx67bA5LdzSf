@@ -4997,17 +4997,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Int
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content="Chat Spy On!",Duration=6,Image=7733715400});
 end});
-Sectionmiscworldscripts = Miscclient:CreateSection("LocalPlayer Related | World (Client)", false, false, 10709806631);
-origsettingsbrightness = {sliderbright=game.Lighting.Brightness};
-Buttonresetworld = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Reset World Values",Interact="Click",Callback=function()
-	pcall(function()
-		Colorpickerskybox:Set(Color3.fromRGB(0, 0, 0));
-		Colorpickerskyboxoutdfor:Set(Color3.fromRGB(0, 0, 0));
-		Sliderbright:Set(5);
-		Sliderranggerrr:Set(30);
-	end);
-end});
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Night And Day",CurrentValue=false,Callback=function(Value)
+Sectionmisctimescripts = Miscclient:CreateSection("LocalPlayer Related | Time (Client)", false, false, 10709805144);
+Toggle = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Night And Day",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		daytonight = Value;
 		if daytonight then
@@ -5016,6 +5007,26 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Ni
 		if not daytonight then
 			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=12}):Play();
 		end
+	end);
+end});
+SliderTOD = Miscclient:CreateSlider({SectionParent=Sectionmisctimescripts,Name="Time Of Day",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
+	pcall(function()
+		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Value}):Play();
+	end);
+end});
+Input = Miscclient:CreateInput({SectionParent=Sectionmisctimescripts,Name="Time Of Day",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
+	end);
+end});
+Sectionmiscworldscripts = Miscclient:CreateSection("LocalPlayer Related | World (Client)", false, false, 10709806631);
+origsettingsbrightness = {sliderbright=game.Lighting.Brightness};
+Buttonresetworld = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Reset World Values",Interact="Click",Callback=function()
+	pcall(function()
+		Colorpickerskybox:Set(Color3.fromRGB(0, 0, 0));
+		Colorpickerskyboxoutdfor:Set(Color3.fromRGB(0, 0, 0));
+		Sliderbright:Set(5);
+		Sliderranggerrr:Set(30);
 	end);
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Full Bright",Interact="Click",Callback=function()
@@ -5074,16 +5085,6 @@ Colorpickerskybox = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworld
 end});
 Colorpickerskyboxoutdfor = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworldscripts,Name="Outdoor Ambient Color Picker",Color=Color3.fromRGB(0, 0, 0),Callback=function(Value)
 	TweenService:Create(game.Lighting, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {OutdoorAmbient=Value}):Play();
-end});
-SliderTOD = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Time Of Day",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
-	pcall(function()
-		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Value}):Play();
-	end);
-end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Time Of Day",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
-	end);
 end});
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Very Low GFX",Interact="Click",Callback=function()
 	decalsyeeted = true;
@@ -5146,6 +5147,7 @@ end});
 lightrangee = 30;
 lightbrightness = 5;
 lightinger = false;
+lightColorr = Color3.fromRGB(255, 255, 255)
 Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Light",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		lightroot = Value;
@@ -5157,6 +5159,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 				while task.wait() do
 					light.Range = lightrangee;
 					light.Brightness = lightbrightness;
+					light.Color = lightColorr
 				end
 			end);
 		end
@@ -5169,6 +5172,16 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 			end
 		end
 	end);
+end});
+Colorpicker = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworldscripts,Name="Light Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
+	lightColorr = Value;
+	if lightroot then
+		for i, v in pairs(speaker.Character:GetDescendants()) do
+			if (v.ClassName == "PointLight") then
+				v.Color = lightColor;
+			end
+		end
+	end
 end});
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Change Light Brightness",Range={0,20},Increment=1,Suffix="Brightness",CurrentValue=5,Callback=function(Value)
 	lightbrightness = Value;
@@ -5261,7 +5274,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 		end
 	end);
 end});
-Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Of Day Loop (Client)", false, true, 10709806631);
+Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709806631);
 todvalue = 12;
 Label = Misc:CreateLabel("Set A Value First Then Enable", Sectiontodloop);
 Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
@@ -6282,18 +6295,26 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Apply Sel
 	end
 end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
+Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Anim Player Values",Interact="Click",Callback=function()
+	Slideranimplr:Set(1);
+end});
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		Animplr = Instance.new("Animation");
 		Animplr.AnimationId = "rbxassetid://" .. Text .. "";
 	end);
 end});
+AnimPlayerlooped = false
 Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play / Stop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		animplrlr = Value;
 		if animplrlr then
 			animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr);
 			animpla:Play(0.1, 10, 1);
+			while true do
+				animpla.Looped = AnimPlayerlooped
+				task.wait()
+			end
 			animplrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 				animplrDied:Disconnect();
 				animpla:Stop();
@@ -6308,12 +6329,23 @@ Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play
 		end
 	end);
 end});
-Slider = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation Animation",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		AnimPlayer = Value;
+		if AnimPlayer then
+			AnimPlayerlooped = true
+		end
+		if not AnimPlayer then
+			AnimPlayerlooped = false
+		end
+	end);
+end});
+Slideranimplr = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		animpla:AdjustSpeed(Value);
 	end);
 end});
-Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputanimplr = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		animpla:AdjustSpeed(Text);
 	end);
@@ -6337,12 +6369,12 @@ Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Ani
 		edance1Slider:Set(1);
 	end);
 end});
-local eedances = {Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"}};
+local eedances = {Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"},Cheer={R6="rbxassetid://129423030",R15="rbxassetid://507770677"},Point={R6="rbxassetid://128853357",R15="rbxassetid://507770453"},Wave={R6="rbxassetid://128777973",R15="rbxassetid://507770239"}};
 local selectedPackdance = nil;
 local currentAnimation = nil;
 local currentAnimationTrack = nil;
 local animationPlaying = false;
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name="Select /e Dance",Options={"Dance1","Dance2","Dance3"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name="Select \"/e\" Anim",Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},CurrentOption="Select an option",Callback=function(option)
 	selectedPackdance = option;
 	if currentAnimationTrack then
 		currentAnimationTrack:Stop();
@@ -6352,7 +6384,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name=
 	animationPlaying = false;
 	Toggleedance12:Set(false);
 end});
-Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="Play Selected /e Dance",CurrentValue=false,Callback=function(Value)
+Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="Play Selected \"/e\" Anim",CurrentValue=false,Callback=function(Value)
 	if not selectedPackdance then
 		return;
 	end
@@ -6374,59 +6406,14 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 		animationPlaying = false;
 	end
 end});
-edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="/e Dance Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="\"/e\" Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		currentAnimationTrack:AdjustSpeed(Value);
 	end);
 end});
-edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="/e Dance Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="\"/e\" Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		currentAnimationTrack:AdjustSpeed(Text);
-	end);
-end});
-Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Cheer R6 & R15",Interact="Click",Callback=function()
-	cheranim = Instance.new("Animation");
-	if not r15(speaker) then
-		cheranim.AnimationId = "rbxassetid://129423030";
-	else
-		cheranim.AnimationId = "rbxassetid://507770677";
-	end
-	ccheer = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cheranim);
-	ccheer:Play(0.1, 10, 1);
-	cherdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-		cherdied:Disconnect();
-		ccheer:Stop();
-		cheranim:Destroy();
-	end);
-end});
-Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Point R6 & R15",Interact="Click",Callback=function()
-	cheranim = Instance.new("Animation");
-	if not r15(speaker) then
-		cheranim.AnimationId = "rbxassetid://128853357";
-	else
-		cheranim.AnimationId = "rbxassetid://507770453";
-	end
-	ccheer = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cheranim);
-	ccheer:Play(0.1, 10, 1);
-	cherdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-		cherdied:Disconnect();
-		ccheer:Stop();
-		cheranim:Destroy();
-	end);
-end});
-Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="/e Wave R6 & R15",Interact="Click",Callback=function()
-	cheranim = Instance.new("Animation");
-	if not r15(speaker) then
-		cheranim.AnimationId = "rbxassetid://128777973";
-	else
-		cheranim.AnimationId = "rbxassetid://507770239";
-	end
-	ccheer = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(cheranim);
-	ccheer:Play(0.1, 10, 1);
-	cherdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-		cherdied:Disconnect();
-		ccheer:Stop();
-		cheranim:Destroy();
 	end);
 end});
 Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
@@ -6437,12 +6424,12 @@ Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values
 end});
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
-local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true}};
+local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},["Taunt"]={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},["Pray"]={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},["Summon"]={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},["Drink"]={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}};
 local selectedPackanim = nil;
 local acurrentAnimation = nil;
 local acurrentAnimationTrack = nil;
 local aanimationPlaying = false;
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink"},CurrentOption="Select an option",Callback=function(option)
 	selectedPackanim = option;
 	if acurrentAnimationTrack then
 		acurrentAnimationTrack:Stop();
@@ -6499,40 +6486,6 @@ AnimpInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Anim Spe
 	pcall(function()
 		acurrentAnimationTrack:AdjustSpeed(Text);
 	end);
-end});
-Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="HeadThrow R6",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		HeadThrowAnim = Instance.new("Animation");
-		HeadThrowAnim.AnimationId = "rbxassetid://35154961";
-		headthrowk = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(HeadThrowAnim);
-		headthrowk:Play(0);
-		headthrowk:AdjustSpeed(1);
-	else
-		effectfalse();
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-	end
-end});
-Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="KickBoard R6",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		monsterdancerAnim = Instance.new("Animation");
-		monsterdancerAnim.AnimationId = "rbxassetid://160737244";
-		monsterdancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(monsterdancerAnim);
-		monsterdancerr:Play(0.1, 1, 1);
-	else
-		effectfalse();
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-	end
-end});
-Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Taunt R6",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		monsterdancerAnim = Instance.new("Animation");
-		monsterdancerAnim.AnimationId = "rbxassetid://74901237";
-		monsterdancerr = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(monsterdancerAnim);
-		monsterdancerr:Play(0.1, 1, 1);
-	else
-		effectfalse();
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=6,Image=7733715400});
-	end
 end});
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610);
 Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Sectionotherfeanimssc);
@@ -7731,7 +7684,9 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Toggleedgerjumper:Set(false);
 		Toggleweaken:Set(false);
 		Toggleswimmer:Set(false);
+		Slidercuranimspeed:Set(1);
 		Togglespinner:Set(false);
+		Toggleedance12:Set(false);
 		Sliderspinspeed:Set(20);
 		Sliderwalkloop:Set(16);
 		Sliderjumploop:Set(7);
@@ -7756,35 +7711,29 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderfov:Set(70);
 		Togglefreezecurrentanims:Set(false);
 		edance1Slider:Set(1);
-		edance2Slider:Set(1);
-		edance3Slider:Set(1);
-		bangerSlider:Set(1);
-		Slidermovindanc:Set(1);
-		Sliderrandance:Set(1);
-		Slidermonsterdanc:Set(1);
-		Sliderfulsiwing:Set(1);
-		Sliderpuncha:Set(1);
-		Sliderdinowalk:Set(1);
+		AnimpSlider:Set(1)
 	end);
 end);
-local hasAcceptedNightMode = false;
+
 function CheckTimess()
+	local currentTime = game.Lighting.ClockTime
+    local lowerBound = 6
+    local upperBound = 18
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
 		return;
 	elseif ((h >= 12) and (h < 20)) then
 		return;
 	else
-		if not hasAcceptedNightMode then
+		if currentTime >= lowerBound and currentTime <= upperBound then
 			task.wait(5);
 			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
-				hasAcceptedNightMode = true;
 			end},nottrue={Name="Nah",Callback=function()
 				return;
 			end}}});
 		else
-			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+			return
 		end
 		effectfriendjoin();
 	end
