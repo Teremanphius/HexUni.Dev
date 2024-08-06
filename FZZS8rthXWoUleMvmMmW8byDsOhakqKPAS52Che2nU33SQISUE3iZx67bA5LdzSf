@@ -51,7 +51,7 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
 Scriptcount = "191";
-ScriptcountAnim = "61";
+ScriptcountAnim = "64";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
@@ -5011,13 +5011,37 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Nig
 end});
 SliderTOD = Miscclient:CreateSlider({SectionParent=Sectionmisctimescripts,Name="Time Of Day",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
 	pcall(function()
-		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Value}):Play();
+		TweenService:Create(game.Lighting, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Value}):Play();
 	end);
 end});
 Input = Miscclient:CreateInput({SectionParent=Sectionmisctimescripts,Name="Time Of Day",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
+		TweenService:Create(game.Lighting, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
 	end);
+end});
+Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709806631);
+todvalue = 12;
+Label = Misc:CreateLabel("Set A Value First Then Enable", Sectiontodloop);
+Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		todloop = Value;
+		if todloop then
+			todlooper = RunService.Heartbeat:Connect(function()
+				game.Lighting.ClockTime=todvalue
+			end);
+		end
+		if not todloop then
+			todlooper:Disconnect();
+		end
+	end);
+end});
+Sliderf = Miscclient:CreateSlider({SectionParent=Sectiontodloop,Name="Time Of Day Loop",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
+	pcall(function()
+		todvalue = Value;
+	end);
+end});
+Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day Loop",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	todvalue = Text;
 end});
 Sectionmiscworldscripts = Miscclient:CreateSection("LocalPlayer Related | World (Client)", false, false, 10709806631);
 origsettingsbrightness = {sliderbright=game.Lighting.Brightness};
@@ -5273,30 +5297,6 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 			end
 		end
 	end);
-end});
-Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709806631);
-todvalue = 12;
-Label = Misc:CreateLabel("Set A Value First Then Enable", Sectiontodloop);
-Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		todloop = Value;
-		if todloop then
-			todlooper = RunService.Heartbeat:Connect(function()
-				TweenService:Create(game.Lighting, TweenInfo.new(1.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=todvalue}):Play();
-			end);
-		end
-		if not todloop then
-			todlooper:Disconnect();
-		end
-	end);
-end});
-Sliderf = Miscclient:CreateSlider({SectionParent=Sectiontodloop,Name="Time Of Day Loop",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
-	pcall(function()
-		todvalue = Value;
-	end);
-end});
-Input = Miscclient:CreateInput({SectionParent=Sectiontodloop,Name="Time Of Day Loop",OnEnter=true,PlaceholderText=math.floor(game.Lighting.ClockTime),NumbersOnly=true,CharacterLimit=2,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	todvalue = Text;
 end});
 Sectioncamera = Miscclient:CreateSection("LocalPlayer Related | Camera (Client)", false, false, 10709789686);
 camzoomdistanceholder = {speaker.CameraMaxZoomDistance,speaker.CameraMinZoomDistance};
@@ -7729,8 +7729,16 @@ function CheckTimess()
 			task.wait(5);
 			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+				task.wait(1.2)
+				todnigthmodeloop = RunService.Heartbeat:Connect(function()
+					game.Lighting.ClockTime=todvalue
+				end);
 			end},nottrue={Name="Nah",Callback=function()
-				return;
+				if todnigthmodeloop then
+					todnigthmodeloop:Disconnect()
+				else
+					return
+				end
 			end}}});
 		else
 			return
