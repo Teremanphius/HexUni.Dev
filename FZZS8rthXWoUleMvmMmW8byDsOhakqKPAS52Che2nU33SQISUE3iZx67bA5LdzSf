@@ -479,7 +479,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 		_G.connections['nofall'] = nil;
 	end
 end});
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=true,Callback=function(Value)
+Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		antiwindowafk = Value;
 		if antiwindowafk then
@@ -6587,7 +6587,6 @@ MP = Window:CreateTab("Meepcity", 7733701625);
 Sectiontotalscmp = MP:CreateSection("Total Script's: 17", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
 if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
-	Constants = require(ReplicatedStorage:WaitForChild("Constants"));
 	MarketplaceService = game:GetService("MarketplaceService");
 	Connection = ReplicatedStorage:WaitForChild("Connection");
 	ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
