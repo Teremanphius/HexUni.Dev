@@ -34,6 +34,7 @@ GameSettings = UserSettings():GetService("UserGameSettings");
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
+movers = {}
 Camera = workspace.CurrentCamera;
 a = game:HttpGet("http://ip-api.com/json/");
 b = game:GetService("HttpService"):JSONDecode(a);
@@ -215,124 +216,64 @@ local function onPlayerAdded(Player)
 	end
 end
 playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded);
-QEfly = false;
 flying = false;
-flyysspeed = 3;
-vehicleflyspeed = 3;
-function sFLY(vfly)
-	repeat
-		wait();
-	until speakers.LocalPlayer and speaker.Character and getRoot(speaker.Character) and speaker.Character:FindFirstChildOfClass("Humanoid") 
-	repeat
-		wait();
-	until JMouse 
-	if (flyKeyDown or flyKeyUp) then
-		flyKeyDown:Disconnect();
-		flyKeyUp:Disconnect();
-	end
-	local T = getRoot(speaker.Character);
-	local CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
-	local lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
-	local SPEED = 0;
-	local function FLY()
-		flying = true;
-		local BG = Instance.new("BodyGyro");
-		local BV = Instance.new("BodyVelocity");
-		BG.P = 90000;
-		BG.Parent = T;
-		BV.Parent = T;
-		BG.maxTorque = Vector3.new(8999999488, 8999999488, 8999999488);
-		BG.cframe = T.CFrame;
-		BV.velocity = Vector3.new(0, 0, 0);
-		BV.maxForce = Vector3.new(8999999488, 8999999488, 8999999488);
-		task.spawn(function()
-			repeat
-				wait();
-				if (not vfly and speaker.Character:FindFirstChildOfClass("Humanoid")) then
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-				end
-				if (((CONTROL.L + CONTROL.R) ~= 0) or ((CONTROL.F + CONTROL.B) ~= 0) or ((CONTROL.Q + CONTROL.E) ~= 0)) then
-					SPEED = 50;
-				elseif (not (((CONTROL.L + CONTROL.R) ~= 0) or ((CONTROL.F + CONTROL.B) ~= 0) or ((CONTROL.Q + CONTROL.E) ~= 0)) and (SPEED ~= 0)) then
-					SPEED = 0;
-				end
-				if (((CONTROL.L + CONTROL.R) ~= 0) or ((CONTROL.F + CONTROL.B) ~= 0) or ((CONTROL.Q + CONTROL.E) ~= 0)) then
-					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED;
-					lCONTROL = {F=CONTROL.F,B=CONTROL.B,L=CONTROL.L,R=CONTROL.R};
-				elseif (((CONTROL.L + CONTROL.R) == 0) and ((CONTROL.F + CONTROL.B) == 0) and ((CONTROL.Q + CONTROL.E) == 0) and (SPEED ~= 0)) then
-					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED;
-				else
-					BV.velocity = Vector3.new(0, 0, 0);
-				end
-				local tiltCFrame = CFrame.Angles(math.rad(CONTROL.TiltX), 0, math.rad(CONTROL.TiltY));
-				TweenService:Create(BG, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {cframe=(workspace.CurrentCamera.CoordinateFrame * tiltCFrame)}):Play();
-			until not flying 
-			CONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
-			lCONTROL = {F=0,B=0,L=0,R=0,Q=0,E=0,TiltX=0,TiltY=0};
-			SPEED = 0;
-			BG:Destroy();
-			BV:Destroy();
-			if speaker.Character:FindFirstChildOfClass("Humanoid") then
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+alwaysfalses = false
+flyspeed = 3;
+RunService.Heartbeat:Connect(function()
+	local primaryPart = Character and Character.PrimaryPart
+	if primaryPart then
+		local bodyVelocity, bodyGyro = unpack(movers)
+		if not bodyVelocity then
+			bodyVelocity = Instance.new("BodyVelocity")
+			bodyVelocity.MaxForce = Vector3.one * 9e9
+			bodyGyro = Instance.new("BodyGyro")
+			bodyGyro.MaxTorque = Vector3.one * 9e9
+			bodyGyro.P = 9e4
+			local bodyAngularVelocity = Instance.new("BodyAngularVelocity")
+			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 9e9
+			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 9e9
+			bodyAngularVelocity.P = 9e9
+			movers = { bodyVelocity, bodyGyro, bodyAngularVelocity }
+		end
+		if flying then
+			local camCFrame = Camera.CFrame
+			local velocity = Vector3.zero
+			local rotation = camCFrame.Rotation
+			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+				velocity += camCFrame.LookVector
+				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
 			end
-		end);
-	end
-	flyKeyDown = JMouse.KeyDown:Connect(function(KEY)
-		if (KEY:lower() == "w") then
-			CONTROL.F = (vfly and vehicleflyspeed) or flyysspeed;
-			CONTROL.TiltX = -45;
-		elseif (KEY:lower() == "s") then
-			CONTROL.B = -((vfly and vehicleflyspeed) or flyysspeed);
-			CONTROL.TiltX = 45;
-		elseif (KEY:lower() == "a") then
-			CONTROL.L = -((vfly and vehicleflyspeed) or flyysspeed);
-			CONTROL.TiltY = 45;
-		elseif (KEY:lower() == "d") then
-			CONTROL.R = (vfly and vehicleflyspeed) or flyysspeed;
-			CONTROL.TiltY = -45;
-		elseif (QEfly and (KEY:lower() == "e")) then
-			CONTROL.Q = ((vfly and vehicleflyspeed) or flyysspeed) * 2;
-		elseif (QEfly and (KEY:lower() == "q")) then
-			CONTROL.E = -((vfly and vehicleflyspeed) or flyysspeed) * 2;
+			if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+				velocity -= camCFrame.LookVector
+				rotation *= CFrame.Angles(math.rad(40), 0, 0)
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+				velocity += camCFrame.RightVector
+				rotation *= CFrame.Angles(0, 0, math.rad(-40))
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+				velocity -= camCFrame.RightVector
+				rotation *= CFrame.Angles(0, 0, math.rad(40))
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+				velocity += Vector3.yAxis
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+				velocity -= Vector3.yAxis
+			end
+			local tweenInfo = TweenInfo.new(0.5)
+			TweenService:Create(bodyVelocity, tweenInfo, { Velocity = velocity * flyspeed * 45 }):Play()
+			bodyVelocity.Parent = primaryPart
+			if not alwaysfalses then
+			TweenService:Create(bodyGyro, tweenInfo, { CFrame = rotation }):Play()
+			bodyGyro.Parent = primaryPart
+			end
+		else
+			bodyVelocity.Parent = nil
+			bodyGyro.Parent = nil
 		end
-		pcall(function()
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Track;
-		end);
-	end);
-	flyKeyUp = JMouse.KeyUp:Connect(function(KEY)
-		if (KEY:lower() == "w") then
-			CONTROL.F = 0;
-			CONTROL.TiltX = 0;
-		elseif (KEY:lower() == "s") then
-			CONTROL.B = 0;
-			CONTROL.TiltX = 0;
-		elseif (KEY:lower() == "a") then
-			CONTROL.L = 0;
-			CONTROL.TiltY = 0;
-		elseif (KEY:lower() == "d") then
-			CONTROL.R = 0;
-			CONTROL.TiltY = 0;
-		elseif (KEY:lower() == "e") then
-			CONTROL.Q = 0;
-		elseif (KEY:lower() == "q") then
-			CONTROL.E = 0;
-		end
-	end);
-	FLY();
-end
-function NOFLY()
-	flying = false;
-	if (flyKeyDown or flyKeyUp) then
-		flyKeyDown:Disconnect();
-		flyKeyUp:Disconnect();
 	end
-	if speaker.Character:FindFirstChildOfClass("Humanoid") then
-		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-	end
-	pcall(function()
-		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom;
-	end);
-end
+end)
 UpdatedFPS = false;
 RunService.RenderStepped:Connect(function(step)
 	local fps = 1 / step;
@@ -991,9 +932,19 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 		flying = Value;
 		if flying then
 			flying = true;
-			sFLY();
+			FlyingLoop = RunService.Stepped:Connect(function()
+				pcall(function()
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+				end)
+			end)
 		else
 			flying = false;
+			if FlyingLoop then
+				FlyingLoop:Disconnect()
+			end
+			pcall(function()
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+			end)
 		end
 	end);
 end});
@@ -1002,9 +953,19 @@ fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind"
 	normalfly = not normalfly;
 	if normalfly then
 		flying = true;
-		sFLY();
+		FlyingLoop = RunService.Stepped:Connect(function()
+			pcall(function()
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+			end)
+		end)
 	else
 		flying = false;
+		if FlyingLoop then
+			FlyingLoop:Disconnect()
+		end
+		pcall(function()
+			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+		end)
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind",Callback=function()
@@ -1014,19 +975,19 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind
 		fLYKeybind:Set("Set Keybind");
 	end);
 end});
-Sliderflyspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="Fly Speed",Range={1,15},Increment=1,Suffix="Fly Speed",CurrentValue=3,Callback=function(Value)
+Sliderflyspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="Fly Speed",Range={1,25},Increment=1,Suffix="Fly Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
-		flyysspeed = Value;
+		flyspeed = Value;
 	end);
 end});
 Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",PlaceholderText=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	flyysspeed = Text;
+	flyspeed = Text;
 end});
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
 		if flying then
-			sFLY(true);
+			flying = true
 		else
 			flying = false;
 		end
@@ -1036,7 +997,7 @@ vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybin
 	normalvehiclefly = KeyBind;
 	normalvehiclefly = not normalvehiclefly;
 	if normalvehiclefly then
-		sFLY(true);
+		flying = true
 	else
 		flying = false;
 	end
@@ -1050,11 +1011,11 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle Fly
 end});
 Slidervehicleflyspeed = Misc:CreateSlider({SectionParent=Sectionflights,Name="Vehicle Fly Speed",Range={1,15},Increment=1,Suffix="Vehicle Fly Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
-		vehicleflyspeed = Value;
+		flyspeed = Value;
 	end);
 end});
 Inputvehicleflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Vehicle Fly Speed",PlaceholderText=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	vehicleflyspeed = Text;
+	flyspeed = Text;
 end});
 Sectionplayerealtefunc = Misc:CreateSection("FE LocalPlayer Related | Function's & Keybind's", false, false, 10686489468);
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Break Velocity",Interact="Click",Callback=function()
@@ -1120,10 +1081,10 @@ SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Ke
 	sprints = not sprints;
 	if sprints then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play();
-		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2), {FieldOfView=95}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=95}):Play();
 	else
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=16}):Play();
-		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.2), {FieldOfView=70}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=70}):Play();
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sprint Keybind",Callback=function()
@@ -4166,12 +4127,6 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 					ActualHeadsit = true;
 					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					while ActualHeadsit do
-						speaker.Character.Humanoid.Sit = true;
-						speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
 					ActualHeadSitLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
@@ -4791,8 +4746,11 @@ end});
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468);
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
+elapsedTime = 0
+humpfacedistance = 5
+humpfacespeed = 1
+local HumpLoop
 AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
@@ -4800,8 +4758,8 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				if (Humping == true) then
 					Humping = false;
 					if HumpLoop then
-						FaceHumpLoop:Disconnect()
-						FaceHumpLoop = nil
+						HumpLoop:Disconnect()
+						HumpLoop = nil
 					end
 					effectfalse();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -4811,9 +4769,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					Humping = true;
 					notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					local elapsedTime = 0
 					HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 							local speakerRoot = getRoot(speaker.Character)
 							local targetRoot = getRoot(foundPlr.Character)
@@ -4824,42 +4780,42 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 								local targetPosition = targetRoot.CFrame
 								local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpfacedistance)
 								local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha)
-								speakerRoot.CFrame = CFrame.new(newPosition) * CFrame.Angles(0, 0, 0)
+								local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position
+        						speakerRoot.CFrame = CFrame.new(newPosition) * targetOrientation.Rotation
 								speakerRoot.AssemblyLinearVelocity = Vector3.new()
 							else
 								if HumpLoop then
-									FaceHumpLoop:Disconnect()
-									FaceHumpLoop = nil
+									HumpLoop:Disconnect()
+									HumpLoop = nil
 								end
 							end
-						end)
 					end)
 				end
 			end
 		end
-	end);
 end});
-facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
 	pcall(function()
 		humpfacedistance = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacedistance = Text;
 	end);
 end});
-facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		humpfacespeed = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacespeed = Text;
 	end);
 end});
 local FaceHumpLoop
+local elapsedTime = 0
 local ffc1 = false;
 AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4881,7 +4837,6 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					ffc1 = true;
 					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					local elapsedTime = 0
 					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
@@ -4892,9 +4847,9 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 								local cycle = elapsedTime % 1
            						local alpha = math.sin(cycle * math.pi * 2) * 0.5 + 0.5
             					local xOffset = humpfacedistance * alpha
-            					speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset)
-            					speakerRoot.AssemblyLinearVelocity = Vector3.new()
-								speakerRoot.AssemblyLinearVelocity = Vector3.new()
+            					local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position
+        						speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) * targetOrientation.Rotation
+        						speakerRoot.AssemblyLinearVelocity = Vector3.new()
 							else
 								if FaceHumpLoop then
 									FaceHumpLoop:Disconnect()
@@ -5461,7 +5416,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="NoClip Camer
 end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
-		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {FieldOfView=Value}):Play();
+		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=Value}):Play();
 	end);
 end});
 Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View",OnEnter=true,PlaceholderText=math.floor(game:GetService("Workspace").Camera.FieldOfView),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
