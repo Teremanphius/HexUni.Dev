@@ -640,10 +640,8 @@ local function clicktpFunc()
 	end);
 end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
-PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
-	presstpff = KeyBind;
-	presstpff = not presstpff;
-	if presstpff then
+PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
+	if KeyBind then
 		clicktpFunc();
 	end
 end});
@@ -882,9 +880,8 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",C
 		end
 	end);
 end});
-CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	cffffly = KeyBind;
-	cffffly = not cffffly;
 	if cffffly then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 		local Head = speaker.Character:WaitForChild("Head");
@@ -948,9 +945,8 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 		end
 	end);
 end});
-fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled = true,SectionParent=Sectionflights,Callback=function(KeyBind)
 	normalfly = KeyBind;
-	normalfly = not normalfly;
 	if normalfly then
 		flying = true;
 		FlyingLoop = RunService.Stepped:Connect(function()
@@ -993,9 +989,8 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",
 		end
 	end);
 end});
-vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	normalvehiclefly = KeyBind;
-	normalvehiclefly = not normalvehiclefly;
 	if normalvehiclefly then
 		flying = true
 	else
@@ -1052,9 +1047,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Ri
 	effecttrue();
 	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400});
 end});
-anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind;
-	freeyourselfs = not freeyourselfs;
 	if freeyourselfs then
 		for _, v in pairs(speaker.Character:GetChildren()) do
 			if v:IsA("BasePart") then
@@ -1076,9 +1070,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 		anchorKeybind:Set("Set Keybind");
 	end);
 end});
-SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	sprints = KeyBind;
-	sprints = not sprints;
+SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
+	sprints = isToggled;
 	if sprints then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play();
 		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=95}):Play();
@@ -1103,10 +1096,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthe
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
 end});
-tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	trippingf = KeyBind;
-	trippingf = not trippingf;
-	if trippingf then
+tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	if KeyBind then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
 			root = getRoot(speaker.Character);
@@ -1125,10 +1116,8 @@ end});
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Sit",Interact="Click",Callback=function()
 	speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
 end});
-sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	sittingf = KeyBind;
-	sittingf = not sittingf;
-	if sittingf then
+sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	if KeyBind then
 		speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true;
 	end
 end});
@@ -1139,9 +1128,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit
 		sitKeybind:Set("Set Keybind");
 	end);
 end});
-stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	Stunff = KeyBind;
-	Stunff = not Stunff;
+stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
+	Stunff = isToggled;
 	if Stunff then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 	else
@@ -1177,10 +1165,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	end
 	nHuman.Health = nHuman.MaxHealth;
 end});
-godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	Godff = KeyBind;
-	Godff = not Godff;
-	if Godff then
+godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	if KeyBind then
 		Cam = workspace.CurrentCamera;
 		Pos, Char = Cam.CFrame, speaker.Character;
 		Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid");
@@ -1208,9 +1194,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God
 		godmodeKeybind:Set("Set Keybind");
 	end);
 end});
-zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	zerogravsit = KeyBind;
-	zerogravsit = not zerogravsit;
 	if zerogravsit then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 			hum = speaker.Character:FindFirstChildOfClass("Humanoid");
@@ -1256,9 +1241,8 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 		Clip = true;
 	end
 end});
-NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	noclipff = KeyBind;
-	noclipff = not noclipff;
 	if noclipff then
 		pcall(function()
 			Clip = false;
@@ -1314,9 +1298,8 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 		end
 	end);
 end});
-vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	vehnoclipff = KeyBind;
-	vehnoclipff = not vehnoclipff;
 	if vehnoclipff then
 		local Car = speaker.Character.Humanoid.SeatPart;
 		for i, v in pairs(Car.Parent.Parent:GetDescendants()) do
@@ -1484,9 +1467,8 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 		end
 	end);
 end});
-InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
+InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
 	invisff = KeyBind;
-	invisff = not invisff;
 	if invisff then
 		if invisRunning then
 			return;
@@ -3243,10 +3225,8 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 	end
 end});
 hbackflipnfrontflip = 0.0174533;
-BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	backflips = KeyBind;
-	backflips = not backflips;
-	if backflips then
+BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	if KeyBind then
 		function speakerBackflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
 			task.wait();
@@ -3270,10 +3250,8 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFl
 		BackflipKeybind:Set("Set Keybind");
 	end);
 end});
-SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	sideflips = KeyBind;
-	sideflips = not sideflips;
-	if sideflips then
+SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	if KeyBind then
 		function speakerSideflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
 			task.wait();
@@ -3297,10 +3275,8 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFl
 		SideflipKeybind:Set("Set Keybind");
 	end);
 end});
-FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	frontflips = KeyBind;
-	frontflips = not frontflips;
-	if frontflips then
+FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+	if KeyBind then
 		function speakerFrontflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
 			task.wait();
@@ -4770,6 +4746,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 							local speakerRoot = getRoot(speaker.Character)
 							local targetRoot = getRoot(foundPlr.Character)
@@ -4789,6 +4766,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 									HumpLoop = nil
 								end
 							end
+						end)
 					end)
 				end
 			end
@@ -7774,7 +7752,6 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		AnimpSlider:Set(1)
 	end);
 end);
-
 function CheckTimess()
 	local currentTime = game.Lighting.ClockTime
     local lowerBound = 6
@@ -7789,16 +7766,8 @@ function CheckTimess()
 			task.wait(5);
 			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
-				task.wait(1.2)
-				todnigthmodeloop = RunService.Heartbeat:Connect(function()
-					game.Lighting.ClockTime=0
-				end);
 			end},nottrue={Name="Nah",Callback=function()
-				if todnigthmodeloop then
-					todnigthmodeloop:Disconnect()
-				else
 					return
-				end
 			end}}});
 		else
 			return
