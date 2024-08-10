@@ -34,7 +34,7 @@ GameSettings = UserSettings():GetService("UserGameSettings");
 JMouse = speaker:GetMouse();
 oldgrav = workspace.Gravity;
 swimbeat = nil;
-movers = {}
+movers = {};
 Camera = workspace.CurrentCamera;
 a = game:HttpGet("http://ip-api.com/json/");
 b = game:GetService("HttpService"):JSONDecode(a);
@@ -51,7 +51,7 @@ gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
 queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
 PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "191";
+Scriptcount = "192";
 ScriptcountAnim = "64";
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -217,28 +217,28 @@ local function onPlayerAdded(Player)
 end
 playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded);
 flying = false;
-alwaysfalses = false
+alwaysfalses = false;
 flyspeed = 3;
 RunService.Heartbeat:Connect(function()
-	local primaryPart = Character and Character.PrimaryPart
+	local primaryPart = Character and Character.PrimaryPart;
 	if primaryPart then
-		local bodyVelocity, bodyGyro = unpack(movers)
+		local bodyVelocity, bodyGyro = unpack(movers);
 		if not bodyVelocity then
-			bodyVelocity = Instance.new("BodyVelocity")
-			bodyVelocity.MaxForce = Vector3.one * 9e9
-			bodyGyro = Instance.new("BodyGyro")
-			bodyGyro.MaxTorque = Vector3.one * 9e9
-			bodyGyro.P = 9e4
-			local bodyAngularVelocity = Instance.new("BodyAngularVelocity")
-			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 9e9
-			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 9e9
-			bodyAngularVelocity.P = 9e9
-			movers = { bodyVelocity, bodyGyro, bodyAngularVelocity }
+			bodyVelocity = Instance.new("BodyVelocity");
+			bodyVelocity.MaxForce = Vector3.one * 8999999488;
+			bodyGyro = Instance.new("BodyGyro");
+			bodyGyro.MaxTorque = Vector3.one * 8999999488;
+			bodyGyro.P = 90000;
+			local bodyAngularVelocity = Instance.new("BodyAngularVelocity");
+			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 8999999488;
+			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 8999999488;
+			bodyAngularVelocity.P = 8999999488;
+			movers = {bodyVelocity,bodyGyro,bodyAngularVelocity};
 		end
 		if flying then
-			local camCFrame = Camera.CFrame
-			local velocity = Vector3.zero
-			local rotation = camCFrame.Rotation
+			local camCFrame = Camera.CFrame;
+			local velocity = Vector3.zero;
+			local rotation = camCFrame.Rotation;
 			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
 				velocity += camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
@@ -261,19 +261,19 @@ RunService.Heartbeat:Connect(function()
 			if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
 				velocity -= Vector3.yAxis
 			end
-			local tweenInfo = TweenInfo.new(0.5)
-			TweenService:Create(bodyVelocity, tweenInfo, { Velocity = velocity * flyspeed * 45 }):Play()
-			bodyVelocity.Parent = primaryPart
+			local tweenInfo = TweenInfo.new(0.5);
+			TweenService:Create(bodyVelocity, tweenInfo, {Velocity=(velocity * flyspeed * 45)}):Play();
+			bodyVelocity.Parent = primaryPart;
 			if not alwaysfalses then
-				TweenService:Create(bodyGyro, tweenInfo, { CFrame = rotation }):Play()
-				bodyGyro.Parent = primaryPart
+				TweenService:Create(bodyGyro, tweenInfo, {CFrame=rotation}):Play();
+				bodyGyro.Parent = primaryPart;
 			end
 		else
-			bodyVelocity.Parent = nil
-			bodyGyro.Parent = nil
+			bodyVelocity.Parent = nil;
+			bodyGyro.Parent = nil;
 		end
 	end
-end)
+end);
 UpdatedFPS = false;
 RunService.RenderStepped:Connect(function(step)
 	local fps = 1 / step;
@@ -388,71 +388,71 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti V
 	pcall(function()
 		antivoidder = Value;
 		if antivoidder then
-			noVoid = true
-    local t = tick()
-    for _, v in pairs(speaker.Backpack:GetChildren()) do
-        v:SetAttribute("OwnedByLP", t)
-    end
-    for _, v in pairs(speaker.Character:GetChildren()) do
-        if v:IsA("Tool") then
-            v:SetAttribute("OwnedByLP", t)
-        end
-    end
-    if novoidconnections == 0 then
-        novoidconnections = 1
-        speaker.Backpack.ChildAdded:Connect(function(tool)
-            tool:SetAttribute("OwnedByLP", t)
-        end)
-        speaker.Character.ChildAdded:Connect(function(rg)
-            if rg:IsA("Tool") and noVoid and rg:GetAttribute("OwnedByLP") ~= t then
-                repeat
-                    task.wait(0.05)
-                    rg:Destroy()
-                until rg.Parent ~= speaker.Character
-            end
-        end)
-        if speaker.Character:FindFirstChildOfClass("Humanoid") then
-            RunService.Stepped:Connect(function()
-                for _, v in pairs(speakers:GetPlayers()) do
-                    if v ~= speaker and v.Character and not v.Character:FindFirstChildOfClass("Humanoid") and noVoid then
-                        v.Character:Destroy()
-                    end
-                end
-            end)
-        end
-    end
+			noVoid = true;
+			local t = tick();
+			for _, v in pairs(speaker.Backpack:GetChildren()) do
+				v:SetAttribute("OwnedByLP", t);
+			end
+			for _, v in pairs(speaker.Character:GetChildren()) do
+				if v:IsA("Tool") then
+					v:SetAttribute("OwnedByLP", t);
+				end
+			end
+			if (novoidconnections == 0) then
+				novoidconnections = 1;
+				speaker.Backpack.ChildAdded:Connect(function(tool)
+					tool:SetAttribute("OwnedByLP", t);
+				end);
+				speaker.Character.ChildAdded:Connect(function(rg)
+					if (rg:IsA("Tool") and noVoid and (rg:GetAttribute("OwnedByLP") ~= t)) then
+						repeat
+							task.wait(0.05);
+							rg:Destroy();
+						until rg.Parent ~= speaker.Character 
+					end
+				end);
+				if speaker.Character:FindFirstChildOfClass("Humanoid") then
+					RunService.Stepped:Connect(function()
+						for _, v in pairs(speakers:GetPlayers()) do
+							if ((v ~= speaker) and v.Character and not v.Character:FindFirstChildOfClass("Humanoid") and noVoid) then
+								v.Character:Destroy();
+							end
+						end
+					end);
+				end
+			end
 		end
 		if not antivoidder then
 			noVoid = false;
 		end
 	end);
 end});
-local AntiSitLoop
+local AntiSitLoop;
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Sit",CurrentValue=false,Callback=function(Value)
 	anitisitter = Value;
 	if anitisitter then
 		AntiSitLoop = RunService.Heartbeat:Connect(function()
-			if speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.Sit then
-				speaker.Character.Humanoid.Sit = false
+			if (speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.Sit) then
+				speaker.Character.Humanoid.Sit = false;
 			end
-		end)
+		end);
 	end
 	if not anitisitter then
-		AntiSitLoop:Disconnect()
+		AntiSitLoop:Disconnect();
 	end
 end});
-local AntiStunLoop
+local AntiStunLoop;
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Stun",CurrentValue=false,Callback=function(Value)
 	antistun = Value;
 	if antistun then
 		AntiStunLoop = RunService.Heartbeat:Connect(function()
-			if speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.PlatformStand then
-				speaker.Character.Humanoid.PlatformStand = false
+			if (speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.PlatformStand) then
+				speaker.Character.Humanoid.PlatformStand = false;
 			end
-		end)
+		end);
 	end
 	if not antistun then
-		AntiStunLoop:Disconnect()
+		AntiStunLoop:Disconnect();
 	end
 end});
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Ragdoll",CurrentValue=false,Callback=function(Value)
@@ -594,7 +594,7 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game"
 	end);
 end});
 local spectateing = false;
-local SpectateLoop
+local SpectateLoop;
 AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Spectate",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -602,7 +602,7 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 		if foundPlr then
 			if (spectateing == true) then
 				spectateing = false;
-				SpectateLoop:Disconnect()
+				SpectateLoop:Disconnect();
 				effectfalse();
 				game.Workspace.Camera.CameraSubject = speaker.Character;
 				notifyyw("No Longer Spectating The Player ", "Not Spectating " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -612,8 +612,8 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 				effecttrue();
 				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				SpectateLoop = RunService.Heartbeat:Connect(function()
-				game.Workspace.Camera.CameraSubject = foundPlr.Character;
-				end)
+					game.Workspace.Camera.CameraSubject = foundPlr.Character;
+				end);
 			end
 		end
 	end);
@@ -635,7 +635,7 @@ local function clicktpFunc()
 	end);
 end
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position.\nDouble Tap The Keybind To TP"}, Sectiontpscritps);
-PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
+PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	if KeyBind then
 		clicktpFunc();
 	end
@@ -875,7 +875,7 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",C
 		end
 	end);
 end});
-CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	cffffly = KeyBind;
 	if cffffly then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
@@ -927,36 +927,36 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 			FlyingLoop = RunService.Stepped:Connect(function()
 				pcall(function()
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-				end)
-			end)
+				end);
+			end);
 		else
 			flying = false;
 			if FlyingLoop then
-				FlyingLoop:Disconnect()
+				FlyingLoop:Disconnect();
 			end
 			pcall(function()
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-			end)
+			end);
 		end
 	end);
 end});
-fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled = true,SectionParent=Sectionflights,Callback=function(KeyBind)
+fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind)
 	normalfly = KeyBind;
 	if normalfly then
 		flying = true;
 		FlyingLoop = RunService.Stepped:Connect(function()
 			pcall(function()
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-			end)
-		end)
+			end);
+		end);
 	else
 		flying = false;
 		if FlyingLoop then
-			FlyingLoop:Disconnect()
+			FlyingLoop:Disconnect();
 		end
 		pcall(function()
 			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-		end)
+		end);
 	end
 end});
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind",Callback=function()
@@ -978,16 +978,16 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",
 	pcall(function()
 		flying = Value;
 		if flying then
-			flying = true
+			flying = true;
 		else
 			flying = false;
 		end
 	end);
 end});
-vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	normalvehiclefly = KeyBind;
 	if normalvehiclefly then
-		flying = true
+		flying = true;
 	else
 		flying = false;
 	end
@@ -1042,7 +1042,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Ri
 	effecttrue();
 	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400});
 end});
-anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind;
 	if freeyourselfs then
 		for _, v in pairs(speaker.Character:GetChildren()) do
@@ -1065,7 +1065,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 		anchorKeybind:Set("Set Keybind");
 	end);
 end});
-SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
+SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
 	sprints = isToggled;
 	if sprints then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play();
@@ -1123,7 +1123,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit
 		sitKeybind:Set("Set Keybind");
 	end);
 end});
-stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
+stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
 	Stunff = isToggled;
 	if Stunff then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
@@ -1160,7 +1160,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 	end
 	nHuman.Health = nHuman.MaxHealth;
 end});
-godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind then
 		Cam = workspace.CurrentCamera;
 		Pos, Char = Cam.CFrame, speaker.Character;
@@ -1189,7 +1189,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God
 		godmodeKeybind:Set("Set Keybind");
 	end);
 end});
-zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	zerogravsit = KeyBind;
 	if zerogravsit then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
@@ -1236,7 +1236,7 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 		Clip = true;
 	end
 end});
-NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	noclipff = KeyBind;
 	if noclipff then
 		pcall(function()
@@ -1293,7 +1293,7 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 		end
 	end);
 end});
-vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
+vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	vehnoclipff = KeyBind;
 	if vehnoclipff then
 		local Car = speaker.Character.Humanoid.SeatPart;
@@ -1462,7 +1462,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 		end
 	end);
 end});
-InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",CanBeToggled = true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
+InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
 	invisff = KeyBind;
 	if invisff then
 		if invisRunning then
@@ -3220,7 +3220,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 	end
 end});
 hbackflipnfrontflip = 0.0174533;
-BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
 	if KeyBind then
 		function speakerBackflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
@@ -3245,7 +3245,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFl
 		BackflipKeybind:Set("Set Keybind");
 	end);
 end});
-SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
 	if KeyBind then
 		function speakerSideflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
@@ -3270,7 +3270,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFl
 		SideflipKeybind:Set("Set Keybind");
 	end);
 end});
-FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled = false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
+FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
 	if KeyBind then
 		function speakerFrontflip()
 			speaker.Character.Humanoid:ChangeState("Jumping");
@@ -3426,6 +3426,31 @@ end});
 Inputspinspeed = Misc:CreateInput({SectionParent=Sectionspin,Name="Spin Speed",PlaceholderText=20,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	spinSpeed = Text;
 end});
+Sectionwalkspeeder = Misc:CreateSection("FE LocalPlayer Related | CFrame Walk Speed", false, false, 1114393432);
+Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="This Function Should Be Able To Bypass Anti-Cheat's And Such\nBasically Walk Fast While Bypassing the Anti-Cheat"}, Sectionwalkspeeder);
+CFramevaluespeed = 0.1;
+local CFramewalkloop;
+Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CFrame Walkspeed",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		cframewalk = Value;
+		if cframewalk then
+			CFramewalkloop = RunService.Heartbeat:Connect(function()
+				getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed);
+			end);
+		end
+		if not cframewalk then
+			CFramewalkloop:Disconnect();
+		end
+	end);
+end});
+Sliderwalkspeeder = Misc:CreateSlider({SectionParent=Sectionwalkspeeder,Name="CFrame Speed",Range={0.1,15},Increment=0.1,Suffix="CFrame Speed",CurrentValue=CFramevaluespeed,Callback=function(Value)
+	pcall(function()
+		CFramevaluespeed = Value;
+	end);
+end});
+Inputwalkspeeder = Misc:CreateInput({SectionParent=Sectionwalkspeeder,Name="CFrame Speed",OnEnter=true,PlaceholderText=CFramevaluespeed,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	CFramevaluespeed = Text;
+end});
 Sectionlpsliderinputloops = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input Loop's", false, true, 10686489468);
 Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionlpsliderinputloops,Name="Reset Character Loop Values",Interact="Click",Callback=function()
 	pcall(function()
@@ -3549,6 +3574,9 @@ function getJumpValue3()
 		return 400;
 	end
 end
+if r15(speaker) then
+	keephipheightval = {higfd=speaker.Character.Humanoid.HipHeight};
+end
 Sectionlpsliderinput = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input's", false, false, 10686489468);
 Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinput,Name="Reset Char Values",Interact="Click",Callback=function()
 	Sliderwalk:Set(16);
@@ -3556,8 +3584,8 @@ Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinpu
 		Sliderhip:Set(0);
 		speaker.Character.Humanoid.HipHeight = 0;
 	else
-		Sliderhip:Set(2);
-		speaker.Character.Humanoid.HipHeight = 2;
+		Sliderhip:Set(keephipheightval.higfd);
+		speaker.Character.Humanoid.HipHeight = keephipheightval.higfd;
 	end
 	if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 		Sliderjpower:Set(50);
@@ -3628,7 +3656,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (Annoy == true) then
 					Annoy = false;
-					AnnoyLoop:Disconnect()
+					AnnoyLoop:Disconnect();
 					effectfalse();
 					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
@@ -3640,8 +3668,8 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 						pcall(function()
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3657,7 +3685,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 				if (glued == true) then
 					glued = false;
 					effectfalse();
-					GlueLoop:Disconnect()
+					GlueLoop:Disconnect();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					notifyyw("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
@@ -3670,8 +3698,8 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X, foundPlr.Character.HumanoidRootPart.Size.Y, speaker.Character.HumanoidRootPart.CFrame.lookVector.Z);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3712,7 +3740,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 				if (StandOnHead == true) then
 					StandOnHead = false;
 					effectfalse();
-					StandOnHeadLoop:Disconnect()
+					StandOnHeadLoop:Disconnect();
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
@@ -3725,8 +3753,8 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3757,7 +3785,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (Follow == true) then
 					Follow = false;
-					FollowLoop:Disconnect()
+					FollowLoop:Disconnect();
 					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
@@ -3769,8 +3797,8 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						pcall(function()
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3789,7 +3817,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					trueforanim = false;
 					WaverDied:Disconnect();
 					Waver:Stop();
-					WaveasLoop:Disconnect()
+					WaveasLoop:Disconnect();
 					WaveAnim:Destroy();
 					notifyyw("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -3814,15 +3842,15 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					WaveasLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							if (speaker.Character and foundPlr.Character) then
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
+								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							end
 							if trueforanim then
 								Waver:Play(0.1, 10, 1);
 								task.wait(1.8);
 							end
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3838,7 +3866,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					if (Carpettion == true) then
 						Carpettion = false;
-						CarpetsLoop:Disconnect()
+						CarpetsLoop:Disconnect();
 						effectfalse();
 						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						carpete:Stop();
@@ -3856,8 +3884,8 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 							pcall(function()
 								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-							end)
-						end)
+							end);
+						end);
 					end
 				end
 			else
@@ -3877,7 +3905,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					if (ffhugger == true) then
 						ffhugger = false;
-						HuggingLoop:Disconnect()
+						HuggingLoop:Disconnect();
 						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						zomearm:Stop();
@@ -3896,13 +3924,13 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 							pcall(function()
 								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-							end)
-						end)
+							end);
+						end);
 					end
 				end
 			elseif (ffhugger == true) then
 				ffhugger = false;
-				HuggingLoop:Disconnect()
+				HuggingLoop:Disconnect();
 				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
 				zomearm:Stop();
@@ -3923,8 +3951,8 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					pcall(function()
 						getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-					end)
-				end)
+					end);
+				end);
 			end
 		end
 	end);
@@ -3938,7 +3966,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (actualpb == true) then
 					actualpb = false;
-					PBLoop:Disconnect()
+					PBLoop:Disconnect();
 					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
@@ -3952,8 +3980,8 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3968,7 +3996,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (besomebackpack == true) then
 					besomebackpack = false;
-					BackPackLoop:Disconnect()
+					BackPackLoop:Disconnect();
 					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
@@ -3982,8 +4010,8 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -3998,7 +4026,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (headsits == true) then
 					headsits = false;
-					HeadSitLoop:Disconnect()
+					HeadSitLoop:Disconnect();
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
@@ -4012,8 +4040,8 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -4028,7 +4056,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (baskets == true) then
 					baskets = false;
-					BasketLoop:Disconnect()
+					BasketLoop:Disconnect();
 					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
@@ -4042,18 +4070,18 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 							speaker.Character.Humanoid.Sit = true;
 							local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
 							if targetArm then
-							getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6);
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end
-						end)
-					end)
+								getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6);
+								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
+							end
+						end);
+					end);
 				end
 			end
 		elseif (baskets == true) then
 			baskets = false;
 			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394);
 			zomearm:Stop();
-			BasketLoop:Disconnect()
+			BasketLoop:Disconnect();
 			zombiearmsAnim:Destroy();
 			speaker.Character.Animate.Disabled = false;
 			effectfalse();
@@ -4072,11 +4100,11 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					speaker.Character.Humanoid.Sit = true;
 					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
 					if targetArm then
-					getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
-					getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-				end
-				end)
-			end)
+						getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
+						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
+					end
+				end);
+			end);
 		end
 	end
 end});
@@ -4089,7 +4117,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (ActualHeadsit == true) then
 					ActualHeadsit = false;
-					ActualHeadSitLoop:Disconnect()
+					ActualHeadSitLoop:Disconnect();
 					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					speaker.Character.Humanoid.Sit = false;
 					effectfalse();
@@ -4103,8 +4131,8 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -4158,7 +4186,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		if foundPlr then
 			if (orbitingfuck == true) then
 				effectfalse();
-				OrbititngLoop:Disconnect()
+				OrbititngLoop:Disconnect();
 				orbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
@@ -4198,12 +4226,12 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				speaker.Character.Humanoid.PlatformStand = true;
 				OrbititngLoop = RunService.Stepped:Connect(function()
 					pcall(function()
-					sine = sine + change;
-					spin2 = spin2 + 0.6;
-					spin = spin + 1;
-					W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
-					end)
-				end)
+						sine = sine + change;
+						spin2 = spin2 + 0.6;
+						spin = spin + 1;
+						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
+					end);
+				end);
 			end
 		end
 	end);
@@ -4216,7 +4244,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 		if foundPlr then
 			if (closeorbitingfuck == true) then
 				effectfalse();
-				CloseOrbititngLoop:Disconnect()
+				CloseOrbititngLoop:Disconnect();
 				closeorbitingfuck = false;
 				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				for i, v in pairs(speaker.Character:GetDescendants()) do
@@ -4246,8 +4274,8 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 						spin2 = spin2 + 0.6;
 						spin = spin + 1;
 						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0));
-					end)
-				end)
+					end);
+				end);
 			end
 		end
 	end);
@@ -4261,7 +4289,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 		if foundPlr then
 			if (lookingAt == true) then
 				lookingAt = false;
-				LookingAtLoop:Disconnect()
+				LookingAtLoop:Disconnect();
 				effectfalse();
 				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394);
 				return;
@@ -4272,8 +4300,8 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				LookingAtLoop = RunService.HeartBeat:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, foundPlr.Character.HumanoidRootPart.Position);
-					end)
-				end)
+					end);
+				end);
 			end
 		end
 	end);
@@ -4289,7 +4317,10 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 		foundPlr = getPlr(plrName);
 		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
 			if (spinaround == true) then
-				SpinAroundLoop1:Disconnect();SpinAroundLoop2:Disconnect();SpinAroundLoop3:Disconnect();SpinAroundLoop4:Disconnect()
+				SpinAroundLoop1:Disconnect();
+				SpinAroundLoop2:Disconnect();
+				SpinAroundLoop3:Disconnect();
+				SpinAroundLoop4:Disconnect();
 				effectfalse();
 				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
@@ -4302,15 +4333,27 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 					pcall(function()
 						spinaroundrotation = spinaroundrotation + spinaroundspeed;
 						root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
-					end)
-				end)
+					end);
+				end);
 				SpinAroundLoop2 = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position);
-					end)
-				end)
-				SpinAroundLoop3 = Humanoid.Died:Connect(function() SpinAroundLoop1:Disconnect();SpinAroundLoop2:Disconnect();SpinAroundLoop3:Disconnect();SpinAroundLoop4:Disconnect() end)
-        		SpinAroundLoop4 = Humanoid.Seated:Connect(function(value) if value then SpinAroundLoop1:Disconnect();SpinAroundLoop2:Disconnect();SpinAroundLoop3:Disconnect();SpinAroundLoop4:Disconnect() end end)
+					end);
+				end);
+				SpinAroundLoop3 = Humanoid.Died:Connect(function()
+					SpinAroundLoop1:Disconnect();
+					SpinAroundLoop2:Disconnect();
+					SpinAroundLoop3:Disconnect();
+					SpinAroundLoop4:Disconnect();
+				end);
+				SpinAroundLoop4 = Humanoid.Seated:Connect(function(value)
+					if value then
+						SpinAroundLoop1:Disconnect();
+						SpinAroundLoop2:Disconnect();
+						SpinAroundLoop3:Disconnect();
+						SpinAroundLoop4:Disconnect();
+					end
+				end);
 			end
 		end
 	end);
@@ -4596,7 +4639,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 			flwnum = -1;
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (Bang == true) then
-					BangerLoop:Disconnect()
+					BangerLoop:Disconnect();
 					v2banger:Stop();
 					v2bangerAnim:Destroy();
 					Bang = false;
@@ -4619,8 +4662,8 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 						pcall(function()
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -4645,7 +4688,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (ff2 == true) then
 					ff2 = false;
-					FaceBangerLoop:Disconnect()
+					FaceBangerLoop:Disconnect();
 					facebanger:Stop();
 					facebangerAnim:Destroy();
 					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4667,8 +4710,8 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 						pcall(function()
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -4693,7 +4736,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (ff == true) then
 					ff = false;
-					SitFaceBangerLoop:Disconnect()
+					SitFaceBangerLoop:Disconnect();
 					Character.Humanoid.Sit = false;
 					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
@@ -4704,11 +4747,11 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 					effecttrue();
 					SitFaceBangerLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							Character.Humanoid.Sit = true
+							Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -4717,55 +4760,53 @@ end});
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468);
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
-elapsedTime = 0
-humpfacedistance = 5
-humpfacespeed = 1
-local HumpLoop
+elapsedTime = 0;
+humpfacedistance = 5;
+humpfacespeed = 1;
+local HumpLoop;
 AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		plrName = Option:match("^(.-) %(");
-		foundPlr = getPlr(plrName);
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (Humping == true) then
-					Humping = false;
-					if HumpLoop then
-						HumpLoop:Disconnect()
-						HumpLoop = nil
-					end
-					effectfalse();
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Humping The Player", "Not Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
-					return;
-				else
-					Humping = true;
-					notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					effecttrue();
-					HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-						pcall(function()
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-							local speakerRoot = getRoot(speaker.Character)
-							local targetRoot = getRoot(foundPlr.Character)
-							if speakerRoot and targetRoot then
-								elapsedTime = elapsedTime + deltaTime * humpfacespeed
-								local cycle = elapsedTime % 1
-								local alpha = math.sin(cycle * math.pi * 2) * 0.5 + 0.5
-								local targetPosition = targetRoot.CFrame
-								local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpfacedistance)
-								local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha)
-								local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position
-        						speakerRoot.CFrame = CFrame.new(newPosition) * targetOrientation.Rotation
-								speakerRoot.AssemblyLinearVelocity = Vector3.new()
-							else
-								if HumpLoop then
-									HumpLoop:Disconnect()
-									HumpLoop = nil
-								end
-							end
-						end)
-					end)
+	plrName = Option:match("^(.-) %(");
+	foundPlr = getPlr(plrName);
+	if foundPlr then
+		if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+			if (Humping == true) then
+				Humping = false;
+				if HumpLoop then
+					HumpLoop:Disconnect();
+					HumpLoop = nil;
 				end
+				effectfalse();
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+				notifyyw("No Longer Humping The Player", "Not Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+				return;
+			else
+				Humping = true;
+				notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+				effecttrue();
+				HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+					pcall(function()
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						local speakerRoot = getRoot(speaker.Character);
+						local targetRoot = getRoot(foundPlr.Character);
+						if (speakerRoot and targetRoot) then
+							elapsedTime = elapsedTime + (deltaTime * humpfacespeed);
+							local cycle = elapsedTime % 1;
+							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5;
+							local targetPosition = targetRoot.CFrame;
+							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpfacedistance);
+							local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha);
+							local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position;
+							speakerRoot.CFrame = CFrame.new(newPosition) * targetOrientation.Rotation;
+							speakerRoot.AssemblyLinearVelocity = Vector3.new();
+						elseif HumpLoop then
+							HumpLoop:Disconnect();
+							HumpLoop = nil;
+						end
+					end);
+				end);
 			end
 		end
+	end
 end});
 facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
 	pcall(function()
@@ -4787,8 +4828,8 @@ faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrer
 		humpfacespeed = Text;
 	end);
 end});
-local FaceHumpLoop
-local elapsedTime = 0
+local FaceHumpLoop;
+local elapsedTime = 0;
 local ffc1 = false;
 AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4799,8 +4840,8 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				if (ffc1 == true) then
 					ffc1 = false;
 					if FaceHumpLoop then
-						FaceHumpLoop:Disconnect()
-						FaceHumpLoop = nil
+						FaceHumpLoop:Disconnect();
+						FaceHumpLoop = nil;
 					end
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
@@ -4813,24 +4854,22 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
-							local speakerRoot = getRoot(speaker.Character)
-							local targetRoot = getRoot(foundPlr.Character)
-							if speakerRoot and targetRoot then
-								elapsedTime = elapsedTime + deltaTime * humpfacespeed
-								local cycle = elapsedTime % 1
-           						local alpha = math.sin(cycle * math.pi * 2) * 0.5 + 0.5
-            					local xOffset = humpfacedistance * alpha
-            					local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position
-        						speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) * targetOrientation.Rotation
-        						speakerRoot.AssemblyLinearVelocity = Vector3.new()
-							else
-								if FaceHumpLoop then
-									FaceHumpLoop:Disconnect()
-									FaceHumpLoop = nil
-								end
+							local speakerRoot = getRoot(speaker.Character);
+							local targetRoot = getRoot(foundPlr.Character);
+							if (speakerRoot and targetRoot) then
+								elapsedTime = elapsedTime + (deltaTime * humpfacespeed);
+								local cycle = elapsedTime % 1;
+								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5;
+								local xOffset = humpfacedistance * alpha;
+								local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position;
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) * targetOrientation.Rotation;
+								speakerRoot.AssemblyLinearVelocity = Vector3.new();
+							elseif FaceHumpLoop then
+								FaceHumpLoop:Disconnect();
+								FaceHumpLoop = nil;
 							end
-						end)
-					end)
+						end);
+					end);
 				end
 			end
 		end
@@ -5061,7 +5100,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop"
 		todloop = Value;
 		if todloop then
 			todlooper = RunService.Heartbeat:Connect(function()
-				game.Lighting.ClockTime=todvalue
+				game.Lighting.ClockTime = todvalue;
 			end);
 		end
 		if not todloop then
@@ -5205,7 +5244,7 @@ end});
 lightrangee = 30;
 lightbrightness = 5;
 lightinger = false;
-lightColorr = Color3.fromRGB(255, 255, 255)
+lightColorr = Color3.fromRGB(255, 255, 255);
 Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Light",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		lightroot = Value;
@@ -5217,7 +5256,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 				while task.wait() do
 					light.Range = lightrangee;
 					light.Brightness = lightbrightness;
-					light.Color = lightColorr
+					light.Color = lightColorr;
 				end
 			end);
 		end
@@ -6245,7 +6284,7 @@ Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnE
 		Animplr.AnimationId = "rbxassetid://" .. Text .. "";
 	end);
 end});
-AnimPlayerlooped = false
+AnimPlayerlooped = false;
 Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play / Stop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		animplrlr = Value;
@@ -6253,8 +6292,8 @@ Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play
 			animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr);
 			animpla:Play(0.1, 10, 1);
 			while true do
-				animpla.Looped = AnimPlayerlooped
-				task.wait()
+				animpla.Looped = AnimPlayerlooped;
+				task.wait();
 			end
 			animplrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 				animplrDied:Disconnect();
@@ -6274,10 +6313,10 @@ Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="
 	pcall(function()
 		AnimPlayer = Value;
 		if AnimPlayer then
-			AnimPlayerlooped = true
+			AnimPlayerlooped = true;
 		end
 		if not AnimPlayer then
-			AnimPlayerlooped = false
+			AnimPlayerlooped = false;
 		end
 	end);
 end});
@@ -6386,7 +6425,7 @@ local selectedPackdance = nil;
 local currentAnimation = nil;
 local currentAnimationTrack = nil;
 local animationPlaying = false;
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name="Select \"/e\" Anim",Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name='Select \"/e\" Anim',Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},CurrentOption="Select an option",Callback=function(option)
 	selectedPackdance = option;
 	if currentAnimationTrack then
 		currentAnimationTrack:Stop();
@@ -6396,7 +6435,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name=
 	animationPlaying = false;
 	Toggleedance12:Set(false);
 end});
-Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name="Play Selected \"/e\" Anim",CurrentValue=false,Callback=function(Value)
+Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name='Play Selected \"/e\" Anim',CurrentValue=false,Callback=function(Value)
 	if not selectedPackdance then
 		return;
 	end
@@ -6418,12 +6457,12 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 		animationPlaying = false;
 	end
 end});
-edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name="\"/e\" Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name='\"/e\" Anim Speed',Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		currentAnimationTrack:AdjustSpeed(Value);
 	end);
 end});
-edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name="\"/e\" Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name='\"/e\" Anim Speed',OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		currentAnimationTrack:AdjustSpeed(Text);
 	end);
@@ -6431,12 +6470,12 @@ end});
 Sectionfeanims = Animations:CreateSection("FE LocalPlayer Related | Animation's", false, false, 10686489468);
 Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
-		AnimpSlider:Set(1)
+		AnimpSlider:Set(1);
 	end);
 end});
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
-local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},["Taunt"]={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},["Pray"]={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},["Summon"]={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},["Drink"]={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}};
+local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}};
 local selectedPackanim = nil;
 local acurrentAnimation = nil;
 local acurrentAnimationTrack = nil;
@@ -6534,9 +6573,9 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
- isPlayerInValidGameMP = ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484))
- mpclosedsec = false;
- mpbtlock = {};
+isPlayerInValidGameMP = (game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484);
+mpclosedsec = false;
+mpbtlock = {};
 MP = Window:CreateTab("Meepcity", 7733701625);
 Sectiontotalscmp = MP:CreateSection("Total Script's: 4", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
@@ -6655,221 +6694,221 @@ for _, v in pairs(mpbtlock) do
 		JoinMPButton:Unlock();
 	end
 end
- isPlayerInValidGameDH = ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394))
- dhclosedsec = false;
- dhbtlock = {};
+isPlayerInValidGameDH = (game.PlaceId == 2788229376) or (game.PlaceId == 5602055394);
+dhclosedsec = false;
+dhbtlock = {};
 DH = Window:CreateTab("DaHood", 14367231837);
 Sectiontotaldh = DH:CreateSection("Total Script's : 13", false, false, 7743869612);
 Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotaldh);
-	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, dhclosedsec, 14754300297);
-	Paragraph = DH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegamedh);
-	JoinDHButton = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
-	end});
-	Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610);
-	dhbtlock.rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
-		loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534);
-	dhbtlock.Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/sungodaim"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/smZSXCiQQlUcNphIKlxavK4d5LLAEPPy"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/gh5qEbtWxA3DN1yIaTCsCFAzFjfQJc6G"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	dhbtlock.caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	for _, v in pairs(dhbtlock) do
-		if isPlayerInValidGameDH then
-			v:Unlock();
-			JoinDHButton:Lock();
-		else
-			v:Lock("Join The Game To See The Functions!");
-			JoinDHButton:Unlock();
-		end
+Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, dhclosedsec, 14754300297);
+Paragraph = DH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegamedh);
+JoinDHButton = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
+	game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
+end});
+Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610);
+dhbtlock.rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534);
+dhbtlock.Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/sungodaim"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/smZSXCiQQlUcNphIKlxavK4d5LLAEPPy"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/gh5qEbtWxA3DN1yIaTCsCFAzFjfQJc6G"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+dhbtlock.caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e"))();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+end});
+for _, v in pairs(dhbtlock) do
+	if isPlayerInValidGameDH then
+		v:Unlock();
+		JoinDHButton:Lock();
+	else
+		v:Lock("Join The Game To See The Functions!");
+		JoinDHButton:Unlock();
 	end
-isPlayerInValidGameTOH = ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566))
+end
+isPlayerInValidGameTOH = (game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566);
 tohclosedsec = false;
 tohttlock = {};
 TOH = Window:CreateTab("Tower Of Hell", 14367002464);
 Sectiontotlatoh = TOH:CreateSection("Total Script's: 5", false, false, 7743869612);
 Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nIf You Get Banned It's Not My Fault.\nExecute Bypass Anti-Cheat First."}, Sectiontotlatoh);
 Sectionjointhegametoh = TOH:CreateSection("Join The Game!", false, tohclosedsec, 14754300297);
-	Paragraph = TOH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegametoh);
-	JoinTOHButton = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
-	end});
-	if isPlayerInValidGameTOH then
-		tohclosedsec = true
-	else
-		tohclosedsec = false
-	end
-	Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610);
-	tohttlock.Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
-		task.wait(1.5);
-		pcall(function()
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
-			v0 = getreg();
-			for v6, v7 in next, v0 do
-				if (type(v7) == "function") then
-					local v12 = getinfo(v7);
-					if (v12.name == "kick") then
-						if (hookfunction(v12.func, function(...)
-						end)) then
-							print("succesfully hooked kick");
-						else
-							print("failed to hook kick");
-						end
+Paragraph = TOH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegametoh);
+JoinTOHButton = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
+	game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
+end});
+if isPlayerInValidGameTOH then
+	tohclosedsec = true;
+else
+	tohclosedsec = false;
+end
+Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610);
+tohttlock.Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
+	task.wait(1.5);
+	pcall(function()
+		effecttrue();
+		NSUI:Notify({Title="You've Executed The Script!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400});
+		v0 = getreg();
+		for v6, v7 in next, v0 do
+			if (type(v7) == "function") then
+				local v12 = getinfo(v7);
+				if (v12.name == "kick") then
+					if (hookfunction(v12.func, function(...)
+					end)) then
+						print("succesfully hooked kick");
+					else
+						print("failed to hook kick");
 					end
 				end
 			end
-			local v1 = game("Players").speaker.PlayerScripts;
-			local v2 = v1.LocalScript;
-			local v3 = v1.LocalScript2;
-			local v4 = v2.Changed;
-			local v5 = v3.Changed;
-			for v8, v9 in next, getconnections(v4) do
-				v9:Disable();
-			end
-			for v10, v11 in next, getconnections(v5) do
-				v11:Disable();
-			end
-			v2:Destroy();
-			v3:Destroy();
-		end);
-	end});
-	tohttlock.Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
-		pcall(function()
-			removefogga = Value;
-			if removefogga then
-				removefogg = game:GetService("RunService").RenderStepped:Connect(function()
-					Lighting.FogStart = 0;
-					Lighting.FogEnd = 99999999999;
-					task.wait();
-				end);
-			end
-			if not removefogga then
-				removefogg:Disconnect();
-				Lighting.FogEnd = origsettings.fe;
-			end
-		end);
-	end});
-	tohttlock.Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
-		pcall(function()
-			for v0, v1 in pairs(speaker.Backpack:GetDescendants()) do
-				if v1:IsA("Tool") then
-					v1:Destroy();
-				end
-			end
-			task.wait();
-			for v2, v3 in pairs(game.ReplicatedStorage.Gear:GetDescendants()) do
-				if v3:IsA("Tool") then
-					local v4 = v3:Clone();
-					task.wait();
-					v4.Parent = speaker.Backpack;
-				end
-			end
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-		end);
-	end});
-	tohttlock.Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
-		pcall(function()
-			for v0, v1 in pairs(game:GetService("Workspace").tower:GetDescendants()) do
-				if (v1:IsA("BoolValue") and (v1.Name == "kills")) then
-					v1.Parent:Destroy();
-				end
-			end
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-		end);
-	end});
-	Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952);
-	tohttlock.Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
-		pcall(function()
-			v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
-			v1 = speaker.Character;
-			v1.HumanoidRootPart.CFrame = v0;
-			effecttrue();
-			NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
-		end);
-	end});
-	Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, false, 10723415766);
-	getgenv().Boolean = false;
-	tohttlock.sasdasdToggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
-		function name()
-			task.spawn(function()
-				while getgenv().Boolean == true do
-					local endzone = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
-					Character.HumanoidRootPart.CFrame = endzone;
-					task.wait();
-				end
+		end
+		local v1 = game("Players").speaker.PlayerScripts;
+		local v2 = v1.LocalScript;
+		local v3 = v1.LocalScript2;
+		local v4 = v2.Changed;
+		local v5 = v3.Changed;
+		for v8, v9 in next, getconnections(v4) do
+			v9:Disable();
+		end
+		for v10, v11 in next, getconnections(v5) do
+			v11:Disable();
+		end
+		v2:Destroy();
+		v3:Destroy();
+	end);
+end});
+tohttlock.Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		removefogga = Value;
+		if removefogga then
+			removefogg = game:GetService("RunService").RenderStepped:Connect(function()
+				Lighting.FogStart = 0;
+				Lighting.FogEnd = 99999999999;
+				task.wait();
 			end);
 		end
-		getgenv().Boolean = v;
-		if (v == true) then
-			name();
+		if not removefogga then
+			removefogg:Disconnect();
+			Lighting.FogEnd = origsettings.fe;
 		end
-	end});
-	for _, v in pairs(tohttlock) do
-		if isPlayerInValidGameTOH then
-			v:Unlock();
-			JoinTOHButton:Lock();
-		else
-			v:Lock("Join The Game To See The Functions!");
-			JoinTOHButton:Unlock();
+	end);
+end});
+tohttlock.Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
+	pcall(function()
+		for v0, v1 in pairs(speaker.Backpack:GetDescendants()) do
+			if v1:IsA("Tool") then
+				v1:Destroy();
+			end
 		end
+		task.wait();
+		for v2, v3 in pairs(game.ReplicatedStorage.Gear:GetDescendants()) do
+			if v3:IsA("Tool") then
+				local v4 = v3:Clone();
+				task.wait();
+				v4.Parent = speaker.Backpack;
+			end
+		end
+		effecttrue();
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+	end);
+end});
+tohttlock.Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
+	pcall(function()
+		for v0, v1 in pairs(game:GetService("Workspace").tower:GetDescendants()) do
+			if (v1:IsA("BoolValue") and (v1.Name == "kills")) then
+				v1.Parent:Destroy();
+			end
+		end
+		effecttrue();
+		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+	end);
+end});
+Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952);
+tohttlock.Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
+	pcall(function()
+		v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
+		v1 = speaker.Character;
+		v1.HumanoidRootPart.CFrame = v0;
+		effecttrue();
+		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
+	end);
+end});
+Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, false, 10723415766);
+getgenv().Boolean = false;
+tohttlock.sasdasdToggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
+	function name()
+		task.spawn(function()
+			while getgenv().Boolean == true do
+				local endzone = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
+				Character.HumanoidRootPart.CFrame = endzone;
+				task.wait();
+			end
+		end);
 	end
+	getgenv().Boolean = v;
+	if (v == true) then
+		name();
+	end
+end});
+for _, v in pairs(tohttlock) do
+	if isPlayerInValidGameTOH then
+		v:Unlock();
+		JoinTOHButton:Lock();
+	else
+		v:Lock("Join The Game To See The Functions!");
+		JoinTOHButton:Unlock();
+	end
+end
 CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit);
@@ -6975,8 +7014,8 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 			Sliderhip:Set(0);
 			speaker.Character.Humanoid.HipHeight = 0;
 		else
-			Sliderhip:Set(2);
-			speaker.Character.Humanoid.HipHeight = 2;
+			Sliderhip:Set(keephipheightval.higfd);
+			speaker.Character.Humanoid.HipHeight = keephipheightval.higfd;
 		end
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			Sliderjpower:Set(50);
@@ -6990,28 +7029,28 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		Sliderfov:Set(70);
 		Togglefreezecurrentanims:Set(false);
 		edance1Slider:Set(1);
-		AnimpSlider:Set(1)
+		AnimpSlider:Set(1);
 	end);
 end);
 function CheckTimess()
-	local currentTime = game.Lighting.ClockTime
-    local lowerBound = 6
-    local upperBound = 18
+	local currentTime = game.Lighting.ClockTime;
+	local lowerBound = 6;
+	local upperBound = 18;
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
 		return;
 	elseif ((h >= 12) and (h < 20)) then
 		return;
 	else
-		if currentTime >= lowerBound and currentTime <= upperBound then
+		if ((currentTime >= lowerBound) and (currentTime <= upperBound)) then
 			task.wait(5);
 			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
 			end},nottrue={Name="Nah",Callback=function()
-					return
+				return;
 			end}}});
 		else
-			return
+			return;
 		end
 		effectfriendjoin();
 	end
