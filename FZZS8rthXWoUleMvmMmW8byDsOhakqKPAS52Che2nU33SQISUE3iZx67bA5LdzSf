@@ -388,77 +388,71 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti V
 	pcall(function()
 		antivoidder = Value;
 		if antivoidder then
-			noVoid = true;
-			local t = tick();
-			for i, v in pairs(speaker.Backpack:GetChildren()) do
-				v:SetAttribute("OwnedByLP", t);
-			end
-			for i, v in pairs(speaker.Character:GetChildren()) do
-				if v:IsA("Tool") then
-					v:SetAttribute("OwnedByLP", t);
-				end
-			end
-			if (novoidconnections == 0) then
-				novoidconnections = 1;
-				speaker.Backpack.ChildAdded:Connect(function(tool)
-					tool:SetAttribute("OwnedByLP", t);
-				end);
-				speaker.Character.ChildAdded:Connect(function(rg)
-					if (rg:IsA("Tool") and (noVoid == true) and (rg:GetAttribute("OwnedByLP") ~= t)) then
-						repeat
-							task.wait(0.05);
-							rg:Destroy();
-						until rg.Parent ~= speaker.Character 
-					end
-				end);
-				if speaker.Character:FindFirstChildOfClass("Humanoid") then
-					RunService.Stepped:Connect(function()
-						for i, v in pairs(speakers:GetPlayers()) do
-							if ((v ~= speaker) and v.Character and not v.Character:FindFirstChildOfClass("Humanoid") and noVoid) then
-								v.Character:Destroy();
-							end
-						end
-					end);
-				end
-			end
+			noVoid = true
+    local t = tick()
+    for _, v in pairs(speaker.Backpack:GetChildren()) do
+        v:SetAttribute("OwnedByLP", t)
+    end
+    for _, v in pairs(speaker.Character:GetChildren()) do
+        if v:IsA("Tool") then
+            v:SetAttribute("OwnedByLP", t)
+        end
+    end
+    if novoidconnections == 0 then
+        novoidconnections = 1
+        speaker.Backpack.ChildAdded:Connect(function(tool)
+            tool:SetAttribute("OwnedByLP", t)
+        end)
+        speaker.Character.ChildAdded:Connect(function(rg)
+            if rg:IsA("Tool") and noVoid and rg:GetAttribute("OwnedByLP") ~= t then
+                repeat
+                    task.wait(0.05)
+                    rg:Destroy()
+                until rg.Parent ~= speaker.Character
+            end
+        end)
+        if speaker.Character:FindFirstChildOfClass("Humanoid") then
+            RunService.Stepped:Connect(function()
+                for _, v in pairs(speakers:GetPlayers()) do
+                    if v ~= speaker and v.Character and not v.Character:FindFirstChildOfClass("Humanoid") and noVoid then
+                        v.Character:Destroy()
+                    end
+                end
+            end)
+        end
+    end
 		end
 		if not antivoidder then
 			noVoid = false;
 		end
 	end);
 end});
-local nosit = false;
+local AntiSitLoop
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Sit",CurrentValue=false,Callback=function(Value)
 	anitisitter = Value;
 	if anitisitter then
-		nosit = true;
-		while nosit do
-			task.wait(0.1);
-			if (speaker.Character.Humanoid.Sit == true) then
-				task.wait(0.1);
-				speaker.Character.Humanoid.Sit = false;
+		AntiSitLoop = RunService.Heartbeat:Connect(function()
+			if speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.Sit then
+				speaker.Character.Humanoid.Sit = false
 			end
-		end
+		end)
 	end
 	if not anitisitter then
-		nosit = false;
+		AntiSitLoop:Disconnect()
 	end
 end});
-local nostun = false;
+local AntiStunLoop
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Stun",CurrentValue=false,Callback=function(Value)
 	antistun = Value;
 	if antistun then
-		nostun = true;
-		while nostun do
-			task.wait(0.1);
-			if (speaker.Character.Humanoid.PlatformStand == true) then
-				task.wait(0.1);
-				speaker.Character.Humanoid.PlatformStand = false;
+		AntiStunLoop = RunService.Heartbeat:Connect(function()
+			if speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.PlatformStand then
+				speaker.Character.Humanoid.PlatformStand = false
 			end
-		end
+		end)
 	end
 	if not antistun then
-		nostun = false;
+		AntiStunLoop:Disconnect()
 	end
 end});
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Ragdoll",CurrentValue=false,Callback=function(Value)
@@ -5059,7 +5053,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectionmisctimescripts,Name="Time 
 		TweenService:Create(game.Lighting, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0), {ClockTime=Text}):Play();
 	end);
 end});
-Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709806631);
+Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709805144);
 todvalue = 12;
 Label = Misc:CreateLabel("Set A Value First Then Enable", Sectiontodloop);
 Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
@@ -5370,28 +5364,6 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoCli
 			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 0;
 		end
 	end);
-end});
-Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="NoClip Camera",Interact="Click",Callback=function()
-	local sc = (debug and debug.setconstant) or setconstant;
-	local gc = (debug and debug.getconstants) or getconstants;
-	if (not sc or not getgc or not gc) then
-		effectfalse();
-		return NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : setconstant or getconstants or getgc",Duration=3,Image=7733715400});
-	end
-	local pop = speaker.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper;
-	for _, v in pairs(getgc()) do
-		if ((type(v) == "function") and (getfenv(v).script == pop)) then
-			for i, v1 in pairs(gc(v)) do
-				if (tonumber(v1) == 0.25) then
-					sc(v, i, 0);
-				elseif (tonumber(v1) == 0) then
-					sc(v, i, 0.25);
-				end
-			end
-		end
-	end
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!",Duration=3,Image=7733715400});
 end});
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
@@ -6263,77 +6235,6 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Curre
 	end;
 	copyAnimId(speaker);
 end});
-SectionAnimpacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's R15", false, true, 11932783331);
-local animationPacks = {Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"},["No Boundries"]={climb="18747060903",fall="18747062535",idle1="18747067405",idle2="18747063918",jump="18747069148",run="18747070484",swim="18747073181",swimIdle="18747071682",walk="18747074203"},Patrol={climb="1148811837",fall="1148863382",idle1="1149612882",idle2="1150842221",jump="1150944216",run="1150967949",swim="1151204998",swimIdle="1151221899",walk="1151231493"},Popstar={climb="1213044953",fall="1212900995",idle1="1212900985",idle2="1212954651",jump="1212954642",run="1212980348",swim="1212852603",swimIdle="1212998578",walk="1212980338"},Confident={climb="1069946257",fall="1069973677",idle1="1069977950",idle2="1069987858",jump="1069984524",run="1070001516",swim="1070009914",swimIdle="1070012133",walk="1070017263"},Cowboy={climb="1014380606",fall="1014384571",idle1="1014390418",idle2="1014398616",jump="1014394726",run="1014401683",swim="1014406523",swimIdle="1014411816",walk="1014421541"}};
-local function setAnimation(character, animName, animId)
-	local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName);
-	if animObject then
-		if animObject:IsA("Animation") then
-			animObject.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
-			if animObject:FindFirstChild("Weight") then
-				animObject.Weight.Value = 10;
-			end
-		else
-			for _, child in ipairs(animObject:GetChildren()) do
-				if child:IsA("Animation") then
-					child.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
-					if child:FindFirstChild("Weight") then
-						child.Weight.Value = 10;
-					end
-				end
-			end
-		end
-	end
-end
-local function applyIdleAnimations(character, idle1Id, idle2Id)
-	local animate = character:FindFirstChild("Animate");
-	if animate then
-		local idle = animate:FindFirstChild("idle");
-		if idle then
-			local idle1Anim = idle:FindFirstChild("Animation1");
-			local idle2Anim = idle:FindFirstChild("Animation2");
-			if idle1Anim then
-				idle1Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle1Id;
-				if idle1Anim:FindFirstChild("Weight") then
-					idle1Anim.Weight.Value = 10;
-				end
-			end
-			if idle2Anim then
-				idle2Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle2Id;
-				if idle2Anim:FindFirstChild("Weight") then
-					idle2Anim.Weight.Value = 10;
-				end
-			end
-		end
-	end
-end
-local selectedPack = nil;
-Dropdown = Animations:CreateDropdown({SectionParent=SectionAnimpacks,Name="Select Anim Pack",Options={"Sneaky","Bold","Toy","Knight","Astronaut","Vampire","Robot","Levitation","Bubbly","Werewolf","Stylish","Mage","Cartoony","Zombie","Superhero","Ninja","Elder","Oldschool","Adidas","No Boundries","Patrol","Popstar","Confident","Cowboy"},CurrentOption="Select an option",Callback=function(option)
-	selectedPack = option;
-end});
-Button = Animations:CreateButton({SectionParent=SectionAnimpacks,Name="Apply Selected Anim Pack",Interact="Click",Callback=function()
-	if r15(speaker) then
-		if (selectedPack and animationPacks[selectedPack]) then
-			local animations = animationPacks[selectedPack];
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-			local character = game.Players.LocalPlayer.Character;
-			for animName, animId in pairs(animations) do
-				if ((animName == "idle1") or (animName == "idle2")) then
-					applyIdleAnimations(character, animations.idle1, animations.idle2);
-				else
-					setAnimation(character, animName, animId);
-				end
-			end
-		else
-			effectfalse();
-			NSUI:Notify({Title="Error!",Content="Please Select A Valid Animation Pack.",Duration=3,Image=7733715400});
-		end
-	else
-		effectfalse();
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
-	end
-end});
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549);
 Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Anim Player Values",Interact="Click",Callback=function()
 	Slideranimplr:Set(1);
@@ -6403,7 +6304,78 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote 
 	NSUI:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400});
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))();
 end});
-Sectionrblxclientanims = Animations:CreateSection("FE Roblox Client Animation's", false, false, 11932783331);
+Sectionfeanimspacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's", false, false, 11932783331);
+local animationPacks = {Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"},["No Boundries"]={climb="18747060903",fall="18747062535",idle1="18747067405",idle2="18747063918",jump="18747069148",run="18747070484",swim="18747073181",swimIdle="18747071682",walk="18747074203"},Patrol={climb="1148811837",fall="1148863382",idle1="1149612882",idle2="1150842221",jump="1150944216",run="1150967949",swim="1151204998",swimIdle="1151221899",walk="1151231493"},Popstar={climb="1213044953",fall="1212900995",idle1="1212900985",idle2="1212954651",jump="1212954642",run="1212980348",swim="1212852603",swimIdle="1212998578",walk="1212980338"},Confident={climb="1069946257",fall="1069973677",idle1="1069977950",idle2="1069987858",jump="1069984524",run="1070001516",swim="1070009914",swimIdle="1070012133",walk="1070017263"},Cowboy={climb="1014380606",fall="1014384571",idle1="1014390418",idle2="1014398616",jump="1014394726",run="1014401683",swim="1014406523",swimIdle="1014411816",walk="1014421541"}};
+local function setAnimation(character, animName, animId)
+	local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName);
+	if animObject then
+		if animObject:IsA("Animation") then
+			animObject.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
+			if animObject:FindFirstChild("Weight") then
+				animObject.Weight.Value = 10;
+			end
+		else
+			for _, child in ipairs(animObject:GetChildren()) do
+				if child:IsA("Animation") then
+					child.AnimationId = "http://www.roblox.com/asset/?id=" .. animId;
+					if child:FindFirstChild("Weight") then
+						child.Weight.Value = 10;
+					end
+				end
+			end
+		end
+	end
+end
+local function applyIdleAnimations(character, idle1Id, idle2Id)
+	local animate = character:FindFirstChild("Animate");
+	if animate then
+		local idle = animate:FindFirstChild("idle");
+		if idle then
+			local idle1Anim = idle:FindFirstChild("Animation1");
+			local idle2Anim = idle:FindFirstChild("Animation2");
+			if idle1Anim then
+				idle1Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle1Id;
+				if idle1Anim:FindFirstChild("Weight") then
+					idle1Anim.Weight.Value = 10;
+				end
+			end
+			if idle2Anim then
+				idle2Anim.AnimationId = "http://www.roblox.com/asset/?id=" .. idle2Id;
+				if idle2Anim:FindFirstChild("Weight") then
+					idle2Anim.Weight.Value = 10;
+				end
+			end
+		end
+	end
+end
+local selectedPack = nil;
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanimspacks,Name="Select Anim Pack",Options={"Sneaky","Bold","Toy","Knight","Astronaut","Vampire","Robot","Levitation","Bubbly","Werewolf","Stylish","Mage","Cartoony","Zombie","Superhero","Ninja","Elder","Oldschool","Adidas","No Boundries","Patrol","Popstar","Confident","Cowboy"},CurrentOption="Select an option",Callback=function(option)
+	selectedPack = option;
+end});
+Button = Animations:CreateButton({SectionParent=Sectionfeanimspacks,Name="Apply Selected Anim Pack",Interact="Click",Callback=function()
+	if r15(speaker) then
+		if (selectedPack and animationPacks[selectedPack]) then
+			local animations = animationPacks[selectedPack];
+			effecttrue();
+			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
+			local character = game.Players.LocalPlayer.Character;
+			for animName, animId in pairs(animations) do
+				if ((animName == "idle1") or (animName == "idle2")) then
+					applyIdleAnimations(character, animations.idle1, animations.idle2);
+				else
+					setAnimation(character, animName, animId);
+				end
+			end
+		else
+			effectfalse();
+			NSUI:Notify({Title="Error!",Content="Please Select A Valid Animation Pack.",Duration=3,Image=7733715400});
+		end
+	else
+		effectfalse();
+		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400});
+	end
+end});
+Sectionrblxclientanims = Animations:CreateSection("FE LocalPlayer Related | Roblox Client Animation's", false, false, 11932783331);
 Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
 		edance1Slider:Set(1);
@@ -6456,7 +6428,7 @@ edance1Input = Animations:CreateInput({SectionParent=Sectionrblxclientanims,Name
 		currentAnimationTrack:AdjustSpeed(Text);
 	end);
 end});
-Sectionfeanims = Animations:CreateSection("FE Animation's", false, false, 10686489468);
+Sectionfeanims = Animations:CreateSection("FE LocalPlayer Related | Animation's", false, false, 10686489468);
 Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
 	pcall(function()
 		AnimpSlider:Set(1)
@@ -6562,14 +6534,20 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
+ isPlayerInValidGameMP = ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484))
+ mpclosedsec = false;
+ mpbtlock = {};
 MP = Window:CreateTab("Meepcity", 7733701625);
-Sectiontotalscmp = MP:CreateSection("Total Script's: 17", false, false, 7743869612);
+Sectiontotalscmp = MP:CreateSection("Total Script's: 4", false, false, 7743869612);
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp);
-if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)) then
-	MarketplaceService = game:GetService("MarketplaceService");
-	Connection = ReplicatedStorage:WaitForChild("Connection");
+Sectiojointhegamemp = MP:CreateSection("Join The Game", false, mpclosedsec, 14754300297);
+Paragraph = MP:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectiojointhegamemp);
+JoinMPButton = MP:CreateButton({SectionParent=Sectiojointhegamemp,Name="Join Meepcity",Interact="Click",Callback=function()
+	game:GetService("TeleportService"):Teleport(370731277, LocalPlayer);
+end});
+if isPlayerInValidGameMP then
+	mpclosedsec = true;
 	ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent");
-	Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740);
 	local function colorToTable(clr)
 		return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)};
 	end
@@ -6608,810 +6586,175 @@ if ((game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId
 		ava.AccessoryBlob = layered;
 		return ava;
 	end
-	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		userid = Text;
-		if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
-			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)));
-			ConnectionEvent:FireServer(315, data, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
-		username = Text;
-		if (username and Players:GetUserIdFromNameAsync(username)) then
-			local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)));
-			ConnectionEvent:FireServer(315, data, true);
-		end
-	end});
-	Toggle = MP:CreateToggle({SectionParent=Sectionavmp,Name="No Outfit Max",CurrentValue=false,Callback=function(Value)
-		pcall(function()
-			Constants = require(ReplicatedStorage:WaitForChild("Constants"));
-			Maxoutfitremove = Value;
-			if Maxoutfitremove then
-				Constants.STATS.MAXAvatarEditorCustomOutfits = 8999999488;
-			elseif not Maxoutfitremove then
-				Constants.STATS.MAXAvatarEditorCustomOutfits = 3;
-			end
-		end);
-	end});
-	Sectionavatareditor = MP:CreateSection("Avatar Editor", false, false, 13285615740);
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Hat Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.HeadAccessory = AddAccessoryString(wearing.HeadAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Hair Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.HairAccessory = AddAccessoryString(wearing.HairAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Face Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.FaceAccessory = AddAccessoryString(wearing.FaceAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Neck Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.NeckAccessory = AddAccessoryString(wearing.NeckAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Shoulder Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.ShoulderAccessory = AddAccessoryString(wearing.ShoulderAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Front Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.FrontAccessory = AddAccessoryString(wearing.FrontAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Back Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.BackAccessory = AddAccessoryString(wearing.BackAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Waist Accessory",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.WaistAccessory = AddAccessoryString(wearing.WaistAccessory, assetid);
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Shirt",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.Shirt = assetid;
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="Pants",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.Pants = assetid;
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Input = MP:CreateInput({SectionParent=Sectionavatareditor,Name="T-Shirt",OnEnter=true,PlaceholderText="Asset ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-		assetid = tonumber(Text);
-		if assetid then
-			local info = MarketplaceService:GetProductInfo(assetid);
-			local data = Connection:InvokeServer(Constants.AE_REQUEST_AE_DATA);
-			local wearing = data.PlayerCurrentTemporaryOutfit or data.PlayerCurrentlyWearing;
-			wearing.GraphicTShirt = assetid;
-			ConnectionEvent:FireServer(315, wearing, true);
-		end
-	end});
-	Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
-	onsaleran = false;
-	Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
-		if not onsaleran then
-			onsaleran = true;
-			local function onsale(module)
-				local fd = require(module);
-				local id = 666;
-				fd.Categories[id] = {CategoryId=id,Image=5277185610,CatTitle="offsale ;)"};
-				for i, v in pairs(fd.Assets) do
-					if not fd.Assets[i].ForSale then
-						fd.Assets[i].ForSale = true;
-						if fd.Assets[i].Details.Price.HalloweenCandy then
-							fd.Assets[i].Details.Price.HalloweenCandy = nil;
-						end
-						fd.Assets[i].CatId = id;
-						fd.Assets[i].Desc = "this is an offsale item that got brought back to life";
-					end
-				end
-			end
-			onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"));
-			onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"));
-			onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"));
-			onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
-		end
-	end});
-	oldplusfunc = nil;
-	Button = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
-		pcall(function()
-			local v9 = require(ReplicatedStorage:WaitForChild("Global"));
-			oldplusfunc = hookfunction(v9.IsPlayerPLUS, function(p80)
-				local v110 = Players:GetPlayerByUserId(p80);
-				if not v110 then
-					return;
-				end
-				if (v110 == Players.LocalPlayer) then
-					v110:SetAttribute("PLUS", true);
-					return true;
-				else
-					return v110:GetAttribute("PLUS") and false;
-				end
-			end);
-		end);
-	end});
-else
-	Sectiojointhegamemp = MP:CreateSection("Join The Game", false);
-	Paragraph = MP:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectiojointhegamemp);
-	Button = MP:CreateButton({SectionParent=Sectiojointhegamemp,Name="Join Meepcity",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(370731277, LocalPlayer);
-	end});
 end
+Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740);
+mpbtlock.fromidInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	local userid = Text;
+	if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
+		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)));
+		ConnectionEvent:FireServer(315, data, true);
+	end
+end});
+mpbtlock.fromuserInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	local username = Text;
+	if (username and Players:GetUserIdFromNameAsync(username)) then
+		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)));
+		ConnectionEvent:FireServer(315, data, true);
+	end
+end});
+Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988);
+local onsaleran = false;
+mpbtlock.makeoffButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
+	if not onsaleran then
+		onsaleran = true;
+		local function onsale(module)
+			local fd = require(module);
+			local id = 666;
+			fd.Categories[id] = {CategoryId=id,Image=5277185610,CatTitle="offsale ;)"};
+			for i, v in pairs(fd.Assets) do
+				if not fd.Assets[i].ForSale then
+					fd.Assets[i].ForSale = true;
+					if fd.Assets[i].Details.Price.HalloweenCandy then
+						fd.Assets[i].Details.Price.HalloweenCandy = nil;
+					end
+					fd.Assets[i].CatId = id;
+					fd.Assets[i].Desc = "this is an offsale item that got brought back to life";
+				end
+			end
+		end
+		onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"));
+		onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"));
+		onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"));
+		onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"));
+	end
+end});
+local oldplusfunc = nil;
+mpbtlock.spoofplusButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
+	pcall(function()
+		local v9 = require(ReplicatedStorage:WaitForChild("Global"));
+		oldplusfunc = hookfunction(v9.IsPlayerPLUS, function(p80)
+			local v110 = Players:GetPlayerByUserId(p80);
+			if not v110 then
+				return;
+			end
+			if (v110 == Players.LocalPlayer) then
+				v110:SetAttribute("PLUS", true);
+				return true;
+			else
+				return v110:GetAttribute("PLUS") and false;
+			end
+		end);
+	end);
+end});
+for _, v in pairs(mpbtlock) do
+	if isPlayerInValidGameMP then
+		v:Unlock();
+		JoinMPButton:Lock();
+	else
+		v:Lock("Join The Game To See The Functions!");
+		JoinMPButton:Unlock();
+	end
+end
+ isPlayerInValidGameDH = ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394))
+ dhclosedsec = false;
+ dhbtlock = {};
 DH = Window:CreateTab("DaHood", 14367231837);
 Sectiontotaldh = DH:CreateSection("Total Script's : 13", false, false, 7743869612);
 Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotaldh);
-if ((game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)) then
+	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, dhclosedsec, 14754300297);
+	Paragraph = DH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegamedh);
+	JoinDHButton = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
+		game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
+	end});
 	Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610);
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
+	dhbtlock.rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
+	dhbtlock.Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
 		loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
+	dhbtlock.Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
+	dhbtlock.Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
+	dhbtlock.Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
+	dhbtlock.Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
+	dhbtlock.Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
 	Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534);
-	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
+	dhbtlock.Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
-		Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/vKhonshu/intro2/main/ui2"))();
-		NotifyLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/vKhonshu/intro/main/ui"))();
-		NotifyLib.prompt("Sun God", "Loading..", 5);
-		NotifyLib.prompt("Aimlock loaded", "Smite them with Q", 5);
-		NotifyLib.prompt("Sun God", "best lock :pray:", 5);
-		Settings = {rewrittenmain={Enabled=true,Key="q",DOT=true,AIRSHOT=true,NOTIF=true,AUTOPRED=false,FOV=math.huge,RESOVLER=false}};
-		SelectedPart = "HumanoidRootPart";
-		Prediction = true;
-		PredictionValue = 0.1357363;
-		AnchorCount = 0;
-		MaxAnchor = 50;
-		CC = game:GetService("Workspace").CurrentCamera;
-		local Plr;
-		enabled = false;
-		accomidationfactor = 0.136;
-		mouse = LocalPlayer:GetMouse();
-		placemarker = Instance.new("Part", game.Workspace);
-		function makemarker(Parent, Adornee, Color, Size, Size2)
-			e = Instance.new("BillboardGui", Parent);
-			e.Name = "PP";
-			e.Adornee = Adornee;
-			e.Size = UDim2.new(Size, Size2, Size, Size2);
-			e.AlwaysOnTop = Settings.rewrittenmain.DOT;
-			a = Instance.new("Frame", e);
-			if (Settings.rewrittenmain.DOT == true) then
-				a.Size = UDim2.new(1, 0, 1, 0);
-			else
-				a.Size = UDim2.new(0, 0, 0, 0);
-			end
-			if (Settings.rewrittenmain.DOT == true) then
-				a.Transparency = 0;
-				a.BackgroundTransparency = 0;
-			else
-				a.Transparency = 1;
-				a.BackgroundTransparency = 1;
-			end
-			a.BackgroundColor3 = Color;
-			g = Instance.new("UICorner", a);
-			if (Settings.rewrittenmain.DOT == false) then
-				g.CornerRadius = UDim.new(0, 0);
-			else
-				g.CornerRadius = UDim.new(1, 1);
-			end
-			return e;
-		end
-		data = game.Players:GetPlayers();
-		function noob(player)
-			local character;
-			repeat
-				task.wait();
-			until player.Character 
-			handler = makemarker(guimain, player.Character:WaitForChild(SelectedPart), Color3.fromRGB(240, 250, 1), 0.3, 3);
-			handler.Name = player.Name;
-			player.CharacterAdded:connect(function(Char)
-				handler.Adornee = Char:WaitForChild(SelectedPart);
-			end);
-			task.spawn(function()
-				while task.wait() do
-					if player.Character then
-					end
-				end
-			end);
-		end
-		for i = 1, #data do
-			if (data[i] ~= LocalPlayer) then
-				noob(data[i]);
-			end
-		end
-		game.Players.PlayerAdded:connect(function(Player)
-			noob(Player);
-		end);
-		task.spawn(function()
-			placemarker.Anchored = true;
-			placemarker.CanCollide = false;
-			if (Settings.rewrittenmain.DOT == true) then
-				placemarker.Size = Vector3.new(8, 8, 8);
-			else
-				placemarker.Size = Vector3.new(0, 0, 0);
-			end
-			placemarker.Transparency = 0.5;
-			if Settings.rewrittenmain.DOT then
-				makemarker(placemarker, placemarker, Color3.fromRGB(240, 250, 1), 0.4, 0);
-			end
-		end);
-		LocalPlayer:GetMouse().KeyDown:Connect(function(k)
-			if ((k == Settings.rewrittenmain.Key) and Settings.rewrittenmain.Enabled) then
-				if (enabled == true) then
-					enabled = false;
-					if (Settings.rewrittenmain.NOTIF == true) then
-						Plr = getClosestPlayerToCursor();
-						game.StarterGui:SetCore("SendNotification", {Title="Sun God",Text="Spared Victim",Duration=3});
-					end
-				else
-					Plr = getClosestPlayerToCursor();
-					enabled = true;
-					if (Settings.rewrittenmain.NOTIF == true) then
-						game.StarterGui:SetCore("SendNotification", {Title="Sun God",Text=("Victim: " .. tostring(Plr.Character.Humanoid.DisplayName)),Duration=3});
-					end
-				end
-			end
-		end);
-		function getClosestPlayerToCursor()
-			local closestPlayer;
-			shortestDistance = Settings.rewrittenmain.FOV;
-			for i, v in pairs(game.Players:GetPlayers()) do
-				if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
-					pos = CC:WorldToViewportPoint(v.Character.PrimaryPart.Position);
-					magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude;
-					if (magnitude < shortestDistance) then
-						closestPlayer = v;
-						shortestDistance = magnitude;
-					end
-				end
-			end
-			return closestPlayer;
-		end
-		pingvalue = nil;
-		split = nil;
-		ping = nil;
-		game:GetService("RunService").Stepped:connect(function()
-			if (enabled and (Plr.Character ~= nil) and Plr.Character:FindFirstChild("HumanoidRootPart")) then
-				placemarker.CFrame = CFrame.new(Plr.Character.HumanoidRootPart.Position + (Plr.Character.HumanoidRootPart.Velocity * accomidationfactor));
-			else
-				placemarker.CFrame = CFrame.new(0, 9999, 0);
-			end
-			if (Settings.rewrittenmain.AUTOPRED == true) then
-				pingvalue = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString();
-				split = string.split(pingvalue, "(");
-				ping = tonumber(split[1]);
-				if (ping < 130) then
-					PredictionValue = 0.151;
-				elseif (ping < 125) then
-					PredictionValue = 0.149;
-				elseif (ping < 110) then
-					PredictionValue = 0.146;
-				elseif (ping < 105) then
-					PredictionValue = 0.138;
-				elseif (ping < 90) then
-					PredictionValue = 0.136;
-				elseif (ping < 80) then
-					PredictionValue = 0.134;
-				elseif (ping < 70) then
-					PredictionValue = 0.131;
-				elseif (ping < 60) then
-					PredictionValue = 0.1229;
-				elseif (ping < 50) then
-					PredictionValue = 0.1225;
-				elseif (ping < 40) then
-					PredictionValue = 0.1256;
-				end
-			end
-		end);
-		mt = getrawmetatable(game);
-		old = mt.__namecall;
-		setreadonly(mt, false);
-		mt.__namecall = newcclosure(function(...)
-			local args = {...};
-			if (enabled and (getnamecallmethod() == "FireServer") and (args[2] == "UpdateMousePos") and Settings.rewrittenmain.Enabled and (Plr.Character ~= nil)) then
-				if (Prediction == true) then
-					args[3] = Plr.Character[SelectedPart].Position + (Plr.Character[SelectedPart].Velocity * PredictionValue);
-				else
-					args[3] = Plr.Character[SelectedPart].Position;
-				end
-				return old(unpack(args));
-			end
-			return old(...);
-		end);
-		game:GetService("RunService").RenderStepped:Connect(function()
-			if ((Settings.rewrittenmain.RESOVLER == true) and (Plr.Character ~= nil) and enabled and Settings.rewrittenmain.Enabled) then
-				if ((Settings.rewrittenmain.AIRSHOT == true) and enabled and (Plr.Character ~= nil)) then
-					if (game.Workspace.Players[Plr.Name].Humanoid:GetState() == Enum.HumanoidStateType.Freefall) then
-						if ((Plr.Character ~= nil) and (Plr.Character.HumanoidRootPart.Anchored == true)) then
-							AnchorCount = AnchorCount + 1;
-							if (AnchorCount >= MaxAnchor) then
-								Prediction = false;
-								task.wait(2);
-								AnchorCount = 0;
-							end
-						else
-							Prediction = true;
-							AnchorCount = 0;
-						end
-						SelectedPart = "LeftFoot";
-					else
-						if ((Plr.Character ~= nil) and (Plr.Character.HumanoidRootPart.Anchored == true)) then
-							AnchorCount = AnchorCount + 1;
-							if (AnchorCount >= MaxAnchor) then
-								Prediction = false;
-								task.wait(2);
-								AnchorCount = 0;
-							end
-						else
-							Prediction = true;
-							AnchorCount = 0;
-						end
-						SelectedPart = "HumanoidRootPart";
-					end
-				else
-					if ((Plr.Character ~= nil) and (Plr.Character.HumanoidRootPart.Anchored == true)) then
-						AnchorCount = AnchorCount + 1;
-						if (AnchorCount >= MaxAnchor) then
-							Prediction = false;
-							task.wait(2);
-							AnchorCount = 0;
-						end
-					else
-						Prediction = true;
-						AnchorCount = 0;
-					end
-					SelectedPart = "HumanoidRootPart";
-				end
-			else
-				SelectedPart = "HumanoidRootPart";
-			end
-		end);
-		UICorner_3.Parent = Submit;
+	dhbtlock.Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/sungodaim"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
-		configs = {main={enabled=true,aimlockkey="q",prediction=0.173,aimpart="HumanoidRootPart",notifications=false}};
-		boxsettings = {box={Showbox=false,boxsize=Vector3.new(3.3, 3, 2.8),markercolor=Color3.fromRGB(255, 245, 0),markersize=UDim2.new(0, 0, 0, 0)}};
-		box = Instance.new("Part", game.Workspace);
-		Mouse = LocalPlayer:GetMouse();
-		function makemarker(Parent, Adornee, Color, Size, Size2)
-			box = Instance.new("BillboardGui", Parent);
-			box.Name = "Dashware!";
-			box.Adornee = Adornee;
-			box.Size = UDim2.new(Size, Size2, Size, Size2);
-			box.AlwaysOnTop = true;
-			a = Instance.new("Frame", box);
-			a.Size = boxsettings.box.markersize;
-			a.BackgroundColor3 = Color;
-			g = Instance.new("UICorner", a);
-			g.CornerRadius = UDim.new(0, 0);
-			return box;
-		end
-		local Plr;
-		Mouse.KeyDown:Connect(function(KeyPressed)
-			if (KeyPressed == configs.main.aimlockkey) then
-				if (configs.main.enabled == true) then
-					configs.main.enabled = false;
-					if (configs.main.notifications == true) then
-						Plr = FindClosestUser();
-						game.StarterGui:SetCore("SendNotification", {Title="Dashware",Text="Unlocked;"});
-					end
-				else
-					Plr = FindClosestUser();
-					configs.main.enabled = true;
-					if (configs.main.notifications == true) then
-						game.StarterGui:SetCore("SendNotification", {Title="Dashware",Text=("Locked On;  " .. tostring(Plr.Character.Humanoid.DisplayName))});
-					end
-				end
-			end
-		end);
-		data = game.Players:GetPlayers();
-		function noob(player)
-			local character;
-			repeat
-				task.wait();
-			until player.Character 
-			handler = makemarker(guimain, player.Character:WaitForChild(configs.main.aimpart), Color3.fromRGB(107, 184, 255), 0.1, 8);
-			handler.Name = player.Name;
-			player.CharacterAdded:connect(function(Char)
-				handler.Adornee = Char:WaitForChild("HumanoidRootPart");
-			end);
-		end
-		for i = 1, #data do
-			if (data[i] ~= LocalPlayer) then
-				noob(data[i]);
-			end
-		end
-		game.Players.PlayerAdded:connect(function(Player)
-			noob(Player);
-		end);
-		task.spawn(function()
-			box.Anchored = true;
-			box.CanCollide = false;
-			box.Size = boxsettings.box.boxsize;
-			if (boxsettings.box.Showbox == true) then
-				box.Transparency = 0.8;
-			else
-				box.Transparency = 1;
-			end
-			makemarker(box, box, boxsettings.box.markercolor, 0.4, 1);
-		end);
-		function FindClosestUser()
-			local closestPlayer;
-			ShortestDistance = 300;
-			for i, v in pairs(game.Players:GetPlayers()) do
-				if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
-					pos = game:GetService("Workspace").CurrentCamera:WorldToViewportPoint(v.Character.PrimaryPart.Position);
-					magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalPlayer:GetMouse().X, LocalPlayer:GetMouse().Y)).magnitude;
-					if (magnitude < ShortestDistance) then
-						closestPlayer = v;
-						ShortestDistance = magnitude;
-					end
-				end
-			end
-			return closestPlayer;
-		end
-		game:GetService("RunService").Stepped:connect(function()
-			if (configs.main.enabled and Plr.Character and Plr.Character:FindFirstChild("HumanoidRootPart")) then
-				box.CFrame = CFrame.new(Plr.Character[configs.main.aimpart].Position + (Plr.Character.UpperTorso.Velocity * configs.main.prediction));
-			else
-				box.CFrame = CFrame.new(0, 9999, 0);
-			end
-		end);
-		repeat
-			task.wait();
-		until game:IsLoaded() 
-		mt = getrawmetatable(game);
-		old = mt.__namecall;
-		setreadonly(mt, false);
-		mt.__namecall = newcclosure(function(...)
-			args = {...};
-			if (configs.main.enabled and (getnamecallmethod() == "FireServer") and (args[2] == "UpdateMousePos")) then
-				args[3] = Plr.Character[configs.main.aimpart].Position + (Plr.Character[configs.main.aimpart].Velocity * configs.main.prediction);
-				return old(unpack(args));
-			end
-			return old(...);
-		end);
+	dhbtlock.afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/smZSXCiQQlUcNphIKlxavK4d5LLAEPPy"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
-		lib = loadstring(game:HttpGet("https://pastebin.com/raw/9Cau6Xvm"))();
-		win = lib:CreateWindow("amh#0001", Vector2.new(492, 598), Enum.KeyCode.RightShift);
-		tab1 = win:CreateTab("main");
-		sector1 = tab1:CreateSector("main", "left");
-		button = sector1:AddButton("enable amh", function()
-			configs = {Main={Enabled=true,Aimlockkey="c",Prediction=0.13093,Aimpart="HumanoidRootPart",Notifications=true,AirshotFunc=true},Tracer={TracerThickness=3.5,TracerTransparency=1,TracerColor=Color3.fromRGB(99, 95, 98)}};
-			RunService = game:GetService("RunService");
-			CurrentCamera = game:GetService("Workspace").CurrentCamera;
-			Mouse = LocalPlayer:GetMouse();
-			inset = game:GetService("GuiService"):GetGuiInset().Y;
-			Line = Drawing.new("Line");
-			local Plr;
-			Mouse.KeyDown:Connect(function(KeyPressed)
-				if (KeyPressed == configs.Main.Aimlockkey) then
-					if (configs.Main.Enabled == true) then
-						configs.Main.Enabled = false;
-						if (configs.Main.Notifications == true) then
-							Plr = FindClosestPlayer();
-							game.StarterGui:SetCore("SendNotification", {Title="amh#0001 | <3",Text="unlocked",Icon="http://www.roblox.com/asset/?id=6917008796"});
-						end
-					else
-						Plr = FindClosestPlayer();
-						configs.Main.Enabled = true;
-						if (configs.Main.Notifications == true) then
-							game.StarterGui:SetCore("SendNotification", {Title="amh#0001 | <3",Text=("locked: " .. tostring(speaker.Character.Humanoid.DisplayName)),Icon="http://www.roblox.com/asset/?id=6917008796"});
-						end
-					end
-				end
-			end);
-			function FindClosestPlayer()
-				local closestPlayer;
-				shortestDistance = math.huge;
-				for i, v in pairs(game.Players:GetPlayers()) do
-					if ((v ~= LocalPlayer) and v.Character and v.Character:FindFirstChild("Humanoid") and (v.Character.Humanoid.Health ~= 0) and v.Character:FindFirstChild("HumanoidRootPart")) then
-						pos = CurrentCamera:WorldToViewportPoint(v.Character.PrimaryPart.Position);
-						magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).magnitude;
-						if (magnitude < shortestDistance) then
-							closestPlayer = v;
-							shortestDistance = magnitude;
-						end
-					end
-				end
-				return closestPlayer;
-			end
-			RunService.Stepped:connect(function()
-				if (configs.Main.Enabled == true) then
-					Vector = CurrentCamera:worldToViewportPoint(Plr.Character[configs.Main.Aimpart].Position + (Plr.Character.HumanoidRootPart.Velocity * configs.Main.Prediction));
-					Line.Color = configs.Tracer.TracerColor;
-					Line.Thickness = configs.Tracer.TracerThickness;
-					Line.Transparency = configs.Tracer.TracerTransparency;
-					Line.From = Vector2.new(Mouse.X, Mouse.Y + inset);
-					Line.To = Vector2.new(Vector.X, Vector.Y);
-					Line.Visible = true;
-				elseif (configs.Main.Enabled == false) then
-					Line.Visible = false;
-				end
-			end);
-			mt = getrawmetatable(game);
-			old = mt.__namecall;
-			setreadonly(mt, false);
-			mt.__namecall = newcclosure(function(...)
-				args = {...};
-				if (configs.Main.Enabled and (getnamecallmethod() == "FireServer") and (args[2] == "UpdateMousePos")) then
-					args[3] = Plr.Character[configs.Main.Aimpart].Position + (Plr.Character[configs.Main.Aimpart].Velocity * configs.Main.Prediction);
-					return old(unpack(args));
-				end
-				return old(...);
-			end);
-			if (configs.Main.AirshotFunc == true) then
-				if ((Plr.Character.Humanoid.Jump == true) and (Plr.Character.Humanoid.FloorMaterial == Enum.Material.Air)) then
-					settings.config.Part = "RightFoot";
-				else
-					Plr.Character:WaitForChild("Humanoid").StateChanged:Connect(function(old, new)
-						if (new == Enum.HumanoidStateType.Freefall) then
-							settings.config.Part = "RightFoot";
-						else
-							settings.config.Part = "LowerTorso";
-						end
-					end);
-				end
-			end
-		end);
-		sector1:AddTextbox("enter new pred here", false, function(bool)
-			getgenv().Prediction = bool;
-		end);
+	dhbtlock.Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/gh5qEbtWxA3DN1yIaTCsCFAzFjfQJc6G"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-	Button = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
-		getgenv().AimPart = "HumanoidRootPart";
-		getgenv().AimlockKey = "q";
-		getgenv().AimRadius = 30;
-		getgenv().ThirdPerson = true;
-		getgenv().FirstPerson = true;
-		getgenv().TeamCheck = false;
-		getgenv().PredictMovement = true;
-		getgenv().PredictionVelocity = 8.8;
-		Players, Uis, RService, SGui = game:GetService("Players"), game:GetService("UserInputService"), game:GetService("RunService"), game:GetService("StarterGui");
-		Client, Mouse, Camera, CF, RNew, Vec3, Vec2 = Players.LocalPlayer, Players.LocalPlayer:GetMouse(), workspace.CurrentCamera, CFrame.new, Ray.new, Vector3.new, Vector2.new;
-		Aimlock, MousePressed, CanNotify = true, false, false;
-		local AimlockTarget;
-		getgenv().CiazwareUniversalAimbotLoaded = true;
-		getgenv().WorldToViewportPoint = function(P)
-			return Camera:WorldToViewportPoint(P);
-		end;
-		getgenv().WorldToScreenPoint = function(P)
-			return Camera.WorldToScreenPoint(Camera, P);
-		end;
-		getgenv().GetObscuringObjects = function(T)
-			if (T and T:FindFirstChild(getgenv().AimPart) and Client and Client.Character:FindFirstChild("Head")) then
-				RayPos = workspace:FindPartOnRay(RNew(T[getgenv().AimPart].Position, Client.Character.Head.Position));
-				if RayPos then
-					return RayPos:IsDescendantOf(T);
-				end
-			end
-		end;
-		getgenv().GetNearestTarget = function()
-			players = {};
-			PLAYER_HOLD = {};
-			DISTANCES = {};
-			for i, v in pairs(Players:GetPlayers()) do
-				if (v ~= Client) then
-					table.insert(players, v);
-				end
-			end
-			for i, v in pairs(players) do
-				if (v.Character ~= nil) then
-					AIM = v.Character:FindFirstChild("Head");
-					if ((getgenv().TeamCheck == true) and (v.Team ~= Client.Team)) then
-						DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude;
-						RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE);
-						HIT, POS = game.Workspace:FindPartOnRay(RAY, game.Workspace);
-						DIFF = math.floor((POS - AIM.Position).magnitude);
-						PLAYER_HOLD[v.Name .. i] = {};
-						PLAYER_HOLD[v.Name .. i].dist = DISTANCE;
-						PLAYER_HOLD[v.Name .. i].plr = v;
-						PLAYER_HOLD[v.Name .. i].diff = DIFF;
-						table.insert(DISTANCES, DIFF);
-					elseif ((getgenv().TeamCheck == false) and (v.Team == Client.Team)) then
-						DISTANCE = (v.Character:FindFirstChild("Head").Position - game.Workspace.CurrentCamera.CFrame.p).magnitude;
-						RAY = Ray.new(game.Workspace.CurrentCamera.CFrame.p, (Mouse.Hit.p - game.Workspace.CurrentCamera.CFrame.p).unit * DISTANCE);
-						HIT, POS = game.Workspace:FindPartOnRay(RAY, game.Workspace);
-						DIFF = math.floor((POS - AIM.Position).magnitude);
-						PLAYER_HOLD[v.Name .. i] = {};
-						PLAYER_HOLD[v.Name .. i].dist = DISTANCE;
-						PLAYER_HOLD[v.Name .. i].plr = v;
-						PLAYER_HOLD[v.Name .. i].diff = DIFF;
-						table.insert(DISTANCES, DIFF);
-					end
-				end
-			end
-			if (unpack(DISTANCES) == nil) then
-				return nil;
-			end
-			L_DISTANCE = math.floor(math.min(unpack(DISTANCES)));
-			if (L_DISTANCE > getgenv().AimRadius) then
-				return nil;
-			end
-			for i, v in pairs(PLAYER_HOLD) do
-				if (v.diff == L_DISTANCE) then
-					return v.plr;
-				end
-			end
-			return nil;
-		end;
-		Mouse.KeyDown:Connect(function(a)
-			if ((a == AimlockKey) and (AimlockTarget == nil)) then
-				pcall(function()
-					if (MousePressed ~= true) then
-						MousePressed = true;
-					end
-					local Target;
-					Target = GetNearestTarget();
-					if (Target ~= nil) then
-						AimlockTarget = Target;
-					end
-				end);
-			elseif ((a == AimlockKey) and (AimlockTarget ~= nil)) then
-				if (AimlockTarget ~= nil) then
-					AimlockTarget = nil;
-				end
-				if (MousePressed ~= false) then
-					MousePressed = false;
-				end
-			end
-		end);
-		RService.RenderStepped:Connect(function()
-			if ((getgenv().ThirdPerson == true) and (getgenv().FirstPerson == true)) then
-				if (((Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1) or ((Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude <= 1)) then
-					CanNotify = true;
-				else
-					CanNotify = false;
-				end
-			elseif ((getgenv().ThirdPerson == true) and (getgenv().FirstPerson == false)) then
-				if ((Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude > 1) then
-					CanNotify = true;
-				else
-					CanNotify = false;
-				end
-			elseif ((getgenv().ThirdPerson == false) and (getgenv().FirstPerson == true)) then
-				if ((Camera.Focus.p - Camera.CoordinateFrame.p).Magnitude <= 1) then
-					CanNotify = true;
-				else
-					CanNotify = false;
-				end
-			end
-			if ((Aimlock == true) and (MousePressed == true)) then
-				if (AimlockTarget and AimlockTarget.Character and AimlockTarget.Character:FindFirstChild(getgenv().AimPart)) then
-					if (getgenv().FirstPerson == true) then
-						if (CanNotify == true) then
-							if (getgenv().PredictMovement == true) then
-								Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + (AimlockTarget.Character[getgenv().AimPart].Velocity / PredictionVelocity));
-							elseif (getgenv().PredictMovement == false) then
-								Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position);
-							end
-						end
-					elseif (getgenv().ThirdPerson == true) then
-						if (CanNotify == true) then
-							if (getgenv().PredictMovement == true) then
-								Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position + (AimlockTarget.Character[getgenv().AimPart].Velocity / PredictionVelocity));
-							elseif (getgenv().PredictMovement == false) then
-								Camera.CFrame = CF(Camera.CFrame.p, AimlockTarget.Character[getgenv().AimPart].Position);
-							end
-						end
-					end
-				end
-			end
-		end);
+	dhbtlock.caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e"))();
 		effecttrue();
 		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 	end});
-else
-	Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, false, 14754300297);
-	Button = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer);
-	end});
-	Label = DH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamedh);
-end
+	for _, v in pairs(dhbtlock) do
+		if isPlayerInValidGameDH then
+			v:Unlock();
+			JoinDHButton:Lock();
+		else
+			v:Lock("Join The Game To See The Functions!");
+			JoinDHButton:Unlock();
+		end
+	end
+isPlayerInValidGameTOH = ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566))
+tohclosedsec = false;
+tohttlock = {};
 TOH = Window:CreateTab("Tower Of Hell", 14367002464);
 Sectiontotlatoh = TOH:CreateSection("Total Script's: 5", false, false, 7743869612);
 Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nIf You Get Banned It's Not My Fault.\nExecute Bypass Anti-Cheat First."}, Sectiontotlatoh);
-if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566)) then
+Sectionjointhegametoh = TOH:CreateSection("Join The Game!", false, tohclosedsec, 14754300297);
+	Paragraph = TOH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegametoh);
+	JoinTOHButton = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
+		game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
+	end});
+	if isPlayerInValidGameTOH then
+		tohclosedsec = true
+	else
+		tohclosedsec = false
+	end
 	Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610);
-	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
+	tohttlock.Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
 		task.wait(1.5);
 		pcall(function()
 			effecttrue();
@@ -7445,7 +6788,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 			v3:Destroy();
 		end);
 	end});
-	Toggleremoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
+	tohttlock.Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
 		pcall(function()
 			removefogga = Value;
 			if removefogga then
@@ -7461,7 +6804,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 			end
 		end);
 	end});
-	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
+	tohttlock.Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
 		pcall(function()
 			for v0, v1 in pairs(speaker.Backpack:GetDescendants()) do
 				if v1:IsA("Tool") then
@@ -7480,7 +6823,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 		end);
 	end});
-	Button = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
+	tohttlock.Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
 		pcall(function()
 			for v0, v1 in pairs(game:GetService("Workspace").tower:GetDescendants()) do
 				if (v1:IsA("BoolValue") and (v1.Name == "kills")) then
@@ -7492,7 +6835,7 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 		end);
 	end});
 	Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952);
-	Button = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
+	tohttlock.Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
 		pcall(function()
 			v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
 			v1 = speaker.Character;
@@ -7501,135 +6844,32 @@ if ((game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceI
 			NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 		end);
 	end});
-	Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, true, 10723415766);
-	function name()
-		task.spawn(function()
-			while getgenv().Boolean == true do
-				local endzone = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
-				Character.HumanoidRootPart.CFrame = endzone;
-				task.wait();
-			end
-		end);
-	end
+	Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, false, 10723415766);
 	getgenv().Boolean = false;
-	Toggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
+	tohttlock.sasdasdToggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
+		function name()
+			task.spawn(function()
+				while getgenv().Boolean == true do
+					local endzone = game.Workspace.tower.sections.finish.FinishGlow.CFrame;
+					Character.HumanoidRootPart.CFrame = endzone;
+					task.wait();
+				end
+			end);
+		end
 		getgenv().Boolean = v;
 		if (v == true) then
 			name();
 		end
 	end});
-else
-	Sectionjointhegametoh = TOH:CreateSection("Join The Game!", false, false, 14754300297);
-	Button = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer);
-	end});
-	Label = TOH:CreateLabel("Join The Game To See The Button's!", Sectionjointhegametoh);
-end
-CM = Window:CreateTab("Combat Warrior's", 9616983018);
-Sectiontotalsccm = CM:CreateSection("Total Script's: 2", false, false, 7743869612);
-Paragraph = CM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotalsccm);
-if (game.PlaceId == 4282985734) then
-	Sectionhubscm = CM:CreateSection("Hub's", false, false, 10709759610);
-	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Max Hub",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/1d4db6a1b04aaeccf046f7c63fbad31a.lua"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	Button = CM:CreateButton({SectionParent=Sectiontotalsccm,Name="Lum Ware",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ditchmethis/Lumware-Combat-Warriors-/main/lumware_updated.lua"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-else
-	Sectionjointhegamecm = CM:CreateSection("Join The Game!", false, false, 14754300297);
-	Button = CM:CreateButton({SectionParent=Sectionjointhegamecm,Name="Join Combat Warrior's",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(4282985734, LocalPlayer);
-	end});
-	Label = CM:CreateLabel("Join The Game To See The Button's!", Sectionjointhegamecm);
-end
-DO = Window:CreateTab("Doors", 12771027845);
-Sectiontotaldoors = DO:CreateSection("Total Script's: 2", false, false, 7743869612);
-Paragraph = DO:CreateParagraph({Title="Note",Content="Some Menus have Right Shift or Right Ctrl to Close or Open.\nSome Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotaldoors);
-if (game.PlaceId == 6839171747) then
-	Sectiondoorshub = DO:CreateSection("Hub's", false, false, 10709759610);
-	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Vynixius",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Loader.lua"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	Button = DO:CreateButton({SectionParent=Sectiondoorshub,Name="Doors Ominous",Interact="Click",Callback=function()
-		local a = game("ReplicatedStorage");
-		local b = [[https://raw.githubusercontent.com/OminousVibes-Exploit/Scripts/main/doors/]];
-		local c = game.GameId;
-		local d = game.PlaceId;
-		if (c ~= 2440500124) then
-			return;
+	for _, v in pairs(tohttlock) do
+		if isPlayerInValidGameTOH then
+			v:Unlock();
+			JoinTOHButton:Lock();
+		else
+			v:Lock("Join The Game To See The Functions!");
+			JoinTOHButton:Unlock();
 		end
-		if not game() then
-			game.Loaded:Wait();
-			task.wait(4);
-		end
-		task.wait(1);
-		local e = a("GameData", 10):WaitForChild("Floor", 10).Value;
-		if (d == 6516141723) then
-		elseif (d == 6839171747) then
-			if (e == "Hotel") then
-				loadstring(game:HttpGet(b .. "places/hotel.lua"))();
-			elseif (e == "Rooms") then
-				loadstring(game:HttpGet(b .. "places/rooms.lua"))();
-			end
-		end
-		local f = (syn and syn.queue_on_teleport) or queue_on_teleport;
-		if f then
-			f('loadstring(game:HttpGet("' .. b .. 'loadstring.lua"))()');
-		end
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-elseif (game.PlaceId == 6516141723) then
-	Sectionelevatordoors = DO:CreateSection("Elevator", true);
-	Label = DO:CreateLabel("Go Into a Elevator To See The Option's!", Sectionelevatordoors);
-else
-	Sectionjoingamedoors = DO:CreateSection("Join The Game!", false, false, 14754300297);
-	Button = DO:CreateButton({SectionParent=Sectionjoingamedoors,Name="Join Doors",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(6516141723, LocalPlayer);
-	end});
-	Label = DO:CreateLabel("Join The Game To See The Button's!", Sectionjoingamedoors);
-end
-MM = Window:CreateTab("Murder Mystery 2", 2992801749);
-Sectiontotmm = MM:CreateSection("Total Script's: 3", false, false, 7743869612);
-Paragraph = MM:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!"}, Sectiontotmm);
-if (game.PlaceId == 142823291) then
-	Sectionhubmm = MM:CreateSection("Hub's", false, false, 10709759610);
-	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Nexus",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/F2B-HUB/F2B/main/HUB"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-	if (executor == "Fluxus") then
-		Label = MM:CreateLabel("Eclipse Note: Your Executor May Not Be Supported!", Sectionhubmm);
 	end
-	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Eclipse",Interact="Click",Callback=function()
-		pcall(function()
-			local a, b, c, d, e = loadstring, request or http_request or (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request), assert, tostring, "https://api.eclipsehub.xyz/auth";
-			c(a and b, "Executor not Supported");
-			a(b({Url=(e .. "?\107e\121\61" .. d(mainKey)),Headers={["User-Agent"]="Eclipse"}}).Body)();
-			effecttrue();
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-		end);
-	end});
-	Button = MM:CreateButton({SectionParent=Sectionhubmm,Name="Lunar Hub",Interact="Click",Callback=function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/vwSaraa/LunarHub/main/mm2"))();
-		effecttrue();
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
-	end});
-else
-	Sectionjoingamemm = MM:CreateSection("Join The Game", false, false, 14754300297);
-	Button = MM:CreateButton({SectionParent=Sectionjoingamemm,Name="Join Murder Mystery 2",Interact="Click",Callback=function()
-		game:GetService("TeleportService"):Teleport(142823291, LocalPlayer);
-	end});
-	Label = MM:CreateLabel("Join The Game To See The Button's!", Sectionjoingamemm);
-end
 CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054);
 Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054);
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit);
