@@ -2,8 +2,10 @@
 if not game:IsLoaded() then
 	game.Loaded:Wait();
 end
+
 -- Thingy Thing
 getgenv().SecureMode = true;
+
 -- Services
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
@@ -153,7 +155,10 @@ function effecttrue()
 	soundnotificationtrue.Looped = false;
 	soundnotificationtrue.Volume = 0.65;
 	soundnotificationtrue.Parent = workspace;
-	soundnotificationtrue:Play();
+	soundnotificationtrue.Ended:Connect(function()
+        soundnotificationtrue:Destroy()
+    end)
+    soundnotificationtrue:Play()
 end
 
 function effectfalse()
@@ -162,7 +167,10 @@ function effectfalse()
 	soundnotificationfalse.Looped = false;
 	soundnotificationfalse.Volume = 0.65;
 	soundnotificationfalse.Parent = workspace;
-	soundnotificationfalse:Play();
+    soundnotificationfalse.Ended:Connect(function()
+        soundnotificationfalse:Destroy()
+    end)
+    soundnotificationfalse:Play()
 end
 
 function CheckFriends()
@@ -207,7 +215,10 @@ function effecttime()
 	soundnotificationtime.Looped = false;
 	soundnotificationtime.Volume = 0.65;
 	soundnotificationtime.Parent = workspace;
-	soundnotificationtime:Play();
+	soundnotificationtime.Ended:Connect(function()
+        soundnotificationtime:Destroy()
+    end)
+    soundnotificationtime:Play()
 end
 
 function effectfriendjoin()
@@ -216,7 +227,10 @@ function effectfriendjoin()
 	soundfriendjoin.Looped = false;
 	soundfriendjoin.Volume = 0.65;
 	soundfriendjoin.Parent = workspace;
-	soundfriendjoin:Play();
+	soundfriendjoin.Ended:Connect(function()
+        soundfriendjoin:Destroy()
+    end)
+    soundfriendjoin:Play()
 end
 
 function CheckTime()
@@ -5132,7 +5146,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove 
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
-Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.UserId = Text;
 end});
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself Info",Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts);
@@ -7181,9 +7195,22 @@ function CheckTimess()
 	else
 		if ((currentTime >= lowerBound) and (currentTime <= upperBound)) then
 			task.wait(5);
-			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want to Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want To Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play();
+				NSUI:Notify({Title="One More Thing...",Content="Do You Want To Keep It At Night?",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
+					Timenightmodeloop = RunService.RenderStepped:Connect(function()
+						game.Lighting.ClockTime = 0 
+					end)
+				end},nottrue={Name="Nah",Callback=function()
+					pcall(function()
+						Timenightmodeloop:Disconnect()
+						end)
+					return;
+				end}}});
 			end},nottrue={Name="Nah",Callback=function()
+				pcall(function()
+				Timenightmodeloop:Disconnect()
+				end)
 				return;
 			end}}});
 		else
