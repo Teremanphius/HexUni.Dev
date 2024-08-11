@@ -1,62 +1,79 @@
+-- Make sure game loaded
 if not game:IsLoaded() then
 	game.Loaded:Wait();
 end
+-- Thingy Thing
 getgenv().SecureMode = true;
-RunService = game:GetService("RunService");
-NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))();
-speaker = game.Players.LocalPlayer;
-Character = speaker.Character or speaker.CharacterAdded:Wait();
-LocalPlayer = speaker;
-speakers = game:GetService("Players");
-Players = speakers;
-humanoid = Character:FindFirstChildOfClass("Humanoid");
-Humanoid = humanoid;
-Workspace = game:GetService("Workspace");
-UserInputService = game:GetService("UserInputService");
-TweenService = game:GetService("TweenService");
-HttpService = game:GetService("HttpService");
-TeleportService = game:GetService("TeleportService");
-StarterGui = game:GetService("StarterGui");
-GuiService = game:GetService("GuiService");
-Lighting = game:GetService("Lighting");
-ContextActionService = game:GetService("ContextActionService");
-NetworkClient = game:GetService("NetworkClient");
-ReplicatedStorage = game:GetService("ReplicatedStorage");
-SoundService = game:GetService("SoundService");
-StarterPlayer = game:GetService("StarterPlayer");
-InsertService = game:GetService("InsertService");
-ChatService = game:GetService("Chat");
-ProximityPromptService = game:GetService("ProximityPromptService");
-StatsService = game:GetService("Stats");
-MaterialService = game:GetService("MaterialService");
-AvatarEditorService = game:GetService("AvatarEditorService");
-GameSettings = UserSettings():GetService("UserGameSettings");
-JMouse = speaker:GetMouse();
-oldgrav = workspace.Gravity;
-swimbeat = nil;
-movers = {};
-Camera = workspace.CurrentCamera;
-a = game:HttpGet("http://ip-api.com/json/");
-b = game:GetService("HttpService"):JSONDecode(a);
-country = b.country;
-countryCode = b.countryCode;
-c = game:HttpGet("http://worldtimeapi.org/api/ip");
-d = game:GetService("HttpService"):JSONDecode(c);
-timezone = d.timezone;
-executor = identifyexecutor();
-HumanModCons = {};
-noVoid = false;
-sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop;
-gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop;
-queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport);
-httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request;
-PlaceId, JobId = game.PlaceId, game.JobId;
-Scriptcount = "192";
-ScriptcountAnim = "64";
+-- Services
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local speakers = Players
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local StarterGui = game:GetService("StarterGui")
+local GuiService = game:GetService("GuiService")
+local Lighting = game:GetService("Lighting")
+local ContextActionService = game:GetService("ContextActionService")
+local NetworkClient = game:GetService("NetworkClient")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
+local StarterPlayer = game:GetService("StarterPlayer")
+local InsertService = game:GetService("InsertService")
+local ChatService = game:GetService("Chat")
+local ProximityPromptService = game:GetService("ProximityPromptService")
+local StatsService = game:GetService("Stats")
+local MaterialService = game:GetService("MaterialService")
+local AvatarEditorService = game:GetService("AvatarEditorService")
+local GameSettings = UserSettings():GetService("UserGameSettings")
+
+-- Player and Character
+local speaker = Players.LocalPlayer
+local Character = speaker.Character or speaker.CharacterAdded:Wait()
+local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+local JMouse = speaker:GetMouse()
+
+-- Load NSUI
+local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))()
+
+-- Workspace and Camera
+local oldgrav = Workspace.Gravity
+local Camera = Workspace.CurrentCamera
+
+-- HTTP Requests
+local ipResponse = game:HttpGet("http://ip-api.com/json/")
+local ipData = HttpService:JSONDecode(ipResponse)
+local country = ipData.country
+local countryCode = ipData.countryCode
+
+local timeResponse = game:HttpGet("http://worldtimeapi.org/api/ip")
+local timeData = HttpService:JSONDecode(timeResponse)
+local timezone = timeData.timezone
+
+-- Executor and Hidden Properties
+local executor = identifyexecutor()
+local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
+local gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop
+local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+-- Other Variables
+local PlaceId, JobId = game.PlaceId, game.JobId
+local Scriptcount = "192"
+local ScriptcountAnim = "64"
+local swimbeat = nil
+local movers = {}
+local HumanModCons = {}
+local noVoid = false
+_G.connections = {};
+
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
 	return rootPart;
 end
+
 function randomString()
 	length = math.random(10, 20);
 	array = {};
@@ -65,11 +82,13 @@ function randomString()
 	end
 	return table.concat(array);
 end
+
 function isNumber(str)
 	if ((tonumber(str) ~= nil) or (str == "inf")) then
 		return true;
 	end
 end
+
 function charresettopos()
 	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame;
 	speaker.Character.Parent = workspace.Terrain;
@@ -77,21 +96,25 @@ function charresettopos()
 	game:GetService("Workspace"):WaitForChild(speaker.Name);
 	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 end
+
 function toClipboard(String)
 	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set);
-	if clipBoard then
-		clipBoard(String);
-	else
+		if clipBoard then
+			clipBoard(String);
+		else
 	end
 end
+
 function notifyyw(String, String2, Durationnn, Imageee)
 	NSUI:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee});
 end
+
 function r15(plr)
 	if (plr.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15) then
 		return true;
 	end
 end
+
 function breakvelocity()
 	BeenASecond, V3 = false, Vector3.new(0, 0, 0);
 	delay(1, function()
@@ -106,10 +129,12 @@ function breakvelocity()
 		task.wait();
 	end
 end
+
 function getTorso(x)
 	x = x or speaker.Character;
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart");
 end
+
 function getPlr(name)
 	x = nil;
 	for i, v in next, game:GetService("Players"):GetPlayers() do
@@ -120,6 +145,7 @@ function getPlr(name)
 	end
 	return x;
 end
+
 function effecttrue()
 	soundnotificationtrue = Instance.new("Sound");
 	soundnotificationtrue.SoundId = "rbxassetid://1555493683";
@@ -128,6 +154,7 @@ function effecttrue()
 	soundnotificationtrue.Parent = workspace;
 	soundnotificationtrue:Play();
 end
+
 function effectfalse()
 	soundnotificationfalse = Instance.new("Sound");
 	soundnotificationfalse.SoundId = "rbxassetid://1555324499";
@@ -136,6 +163,7 @@ function effectfalse()
 	soundnotificationfalse.Parent = workspace;
 	soundnotificationfalse:Play();
 end
+
 function CheckFriends()
 	friendsId = speaker.UserId;
 	PlayersFriends = {};
@@ -171,7 +199,7 @@ function CheckFriends()
 	friendsinserverfr = tostring(FriendsInGame) .. " Friend's InGame";
 end
 pcall(CheckFriends);
-_G.connections = {};
+
 function effecttime()
 	soundnotificationtime = Instance.new("Sound");
 	soundnotificationtime.SoundId = "rbxassetid://6963032794";
@@ -180,6 +208,7 @@ function effecttime()
 	soundnotificationtime.Parent = workspace;
 	soundnotificationtime:Play();
 end
+
 function effectfriendjoin()
 	soundfriendjoin = Instance.new("Sound");
 	soundfriendjoin.SoundId = "rbxassetid://1862043663";
@@ -188,20 +217,22 @@ function effectfriendjoin()
 	soundfriendjoin.Parent = workspace;
 	soundfriendjoin:Play();
 end
+
 function CheckTime()
 	local h = os.date("*t").hour;
 	if ((h < 12) and (h > 4)) then
-		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	elseif ((h >= 12) and (h < 20)) then
-		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	else
-		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to Javolo Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
+		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")});
 		effecttime();
 	end
 end
 CheckTime();
+
 local playerAddedConnection;
 local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
@@ -215,6 +246,7 @@ local function onPlayerAdded(Player)
 		playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded);
 	end
 end
+
 playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded);
 flying = false;
 alwaysfalses = false;
@@ -274,15 +306,15 @@ RunService.Heartbeat:Connect(function()
 		end
 	end
 end);
-UpdatedFPS = false;
-RunService.RenderStepped:Connect(function(step)
-	local fps = 1 / step;
-	UpdatedFPS = math.floor(fps);
-end);
-local Window = NSUI:CreateWindow({Name=("Javolo Universal\t\t\t\t   " .. os.date("%H:%M")),LoadingTitle="Javolo Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="Javolo Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. speaker.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
+local Updatedfps = 0
+RunService.RenderStepped:Connect(function(frame)
+    Updatedfps = math.round(1 / frame)
+end)
+
+local Window = NSUI:CreateWindow({Name=("HeXen Universal\t\t\t\t    " .. os.date("%H:%M")),LoadingTitle="HeXen Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="HeXen Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. speaker.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}});
 task.spawn(function()
 	while task.wait(1) do
-		Window:SetTopbarTitle("Javolo Universal\t\t\t\t   " .. os.date("%H:%M"));
+		Window:SetTopbarTitle("HeXen Universal\t\t\t\t    " .. os.date("%H:%M"));
 	end
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
@@ -714,11 +746,11 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	effecttrue();
 	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400});
 end});
-Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game With JU",Interact="Click",Callback=function()
+Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game With HU",Interact="Click",Callback=function()
 	tpcc = false;
-	ju = true;
+	hu = true;
 	speaker.OnTeleport:Connect(function(State)
-		if (ju and not tpcc and queueteleport) then
+		if (hu and not tpcc and queueteleport) then
 			tpcc = true;
 			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()");
 		end
@@ -3648,6 +3680,7 @@ Paragraphtotal = MiscPlayer:CreateParagraph({Title="General Note",Content="Secti
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
 local Annoy = false;
+local AnnoyLoop
 AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3676,6 +3709,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 	end);
 end});
 local glued = false;
+local GlueLoop
 AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3731,6 +3765,7 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 	end);
 end});
 local StandOnHead = false;
+local StandOnHeadLoop
 AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3776,6 +3811,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 	end);
 end});
 local Follow = false;
+local FollowLoop
 AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3806,6 +3842,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 end});
 local LoopHello = false;
 local trueforanim = false;
+local WaveasLoop
 AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3857,6 +3894,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 	end);
 end});
 local Carpettion = false;
+local CarpetsLoop
 AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3880,7 +3918,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						carpete:Play(0.1, 1, 1);
 						effecttrue();
 						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-						CarpetsLoop = RunService.Stepped:Connect(function()
+						CarpetsLoop = RunService.Heartbeat:Connect(function()
 							pcall(function()
 								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -3896,6 +3934,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 	end);
 end});
 local ffhugger = false;
+local HuggingLoop
 AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3958,6 +3997,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 	end);
 end});
 local actualpb = false;
+local PBLoop
 AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3988,6 +4028,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 	end);
 end});
 local besomebackpack = false;
+local BackPackLoop
 AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4018,6 +4059,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 	end);
 end});
 local headsits = false;
+local HeadSitLoop
 AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4035,7 +4077,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					headsits = true;
 					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					HeadSitLoop = RunService.Stepped:Connect(function()
+					HeadSitLoop = RunService.Heartbeat:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
@@ -4048,6 +4090,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 	end);
 end});
 local baskets = false;
+local BasketLoop
 AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	plrName = Option:match("^(.-) %(");
 	foundPlr = getPlr(plrName);
@@ -4109,6 +4152,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 	end
 end});
 local ActualHeadsit = false;
+local ActualHeadSitLoop
 AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4179,6 +4223,7 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 	end);
 end});
 local orbitingfuck = false;
+local OrbititngLoop
 AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4237,6 +4282,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 	end);
 end});
 local closeorbitingfuck = false;
+local CloseOrbititngLoop
 AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4282,6 +4328,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 end});
 Paragraph = MiscPlayer:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
+local LookingAtLoop
 AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4297,7 +4344,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				lookingAt = true;
 				effecttrue();
 				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				LookingAtLoop = RunService.HeartBeat:Connect(function()
+				LookingAtLoop = RunService.Heartbeat:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, foundPlr.Character.HumanoidRootPart.Position);
 					end);
@@ -4658,7 +4705,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					v2banger:Play(0.1, 1, 3);
 					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					BangerLoop = RunService.Stepped:Connect(function()
+					BangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4774,6 +4821,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				if HumpLoop then
 					HumpLoop:Disconnect();
 					HumpLoop = nil;
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 				end
 				effectfalse();
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
@@ -4801,6 +4849,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 						elseif HumpLoop then
 							HumpLoop:Disconnect();
 							HumpLoop = nil;
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 						end
 					end);
 				end);
@@ -4831,7 +4880,7 @@ end});
 local FaceHumpLoop;
 local elapsedTime = 0;
 local ffc1 = false;
-AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
@@ -4842,14 +4891,15 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					if FaceHumpLoop then
 						FaceHumpLoop:Disconnect();
 						FaceHumpLoop = nil;
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 					end
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
+					notifyyw("No Longer Face Humping The Player", "Not Face Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					return;
 				else
 					ffc1 = true;
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
+					notifyyw("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
 					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						pcall(function()
@@ -4857,16 +4907,18 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 							local speakerRoot = getRoot(speaker.Character);
 							local targetRoot = getRoot(foundPlr.Character);
 							if (speakerRoot and targetRoot) then
-								elapsedTime = elapsedTime + (deltaTime * humpfacespeed);
-								local cycle = elapsedTime % 1;
-								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5;
-								local xOffset = humpfacedistance * alpha;
-								local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position;
-								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) * targetOrientation.Rotation;
+								elapsedTime = elapsedTime + (deltaTime * humpfacespeed)
+								local cycle = elapsedTime % 1
+								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+								local xOffset = humpfacedistance * alpha;			
+								local targetCFrame = targetRoot.CFrame
+								local targetPosition = targetCFrame.Position
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) + targetCFrame.LookVector;
 								speakerRoot.AssemblyLinearVelocity = Vector3.new();
 							elseif FaceHumpLoop then
 								FaceHumpLoop:Disconnect();
 								FaceHumpLoop = nil;
+								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 							end
 						end);
 					end);
@@ -4875,22 +4927,22 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		end
 	end);
 end});
-facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
 	pcall(function()
 		humpfacedistance = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacedistance = Text;
 	end);
 end});
-facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		humpfacespeed = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Facebang Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacespeed = Text;
 	end);
@@ -6930,14 +6982,14 @@ hours = math.floor(totalSeconds / 3600);
 minutes = math.floor((totalSeconds % 3600) / 60);
 seconds = totalSeconds % 60;
 Paragraphc = CRD:CreateParagraph({Title="Information",Content=("Username | Display Name: " .. speaker.Name .. " | " .. speaker.DisplayName .. "" .. "\nUserId: " .. speaker.UserId .. "" .. "\nAccount Age | In Days:\n" .. Daysinfo .. " Day('s)\n" .. Monthsinfo .. " Month('s)\n" .. Yearsinfo .. " Year('s)\n" .. speaker.AccountAge .. " In Day's" .. "\nPlaceId: " .. game.PlaceId .. "")}, Sectionclientinfo);
-Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")}, Sectionclientinfo);
+Paragraphcrdd = CRD:CreateParagraph({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. Updatedfps .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")}, Sectionclientinfo);
 task.spawn(function()
 	while task.wait() do
 		totalSeconds = math.floor(workspace.DistributedGameTime);
 		hours = math.floor(totalSeconds / 3600);
 		minutes = math.floor((totalSeconds % 3600) / 60);
 		seconds = totalSeconds % 60;
-		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. UpdatedFPS .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
+		Paragraphcrdd:Set({Title="Detailed Information",Content=("Country: " .. country .. " / " .. countryCode .. "" .. "\nTimezone: " .. timezone .. "" .. "\nExecutor: " .. executor .. "" .. "\nPing: " .. StatsService.Network.ServerStatsItem["Data Ping"]:GetValueString() .. " ms" .. "\nFPS: " .. Updatedfps .. "" .. "\nMemory: " .. math.floor(stats():GetTotalMemoryUsageMb()) .. " MB" .. "\nSession Time Spent: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds) .. "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers) .. "")});
 	end
 end);
 Button = CRD:CreateButton({SectionParent=Sectionclientinfo,Name="Print Executor Level",Interact="Click",Callback=function()
@@ -6958,12 +7010,12 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Int
 	effecttrue();
 	NSUI:Notify({Title="Copied Link!",Content="Copied Discord Link To Clipboard!",Duration=3,Image=7733715400});
 end});
-Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer Username",Interact="Click",Callback=function()
+Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy Your Username",Interact="Click",Callback=function()
 	toClipboard("" .. speaker.Name .. "");
 	effecttrue();
 	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
 end});
-Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy LocalPlayer UserId",Interact="Click",Callback=function()
+Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy Your UserId",Interact="Click",Callback=function()
 	toClipboard("" .. speaker.UserId .. "");
 	effecttrue();
 	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400});
