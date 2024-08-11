@@ -791,7 +791,7 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callbac
 	Event:FireServer(A_1, A_2);
 	task.wait(1);
 	LocalPlayer = game:GetService("Players").LocalPlayer;
-	speaker.Character.Humanoid:MoveTo(speaker.Character.HumanoidRootPart.Position + (speaker.Character.HumanoidRootPart.CFrame.lookVector * 10));
+	speaker.Character.Humanoid:MoveTo(getRoot(speaker.Character).Position + (getRoot(speaker.Character).CFrame.lookVector * 10));
 	speaker.Character.Humanoid.Jump = true;
 	task.wait(0.5);
 	function Iterate(instance, func)
@@ -859,7 +859,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 				Togglegrappleasdasd:Set(false);
 			end);
 			moveToMouse = true;
-			local bpNew = Instance.new("BodyPosition", speaker.Character.HumanoidRootPart);
+			local bpNew = Instance.new("BodyPosition", getRoot(speaker.Character));
 			while moveToMouse do
 				task.wait();
 				local mousePosY = JMouse.Hit.Y;
@@ -870,7 +870,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 		end
 		if not grapplier then
 			moveToMouse = false;
-			speaker.Character.HumanoidRootPart.BodyPosition:Destroy();
+			getRoot(speaker.Character).BodyPosition:Destroy();
 		end
 	end);
 end});
@@ -1777,16 +1777,17 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 			hrp1.Parent = c;
 			c.Parent = workspace;
 			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi);
-			h = game:GetService("RunService").Heartbeat;
 			hrp0.Transparency = 0.85;
 			hrp0.Material = Enum.Material.ForceField;
 			hrp0.Color = Color3.fromRGB(25, 25, 25);
-			while h:Wait() and c and c.Parent do
-				hrp0.CFrame = hrp1.CFrame;
-				hrp0.Orientation += Vector3.new(0, 0, 180)
-				hrp0.Position -= Vector3.new(0, 0, 0)
-				hrp0.Velocity = hrp1.Velocity;
-			end
+			R6Upsideg = RunService.Heartbeat:Connect(function()
+				if (c and c.Parent) then
+					hrp0.CFrame = hrp1.CFrame;
+					hrp0.Orientation += Vector3.new(0, 0, 180)
+					hrp0.Position -= Vector3.new(0, 0, 0)
+					hrp0.Velocity = hrp1.Velocity;
+				end
+			end)
 		elseif r15(speaker) then
 			ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
 				pcall(function()
@@ -1813,7 +1814,7 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
+					R15Upsidegg = RunService.Heartbeat:Connect(function()
 						if (c and c.Parent) then
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(0, 0, 180)
@@ -1831,6 +1832,11 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 		end
 	end
 	if not upsidedown then
+		if r15(speaker) then 
+			R15Upsidegg:Disconnect()
+		else
+			R6Upsideg:Disconnect()
+		end
 		charresettopos();
 		task.wait(1);
 		ifuserdiedar:Disconnect();
@@ -1977,16 +1983,17 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 				c.Parent = workspace;
 				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
 				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0);
-				local h = game:GetService("RunService").Heartbeat;
 				hrp0.Transparency = 0.85;
 				hrp0.Material = Enum.Material.ForceField;
 				hrp0.Color = Color3.fromRGB(25, 25, 25);
-				while h:Wait() and c and c.Parent do
+			Crawlr6 = RunService.Heartbeat:Connect(function()
+				if (c and c.Parent) then
 					hrp0.CFrame = hrp1.CFrame;
 					hrp0.Orientation += Vector3.new(-90, 0, 0)
-					hrp0.Position -= Vector3.new(0, 1.5, 0)
+					hrp0.Position -= Vector3.new(0, 1.6, 0)
 					hrp0.Velocity = hrp1.Velocity;
 				end
+			end)
 			end
 		elseif r15(speaker) then
 			ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
@@ -2040,11 +2047,11 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
+					R15crawlg = RunService.Heartbeat:Connect(function()
 						if (c and c.Parent) then
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(-90, 0, 0)
-							hrp0.Position -= Vector3.new(0, 1.5, 0)
+							hrp0.Position -= Vector3.new(0, 1.6, 0)
 							hrp0.Velocity = hrp1.Velocity;
 						end
 					end);
@@ -2054,12 +2061,16 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 			r15charaddedcrawl = Players.LocalPlayer.CharacterAdded:Connect(function(char)
 				c = char;
 				setupCharacter();
-				r15charaddedcrawl:Disconnect();
 			end);
 		end
 	end
 	if not Crawlingornot then
 		pcall(function()
+			if r15(speaker) then
+				R15crawlg:Disconnect()
+			else
+				Crawlr6:Disconnect()
+			end
 			ifuserdiedar2:Disconnect();
 			charresettopos();
 			if climbTrack then
@@ -2072,7 +2083,6 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 				humrunr6:Disconnect();
 			else
 				humrunr15:Disconnect();
-				r15charaddedcrawl:Disconnect();
 			end
 		end);
 	end
@@ -3261,7 +3271,7 @@ BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Se
 			for i = 1, 360 do
 				delay(i / 720, function()
 					speaker.Character.Humanoid.Sit = true;
-					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(hbackflipnfrontflip, 0, 0);
+					getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame * CFrame.Angles(hbackflipnfrontflip, 0, 0);
 				end);
 			end
 			task.wait(0.55);
@@ -3286,7 +3296,7 @@ SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Se
 			for i = 1, 360 do
 				delay(i / 720, function()
 					speaker.Character.Humanoid.Sit = true;
-					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, -hbackflipnfrontflip);
+					getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame * CFrame.Angles(0, 0, -hbackflipnfrontflip);
 				end);
 			end
 			task.wait(0.55);
@@ -3311,7 +3321,7 @@ FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="
 			for i = 1, 360 do
 				delay(i / 720, function()
 					speaker.Character.Humanoid.Sit = true;
-					speaker.Character.HumanoidRootPart.CFrame = speaker.Character.HumanoidRootPart.CFrame * CFrame.Angles(-hbackflipnfrontflip, 0, 0);
+					getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame * CFrame.Angles(-hbackflipnfrontflip, 0, 0);
 				end);
 			end
 			task.wait(0.55);
@@ -3729,7 +3739,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					GlueLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(speaker.Character.HumanoidRootPart.CFrame.lookVector.X, foundPlr.Character.HumanoidRootPart.Size.Y, speaker.Character.HumanoidRootPart.CFrame.lookVector.Z);
+							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, foundPlr.Character.HumanoidRootPart.Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						end);
@@ -3802,7 +3812,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+			getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
 			wait(0.9);
 			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 		elseif (foundPlr == speaker) then
@@ -4260,7 +4270,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				local spin = 0;
 				local spin2 = 0;
 				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = speaker.Character.HumanoidRootPart;
+				rp.Parent = getRoot(speaker.Character);
 				rp.CartoonFactor = 1;
 				rp.MaxThrust = 5000;
 				rp.MaxSpeed = 100;
@@ -4305,7 +4315,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 				effecttrue();
 				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				local rp = Instance.new("RocketPropulsion");
-				rp.Parent = speaker.Character.HumanoidRootPart;
+				rp.Parent = getRoot(speaker.Character);
 				rp.CartoonFactor = 1;
 				rp.MaxThrust = 5000;
 				rp.MaxSpeed = 100;
@@ -4436,6 +4446,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 			if not r15(speaker) then
 				if (Bang69 == true) then
 					Bang69 = false;
+					R6Upsideloop:Disconnect()
+					Bang69Looped:Disconnect()
 					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					effectfalse();
 					bang69:Stop();
@@ -4459,6 +4471,14 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
+					R6Upsideloop = RunService.Heartbeat:Connect(function()
+						if (c and c.Parent) then
+							hrp0.CFrame = hrp1.CFrame;
+							hrp0.Orientation += Vector3.new(0, 0, 180)
+							hrp0.Position -= Vector3.new(0, 0, 0)
+							hrp0.Velocity = hrp1.Velocity;
+						end
+					end);
 					f69lwnum = 1;
 					bangAnim = Instance.new("Animation");
 					bangAnim.AnimationId = "rbxassetid://148840371";
@@ -4466,15 +4486,10 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					bang69:Play(0.1, 1, 1);
 					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						Bang69 = true;
-						while Bang69 and c and c.Parent do
-							speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity;
-							game:GetService("RunService").RenderStepped:Wait();
-						end
+						Bang69Looped = RunService.RenderStepped:Connect(function()
+							getRoot(speaker.Character).CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
+						end)
 					end
 				end
 			elseif (Bang69 == true) then
@@ -4483,6 +4498,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				effectfalse();
 				bang69:Stop();
 				a69upsideown:Disconnect();
+				R15Bang69Looped:Disconnect()
+				R15Upside:Disconnect()
 				bangAnim:Destroy();
 				Bang69 = false;
 				charresettopos();
@@ -4508,7 +4525,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						hrp0.Transparency = 0.85;
 						hrp0.Material = Enum.Material.ForceField;
 						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
+						R15Upside = RunService.Heartbeat:Connect(function()
 							if (c and c.Parent) then
 								hrp0.CFrame = hrp1.CFrame;
 								hrp0.Orientation += Vector3.new(0, 0, 180)
@@ -4533,11 +4550,10 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				bang69:Play(0.1, 1, 1);
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true;
-					while Bang69 do
-						speaker.Character.HumanoidRootPart.CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
-						speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-						game:GetService("RunService").RenderStepped:Wait();
-					end
+					R15Bang69Looped = RunService.RenderStepped:Connect(function()
+						getRoot(speaker.Character).CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
+					end)
 				end
 			end
 		end
@@ -4560,10 +4576,15 @@ Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelat
 	end);
 end});
 local ffc1hump = false;
-amplitudeof69hump = 1.2;
-frequencyof69hump = 1;
+elapsedTime = 0;
+hump69distance = 5;
+hump69speed = 1;
+humpnordistance = 5;
+humpnorspeed = 1;
+humpfacedistance = 5;
+humpfacespeed = 1;
+local HumpBang69Looped
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
@@ -4571,7 +4592,13 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					if (ffc1hump == true) then
 						ffc1hump = false;
-						speaker.Character.Humanoid.PlatformStand = false;
+						Hump69R6Upsideloop:Disconnect()
+						if HumpBang69Looped then
+							HumpBang69Looped:Disconnect();
+							HumpBang69Looped = nil;
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+						end
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 						effectfalse();
 						charresettopos();
@@ -4592,25 +4619,48 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						hrp0.Transparency = 0.85;
 						hrp0.Material = Enum.Material.ForceField;
 						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						while ffc1hump and c and c.Parent do
-							speaker.Character.Humanoid.PlatformStand = true;
-							time = tick();
-							xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-							speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-							speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-							hrp0.CFrame = hrp1.CFrame;
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity;
-							game:GetService("RunService").RenderStepped:Wait();
-						end
+						Hump69R6Upsideloop = RunService.Heartbeat:Connect(function()
+							if (c and c.Parent) then
+								hrp0.CFrame = hrp1.CFrame;
+								hrp0.Orientation += Vector3.new(0, 0, 180)
+								hrp0.Position -= Vector3.new(0, 0, 0)
+								hrp0.Velocity = hrp1.Velocity;
+							end
+						end);
+						HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+							pcall(function()
+								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+								local speakerRoot = getRoot(speaker.Character);
+								local targetRoot = getRoot(foundPlr.Character);
+								if (speakerRoot and targetRoot) then
+									elapsedTime = elapsedTime + (deltaTime * hump69speed)
+									local cycle = elapsedTime % 1
+									local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+									local xOffset = hump69distance * alpha;			
+									local targetCFrame = targetRoot.CFrame
+									local targetPosition = targetCFrame.Position
+									speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector;
+									speakerRoot.AssemblyLinearVelocity = Vector3.new();
+								elseif HumpBang69Looped then
+									HumpBang69Looped:Disconnect();
+									HumpBang69Looped = nil;
+									speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+								end
+							end);
+						end);
 					end
 				end
 			elseif (ffc1hump == true) then
 				ffc1hump = false;
-				speaker.Character.Humanoid.PlatformStand = false;
+				if R15HumpBang69Looped then
+					R15HumpBang69Looped:Disconnect();
+					R15HumpBang69Looped = nil;
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+				end
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				effectfalse();
+				Hump69R15Upsideloop:Disconnect()
 				a69humper:Disconnect();
 				charresettopos();
 				return;
@@ -4635,7 +4685,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						hrp0.Transparency = 0.85;
 						hrp0.Material = Enum.Material.ForceField;
 						hrp0.Color = Color3.fromRGB(25, 25, 25);
-						RunService.Heartbeat:Connect(function()
+						Hump69R15Upsideloop = RunService.Heartbeat:Connect(function()
 							if (c and c.Parent) then
 								hrp0.CFrame = hrp1.CFrame;
 								hrp0.Orientation += Vector3.new(0, 0, 180)
@@ -4653,26 +4703,48 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						setupCharacter();
 					end);
 				end
-				while ffc1hump do
-					speaker.Character.Humanoid.PlatformStand = true;
-					time = tick();
-					xOffset = amplitudeof69hump * math.sin(2 * math.pi * frequencyof69hump * time);
-					speaker.Character.HumanoidRootPart.CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(Vector3.new(0, 0, xOffset));
-					speaker.Character.HumanoidRootPart.AssemblyLinearVelocity = Vector3.new();
-					game:GetService("RunService").RenderStepped:Wait();
-				end
+				R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+					pcall(function()
+						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
+						local speakerRoot = getRoot(speaker.Character);
+						local targetRoot = getRoot(foundPlr.Character);
+						if (speakerRoot and targetRoot) then
+							elapsedTime = elapsedTime + (deltaTime * hump69speed)
+							local cycle = elapsedTime % 1
+							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+							local xOffset = hump69distance * alpha;			
+							local targetCFrame = targetRoot.CFrame
+							local targetPosition = targetCFrame.Position
+							speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector;
+							speakerRoot.AssemblyLinearVelocity = Vector3.new();
+						elseif R15HumpBang69Looped then
+							R15HumpBang69Looped:Disconnect();
+							R15HumpBang69Looped = nil;
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
+						end
+					end);
+				end);
 			end
 		end
+end});
+s69humpSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
+	pcall(function()
+		hump69distance = Value;
 	end);
 end});
-facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={1,10},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+s69humpInput = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Distance",OnEnter=true,PlaceholderText="5",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		frequencyof69hump = Value;
+		hump69distance = Text;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+s69humpSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
-		frequencyof69hump = Text;
+		hump69speed = Value;
+	end);
+end});
+s69humpInput = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		hump69speed = Text;
 	end);
 end});
 Sectionplayrerelatedtpbang = MiscPlayer:CreateSection("FE Player Related | Bang", false, false, 10686489468);
@@ -4807,9 +4879,6 @@ end});
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468);
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
-elapsedTime = 0;
-humpfacedistance = 5;
-humpfacespeed = 1;
 local HumpLoop;
 AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	plrName = Option:match("^(.-) %(");
@@ -4859,26 +4928,25 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 end});
 facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
 	pcall(function()
-		humpfacedistance = Value;
+		humpnordistance = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",OnEnter=true,PlaceholderText="5",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		humpfacedistance = Text;
+		humpnordistance = Text;
 	end);
 end});
 facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
-		humpfacespeed = Value;
+		humpnorspeed = Value;
 	end);
 end});
 faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		humpfacespeed = Text;
+		humpnorspeed = Text;
 	end);
 end});
 local FaceHumpLoop;
-local elapsedTime = 0;
 local ffc1 = false;
 AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4932,7 +5000,7 @@ facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp
 		humpfacedistance = Value;
 	end);
 end});
-faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Distance",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Distance",OnEnter=true,PlaceholderText="5",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacedistance = Text;
 	end);
