@@ -32,6 +32,7 @@ local GameSettings = UserSettings():GetService("UserGameSettings")
 -- Player and Character
 local speaker = Players.LocalPlayer
 local Character = speaker.Character or speaker.CharacterAdded:Wait()
+local character = Character
 local Humanoid = Character:FindFirstChildOfClass("Humanoid")
 local JMouse = speaker:GetMouse()
 
@@ -2333,17 +2334,10 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 end});
 Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478);
 Paragraph = Misc:CreateParagraph({Title="Beyblade Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings);
+beybaldespeedr = 20
 ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyblade",CurrentValue=false,Callback=function(Value)
 	beyblader = Value;
 	if beyblader then
-		local BeyBladee = Instance.new("BodyAngularVelocity");
-		BeyBladee.Name = "BeyBlading";
-		BeyBladee.Parent = getRoot(speaker.Character);
-		BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0);
-		local function updateAngularVelocity()
-			BeyBladee.AngularVelocity = Vector3.new(0, 20, 0);
-		end
-		updateAngularVelocity();
 		local ifuserdied2;
 		if not r15(speaker) then
 			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
@@ -2362,16 +2356,17 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 			hrp1.Parent = c;
 			c.Parent = workspace;
 			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0);
-			local h = game:GetService("RunService").Heartbeat;
 			hrp0.Transparency = 0.85;
 			hrp0.Material = Enum.Material.ForceField;
 			hrp0.Color = Color3.fromRGB(25, 25, 25);
-			while h:Wait() and c and c.Parent do
-				hrp0.CFrame = hrp1.CFrame;
-				hrp0.Orientation += Vector3.new(-90, 0, 0)
-				hrp0.Position -= Vector3.new(0, 0, 0)
-				hrp0.Velocity = hrp1.Velocity;
-			end
+			R6Bladebey = RunService.Heartbeat:Connect(function()
+				if (c and c.Parent) then
+					hrp0.CFrame = hrp1.CFrame;
+					hrp0.Orientation += Vector3.new(-90, 0, 0)
+					hrp0.Position -= Vector3.new(0, 0, 0)
+					hrp0.Velocity = hrp1.Velocity;
+				end
+			end)
 		elseif r15(speaker) then
 			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
 				pcall(function()
@@ -2396,7 +2391,7 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 					hrp0.Transparency = 0.85;
 					hrp0.Material = Enum.Material.ForceField;
 					hrp0.Color = Color3.fromRGB(25, 25, 25);
-					RunService.Heartbeat:Connect(function()
+					R15Bladebey = RunService.Heartbeat:Connect(function()
 						if (c and c.Parent) then
 							hrp0.CFrame = hrp1.CFrame;
 							hrp0.Orientation += Vector3.new(-90, 0, 0)
@@ -2412,10 +2407,24 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 				setupCharacter();
 			end);
 		end
+		local BeyBladee = Instance.new("BodyAngularVelocity");
+		BeyBladee.Name = "BeyBlading";
+		BeyBladee.Parent = getRoot(speaker.Character);
+		BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0);
+		task.spawn(function()
+			while task.wait() do
+				BeyBladee.AngularVelocity = Vector3.new(0, beybaldespeedr, 0);
+			end
+		end);
 	end
 	if not beyblader then
 		pcall(function()
-			charresettopos();
+			charresettopos()
+			if r15(speaker) then
+				R15Bladebey:Disconnect()
+			else
+				R6Bladebey:Disconnect()
+			end
 			ifuserdied2:Disconnect();
 			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
 				if (v.Name == "BeyBlading") then
@@ -2424,6 +2433,14 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 			end
 		end);
 	end
+end});
+Sliderbeyblade = Misc:CreateSlider({SectionParent=Sectionflipsnthings,Name="Beyblade Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
+	pcall(function()
+		beybaldespeedr = Value;
+	end);
+end});
+Inputbeyblade = Misc:CreateInput({SectionParent=Sectionflipsnthings,Name="Beyblade Speed",PlaceholderText=20,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	beybaldespeedr = Text;
 end});
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
