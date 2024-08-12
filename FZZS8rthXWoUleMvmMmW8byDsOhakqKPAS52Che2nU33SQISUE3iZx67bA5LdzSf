@@ -258,6 +258,16 @@ playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded);
 flying = false;
 alwaysfalses = false;
 flyspeed = 3;
+local isTyping = false
+
+UserInputService.TextBoxFocused:Connect(function()
+	isTyping = true
+end)
+
+UserInputService.TextBoxFocusReleased:Connect(function()
+	isTyping = false
+end)
+
 RunService.Heartbeat:Connect(function()
 	local primaryPart = Character and Character.PrimaryPart;
 	if primaryPart then
@@ -278,6 +288,9 @@ RunService.Heartbeat:Connect(function()
 			local camCFrame = Camera.CFrame;
 			local velocity = Vector3.zero;
 			local rotation = camCFrame.Rotation;
+			if isTyping then
+				return
+			end
 			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
 				velocity += camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
@@ -297,7 +310,7 @@ RunService.Heartbeat:Connect(function()
 			if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
 				velocity += Vector3.yAxis
 			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+			if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
 				velocity -= Vector3.yAxis
 			end
 			local tweenInfo = TweenInfo.new(0.5);
@@ -327,7 +340,7 @@ task.spawn(function()
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
 Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
-Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
+Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Section's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
@@ -558,7 +571,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk | Idle",CurrentValue=true,Callback=function(Value)
+Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk | Idle",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		antiafkidle = Value;
 		if antiafkidle then
@@ -3765,7 +3778,8 @@ end});
 
 MiscPlayer = Window:CreateTab("Universal Player", 9080478424);
 Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
-Paragraphtotal = MiscPlayer:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
+Paragraphtotal = MiscPlayer:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Sectiontotalscrismisc);
+Paragraphtotal = MiscPlayer:CreateParagraph({Title="Drop Down's Note",Content="When You Open Them The Button's Are Like A Toggle.\nYou Press One, You Do The Function, And Then You Press Again On Whatever Button To Stop."}, Sectiontotalscrismisc);
 Sectiontpscritpss = MiscPlayer:CreateSection("FE Player Related | Teleport", false, false, 6723742952);
 AlldropdownRefresh = {};
 gotoplayersList = {};
@@ -3780,16 +3794,22 @@ AlldropdownRefresh.gotodropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 end});
 
 local function updateAllPlayerLists()
-	gotoplayersList = {};
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if (player ~= speaker) then
-			table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
-		end
-	end
-	for _, v in AlldropdownRefresh do
-		v:Refresh(gotoplayersList, "Select an option");
-	end
+    gotoplayersList = {};
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if (player ~= speaker) then
+            table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
+        end
+    end
+    local delayTime = 0.1
+    local delayCounter = 0
+    for _, v in pairs(AlldropdownRefresh) do
+        task.delay(delayCounter, function()
+            v:Refresh(gotoplayersList, "Select an option");
+        end)
+        delayCounter = delayCounter + delayTime
+    end
 end
+
 game.Players.PlayerAdded:Connect(updateAllPlayerLists);
 game.Players.PlayerRemoving:Connect(updateAllPlayerLists);
 updateAllPlayerLists();
@@ -5110,11 +5130,11 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 						local speakerRoot = getRoot(speaker.Character);
 						local targetRoot = getRoot(foundPlr.Character);
 						if (speakerRoot and targetRoot) then
-							elapsedTime = elapsedTime + (deltaTime * humpfacespeed);
+							elapsedTime = elapsedTime + (deltaTime * humpnorspeed);
 							local cycle = elapsedTime % 1;
 							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5;
 							local targetPosition = targetRoot.CFrame;
-							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpfacedistance);
+							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance);
 							local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha);
 							local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position;
 							speakerRoot.CFrame = CFrame.new(newPosition) * targetOrientation.Rotation;
