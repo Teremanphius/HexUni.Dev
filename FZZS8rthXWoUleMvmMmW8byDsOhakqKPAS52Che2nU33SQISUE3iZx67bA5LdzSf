@@ -94,9 +94,8 @@ end
 
 function toClipboard(String)
 	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set);
-		if clipBoard then
-			clipBoard(String);
-		else
+	if clipBoard then
+		clipBoard(String);
 	end
 end
 
@@ -948,7 +947,7 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 	end);
 end});
 
-fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind)
+fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind, chatting)
 	normalfly = KeyBind;
 	if normalfly then
 		flying = true;
@@ -1089,8 +1088,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 	end);
 end});
 
-SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
-	sprints = isToggled;
+SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	sprints = KeyBind;
 	if sprints then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play();
 		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=95}):Play();
@@ -1155,8 +1154,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit
 	end);
 end});
 
-stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(isToggled)
-	Stunff = isToggled;
+stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	Stunff = KeyBind;
 	if Stunff then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 	else
@@ -3800,7 +3799,7 @@ local function updateAllPlayerLists()
             table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
         end
     end
-    local delayTime = 0.1
+    local delayTime = 0.25
     local delayCounter = 0
     for _, v in pairs(AlldropdownRefresh) do
         task.delay(delayCounter, function()
