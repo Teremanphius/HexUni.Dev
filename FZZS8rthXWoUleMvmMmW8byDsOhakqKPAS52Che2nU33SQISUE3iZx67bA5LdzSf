@@ -38,14 +38,11 @@ local oldgrav = Workspace.Gravity
 local Camera = Workspace.CurrentCamera
 
 -- HTTP Requests
-local ipResponse = game:HttpGet("http://ip-api.com/json/")
+local ipResponse = game:HttpGet("http://ip-api.com/json/") -- I Don't Log IP, You Can Check Yourself, No Webhooks
 local ipData = HttpService:JSONDecode(ipResponse)
 local country = ipData.country
 local countryCode = ipData.countryCode
-
-local timeResponse = game:HttpGet("http://worldtimeapi.org/api/ip")
-local timeData = HttpService:JSONDecode(timeResponse)
-local timezone = timeData.timezone
+local timezone = ipData.timezone
 
 -- Executor and Hidden Properties
 local executor = identifyexecutor()
@@ -3894,7 +3891,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					AnnoyLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -3925,7 +3922,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					GlueLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, foundPlr.Character.HumanoidRootPart.Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						end);
@@ -3953,7 +3950,7 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					effecttrue();
 					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					while walkto do
-						speaker.Character.Humanoid:MoveTo(foundPlr.Character.HumanoidRootPart.Position);
+						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position);
 						task.wait();
 					end
 				end
@@ -3983,7 +3980,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					StandOnHeadLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						end);
@@ -4001,7 +3998,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if foundPlr then
-			getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+			getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
 			wait(0.9);
 			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 		elseif (foundPlr == speaker) then
@@ -4031,7 +4028,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					effecttrue();
 					FollowLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4080,7 +4077,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					WaveasLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							if (speaker.Character and foundPlr.Character) then
-								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
+								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							end
 							if trueforanim then
@@ -4122,7 +4119,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 						CarpetsLoop = RunService.Heartbeat:Connect(function()
 							pcall(function()
-								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
+								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							end);
 						end);
@@ -4164,7 +4161,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						effecttrue();
 						HuggingLoop = RunService.Stepped:Connect(function()
 							pcall(function()
-								getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							end);
 						end);
@@ -4191,7 +4188,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				effecttrue();
 				HuggingLoop = RunService.Stepped:Connect(function()
 					pcall(function()
-						getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
+						getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 					end);
 				end);
@@ -4222,7 +4219,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					PBLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4254,7 +4251,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					BackPackLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4286,7 +4283,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					HeadSitLoop = RunService.Heartbeat:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4381,7 +4378,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 					ActualHeadSitLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4558,7 +4555,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				LookingAtLoop = RunService.Heartbeat:Connect(function()
 					pcall(function()
-						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, foundPlr.Character.HumanoidRootPart.Position);
+						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, getRoot(foundPlr.Character).Position);
 					end);
 				end);
 			end
@@ -4695,7 +4692,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						Bang69 = true;
 						Bang69Looped = RunService.RenderStepped:Connect(function()
-							getRoot(speaker.Character).CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+							getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end)
 					end
@@ -4759,7 +4756,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true;
 					R15Bang69Looped = RunService.RenderStepped:Connect(function()
-						getRoot(speaker.Character).CFrame = (foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * f69lwnum);
+						getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum);
 						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 					end)
 				end
@@ -4995,7 +4992,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					effecttrue();
 					BangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame + (foundPlr.Character.HumanoidRootPart.CFrame.lookVector * flwnum);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -5046,7 +5043,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					effecttrue();
 					FaceBangerLoop = RunService.Stepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -5089,7 +5086,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 					SitFaceBangerLoop = RunService.Stepped:Connect(function()
 						pcall(function()
 							Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = foundPlr.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
