@@ -3869,7 +3869,6 @@ Input = MiscPlayer:CreateInput({SectionParent=Sectiontpscritpss,Name="Tween Tele
 end});
 
 local spectateing = false;
-local SpectateLoop;
 AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Spectate",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3886,7 +3885,7 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 				spectateing = true;
 				effecttrue();
 				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				SpectateLoop = RunService.Heartbeat:Connect(function()
+				SpectateLoop = RunService.RenderStepped:Connect(function()
 					game.Workspace.Camera.CameraSubject = foundPlr.Character;
 				end);
 			end
@@ -3897,7 +3896,6 @@ end});
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
 local Annoy = false;
-local AnnoyLoop
 AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3914,7 +3912,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					Annoy = true;
 					effecttrue();
 					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					AnnoyLoop = RunService.Stepped:Connect(function()
+					AnnoyLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -3927,7 +3925,6 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 end});
 
 local glued = false;
-local GlueLoop
 AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -3945,7 +3942,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					glued = true;
 					effecttrue();
 					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					GlueLoop = RunService.Stepped:Connect(function()
+					GlueLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -3967,6 +3964,7 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (walkto == true) then
 					walkto = false;
+					WalktoLoop:Disconnect()
 					effectfalse();
 					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 					return;
@@ -3974,10 +3972,10 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					walkto = true;
 					effecttrue();
 					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					while walkto do
+					WalktoLoop = RunService.RenderStepped:Connect(function()
 						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position);
 						task.wait();
-					end
+					end)
 				end
 			end
 		end
@@ -3985,7 +3983,6 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 end});
 
 local StandOnHead = false;
-local StandOnHeadLoop
 AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4003,7 +4000,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					StandOnHead = true;
 					effecttrue();
 					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-					StandOnHeadLoop = RunService.Stepped:Connect(function()
+					StandOnHeadLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4033,7 +4030,6 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 end});
 
 local Follow = false;
-local FollowLoop
 AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4051,7 +4047,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					Follow = true;
 					notifyyw("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					FollowLoop = RunService.Stepped:Connect(function()
+					FollowLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4065,7 +4061,6 @@ end});
 
 local LoopHello = false;
 local trueforanim = false;
-local WaveasLoop
 AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4099,7 +4094,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 						Waver:Stop();
 						WaveAnim:Destroy();
 					end);
-					WaveasLoop = RunService.Stepped:Connect(function()
+					WaveasLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							if (speaker.Character and foundPlr.Character) then
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
@@ -4118,7 +4113,6 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 end});
 
 local Carpettion = false;
-local CarpetsLoop
 AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4142,7 +4136,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						carpete:Play(0.1, 1, 1);
 						effecttrue();
 						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-						CarpetsLoop = RunService.Heartbeat:Connect(function()
+						CarpetsLoop = RunService.RenderStepped:Connect(function()
 							pcall(function()
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4159,7 +4153,6 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 end});
 
 local ffhugger = false;
-local HuggingLoop
 AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4184,7 +4177,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						zomearm:AdjustSpeed(0);
 						notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 						effecttrue();
-						HuggingLoop = RunService.Stepped:Connect(function()
+						HuggingLoop = RunService.RenderStepped:Connect(function()
 							pcall(function()
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4211,7 +4204,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				speaker.Character.Animate.Disabled = true;
 				notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
-				HuggingLoop = RunService.Stepped:Connect(function()
+				HuggingLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1);
 						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -4223,7 +4216,6 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 end});
 
 local actualpb = false;
-local PBLoop
 AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4241,7 +4233,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					actualpb = true;
 					notifyyw("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					PBLoop = RunService.Stepped:Connect(function()
+					PBLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2);
@@ -4255,7 +4247,6 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 end});
 
 local besomebackpack = false;
-local BackPackLoop
 AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4273,7 +4264,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					besomebackpack = true;
 					notifyyw("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, 10709790644);
 					effecttrue();
-					BackPackLoop = RunService.Stepped:Connect(function()
+					BackPackLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1);
@@ -4287,7 +4278,6 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 end});
 
 local headsits = false;
-local HeadSitLoop
 AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4305,7 +4295,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					headsits = true;
 					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					HeadSitLoop = RunService.Heartbeat:Connect(function()
+					HeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4);
@@ -4319,7 +4309,6 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 end});
 
 local baskets = false;
-local BasketLoop
 AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	plrName = Option:match("^(.-) %(");
 	foundPlr = getPlr(plrName);
@@ -4337,7 +4326,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					baskets = true;
 					notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644);
 					effecttrue();
-					BasketLoop = RunService.Stepped:Connect(function()
+					BasketLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
@@ -4367,13 +4356,12 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim);
 			zomearm:Play(0, 10, 0);
 			speaker.Character.Animate.Disabled = true;
-			BasketLoop = RunService.Stepped:Connect(function()
+			BasketLoop = RunService.RenderStepped:Connect(function()
 				pcall(function()
 					speaker.Character.Humanoid.Sit = true;
 					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm");
 					if targetArm then
 						getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6);
-						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 					end
 				end);
 			end);
@@ -4382,7 +4370,6 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 end});
 
 local ActualHeadsit = false;
-local ActualHeadSitLoop
 AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4400,7 +4387,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 					ActualHeadsit = true;
 					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					ActualHeadSitLoop = RunService.Stepped:Connect(function()
+					ActualHeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4);
@@ -4455,7 +4442,6 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 end});
 
 local orbitingfuck = false;
-local OrbititngLoop
 AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4501,7 +4487,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				rp.Target = foundPlr.Character.ThePart;
 				rp:Fire();
 				speaker.Character.Humanoid.PlatformStand = true;
-				OrbititngLoop = RunService.Stepped:Connect(function()
+				OrbititngLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						sine = sine + change;
 						spin2 = spin2 + 0.6;
@@ -4515,7 +4501,6 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 end});
 
 local closeorbitingfuck = false;
-local CloseOrbititngLoop
 AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4547,7 +4532,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 				rp.Target = foundPlr.Character.HumanoidRootPart;
 				rp:Fire();
 				speaker.Character.Humanoid.Sit = true;
-				CloseOrbititngLoop = RunService.Stepped:Connect(function()
+				CloseOrbititngLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						sine = sine + change;
 						spin2 = spin2 + 0.6;
@@ -4562,7 +4547,6 @@ end});
 
 Paragraph = MiscPlayer:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
-local LookingAtLoop
 AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -4578,7 +4562,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				lookingAt = true;
 				effecttrue();
 				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				LookingAtLoop = RunService.Heartbeat:Connect(function()
+				LookingAtLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, getRoot(foundPlr.Character).Position);
 					end);
@@ -4836,7 +4820,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 								hrp0.Velocity = hrp1.Velocity;
 							end
 						end);
-						HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+						HumpBang69Looped = RunService.RenderStepped:Connect(function(_, deltaTime)
 							pcall(function()
 								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 								local speakerRoot = getRoot(speaker.Character);
@@ -4912,7 +4896,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						setupCharacter();
 					end);
 				end
-				R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+				R15HumpBang69Looped = RunService.RenderStepped:Connect(function(_, deltaTime)
 					pcall(function()
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						local speakerRoot = getRoot(speaker.Character);
@@ -5041,7 +5025,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					facebanger:Play(0.1, 1, 3);
 					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					FaceBangerLoop = RunService.Stepped:Connect(function()
+					FaceBangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
@@ -5083,7 +5067,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 					ff = true;
 					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					SitFaceBangerLoop = RunService.Stepped:Connect(function()
+					SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							Character.Humanoid.Sit = true;
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4);
@@ -5120,7 +5104,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				Humping = true;
 				notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
-				HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+				HumpLoop = RunService.RenderStepped:Connect(function(_, deltaTime)
 					pcall(function()
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						local speakerRoot = getRoot(speaker.Character);
@@ -5194,7 +5178,7 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					ffc1 = true;
 					notifyyw("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+					FaceHumpLoop = RunService.RenderStepped:Connect(function(_, deltaTime)
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 							local speakerRoot = getRoot(speaker.Character);
