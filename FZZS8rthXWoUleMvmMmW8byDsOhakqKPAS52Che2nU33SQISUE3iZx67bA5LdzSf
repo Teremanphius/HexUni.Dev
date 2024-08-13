@@ -4593,16 +4593,13 @@ local spinaroundrotation = 0;
 local spinaroundspeed = 0.2;
 local spinarounddistance = 6;
 AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
 		local root = getRoot(speaker.Character);
+		local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
 		plrName = Option:match("^(.-) %(");
 		foundPlr = getPlr(plrName);
 		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
 			if (spinaround == true) then
-				SpinAroundLoop1:Disconnect();
-				SpinAroundLoop2:Disconnect();
-				SpinAroundLoop3:Disconnect();
-				SpinAroundLoop4:Disconnect();
+				SpinAroundLoop:Disconnect();
 				effectfalse();
 				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394);
 				spinaround = false;
@@ -4611,34 +4608,13 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 				spinaround = true;
 				effecttrue();
 				notifyyw("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
-				SpinAroundLoop1 = RunService.Heartbeat:Connect(function()
-					pcall(function()
-						spinaroundrotation = spinaroundrotation + spinaroundspeed;
+				SpinAroundLoop = RunService.RenderStepped:Connect(function()
+					spinaroundrotation = spinaroundrotation + spinaroundspeed;
 						root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0);
-					end);
-				end);
-				SpinAroundLoop2 = RunService.RenderStepped:Connect(function()
-					pcall(function()
 						root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position);
-					end);
-				end);
-				SpinAroundLoop3 = Humanoid.Died:Connect(function()
-					SpinAroundLoop1:Disconnect();
-					SpinAroundLoop2:Disconnect();
-					SpinAroundLoop3:Disconnect();
-					SpinAroundLoop4:Disconnect();
-				end);
-				SpinAroundLoop4 = Humanoid.Seated:Connect(function(value)
-					if value then
-						SpinAroundLoop1:Disconnect();
-						SpinAroundLoop2:Disconnect();
-						SpinAroundLoop3:Disconnect();
-						SpinAroundLoop4:Disconnect();
-					end
 				end);
 			end
 		end
-	end);
 end});
 
 SpinaroundSliderSpeed = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
@@ -4666,7 +4642,7 @@ SpinaroundInputRadius = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelat
 end});
 
 Sectionplayrerelatedtp69 = MiscPlayer:CreateSection("FE Player Related | 69", false, false, 10686489468);
-Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle.\nGoing to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
+Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69);
 local Bang69 = false;
 AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4986,7 +4962,6 @@ s69humpInput = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Na
 end});
 
 Sectionplayrerelatedtpbang = MiscPlayer:CreateSection("FE Player Related | Bang", false, false, 10686489468);
-Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtpbang);
 local Bang = false;
 AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
