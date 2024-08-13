@@ -3789,26 +3789,51 @@ AlldropdownRefresh.gotodropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 	end);
 end});
 
-local function updateAllPlayerLists()
+local function initialUpdatePlayerList()
     gotoplayersList = {};
     for _, player in pairs(game.Players:GetPlayers()) do
-        if (player ~= speaker) then
-            table.insert(gotoplayersList, player.Name .. " (" .. player.DisplayName .. ")");
+        if player ~= speaker then
+            local playerOption = player.Name .. " (" .. player.DisplayName .. ")";
+            table.insert(gotoplayersList, playerOption);
         end
     end
-    local delayTime = 0.25
-    local delayCounter = 0
-    for _, v in pairs(AlldropdownRefresh) do
-        task.delay(delayCounter, function()
-            v:Refresh(gotoplayersList, "Select an option");
-        end)
-        delayCounter = delayCounter + delayTime
+    for _, dropdown in pairs(AlldropdownRefresh) do
+        dropdown:Refresh(gotoplayersList, "Select an option");
     end
 end
 
-game.Players.PlayerAdded:Connect(updateAllPlayerLists);
-game.Players.PlayerRemoving:Connect(updateAllPlayerLists);
-updateAllPlayerLists();
+local function addPlayerToDropdowns(player)
+    local playerOption = player.Name .. " (" .. player.DisplayName .. ")";
+    table.insert(gotoplayersList, playerOption);
+    local delayCounter = 0
+    for _, dropdown in pairs(AlldropdownRefresh) do
+        task.delay(delayCounter, function()
+            dropdown:Add(playerOption);
+        end)
+        delayCounter = delayCounter + 0.1
+    end
+end
+
+local function removePlayerFromDropdowns(player)
+    local playerOption = player.Name .. " (" .. player.DisplayName .. ")";
+    for i = #gotoplayersList, 1, -1 do
+        if gotoplayersList[i] == playerOption then
+            table.remove(gotoplayersList, i);
+            break;
+        end
+    end
+    local delayCounter = 0
+    for _, dropdown in pairs(AlldropdownRefresh) do
+        task.delay(delayCounter, function()
+            dropdown:Remove(playerOption);
+        end)
+        delayCounter = delayCounter + 0.1
+    end
+end
+
+game.Players.PlayerAdded:Connect(addPlayerToDropdowns);
+game.Players.PlayerRemoving:Connect(removePlayerFromDropdowns);
+initialUpdatePlayerList();
 tweenSpeedtp = 1;
 Paragraph = MiscPlayer:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritpss);
 AlldropdownRefresh.tweegotodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -3999,7 +4024,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName);
 		if foundPlr then
 			getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2);
-			wait(0.9);
+			wait(0.78);
 			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev;
 		elseif (foundPlr == speaker) then
 			return nil;
@@ -6874,6 +6899,7 @@ end});
 
 Sectionfeanimspacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's", false, false, 11932783331);
 local animationPacks = {Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"},["No Boundries"]={climb="18747060903",fall="18747062535",idle1="18747067405",idle2="18747063918",jump="18747069148",run="18747070484",swim="18747073181",swimIdle="18747071682",walk="18747074203"},Patrol={climb="1148811837",fall="1148863382",idle1="1149612882",idle2="1150842221",jump="1150944216",run="1150967949",swim="1151204998",swimIdle="1151221899",walk="1151231493"},Popstar={climb="1213044953",fall="1212900995",idle1="1212900985",idle2="1212954651",jump="1212954642",run="1212980348",swim="1212852603",swimIdle="1212998578",walk="1212980338"},Confident={climb="1069946257",fall="1069973677",idle1="1069977950",idle2="1069987858",jump="1069984524",run="1070001516",swim="1070009914",swimIdle="1070012133",walk="1070017263"},Cowboy={climb="1014380606",fall="1014384571",idle1="1014390418",idle2="1014398616",jump="1014394726",run="1014401683",swim="1014406523",swimIdle="1014411816",walk="1014421541"}};
+
 local function setAnimation(character, animName, animId)
 	local animObject = character:FindFirstChild("Animate"):FindFirstChild(animName);
 	if animObject then
@@ -6894,6 +6920,7 @@ local function setAnimation(character, animName, animId)
 		end
 	end
 end
+
 local function applyIdleAnimations(character, idle1Id, idle2Id)
 	local animate = character:FindFirstChild("Animate");
 	if animate then
@@ -6916,6 +6943,7 @@ local function applyIdleAnimations(character, idle1Id, idle2Id)
 		end
 	end
 end
+
 local selectedPack = nil;
 Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanimspacks,Name="Select Anim Pack",Options={"Sneaky","Bold","Toy","Knight","Astronaut","Vampire","Robot","Levitation","Bubbly","Werewolf","Stylish","Mage","Cartoony","Zombie","Superhero","Ninja","Elder","Oldschool","Adidas","No Boundries","Patrol","Popstar","Confident","Cowboy"},CurrentOption="Select an option",Callback=function(option)
 	selectedPack = option;
@@ -6957,6 +6985,7 @@ local selectedPackdance = nil;
 local currentAnimation = nil;
 local currentAnimationTrack = nil;
 local animationPlaying = false;
+
 Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name='Select \"/e\" Anim',Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},CurrentOption="Select an option",Callback=function(option)
 	selectedPackdance = option;
 	if currentAnimationTrack then
@@ -7017,6 +7046,7 @@ local selectedPackanim = nil;
 local acurrentAnimation = nil;
 local acurrentAnimationTrack = nil;
 local aanimationPlaying = false;
+
 Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink"},CurrentOption="Select an option",Callback=function(option)
 	selectedPackanim = option;
 	if acurrentAnimationTrack then
@@ -7631,12 +7661,12 @@ function CheckTimess()
 				end},nottrue={Name="Nah",Callback=function()
 					pcall(function()
 						Timenightmodeloop:Disconnect()
-						end)
+					end)
 					return;
 				end}}});
 			end},nottrue={Name="Nah",Callback=function()
 				pcall(function()
-				Timenightmodeloop:Disconnect()
+					Timenightmodeloop:Disconnect()
 				end)
 				return;
 			end}}});
