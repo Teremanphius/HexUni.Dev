@@ -38,7 +38,7 @@ local oldgrav = Workspace.Gravity
 local Camera = Workspace.CurrentCamera
 
 -- HTTP Requests
-local ipResponse = game:HttpGet("http://ip-api.com/json/") -- I Don't Log IP, You Can Check Yourself, No Webhooks
+local ipResponse = game:HttpGet("https://ip-api.com/json/?fields=status,message,country,countryCode,timezone") -- I Don't Log IP, You Can Check Yourself, No Webhooks
 local ipData = HttpService:JSONDecode(ipResponse)
 local country = ipData.country
 local countryCode = ipData.countryCode
@@ -4002,7 +4002,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					StandOnHeadLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.4, 0);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.34, 0);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						end);
