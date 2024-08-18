@@ -558,7 +558,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 	end
 end});
 
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=false,Callback=function(Value)
+Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=true,Callback=function(Value)
 	pcall(function()
 		antiwindowafk = Value;
 		if antiwindowafk then
@@ -590,7 +590,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	end);
 end});
 
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk / Idle",CurrentValue=false,Callback=function(Value)
+Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk / Idle",CurrentValue=true,Callback=function(Value)
 	pcall(function()
 		antiafkidle = Value;
 		if antiafkidle then
