@@ -340,7 +340,7 @@ task.spawn(function()
 end);
 Misc = Window:CreateTab("Universal FE", 9080478424);
 Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
-Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It.\nThe Section's You See, You Can Close Them By Pressing The Arrow."}, Sectiontotalscrismisc);
+Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Sectiontotalscrismisc);
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610);
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
@@ -684,6 +684,7 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game"
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 local function clicktpFunc()
 	pcall(function()
 		if JMouse.Target then
@@ -741,6 +742,7 @@ local function TeleportToServer(sortOrder)
     end)
 end
 
+spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Lowest Player's Server",Interact="Click",Callback=function()
 	pcall(function()
 		TeleportToServer("Asc")
@@ -779,6 +781,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Int
 	end)
 end});
 
+spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game",Interact="Click",Callback=function()
 	TeleportService:Teleport(game.PlaceId, speaker);
 	effecttrue();
@@ -892,6 +895,7 @@ Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionflights,Name="Res
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionflights,2)
 Paragraph = Misc:CreateParagraph({Title="Grapple Info",Content="Make's Your Character Move To The Mouse\nex. You Put Your Mouse Up, Your Character Goes Up"}, Sectionflights);
 local moveToMouse = false;
 Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grapple",CurrentValue=false,Callback=function(Value)
@@ -919,6 +923,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionflights,2)
 Paragraph = Misc:CreateParagraph({Title="CFrame Fly Info",Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights);
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -1003,6 +1008,7 @@ Inputcfspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="CFrame Fly S
 	CFspeed = Text;
 end});
 
+spacing = Misc:CreateSpacing(Sectionflights,2)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -1063,6 +1069,7 @@ Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",
 	flyspeed = Text;
 end});
 
+spacing = Misc:CreateSpacing(Sectionflights,2)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value;
@@ -1118,6 +1125,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400});
 end});
 
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 function promptNewRig(speaker, rig)
 	local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid");
 	if humanoid then
@@ -1141,6 +1149,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Ri
 	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400});
 end});
 
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind;
 	if freeyourselfs then
@@ -1412,6 +1421,7 @@ Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset NoClip Keybi
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionnoclip,2)
 ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehicle NoClip",CurrentValue=false,Callback=function(Value)
 	ToggleVehiclenoclipnnoclipping = Value;
 	pcall(function()
@@ -2578,6 +2588,7 @@ Inputbeyblade = Misc:CreateInput({SectionParent=Sectionflipsnthings,Name="Beybla
 	beybaldespeedr = Text;
 end});
 
+spacing = Misc:CreateSpacing(Sectionflipsnthings,2)
 Flipping = false;
 Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
 	flippa = Value;
@@ -3420,6 +3431,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 	end
 end});
 
+spacing = Misc:CreateSpacing(Sectionflipsnthings,2)
 hbackflipnfrontflip = 0.0174533;
 BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
 	if KeyBind then
@@ -3900,7 +3912,6 @@ end});
 
 MiscPlayer = Window:CreateTab("Universal Player", 9080478424);
 Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
-Paragraphtotal = MiscPlayer:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Sectiontotalscrismisc);
 Paragraphtotal = MiscPlayer:CreateParagraph({Title="Drop Down's Note",Content="When You Open Them The Button's Are Like A Toggle.\nYou Press One, You Do The Function, And Then You Press Again On Whatever Button To Stop."}, Sectiontotalscrismisc);
 Sectiontpscritpss = MiscPlayer:CreateSection("FE Player Related | Teleport", false, false, 6723742952);
 AlldropdownRefresh = {};
@@ -3961,6 +3972,7 @@ game.Players.PlayerAdded:Connect(addPlayerToDropdowns);
 game.Players.PlayerRemoving:Connect(removePlayerFromDropdowns);
 initialUpdatePlayerList();
 tweenSpeedtp = 1;
+spacing = Misc:CreateSpacing(Sectiontpscritpss,2)
 Paragraph = MiscPlayer:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritpss);
 AlldropdownRefresh.tweegotodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -3994,6 +4006,7 @@ Input = MiscPlayer:CreateInput({SectionParent=Sectiontpscritpss,Name="Tween Tele
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectiontpscritpss,2)
 local spectateing = false;
 AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Spectate",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4020,7 +4033,6 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 end});
 
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468);
-Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtp);
 local Annoy = false;
 AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4558,6 +4570,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 end});
 
 local animsync;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 issyncinganim = false;
 Paragraph = MiscPlayer:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp);
 AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -4598,6 +4611,7 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 local orbitingfuck = false;
 AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
@@ -4702,6 +4716,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 Paragraph = MiscPlayer:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp);
 local lookingAt = false;
 AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -4733,6 +4748,7 @@ local spinaround = false;
 local spinaroundrotation = 0;
 local spinaroundspeed = 0.2;
 local spinarounddistance = 6;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 		local root = getRoot(speaker.Character);
 		local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
@@ -4931,6 +4947,7 @@ humpnordistance = 5;
 humpnorspeed = 1;
 humpfacedistance = 5;
 humpfacespeed = 1;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp69,2)
 local HumpBang69Looped
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 		plrName = Option:match("^(.-) %(");
@@ -5152,6 +5169,7 @@ Inputbangerionspeed = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelated
 end});
 
 local ff2 = false;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtpbang,2)
 AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -5203,6 +5221,7 @@ Inputbangerions = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpba
 end});
 
 local ff = false;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtpbang,2)
 AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -5234,7 +5253,6 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 end});
 
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468);
-Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="The Dropdown Button's Are Like a Toggle."}, Sectionplayrerelatedtphump);
 local Humping = false;
 local HumpLoop;
 AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -5308,6 +5326,7 @@ end});
 
 local FaceHumpLoop;
 local ffc1 = false;
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
 AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(");
@@ -5382,7 +5401,7 @@ end});
 
 Miscclient = Window:CreateTab("Universal Client", 9080478424);
 SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612);
-Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="If a Section Has (Client) Mean's You Only Can See It.\nThe Dropdown's You See, You Can Close Them By Pressing The Arrow."}, SectiontotalscrisMiscclient);
+Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="Script's Here Are Only Client Sided In Which Means Only You Can See It"}, SectiontotalscrisMiscclient);
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610);
 PJLNF = 1.3;
 function Notifies()
@@ -5422,6 +5441,7 @@ Inputpj = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Player 
 	PJLNF = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Slider = Miscclient:CreateSlider({SectionParent=Sectionmiscscripts,Name="Set FPS Cap",Range={1,GameSettings.FramerateCap},Increment=1,Suffix="FPS",CurrentValue=GameSettings.FramerateCap,Callback=function(Value)
 	pcall(function()
 		setfpscap(Value);
@@ -5433,6 +5453,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Set FPS C
 end});
 
 xNamingTbl = {};
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Usernames Not Display",CurrentValue=false,Callback=function(Value)
 	showrealnamesstog = Value;
 	if showrealnamesstog then
@@ -5456,6 +5477,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Us
 	end
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Network Claim",CurrentValue=false,Callback=function(Value)
 	nonetworkclaimer = Value;
 	if nonetworkclaimer then
@@ -5482,23 +5504,26 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt
 	end
 end});
 
-Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts);
-Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove Kick GUI",Interact="Click",Callback=function()
-	GuiService:ClearError();
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Should Be Now Working!"),Duration=3,Image=7733715400});
-end});
-
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.UserId = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="UNC Enviroment Test",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/unified-naming-convention/NamingStandard/main/UNCCheckEnv.lua"))()
 end});
 
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Add More UNC",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-MoreUNC-13110"))()
+end});
+
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
+Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts);
+Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove Kick GUI",Interact="Click",Callback=function()
+	GuiService:ClearError();
+	effecttrue();
+	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself Info",Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts);
@@ -5515,6 +5540,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Your
 	speaker:Kick("You have been banned for: " .. Text);
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
 	speaker.DevEnableMouseLock = true;
 	effecttrue();
@@ -5693,6 +5719,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Re
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400});
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxes",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		showhitboxes = Value;
@@ -5717,6 +5744,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 	end);
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Brightness",Range={0,15},Increment=1,Suffix="Brightness",CurrentValue=math.floor(game.Lighting.Brightness),Callback=function(Value)
 	pcall(function()
 		game.Lighting.Brightness = Value;
@@ -5727,6 +5755,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Name="Brig
 	game.Lighting.Brightness = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Colorpickerskybox = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworldscripts,Name="Ambient Color Picker",Color=Color3.fromRGB(0, 0, 0),Callback=function(Value)
 	TweenService:Create(game.Lighting, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {Ambient=Value}):Play();
 end});
@@ -5735,6 +5764,7 @@ Colorpickerskyboxoutdfor = Miscclient:CreateColorPicker({SectionParent=Sectionmi
 	TweenService:Create(game.Lighting, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {OutdoorAmbient=Value}):Play();
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Very Low GFX",Interact="Click",Callback=function()
 	decalsyeeted = true;
 	g = game;
@@ -5798,6 +5828,7 @@ lightrangee = 30;
 lightbrightness = 5;
 lightinger = false;
 lightColorr = Color3.fromRGB(255, 255, 255);
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Light",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		lightroot = Value;
@@ -5851,11 +5882,12 @@ Inputrangerrr = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,Na
 	lightrangee = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Toggleremovefogga = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		removefogga = Value;
 		if removefogga then
-			removefogg = game:GetService("RunService").RenderStepped:Connect(function()
+			removefogg = RunService.RenderStepped:Connect(function()
 				Lighting.FogStart = 0;
 				Lighting.FogEnd = 99999999999;
 				task.wait();
@@ -5871,6 +5903,7 @@ end});
 transparent = false;
 transprencypartxray = 0.5;
 xrayingreyer = false;
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 function x(v)
 	if v then
 		for _, i in pairs(workspace:GetDescendants()) do
@@ -5916,6 +5949,7 @@ Inputxrayvalue = Miscclient:CreateInput({SectionParent=Sectionmiscworldscripts,N
 end});
 
 Pxrts = {};
+spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Invisible Wall's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		showinvislbewalls = Value;
@@ -5945,6 +5979,7 @@ Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncamera,Name
 	end);
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",Interact="Click",Callback=function()
 	workspace.CurrentCamera:remove();
 	task.wait(0.1);
@@ -5959,6 +5994,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",
 	speaker.Character.Head.Anchored = false;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		nccamsim = Value;
@@ -5971,6 +6007,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoCli
 	end);
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
 		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=Value}):Play();
@@ -5981,6 +6018,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View"
 	game:GetService("Workspace").Camera.FieldOfView = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freecam",Interact="Click",Callback=function()
 	pcall(function()
 		effecttrue();
@@ -6345,6 +6383,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 	end);
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Slidermaxzoomnoloop = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Change Max Zoom",Range={0,9999},Increment=1,Suffix="Zoom",CurrentValue=math.floor(speaker.CameraMaxZoomDistance),Callback=function(Value)
 	pcall(function()
 		speaker.CameraMaxZoomDistance = Value;
@@ -6365,6 +6404,7 @@ Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Change Minimal
 	speaker.CameraMinZoomDistance = Text;
 end});
 
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 maxzoomvalue = 128;
 Sectioncameraloops = Miscclient:CreateSection("LocalPlayer Related | Camera | Zoom Loop's (Client)", false, true, 10709789686);
 Label = Miscclient:CreateLabel("Set A Value First Then Enable", Sectioncameraloops);
@@ -6898,6 +6938,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Curr
 	end
 end});
 
+spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		freezeanims = Value;
@@ -6910,6 +6951,7 @@ Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHub
 	end);
 end});
 
+spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name="Current Animation Speed",Range={1,60},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	Char = speaker.Character;
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController");
@@ -6936,6 +6978,7 @@ Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Anim
 	end);
 end});
 
+spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Current Anim ID",Interact="Click",Callback=function()
 	local copyAnimId = function(player)
 		local found = "Animations Copied";
@@ -6971,6 +7014,7 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Anim P
 	Slideranimplr:Set(1);
 end});
 
+spacing = Animations:CreateSpacing(SectionAnimpl,2)
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		Animplr = Instance.new("Animation");
@@ -6979,6 +7023,7 @@ Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnE
 end});
 
 AnimPlayerlooped = false;
+spacing = Animations:CreateSpacing(SectionAnimpl,2)
 Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play / Stop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		animplrlr = Value;
@@ -7004,7 +7049,7 @@ Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play
 	end);
 end});
 
-Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation Animation",CurrentValue=false,Callback=function(Value)
+Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		AnimPlayer = Value;
 		if AnimPlayer then
@@ -7016,6 +7061,7 @@ Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="
 	end);
 end});
 
+spacing = Animations:CreateSpacing(SectionAnimpl,2)
 Slideranimplr = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		animpla:AdjustSpeed(Value);
@@ -7095,6 +7141,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanimspacks,Name="Se
 	selectedPack = option;
 end});
 
+spacing = Animations:CreateSpacing(Sectionfeanimspacks,2)
 Button = Animations:CreateButton({SectionParent=Sectionfeanimspacks,Name="Apply Selected Anim Pack",Interact="Click",Callback=function()
 	if r15(speaker) then
 		if (selectedPack and animationPacks[selectedPack]) then
@@ -7126,6 +7173,7 @@ Button = Misc:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Ani
 	end);
 end});
 
+spacing = Animations:CreateSpacing(Sectionrblxclientanims,2)
 local eedances = {Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"},Cheer={R6="rbxassetid://129423030",R15="rbxassetid://507770677"},Point={R6="rbxassetid://128853357",R15="rbxassetid://507770453"},Wave={R6="rbxassetid://128777973",R15="rbxassetid://507770239"}};
 local selectedPackdance = nil;
 local currentAnimation = nil;
@@ -7143,6 +7191,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name=
 	Toggleedance12:Set(false);
 end});
 
+spacing = Animations:CreateSpacing(Sectionrblxclientanims,2)
 Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name='Play Selected \"/e\" Anim',CurrentValue=false,Callback=function(Value)
 	if not selectedPackdance then
 		return;
@@ -7166,6 +7215,7 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 	end
 end});
 
+spacing = Animations:CreateSpacing(Sectionrblxclientanims,2)
 edance1Slider = Animations:CreateSlider({SectionParent=Sectionrblxclientanims,Name='\"/e\" Anim Speed',Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		currentAnimationTrack:AdjustSpeed(Value);
@@ -7185,6 +7235,7 @@ Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values
 	end);
 end});
 
+spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"};
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"};
 local testdances = {Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}};
@@ -7212,6 +7263,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select 
 	end
 end});
 
+spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Play Selected Anim",CurrentValue=false,Callback=function(Value)
 	if not selectedPackanim then
 		return;
@@ -7243,6 +7295,7 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
 	end
 end});
 
+spacing = Animations:CreateSpacing(Sectionfeanims,2)
 AnimpSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		acurrentAnimationTrack:AdjustSpeed(Value);
