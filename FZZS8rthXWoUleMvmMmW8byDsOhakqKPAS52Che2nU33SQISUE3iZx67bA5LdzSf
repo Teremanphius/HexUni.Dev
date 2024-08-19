@@ -56,7 +56,7 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 
 -- Other Variables
 local PlaceId, JobId = game.PlaceId, game.JobId
-local Scriptcount = "197"
+local Scriptcount = "198"
 local ScriptcountAnim = "64"
 local movers = {}
 local HumanModCons = {}
@@ -65,12 +65,6 @@ local noVoid = false
 -- Speed And Things
 CFspeed = 50;
 flyspeed = 3;
-hump69distance = 5;
-hump69speed = 1;
-humpnordistance = 5;
-humpnorspeed = 1;
-humpfacedistance = 5;
-humpfacespeed = 1;
 
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso");
@@ -457,6 +451,73 @@ Toggleantiflinng = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Na
 			antiflingloop2:Disconnect();
 		end
 		antiflingClip = true;
+	end
+end});
+
+local voidng = false
+local magtd = 2
+local dlys = 1
+local vdpth = -499
+
+local function GetNearPlayers()
+    local character = speaker.Character
+    local humanoid = character and character:FindFirstChildWhichIsA("Humanoid")
+    local rootPart = humanoid and humanoid.RootPart
+    if rootPart then
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= speaker then
+                local playerCharacter = player.Character
+                local playerHumanoid = playerCharacter and playerCharacter:FindFirstChildWhichIsA("Humanoid")
+                local playerRootPart = playerHumanoid and playerHumanoid.RootPart
+                if playerRootPart and (rootPart.Position - playerRootPart.Position).Magnitude < magtd then
+                    for _, anim in ipairs(playerHumanoid:GetPlayingAnimationTracks()) do
+                        if anim.Animation and (anim.Animation.AnimationId:match("148840371") or anim.Animation.AnimationId:match("5918726674")) then
+                            return true
+                        end
+                    end
+                    return false
+                end
+            end
+        end
+    end
+    return false
+end
+
+task.spawn(function()
+    while true do
+        if antibng then
+            local character = speaker.Character
+            local humanoid = character and character:FindFirstChildWhichIsA("Humanoid")
+            local rootPart = humanoid and humanoid.RootPart
+            if GetNearPlayers() and humanoid and rootPart and not voidng then
+                voidng = true
+                local currentPosition = rootPart.Velocity.Magnitude < 50 and rootPart.CFrame or Camera.Focus
+                local timer = tick()
+                local oldFallenHeight = workspace.FallenPartsDestroyHeight
+                repeat
+                    workspace.FallenPartsDestroyHeight = math.huge
+                    rootPart.CFrame = CFrame.new(0, vdpth, 0) * CFrame.Angles(math.rad(90), 0, 0)
+                    rootPart.AssemblyLinearVelocity = Vector3.new()
+                    task.wait()
+                until tick() > timer + dlys
+                rootPart.CFrame = currentPosition
+                rootPart.AssemblyLinearVelocity = Vector3.new()
+                humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+                workspace.FallenPartsDestroyHeight = oldFallenHeight
+                voidng = false
+            end
+        end
+        task.wait()
+    end
+end)
+
+Toggleantibanging = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Bang",CurrentValue=false,Callback=function(Value)
+	antibangg = Value;
+	if antibangg then
+		antibng = true
+	end
+	if not antibangg then
+		antibng = false
 	end
 end});
 
@@ -4099,7 +4160,7 @@ AlldropdownRefresh.becarrieddropdown = MiscPlayer:CreateDropdown({SectionParent=
 					becarriedLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true;
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(2, 0, 1.5);
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(1.5, -0.2, 1.5);
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new();
 						end);
 					end);
@@ -4863,7 +4924,13 @@ Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelat
 end});
 
 local ffc1hump = false;
-elapsedTime = 0;
+elapsedTimehump = 0;
+hump69distance = 5;
+hump69speed = 1;
+humpnordistance = 5;
+humpnorspeed = 1;
+humpfacedistance = 5;
+humpfacespeed = 1;
 local HumpBang69Looped
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 		plrName = Option:match("^(.-) %(");
@@ -4908,14 +4975,14 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 								hrp0.Velocity = hrp1.Velocity;
 							end
 						end);
-						HumpBang69Looped = RunService.RenderStepped:Connect(function(_, deltaTime)
+						HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
 							pcall(function()
 								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 								local speakerRoot = getRoot(speaker.Character);
 								local targetRoot = getRoot(foundPlr.Character);
 								if (speakerRoot and targetRoot) then
-									elapsedTime = elapsedTime + (deltaTime * hump69speed)
-									local cycle = elapsedTime % 1
+									elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
+									local cycle = elapsedTimehump % 1
 									local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
 									local xOffset = hump69distance * alpha;			
 									local targetCFrame = targetRoot.CFrame
@@ -4982,14 +5049,14 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						setupCharacter();
 					end);
 				end
-				R15HumpBang69Looped = RunService.RenderStepped:Connect(function(_, deltaTime)
+				R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
 					pcall(function()
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						local speakerRoot = getRoot(speaker.Character);
 						local targetRoot = getRoot(foundPlr.Character);
 						if (speakerRoot and targetRoot) then
-							elapsedTime = elapsedTime + (deltaTime * hump69speed)
-							local cycle = elapsedTime % 1
+							elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
+							local cycle = elapsedTimehump % 1
 							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
 							local xOffset = hump69distance * alpha;			
 							local targetCFrame = targetRoot.CFrame
@@ -5190,14 +5257,13 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				Humping = true;
 				notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 				effecttrue();
-				HumpLoop = RunService.RenderStepped:Connect(function(_, deltaTime)
-					pcall(function()
+				HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 						local speakerRoot = getRoot(speaker.Character);
 						local targetRoot = getRoot(foundPlr.Character);
 						if (speakerRoot and targetRoot) then
-							elapsedTime = elapsedTime + (deltaTime * humpnorspeed);
-							local cycle = elapsedTime % 1;
+							elapsedTimehump = elapsedTimehump + (deltaTime * humpnorspeed);
+							local cycle = elapsedTimehump % 1;
 							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5;
 							local targetPosition = targetRoot.CFrame;
 							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance);
@@ -5210,7 +5276,6 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 							HumpLoop = nil;
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false;
 						end
-					end);
 				end);
 			end
 		end
@@ -5264,14 +5329,14 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					ffc1 = true;
 					notifyyw("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644);
 					effecttrue();
-					FaceHumpLoop = RunService.RenderStepped:Connect(function(_, deltaTime)
+					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true;
 							local speakerRoot = getRoot(speaker.Character);
 							local targetRoot = getRoot(foundPlr.Character);
 							if (speakerRoot and targetRoot) then
-								elapsedTime = elapsedTime + (deltaTime * humpfacespeed)
-								local cycle = elapsedTime % 1
+								elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
+								local cycle = elapsedTimehump % 1
 								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
 								local xOffset = humpfacedistance * alpha;			
 								local targetCFrame = targetRoot.CFrame
@@ -5457,7 +5522,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable 
 end});
 
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228);
-Paragraph = Miscclient:CreateParagraph({Title="Chat Script's Info",Content="Script's Here Are Only For Legacy Chat (The Chat You Can't Type Out Emoji's)."}, Sectiontchat);
+Paragraph = Miscclient:CreateParagraph({Title="Chat Script's Info",Content="Script's Here Are Only For Legacy Chat (The Chat You Can't Type Out Emoji's)\nType in \"/spy\" To Disable The Chat Spy."}, Sectiontchat);
 Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bubbles",CurrentValue=false,Callback=function(Value)
 	darkchatbubble = Value;
 	if darkchatbubble then
@@ -5480,60 +5545,64 @@ Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bu
 end});
 
 Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Interact="Click",Callback=function()
-local NColor3 = Color3.new
-local function ShowHiddenMsg(T, C)
-    speaker:SetCore("ChatMakeSystemMessage", { Text = T, Color = C })
-end
-
-local function LegacyChatSpy()
-    local ChatSpyFrame = speaker.PlayerGui.Chat.Frame
-    ChatSpyFrame.ChatChannelParentFrame.Visible = true
-    ChatSpyFrame.ChatBarParentFrame.Position = ChatSpyFrame.ChatChannelParentFrame.Position + UDim2.new(0, 0, 0, ChatSpyFrame.ChatChannelParentFrame.Size.Y)
-
-    local function Spy(Target)
-        Target.Chatted:Connect(function(Msg)
-            if (string.find(Msg, "/e ") or string.find(Msg, "/w ") or string.find(Msg, "/whisper ") or string.find(Msg, "/team ") or string.find(Msg, "/t ")) then
-                ShowHiddenMsg("[SPY]: " .. "[" .. tostring(Target) .. "]: " .. Msg, NColor3(107, 107, 107))
-            end
-        end)
-    end
-
-    for _, Plr in ipairs(Players:GetPlayers()) do
-        Spy(Plr)
-    end
-
-    Players.PlayerAdded:Connect(function(P)
-        Spy(P)
-    end)
-end
-
-local function NewChatSpy()
-    local ChatEvents = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents", 10)
-    if ChatEvents then
-        local OnMessageDoneFiltering = ChatEvents:WaitForChild("OnMessageDoneFiltering", 10)
-        if OnMessageDoneFiltering then
-            OnMessageDoneFiltering.OnClientEvent:Connect(function(messageData)
-                local message = messageData.Message or ""
-                local playerName = messageData.FromSpeaker or "Unknown"
-                local player = Players:FindFirstChild(playerName)
-
-                if player and (string.find(message, "/e ") or string.find(message, "/w ") or string.find(message, "/whisper ") or string.find(message, "/team ") or string.find(message, "/t ")) then
-                    ShowHiddenMsg("[SPY]: " .. "[" .. playerName .. "]: " .. message, NColor3(107, 107, 107))
-                end
-            end)
-        end
-    end
-end
-
-local function IsLegacyChat()
-    return speaker.PlayerGui:FindFirstChild("Chat") and speaker.PlayerGui.Chat:FindFirstChild("Frame")
-end
-
-if IsLegacyChat() then
-    LegacyChatSpy()
-else
-    NewChatSpy()
-end
+	Config = {
+		enabled = true,
+		spyOnMyself = false,
+		public = false,
+		publicItalics = true
+	}
+	PrivateProperties = {
+		Color = Color3.fromRGB(0,255,255); 
+		Font = Enum.Font.SourceSansBold;
+		TextSize = 18;
+	}
+		local saymsg = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+		local getmsg = ReplicatedStorage:WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+		local instance = (_G.chatSpyInstance or 0) + 1
+		_G.chatSpyInstance = instance
+	
+		local function onChatted(p,msg)
+			if _G.chatSpyInstance == instance then
+				if p==speaker and msg:lower():sub(1,4)=="/spy" then
+					Config.enabled = not Config.enabled
+					wait(0.3)
+					PrivateProperties.Text = "{SPY "..(Config.enabled and "EN" or "DIS").."ABLED}"
+					StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties)
+				elseif Config.enabled and (Config.spyOnMyself==true or p~=speaker) then
+					msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+					local hidden = true
+					local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+						if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and Config.public==false and Players[packet.FromSpeaker].Team==player.Team)) then
+							hidden = false
+						end
+					end)
+					wait(1)
+					conn:Disconnect()
+					if hidden and Config.enabled then
+						if Config.public then
+							saymsg:FireServer((Config.publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
+						else
+							PrivateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
+							StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties)
+						end
+					end
+				end
+			end
+		end
+		
+		for _,p in ipairs(Players:GetPlayers()) do
+			p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+		end
+	
+		Players.PlayerAdded:Connect(function(p)
+			p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+		end)
+	
+		PrivateProperties.Text = "{SPY "..(Config.enabled and "EN" or "DIS").."ABLED}"
+		StarterGui:SetCore("ChatMakeSystemMessage", PrivateProperties)
+		local chatFrame = player.PlayerGui.Chat.Frame
+		chatFrame.ChatChannelParentFrame.Visible = true
+		chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 	effecttrue();
 	NSUI:Notify({Title="You've Executed The Script!",Content="Chat Spy On!",Duration=6,Image=7733715400});
 end});
@@ -7613,13 +7682,25 @@ end
 
 local totalSeconds = math.floor(workspace.DistributedGameTime)
 local sessionTime = formatSessionTime(totalSeconds)
-Paragraphc = CRD:CreateParagraph({
-    Title = "Information",
-    Content = ("Username | Display Name: " .. (speaker.Name or "N/A") .. " | " .. (speaker.DisplayName or "N/A") .. 
-    "\nUserId: " .. tostring(speaker.UserId) .. 
-    "\nAccount Age | In Days:\n" .. tostring(Daysinfo) .. " Day('s)\n" .. tostring(Monthsinfo) .. " Month('s)\n" .. 
-    tostring(Yearsinfo) .. " Year('s)\n" .. tostring(speaker.AccountAge) .. " In Day's" .. 
-    "\nPlaceId: " .. tostring(game.PlaceId))
+Paragraphc = CRD:CreateParagraph({Title = "Information",
+    Content = string.format(
+        "Name: %s / %s\n" ..
+        "UserId: %d\n" ..
+        "Account Age | In Days:\n" ..
+        "Days: %d Day(s)\n" ..
+        "Months: %d Month(s)\n" ..
+        "Years: %d Year(s)\n" ..
+        "Total: %d Day(s)\n" ..
+        "PlaceId: %d",
+        speaker.Name,
+        speaker.DisplayName,
+        speaker.UserId,
+        Daysinfo,
+        Monthsinfo,
+        Yearsinfo,
+        speaker.AccountAge,
+        game.PlaceId
+    )
 }, Sectionclientinfo)
 
 Paragraphcrdd = CRD:CreateParagraph({
