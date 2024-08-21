@@ -1200,16 +1200,6 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Spr
 	end);
 end});
 
-Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Strengthen Character",Interact="Click",Callback=function()
-	for i, player in pairs(speaker.Character:GetChildren()) do
-		if (player.ClassName == "Part") then
-			player.CustomPhysicalProperties = PhysicalProperties.new(999999, 0.3, 0.5);
-		end
-	end
-	effecttrue();
-	NSUI:Notify({Title="You've Executed The Script!",Content="Script Is Now Working!\nPush Something.",Duration=3,Image=7733715400});
-end});
-
 tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind then
 		if isTyping then
@@ -2412,6 +2402,27 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 	end);
 end});
 
+spacing = Misc:CreateSpacing(Sectionlprtog,2)
+Togglestrengthen = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Strengthen Character",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		strengchar = Value;
+		if strengchar then
+			for i, player in pairs(speaker.Character:GetChildren()) do
+				if (player.ClassName == "Part") then
+					player.CustomPhysicalProperties = PhysicalProperties.new(999999, 0.3, 0.5);
+				end
+			end
+		end
+		if not strengchar then
+			for i, player in pairs(speaker.Character:GetChildren()) do
+				if (player.ClassName == "Part") then
+					player.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.3, 0.5);
+				end
+			end
+		end
+	end);
+end});
+
 Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Character",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		weakenchar = Value;
@@ -2433,6 +2444,7 @@ Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Chara
 end});
 
 local swimbeat = nil
+spacing = Misc:CreateSpacing(Sectionlprtog,2)
 Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		swimmer = Value;
@@ -6923,7 +6935,7 @@ end});
 
 Animations = Window:CreateTab("Animation's", 1114393432);
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612);
-Paragraph = Animations:CreateParagraph({Title="Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Function Has (Client) Mean's You Only Can See It."}, Sectiontotalscrisanim);
+Paragraph = Animations:CreateParagraph({Title="Note",Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Sectiontotalscrisanim);
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149);
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Current Anim Values",Interact="Click",Callback=function()
 	Char = speaker.Character;
@@ -7845,10 +7857,10 @@ Paragraphc = CRD:CreateParagraph({Title = "Information",
         "Name: %s / %s\n" ..
         "UserId: %d\n" ..
         "Account Age | In Days:\n" ..
-        "Days: %d Day(s)\n" ..
-        "Months: %d Month(s)\n" ..
-        "Years: %d Year(s)\n" ..
-        "Total: %d Day(s)\n" ..
+        "Day(s): %d \n" ..
+        "Month(s): %d \n" ..
+        "Year(s): %d \n" ..
+        "Total: %d \n" ..
         "PlaceId: %d",
         speaker.Name,
         speaker.DisplayName,
