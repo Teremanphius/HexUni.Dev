@@ -7502,8 +7502,8 @@ if isPlayerInValidGameMP then
 		return ava
 	end
 end
-Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740)
-mpbtlock.fromidInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+mpbtlock.Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740)
+fromidInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local userid = Text
 	if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
 		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)))
@@ -7511,7 +7511,7 @@ mpbtlock.fromidInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avat
 	end
 end})
 
-mpbtlock.fromuserInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
+fromuserInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local username = Text
 	if (username and Players:GetUserIdFromNameAsync(username)) then
 		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)))
@@ -7519,9 +7519,9 @@ mpbtlock.fromuserInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Av
 	end
 end})
 
-Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988)
+mpbtlock.Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988)
 local onsaleran = false
-mpbtlock.makeoffButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
+makeoffButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
 	if not onsaleran then
 		onsaleran = true
 		local function onsale(module)
@@ -7547,7 +7547,7 @@ mpbtlock.makeoffButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Mak
 end})
 
 local oldplusfunc = nil
-mpbtlock.spoofplusButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
+spoofplusButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
 	pcall(function()
 		local v9 = require(ReplicatedStorage:WaitForChild("Global"))
 		oldplusfunc = hookfunction(v9.IsPlayerPLUS, function(p80)
@@ -7586,75 +7586,75 @@ JoinDHButton = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join Da
 	game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer)
 end})
 
-Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610)
-dhbtlock.rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
+dhbtlock.Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610)
+rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
+Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
+Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
+Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
+Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
+Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
+Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534)
-dhbtlock.Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
+dhbtlock.Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534)
+Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
+Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/sungodaim"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
+afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/smZSXCiQQlUcNphIKlxavK4d5LLAEPPy"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
+Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/gh5qEbtWxA3DN1yIaTCsCFAzFjfQJc6G"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
 end})
 
-dhbtlock.caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
+caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e"))()
 	effecttrue()
 	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
@@ -7686,8 +7686,8 @@ if isPlayerInValidGameTOH then
 else
 	tohclosedsec = false
 end
-Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610)
-tohttlock.Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
+tohttlock.Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 10709759610)
+Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
 	task.wait(1.5)
 	pcall(function()
 		effecttrue()
@@ -7722,7 +7722,7 @@ tohttlock.Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,N
 	end)
 end})
 
-tohttlock.Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
+Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh,Name="Remove Fog",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		removefogga = Value
 		if removefogga then
@@ -7739,7 +7739,7 @@ tohttlock.Togglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptsto
 	end)
 end})
 
-tohttlock.Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
+Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All Item's",Interact="Click",Callback=function()
 	pcall(function()
 		for v0, v1 in pairs(speaker.Backpack:GetDescendants()) do
 			if v1:IsA("Tool") then
@@ -7759,7 +7759,7 @@ tohttlock.Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name
 	end)
 end})
 
-tohttlock.Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
+Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove Kill Part's",Interact="Click",Callback=function()
 	pcall(function()
 		for v0, v1 in pairs(game:GetService("Workspace").tower:GetDescendants()) do
 			if (v1:IsA("BoolValue") and (v1.Name == "kills")) then
@@ -7771,8 +7771,8 @@ tohttlock.Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name
 	end)
 end})
 
-Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952)
-tohttlock.Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
+tohttlock.Sectiontpscriptstoh = TOH:CreateSection("Teleport Script's", false, false, 6723742952)
+Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Teleport To End",Interact="Click",Callback=function()
 	pcall(function()
 		v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame
 		v1 = speaker.Character
@@ -7784,7 +7784,7 @@ end})
 
 Sectionautofarmtoh = TOH:CreateSection("Auto-Farm", false, false, 10723415766)
 getgenv().Boolean = false
-tohttlock.sasdasdToggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
+sasdasdToggle = TOH:CreateToggle({SectionParent=Sectionautofarmtoh,Name="Auto End",CurrentValue=false,Callback=function(v)
 	function name()
 		task.spawn(function()
 			while getgenv().Boolean == true do
