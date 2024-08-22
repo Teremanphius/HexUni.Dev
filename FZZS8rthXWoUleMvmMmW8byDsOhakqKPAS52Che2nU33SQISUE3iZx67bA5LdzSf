@@ -655,21 +655,11 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 	pcall(function()
 		antiafkidle = Value
 		if antiafkidle then
-			if getconnections then
-				for i, v in pairs(getconnections(Players.LocalPlayer.Idled)) do
-					if v['Disable'] then
-						v['Disable'](v)
-					elseif v['Disconnect'] then
-						v['Disconnect'](v)
-					end
-				end
-			else
-				local disableidle
-				disableidle = Players.LocalPlayer.Idled:Connect(function()
-					VirtualUser:CaptureController()
-					VirtualUser:ClickButton2(Vector2.new())
-				end)
-			end
+			local disableidle
+			disableidle = Players.LocalPlayer.Idled:Connect(function()
+				VirtualUser:CaptureController()
+				VirtualUser:ClickButton2(Vector2.new())
+			end)
 		end
 		if not antiafkidle then
 			disableidle:Disconnect()
