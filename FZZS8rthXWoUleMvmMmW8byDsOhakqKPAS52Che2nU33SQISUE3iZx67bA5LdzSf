@@ -56,7 +56,7 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 
 -- Other Variables
 local PlaceId, JobId = game.PlaceId, game.JobId
-local Scriptcount = "198"
+local Scriptcount = "197"
 local ScriptcountAnim = "64"
 local movers = {}
 local HumanModCons = {}
@@ -66,6 +66,7 @@ local noVoid = false
 CFspeed = 50
 flyspeed = 3
 
+-- Funcs And Things
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
 	return rootPart
@@ -89,11 +90,11 @@ function isNumber(str)
 end
 
 function charresettopos()
-	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame
+	prev = getRoot(speaker.Character).CFrame
 	speaker.Character.Parent = workspace.Terrain
 	speaker.Character:BreakJoints()
 	Workspace:WaitForChild(speaker.Name)
-	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
+	getRoot(speaker.Character).CFrame = prev
 end
 
 function effecttrue()
@@ -177,11 +178,6 @@ function breakvelocity()
 		end
 		task.wait()
 	end
-end
-
-function getTorso(x)
-	x = x or speaker.Character
-	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart")
 end
 
 function getPlr(name)
@@ -341,6 +337,7 @@ RunService.RenderStepped:Connect(function(frame)
     Updatedfps = math.round(1 / frame)
 end)
 
+-- Main Script
 local Window = NSUI:CreateWindow({Name=("HeXen Universal\t\t\t\t    " .. os.date("%H:%M")),LoadingTitle="HeXen Universal",LoadingSubtitle="By Javolo",KeySystem=false,KeySettings={Title="HeXen Key System",Subtitle="Key System",Note="If You're a Friend Then You Have The Key in Dm's",FileName=("" .. speaker.UserId .. ""),SaveKey=true,GrabKeyFromSite=false,Key={""}}})
 task.spawn(function()
 	while task.wait(1) do
@@ -756,7 +753,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Int
 			local req = httprequest({
 				Url = string.format("%s%d/servers/Public?sortOrder=Desc&limit=100", ApiListSrvr, PlaceId)
 			})
-			local body = Http:JSONDecode(req.Body)
+			local body = HttpService:JSONDecode(req.Body)
 			if body and body.data then
 				for _, v in ipairs(body.data) do
 					if type(v) == "table" and tonumber(v.playing) < tonumber(v.maxPlayers) and v.id ~= game.JobId then
@@ -811,72 +808,6 @@ Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",In
 	charresettopos()
 	effecttrue()
 	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400})
-end})
-
-Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Commit Oof",Callback=function()
-	A_1 = "This is it im doing it."
-	A_2 = "All"
-	Event = ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1, A_2)
-	task.wait(1)
-	A_1 = "I'm going to commit oof."
-	A_2 = "All"
-	Event = ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1, A_2)
-	task.wait(1)
-	A_1 = "Sayonara cruel world."
-	A_2 = "All"
-	Event = ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1, A_2)
-	task.wait(1)
-	speaker.Character.Humanoid:MoveTo(getRoot(speaker.Character).Position + (getRoot(speaker.Character).CFrame.lookVector * 10))
-	speaker.Character.Humanoid.Jump = true
-	task.wait(0.5)
-	function Iterate(instance, func)
-		for i, v in next, instance:GetChildren() do
-			func(v)
-		end
-	end
-	limbs = {["Right Leg"]=true,["Right Arm"]=true,["Left Leg"]=true,["Left Arm"]=true}
-	Iterate(speaker.Character, function(v)
-		if v:IsA("BasePart") then
-			attachment = Instance.new("Attachment")
-			attachment.Parent = v
-			attachment.Name = v.Name .. "[Attachment]"
-			if limbs[v.Name] then
-				attachment.Position = Vector3.new(0, v.Size.Y / 2, 0)
-			elseif (v.Name == "Head") then
-				attachment.Position = Vector3.new(0, -v.Size.Y / 2, 0)
-				attachment.Rotation = Vector3.new(0, 0, -90)
-			end
-		end
-	end)
-	leftLegAttachment = Instance.new("Attachment")
-	leftLegAttachment.Position = Vector3.new(-0.5, -1, 0)
-	leftLegAttachment.Rotation = Vector3.new(0, -90, 0)
-	rightLegAttachment = Instance.new("Attachment")
-	rightLegAttachment.Position = Vector3.new(0.5, -1, 0)
-	rightLegAttachment.Rotation = Vector3.new(0, -90, 0)
-	rightLegAttachment.Parent, leftLegAttachment.Parent = speaker.Character.Torso, speaker.Character.Torso
-	jointAttachments = {Head={Attachment0=speaker.Character.Torso['NeckAttachment'],Attachment1=speaker.Character.Head["Head[Attachment]"]},["Left Arm"]={Attachment0=speaker.Character.Torso['LeftCollarAttachment'],Attachment1=speaker.Character["Left Arm"]["Left Arm[Attachment]"]},["Right Arm"]={Attachment0=speaker.Character.Torso['RightCollarAttachment'],Attachment1=speaker.Character["Right Arm"]["Right Arm[Attachment]"]},["Left Leg"]={Attachment0=leftLegAttachment,Attachment1=speaker.Character["Left Leg"]["Left Leg[Attachment]"]},["Right Leg"]={Attachment0=rightLegAttachment,Attachment1=speaker.Character["Right Leg"]["Right Leg[Attachment]"]}}
-	speaker.Character.Humanoid.PlatformStand = true
-	Iterate(speaker.Character, function(v)
-		if v:IsA("BasePart") then
-			if jointAttachments[v.Name] then
-				ballSocketJoint = Instance.new("BallSocketConstraint")
-				ballSocketJoint.Parent = v
-				ballSocketJoint.Radius = 0.15
-				ballSocketJoint.Attachment0, ballSocketJoint.Attachment1 = jointAttachments[v.Name]['Attachment0'], jointAttachments[v.Name]['Attachment1']
-			end
-		end
-	end)
-	Iterate(speaker.Character.Torso, function(v)
-		if v:IsA("Motor") then
-			v:Remove()
-		end
-	end)
-	effecttrue()
-	NSUI:Notify({Title="Damn Bro,",Content="Why'd You Kill Yourself?",Duration=3,Image=7733715400})
 end})
 
 Sectionflights = Misc:CreateSection("FE LocalPlayer Related | Flight", false, false, 9134755504)
@@ -1171,13 +1102,15 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 	end)
 end})
 
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
+sprintspeed = 32
 SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	sprints = KeyBind
 	if sprints then
 		if isTyping then
 			return
 		end
-		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=32}):Play()
+		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=sprintspeed}):Play()
 		TweenService:Create(Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=95}):Play()
 	else
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=16}):Play()
@@ -1193,6 +1126,22 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Spr
 	end)
 end})
 
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,1)
+Buttonr = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset Sprint Values",Interact="Click",Callback=function()
+	Slidersprint:Set(32)
+end})
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,1)
+Slidersprint = Misc:CreateSlider({SectionParent=Sectionplayerealtefunc,Name="Sprint Speed",Range={1,500},Increment=1,Suffix="Sprint Speed",CurrentValue=sprintspeed,Callback=function(Value)
+	pcall(function()
+		sprintspeed = Value
+	end)
+end})
+
+Inputsprint = Misc:CreateInput({SectionParent=Sectionplayerealtefunc,Name="Sprint Speed",OnEnter=true,PlaceholderText=sprintspeed,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	sprintspeed = Text
+end})
+
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind then
 		if isTyping then
