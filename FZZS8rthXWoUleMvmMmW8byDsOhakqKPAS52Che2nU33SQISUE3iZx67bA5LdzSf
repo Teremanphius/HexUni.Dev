@@ -80,6 +80,8 @@ function randomString()
 	return table.concat(array)
 end
 
+floatName = randomString()
+
 function isNumber(str)
 	if ((tonumber(str) ~= nil) or (str == "inf")) then
 		return true
@@ -92,54 +94,6 @@ function charresettopos()
 	speaker.Character:BreakJoints()
 	Workspace:WaitForChild(speaker.Name)
 	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
-end
-
-function toClipboard(String)
-	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
-	if clipBoard then
-		clipBoard(String)
-	end
-end
-
-function notifyyw(String, String2, Durationnn, Imageee)
-	NSUI:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee})
-end
-
-function r15(plr)
-	if (plr.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15) then
-		return true
-	end
-end
-
-function breakvelocity()
-	BeenASecond, V3 = false, Vector3.new(0, 0, 0)
-	delay(1, function()
-		BeenASecond = true
-	end)
-	while not BeenASecond do
-		for _, v in ipairs(speaker.Character:GetDescendants()) do
-			if v.IsA(v, "BasePart") then
-				v.Velocity, v.RotVelocity = V3, V3
-			end
-		end
-		task.wait()
-	end
-end
-
-function getTorso(x)
-	x = x or speaker.Character
-	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart")
-end
-
-function getPlr(name)
-	x = nil
-	for i, v in next, speakers:GetPlayers() do
-		if string.find(v.Name:lower(), name:lower()) then
-			x = v
-			break
-		end
-	end
-	return x
 end
 
 function effecttrue()
@@ -188,6 +142,57 @@ function effectfriendjoin()
         soundfriendjoin:Destroy()
     end)
     soundfriendjoin:Play()
+end
+
+function notifyyw(String, String2, Durationnn, Imageee)
+	NSUI:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee})
+end
+
+function toClipboard(String)
+	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+	if clipBoard then
+		clipBoard(String)
+	else
+		effectfalse()
+		notifyyw("Incompatible Exploit!", "Missing Function('s) : setclipboard!", 3, 10747384394)
+	end
+end
+
+function r15(plr)
+	if (plr.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15) then
+		return true
+	end
+end
+
+function breakvelocity()
+	BeenASecond, V3 = false, Vector3.new(0, 0, 0)
+	task.delay(1, function()
+		BeenASecond = true
+	end)
+	while not BeenASecond do
+		for _, v in ipairs(speaker.Character:GetDescendants()) do
+			if v.IsA(v, "BasePart") then
+				v.Velocity, v.RotVelocity = V3, V3
+			end
+		end
+		task.wait()
+	end
+end
+
+function getTorso(x)
+	x = x or speaker.Character
+	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart")
+end
+
+function getPlr(name)
+	x = nil
+	for i, v in next, speakers:GetPlayers() do
+		if string.find(v.Name:lower(), name:lower()) then
+			x = v
+			break
+		end
+	end
+	return x
 end
 
 function CheckFriends()
@@ -241,20 +246,24 @@ function CheckTime()
 end
 CheckTime()
 
-local playerAddedConnection
+local playerAddedConnectionfriend
 local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
 		pcall(function()
 			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")})
 			effectfriendjoin()
 		end)
-		task.wait(5)
-		playerAddedConnection:Disconnect()
-		task.wait(1)
-		playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded)
 	end
 end
-playerAddedConnection = game.Players.PlayerAdded:Connect(onPlayerAdded)
+
+local function connectPlayerAddedEvent()
+    if playerAddedConnectionfriend then
+        playerAddedConnectionfriend:Disconnect()
+        playerAddedConnectionfriend = nil
+    end
+    playerAddedConnectionfriend = game.Players.PlayerAdded:Connect(onPlayerAdded)
+end
+connectPlayerAddedEvent()
 
 flying = false
 alwaysfalses = false
@@ -512,13 +521,7 @@ task.spawn(function()
 end)
 
 Toggleantibanging = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Bang",CurrentValue=false,Callback=function(Value)
-	antibangg = Value
-	if antibangg then
-		antibng = true
-	end
-	if not antibangg then
-		antibng = false
-	end
+	antibng = Value
 end})
 
 Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Void",CurrentValue=false,Callback=function(Value)
@@ -1342,24 +1345,20 @@ Sectionnoclip = Misc:CreateSection("FE LocalPlayer Related | NoClip", false, fal
 Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",CurrentValue=false,Callback=function(Value)
 	nnoclipping = Value
 	if nnoclipping then
-		Clip = false
-		task.wait(0.1)
-		local function NoclipLoop()
-			if ((Clip == false) and (speaker.Character ~= nil)) then
+		Noclipping = RunService.Stepped:Connect(function()
+			if speaker.Character ~= nil then
 				for _, child in pairs(speaker.Character:GetDescendants()) do
 					if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
 						child.CanCollide = false
 					end
 				end
 			end
-		end
-		Noclipping = RunService.Stepped:Connect(NoclipLoop)
+		end)
 	end
 	if not nnoclipping then
 		if Noclipping then
 			Noclipping:Disconnect()
 		end
-		Clip = true
 	end
 end})
 
@@ -1370,25 +1369,21 @@ NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Ke
 			return
 		end
 		pcall(function()
-			Clip = false
-			task.wait(0.1)
-			local function NoclipLoop()
-				if ((Clip == false) and (speaker.Character ~= nil)) then
+			Noclipping = RunService.Stepped:Connect(function()
+				if speaker.Character ~= nil then
 					for _, child in pairs(speaker.Character:GetDescendants()) do
 						if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
 							child.CanCollide = false
 						end
 					end
 				end
-			end
-			Noclipping = RunService.Stepped:Connect(NoclipLoop)
+			end)
 		end)
 	else
 		pcall(function()
 			if Noclipping then
 				Noclipping:Disconnect()
 			end
-			Clip = true
 		end)
 	end
 end})
@@ -2195,16 +2190,9 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 end})
 
 Floating = false
-floatName = randomString()
 Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		stunned = Value
-		if stunned then
-			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-		end
-		if not stunned then
-			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-		end
+		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = Value
 	end)
 end})
 
@@ -3964,8 +3952,21 @@ local function removePlayerFromDropdowns(player)
     end
 end
 
-game.Players.PlayerAdded:Connect(addPlayerToDropdowns)
-game.Players.PlayerRemoving:Connect(removePlayerFromDropdowns)
+local playerAddedConnection
+local playerRemovingConnection
+local function connectEvents()
+    if playerAddedConnection then
+        playerAddedConnection:Disconnect()
+        playerAddedConnection = nil
+    end
+    if playerRemovingConnection then
+        playerRemovingConnection:Disconnect()
+        playerRemovingConnection = nil
+    end
+    playerAddedConnection = game.Players.PlayerAdded:Connect(addPlayerToDropdowns)
+    playerRemovingConnection = game.Players.PlayerRemoving:Connect(removePlayerFromDropdowns)
+end
+connectEvents()
 initialUpdatePlayerList()
 tweenSpeedtp = 1
 spacing = Misc:CreateSpacing(Sectiontpscritpss,2)
@@ -4048,7 +4049,7 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
 					AnnoyLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0)
+							Character:PivotTo(foundPlr.Character:GetPivot())
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 						end)
 					end)
@@ -4108,7 +4109,6 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
 					WalktoLoop = RunService.RenderStepped:Connect(function()
 						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position)
-						task.wait()
 					end)
 				end
 			end
@@ -5718,25 +5718,13 @@ end})
 spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Hitboxes",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		showhitboxes = Value
-		if showhitboxes then
-			settings():GetService("RenderSettings").ShowBoundingBoxes = true
-		end
-		if not showhitboxes then
-			settings():GetService("RenderSettings").ShowBoundingBoxes = false
-		end
+		settings():GetService("RenderSettings").ShowBoundingBoxes = Value
 	end)
 end})
 
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Animation Data",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		animdata = Value
-		if animdata then
-			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = true
-		end
-		if not animdata then
-			settings():GetService("NetworkSettings").ShowActiveAnimationAsset = false
-		end
+		settings():GetService("NetworkSettings").ShowActiveAnimationAsset = Value
 	end)
 end})
 
@@ -6498,13 +6486,7 @@ end})
 
 Toggle = Miscclient:CreateToggle({SectionParent=Sectiontaudio,Name="Loop Audio",Interact="Click",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		playaudio = Value
-		if playaudio then
-			Soundplayaudio.Looped = true
-		end
-		if not playaudio then
-			Soundplayaudio.Looped = false
-		end
+		Soundplayaudio.Looped = Value
 	end)
 end})
 
@@ -6937,13 +6919,7 @@ end})
 spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		freezeanims = Value
-		if freezeanims then
-			speaker.Character.Animate.Disabled = true
-		end
-		if not freezeanims then
-			speaker.Character.Animate.Disabled = false
-		end
+		speaker.Character.Animate.Disabled = Value
 	end)
 end})
 
@@ -7047,13 +7023,7 @@ end})
 
 Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		AnimPlayer = Value
-		if AnimPlayer then
-			AnimPlayerlooped = true
-		end
-		if not AnimPlayer then
-			AnimPlayerlooped = false
-		end
+		AnimPlayerlooped = Value
 	end)
 end})
 
