@@ -1011,26 +1011,41 @@ end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 function promptNewRig(speaker, rig)
-	local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+	local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
 	if humanoid then
-		AvatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, Enum.HumanoidRigType[rig])
-		local result = AvatarEditorService.PromptSaveAvatarCompleted:Wait()
-		if (result == Enum.AvatarPromptResult.Success) then
-			charresettopos()
+		local rigType = Enum.HumanoidRigType[rig]
+		if rigType then
+			local avatarEditorService = game:GetService("AvatarEditorService")
+			local success, result = pcall(function()
+				avatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, rigType)
+				return avatarEditorService.PromptSaveAvatarCompleted:Wait()
+			end)
+			
+			local rigName = rig == "R6" and "R6" or "R15"
+			if success then
+				if result == Enum.AvatarPromptResult.Success then
+					charresettopos()
+					sfxSound("true")
+					Notif("Changed Rig (" .. rigName .. ")!", "Changed Character's Rig Type To " .. rigName .. "!", 3, "check")
+				else
+					sfxSound("false")
+					Notif("Change Failed!", "The rig change was unsuccessful.", 3, "x")
+				end
+			else
+				sfxSound("false")
+				Notif("Blocked Function!", "This Function Is Blocked By The Game!", 3, "x")
+			end
 		end
 	end
 end
 
+
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R6",Interact="Click",Callback=function()
 	promptNewRig(speaker, "R6")
-	sfxSound("true")
-	Notif("Changed Rig (R6)!", "Changed Character's Rig Type To R6!", 3, "check")
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R15",Interact="Click",Callback=function()
 	promptNewRig(speaker, "R15")
-	sfxSound("true")
-	Notif("Changed Rig (R15)!", "Changed Character's Rig Type To R15!", 3, "check")
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
@@ -1368,7 +1383,7 @@ Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoCl
 	end)
 end})
 
-Sectioninvisible = Misc:CreateSection("FE LocalPlayer Related | Invisible's", false, false, 14386256326)
+Sectioninvisible = Misc:CreateSection("FE LocalPlayer Related | Invisible", false, false, 14386256326)
 invisRunning = false
 Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Invisible",CurrentValue=false,Callback=function(Value)
 	invisibleeee = Value
@@ -3565,6 +3580,29 @@ Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CF
 		end
 end})
 
+CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionwalkspeeder,Callback=function(KeyBind)
+	cfwalk = KeyBind
+	if cfwalk then
+		if isTyping then
+			return
+		end
+		CFramewalkloopKey = RunService.RenderStepped:Connect(function()
+			getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
+		end)
+	else
+		CFramewalkloopKey:Disconnect()
+	end
+end})
+
+Button = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset CFrame Walk Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		CframeWalkKeybind:Set("Set Keybind")
+	end)
+end})
+
+spacing = Misc:CreateSpacing(Sectionwalkspeeder,2)
 Sliderwalkspeeder = Misc:CreateSlider({SectionParent=Sectionwalkspeeder,Name="CFrame Speed",Range={0.1,15},Increment=0.1,Suffix="CFrame Speed",CurrentValue=CFramevaluespeed,Callback=function(Value)
 	pcall(function()
 		CFramevaluespeed = Value
