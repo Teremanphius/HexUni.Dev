@@ -26,7 +26,7 @@ local StatsService = game:GetService("Stats")
 local AvatarEditorService = game:GetService("AvatarEditorService")
 local GameSettings = UserSettings():GetService("UserGameSettings")
 
--- Player and Character
+-- Player & Character
 local speaker = Players.LocalPlayer
 local Character = speaker.Character or speaker.CharacterAdded:Wait()
 local character = Character
@@ -36,7 +36,7 @@ local JMouse = speaker:GetMouse()
 -- UI Lib
 local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))()
 
--- Workspace and Camera
+-- Gravity & Camera
 local oldgrav = Workspace.Gravity
 local Camera = Workspace.CurrentCamera
 
@@ -47,10 +47,8 @@ local country = ipData.country
 local countryCode = ipData.countryCode
 local timezone = ipData.timezone
 
--- Executor and Hidden Properties
+-- Executor & Queue
 local executor = identifyexecutor()
-local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
-local gethidden = gethiddenproperty or get_hidden_property or get_hidden_prop
 local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
@@ -62,11 +60,11 @@ local movers = {}
 local HumanModCons = {}
 local noVoid = false
 
--- Speed And Things
+-- Speed & Things
 CFspeed = 50
 flyspeed = 3
 
--- Funcs And Things
+-- Funcs & Things
 function getRoot(char)
 	local rootPart = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
 	return rootPart
@@ -97,56 +95,40 @@ function charresettopos()
 	getRoot(speaker.Character).CFrame = prev
 end
 
-function effecttrue()
-	soundnotificationtrue = Instance.new("Sound")
-	soundnotificationtrue.SoundId = "rbxassetid://1555493683"
-	soundnotificationtrue.Looped = false
-	soundnotificationtrue.Volume = 0.65
-	soundnotificationtrue.Parent = workspace
-	soundnotificationtrue.Ended:Connect(function()
-        soundnotificationtrue:Destroy()
+function sfxSound(Setting)
+    local soundId
+    if Setting == "true" then
+        soundId = "rbxassetid://1555493683"
+    elseif Setting == "false" then
+        soundId = "rbxassetid://1555324499"
+    elseif Setting == "time" then
+        soundId = "rbxassetid://6963032794"
+    elseif Setting == "friendjoin" then
+        soundId = "rbxassetid://1862043663"
+    else
+        return
+    end
+    local SoundNotif = Instance.new("Sound")
+    SoundNotif.SoundId = soundId
+    SoundNotif.Looped = false
+    SoundNotif.Volume = 0.65
+    SoundNotif.Parent = workspace
+    SoundNotif.Ended:Connect(function()
+        SoundNotif:Destroy()
     end)
-    soundnotificationtrue:Play()
+    SoundNotif:Play()
 end
 
-function effectfalse()
-	soundnotificationfalse = Instance.new("Sound")
-	soundnotificationfalse.SoundId = "rbxassetid://1555324499"
-	soundnotificationfalse.Looped = false
-	soundnotificationfalse.Volume = 0.65
-	soundnotificationfalse.Parent = workspace
-    soundnotificationfalse.Ended:Connect(function()
-        soundnotificationfalse:Destroy()
-    end)
-    soundnotificationfalse:Play()
-end
-
-function effecttime()
-	soundnotificationtime = Instance.new("Sound")
-	soundnotificationtime.SoundId = "rbxassetid://6963032794"
-	soundnotificationtime.Looped = false
-	soundnotificationtime.Volume = 0.65
-	soundnotificationtime.Parent = workspace
-	soundnotificationtime.Ended:Connect(function()
-        soundnotificationtime:Destroy()
-    end)
-    soundnotificationtime:Play()
-end
-
-function effectfriendjoin()
-	soundfriendjoin = Instance.new("Sound")
-	soundfriendjoin.SoundId = "rbxassetid://1862043663"
-	soundfriendjoin.Looped = false
-	soundfriendjoin.Volume = 0.65
-	soundfriendjoin.Parent = workspace
-	soundfriendjoin.Ended:Connect(function()
-        soundfriendjoin:Destroy()
-    end)
-    soundfriendjoin:Play()
-end
-
-function notifyyw(String, String2, Durationnn, Imageee)
-	NSUI:Notify({Title=String,Content=String2,Duration=Durationnn,Image=Imageee})
+function Notif(TitleStr, ContentStr, TimeDur, NotifType)
+    local ImageID
+    if NotifType == "x" then
+        ImageID = "rbxassetid://10747384394"
+    elseif NotifType == "check" then
+        ImageID = "rbxassetid://10709790644"
+    else
+        ImageID = "rbxassetid://10709782497" 
+    end
+    NSUI:Notify({Title=TitleStr, Content=ContentStr, Duration=TimeDur, Image=ImageID})
 end
 
 function toClipboard(String)
@@ -154,8 +136,8 @@ function toClipboard(String)
 	if clipBoard then
 		clipBoard(String)
 	else
-		effectfalse()
-		notifyyw("Incompatible Exploit!", "Missing Function('s) : setclipboard!", 3, 10747384394)
+		sfxSound(false)
+		Notif("Incompatible Exploit!", "Missing Function('s) : setclipboard!", 3, "x")
 	end
 end
 
@@ -231,13 +213,13 @@ function CheckTime()
 	local h = os.date("*t").hour
 	if ((h < 12) and (h > 4)) then
 		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
-		effecttime()
+		sfxSound(time)
 	elseif ((h >= 12) and (h < 20)) then
 		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
-		effecttime()
+		sfxSound(time)
 	else
 		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
-		effecttime()
+		sfxSound(time)
 	end
 end
 CheckTime()
@@ -247,7 +229,7 @@ local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
 		pcall(function()
 			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")})
-			effectfriendjoin()
+			sfxSound(friendjoin)
 		end)
 	end
 end
@@ -350,16 +332,16 @@ Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's W
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610)
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield",Interact="Click",Callback=function()
 	pcall(function()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", true))()
 	end)
 end})
 
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Infinite Yield Reborn",Interact="Click",Callback=function()
 	pcall(function()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 		loadstring(game:HttpGet("https://github.com/fuckusfm/infiniteyield-reborn/raw/master/source"))()
 	end)
 end})
@@ -367,32 +349,32 @@ end})
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Dex",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="CMD X",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source", true))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Sirius",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://sirius.menu/script"))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
 Button = Misc:CreateButton({SectionParent=SCSSectionHUBS,Name="Nameless Admin Hub",Interact="Click",Callback=function()
 	pcall(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
@@ -401,8 +383,8 @@ Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Equip All Too
 	for _, v in pairs(speaker.Backpack:GetChildren()) do
 		v.Parent = speaker.Character
 	end
-	effecttrue()
-	NSUI:Notify({Title="Equipped!",Content="Equipped All Gear's / Tool's!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Equipped!", "Equipped All Gears / Tools!", 3, "check")
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Remove Gear's",Interact="Click",Callback=function()
@@ -411,8 +393,8 @@ Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Remove Gear's
 			v:Destroy()
 		end
 	end
-	effecttrue()
-	NSUI:Notify({Title="Removed!",Content="Removed Gear's",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Removed!", "Removed Gears / Tools!", 3, "check")
 end})
 
 Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop Gear's",CurrentValue=false,Callback=function(Value)
@@ -624,8 +606,8 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		antiwindowafk = Value
 		if antiwindowafk then
 			if not getconnections then
-				effectfalse()
-				NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : getconnections!",Duration=3,Image=7733715400})
+				sfxSound(false)
+				Notif("Incompatible Exploit!", "Missing Function('s) : getconnections!", 3, "x")
 				return
 			end
 			for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -636,8 +618,8 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 			end
 			if not antiwindowafk then
 				if not getconnections then
-					effectfalse()
-					NSUI:Notify({Title="Incompatible Exploit!",Content="Missing Function('s) : getconnections!",Duration=3,Image=7733715400})
+					sfxSound(false)
+					Notif("Incompatible Exploit!", "Missing Function('s) : getconnections!", 3, "x")
 					return
 				end
 				for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
@@ -703,8 +685,8 @@ PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Press to TP Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		PressToTpKeybind:Set("Set Keybind")
 	end)
@@ -764,8 +746,8 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Int
 			if #servers > 0 then
 				TeleportService:TeleportToPlaceInstance(PlaceId, servers[math.random(1, #servers)], game.Players.LocalPlayer)
 			else
-				effectfalse()
-				NSUI:Notify({Title = "Server Hop", Content = "Couldn't Find Any Servers", Duration = 3, Image = 10747384394})
+				sfxSound(false)
+				Notif("Server Hop Failed!", "Couldn't Find Any Servers", 3, "x")
 			end
 		end
 	end)
@@ -774,8 +756,6 @@ end})
 spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game",Interact="Click",Callback=function()
 	TeleportService:Teleport(game.PlaceId, speaker)
-	effecttrue()
-	NSUI:Notify({Title="Rejoined!",Content=("Rejoined " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400})
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game W Hexen Uni",Interact="Click",Callback=function()
@@ -793,21 +773,21 @@ end})
 Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true, 9134761478)
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Enable Reset Button",Interact="Click",Callback=function()
 	StarterGui:SetCore("ResetButtonCallback", true)
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reset Button Is Now Available In The Esc Menu!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Reset Button Enabled!", "Reset Button Is Now Available In The Esc Menu!", 3, "check")
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Reset",Interact="Click",Callback=function()
 	speaker.Character.Humanoid.Health = 0
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Char!", "Reseted" .. speaker.DisplayName .. "!", 3, "check")
 end})
 
 Paragraph = Misc:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset)
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
 	charresettopos()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content=("Reseted " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Char!", "Reseted" .. speaker.DisplayName .. "!", 3, "check")
 end})
 
 Sectionflights = Misc:CreateSection("FE LocalPlayer Related | Flight", false, false, 9134755504)
@@ -915,8 +895,8 @@ CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind=
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset CFrame Fly Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		CframeFlyKeybind:Set("Set Keybind")
 	end)
@@ -976,8 +956,8 @@ fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind"
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
 	end)
@@ -1015,8 +995,8 @@ vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybin
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle Fly Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		vehicleFLYKeybind:Set("Set Keybind")
 	end)
@@ -1035,8 +1015,8 @@ end})
 Sectionplayerealtefunc = Misc:CreateSection("FE LocalPlayer Related | Function's & Keybind's", false, false, 10686489468)
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Break Velocity",Interact="Click",Callback=function()
 	breakvelocity()
-	effecttrue()
-	NSUI:Notify({Title="Broke Velocity!",Content="Broke Character's Velocity!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Broke Velocity!", "Broke Character's Velocity!", 3, "check")
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Velocity",Interact="Click",Callback=function()
@@ -1045,8 +1025,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 			v:Destroy()
 		end
 	end
-	effecttrue()
-	NSUI:Notify({Title="Delete Velocity!",Content="Deleted Character's Velocity!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Deleted Velocity!", "Deleted Character's Velocity!", 3, "check")
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
@@ -1063,14 +1043,14 @@ end
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R6",Interact="Click",Callback=function()
 	promptNewRig(speaker, "R6")
-	effecttrue()
-	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R6!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Changed Rig (R6)!", "Changed Character's Rig Type To R6!", 3, "check")
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R15",Interact="Click",Callback=function()
 	promptNewRig(speaker, "R15")
-	effecttrue()
-	NSUI:Notify({Title="Changed Rig!",Content="Changed Character Rig Type To R15!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Changed Rig (R15)!", "Changed Character's Rig Type To R15!", 3, "check")
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
@@ -1095,8 +1075,8 @@ anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybin
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Freeze /.. Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		anchorKeybind:Set("Set Keybind")
 	end)
@@ -1119,8 +1099,8 @@ SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Ke
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sprint Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		SprintKeybind:Set("Set Keybind")
 	end)
@@ -1157,8 +1137,8 @@ tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybin
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Trip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		tripKeybind:Set("Set Keybind")
 	end)
@@ -1178,8 +1158,8 @@ sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind"
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		sitKeybind:Set("Set Keybind")
 	end)
@@ -1198,16 +1178,16 @@ stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybin
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Stun Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		stunKeybind:Set("Set Keybind")
 	end)
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode",Interact="Click",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="God Mode!",Content="You Executed God Mode Until You Reset!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("God Mode Exed!", "God Mode Is Now Working Until You Reset!", 3, "check")
 	Cam = workspace.CurrentCamera
 	Pos, Char = Cam.CFrame, speaker.Character
 	Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid")
@@ -1255,8 +1235,8 @@ godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God Mode Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		godmodeKeybind:Set("Set Keybind")
 	end)
@@ -1282,8 +1262,8 @@ zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentK
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zero Grav Trip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		zerogravtripKeybind:Set("Set Keybind")
 	end)
@@ -1338,8 +1318,8 @@ NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Ke
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset NoClip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		NoClipKeybind:Set("Set Keybind")
 	end)
@@ -1397,8 +1377,8 @@ vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeyb
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoClip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		vehNoClipKeybind:Set("Set Keybind")
 	end)
@@ -1687,8 +1667,8 @@ InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set 
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Reset Invisible Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		InvisKeybind:Set("Set Keybind")
 	end)
@@ -1808,8 +1788,8 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 			end)
 		end
 	end)
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468)
@@ -1824,8 +1804,8 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 					ifuserdiedar:Disconnect()
 				end)
 			end)
-			effecttrue()
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400})
+			sfxSound(true)
+			Notif("You're Now Upside Down!", "You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!", 3, "check")
 			c = Character
 			hrp0 = c:FindFirstChild("HumanoidRootPart")
 			hrp1 = hrp0:Clone()
@@ -1853,8 +1833,8 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 					ifuserdiedar:Disconnect()
 				end)
 			end)
-			effecttrue()
-			NSUI:Notify({Title="You're Now Upside Down!",Content="You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!",Duration=5,Image=7733715400})
+			sfxSound(true)
+			Notif("You're Now Upside Down!", "You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!", 3, "check")
 			local LocalPlayer = Players.LocalPlayer
 			local Character = LocalPlayer.Character
 			local c = Character
@@ -2253,7 +2233,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 					Float.Anchored = true
 					FloatValue = -3.1
 					Float.CFrame = getRoot(pchar).CFrame * CFrame.new(0, FloatValue, 0)
-					NSUI:Notify({Title="Float Has Been Enabled",Content="Now You Are Floating, Just Jump!",Duration=1.5,Image=7733715400})
+					Notif("Float Has Been Enabled!", "Now You Are Floating, Just Jump!", 2, "check")
 					qUp = JMouse.KeyUp:Connect(function(KEY)
 						if (KEY == "q") then
 							FloatValue = FloatValue + 0.5
@@ -2303,7 +2283,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 		if not floattt then
 			Floating = false
 			pchar = speaker.Character
-			NSUI:Notify({Title="Float Has Been Disabled",Content="Now You Have Disabled Float!",Duration=1.5,Image=7733715400})
+			Notif("Float Has Been Disabled!", "You Have Disabled Float!", 2, "x")
 			if pchar:FindFirstChild(floatName) then
 				pchar:FindFirstChild(floatName):Destroy()
 			end
@@ -3389,8 +3369,8 @@ BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Se
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFlip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		BackflipKeybind:Set("Set Keybind")
 	end)
@@ -3423,8 +3403,8 @@ SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Se
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFlip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		SideflipKeybind:Set("Set Keybind")
 	end)
@@ -3457,8 +3437,8 @@ FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontFlip Keybind",Callback=function()
-	effecttrue()
-	NSUI:Notify({Title="Reset!",Content="Reseted The Keybind!",Duration=2,Image=7733715400})
+	sfxSound(true)
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		FrontflipKeybind:Set("Set Keybind")
 	end)
@@ -3854,8 +3834,8 @@ AlldropdownRefresh.gotodropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 		plrName = Option:match("^(.-) %(")
 		foundPlr = getPlr(plrName)
 		Character:PivotTo(foundPlr.Character:GetPivot())
-		effecttrue()
-		notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+		sfxSound(true)
+		Notif("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 	end)
 end})
 
@@ -3928,12 +3908,12 @@ AlldropdownRefresh.tweegotodropdown = MiscPlayer:CreateDropdown({SectionParent=S
 			if (Humanoid and Humanoid.SeatPart) then
 				Humanoid.Sit = false
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play()
-				effecttrue()
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 			else
 				TweenService:Create(getRoot(speaker.Character), TweenInfo.new(tweenSpeedtp, Enum.EasingStyle.Linear), {CFrame=(getRoot(foundPlr.Character).CFrame + Vector3.new(3, 1, 0))}):Play()
-				effecttrue()
-				notifyyw("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Teleported!", "Teleported To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 			end
 		end
 		breakvelocity()
@@ -3962,14 +3942,14 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 			if (spectateing == true) then
 				spectateing = false
 				SpectateLoop:Disconnect()
-				effectfalse()
+				sfxSound(false)
 				game.Workspace.Camera.CameraSubject = speaker.Character
-				notifyyw("No Longer Spectating The Player ", "Not Spectating " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+				Notif("No Longer Spectating The Player ", "Not Spectating " .. foundPlr.Name .. " Anymore", 2, "x")
 				return
 			else
 				spectateing = true
-				effecttrue()
-				notifyyw("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				SpectateLoop = RunService.RenderStepped:Connect(function()
 					game.Workspace.Camera.CameraSubject = foundPlr.Character
 				end)
@@ -3989,13 +3969,13 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				if (Annoy == true) then
 					Annoy = false
 					AnnoyLoop:Disconnect()
-					effectfalse()
-					notifyyw("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					sfxSound(false)
+					Notif("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, "x")
 					return
 				else
 					Annoy = true
-					effecttrue()
-					notifyyw("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					AnnoyLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							Character:PivotTo(foundPlr.Character:GetPivot())
@@ -4017,15 +3997,15 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (glued == true) then
 					glued = false
-					effectfalse()
+					sfxSound(false)
 					GlueLoop:Disconnect()
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					notifyyw("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					Notif("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, "x")
 					return
 				else
 					glued = true
-					effecttrue()
-					notifyyw("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					GlueLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z)
@@ -4049,13 +4029,13 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				if (walkto == true) then
 					walkto = false
 					WalktoLoop:Disconnect()
-					effectfalse()
-					notifyyw("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					sfxSound(false)
+					Notif("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, "x")
 					return
 				else
 					walkto = true
-					effecttrue()
-					notifyyw("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					WalktoLoop = RunService.RenderStepped:Connect(function()
 						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position)
 					end)
@@ -4074,15 +4054,15 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (StandOnHead == true) then
 					StandOnHead = false
-					effectfalse()
+					sfxSound(false)
 					StandOnHeadLoop:Disconnect()
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					notifyyw("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					Notif("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, "x")
 					return
 				else
 					StandOnHead = true
-					effecttrue()
-					notifyyw("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					StandOnHeadLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.34, 0)
@@ -4107,13 +4087,13 @@ AlldropdownRefresh.becarrieddropdown = MiscPlayer:CreateDropdown({SectionParent=
 					Becarried = false
 					becarriedLoop:Disconnect()
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
-					notifyyw("No Longer Carried By The Player ", "Not Being Carried By " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					sfxSound(false)
+					Notif("No Longer Carried By The Player ", "Not Being Carried By " .. foundPlr.Name .. " Anymore", 2, "x")
 					return
 				else
 					Becarried = true
-					effecttrue()
-					notifyyw("Now Being Carried", "Carried By " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Being Carried", "Carried By " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					becarriedLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4154,13 +4134,13 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				if (Follow == true) then
 					Follow = false
 					FollowLoop:Disconnect()
-					notifyyw("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					Follow = true
-					notifyyw("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					FollowLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
@@ -4188,14 +4168,14 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					Waver:Stop()
 					WaveasLoop:Disconnect()
 					WaveAnim:Destroy()
-					notifyyw("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					LoopHello = true
 					trueforanim = true
-					notifyyw("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					WaveAnim = Instance.new("Animation")
 					if not r15(speaker) then
 						WaveAnim.AnimationId = "rbxassetid://128777973"
@@ -4237,8 +4217,8 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					if (Carpettion == true) then
 						Carpettion = false
 						CarpetsLoop:Disconnect()
-						effectfalse()
-						notifyyw("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+						sfxSound(false)
+						Notif("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, "x")
 						carpete:Stop()
 						carpetAnim:Destroy()
 						return
@@ -4248,8 +4228,8 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						carpetAnim.AnimationId = "rbxassetid://282574440"
 						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim)
 						carpete:Play(0.1, 1, 1)
-						effecttrue()
-						notifyyw("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+						sfxSound(true)
+						Notif("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 						CarpetsLoop = RunService.RenderStepped:Connect(function()
 							pcall(function()
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0)
@@ -4259,8 +4239,8 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					end
 				end
 			else
-				notifyyw("R6!", "R6 Rig Type Is Needed To Use This!", 2, 10747384394)
-				effectfalse()
+				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+				sfxSound(false)
 			end
 		end
 	end)
@@ -4277,8 +4257,8 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					if (ffhugger == true) then
 						ffhugger = false
 						HuggingLoop:Disconnect()
-						notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-						effectfalse()
+						Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
+						sfxSound(false)
 						zomearm:Stop()
 						zombiearmsAnim:Destroy()
 						return
@@ -4289,8 +4269,8 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
 						zomearm:Play()
 						zomearm:AdjustSpeed(0)
-						notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-						effecttrue()
+						Notif("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+						sfxSound(true)
 						HuggingLoop = RunService.RenderStepped:Connect(function()
 							pcall(function()
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
@@ -4302,8 +4282,8 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 			elseif (ffhugger == true) then
 				ffhugger = false
 				HuggingLoop:Disconnect()
-				notifyyw("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-				effectfalse()
+				Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
+				sfxSound(false)
 				zomearm:Stop()
 				zombiearmsAnim:Destroy()
 				speaker.Character.Animate.Disabled = false
@@ -4316,8 +4296,8 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				zomearm:Play()
 				zomearm:AdjustSpeed(0)
 				speaker.Character.Animate.Disabled = true
-				notifyyw("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-				effecttrue()
+				Notif("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+				sfxSound(true)
 				HuggingLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
@@ -4339,14 +4319,14 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 				if (actualpb == true) then
 					actualpb = false
 					PBLoop:Disconnect()
-					notifyyw("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, 10747384394)
+					Notif("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, "x")
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
+					sfxSound(false)
 					return
 				else
 					actualpb = true
-					notifyyw("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					PBLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4370,14 +4350,14 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 				if (besomebackpack == true) then
 					besomebackpack = false
 					BackPackLoop:Disconnect()
-					notifyyw("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, 10747384394)
+					Notif("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, "x")
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
+					sfxSound(false)
 					return
 				else
 					besomebackpack = true
-					notifyyw("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, 10709790644)
-					effecttrue()
+					Notif("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, "check")
+					sfxSound(true)
 					BackPackLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4401,14 +4381,14 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 				if (headsits == true) then
 					headsits = false
 					HeadSitLoop:Disconnect()
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
+					sfxSound(false)
 					return
 				else
 					headsits = true
-					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					HeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4432,14 +4412,14 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				if (baskets == true) then
 					baskets = false
 					BasketLoop:Disconnect()
-					notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394)
+					Notif("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, "x")
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
+					sfxSound(false)
 					return
 				else
 					baskets = true
-					notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644)
-					effecttrue()
+					Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
+					sfxSound(true)
 					BasketLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4454,17 +4434,17 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			end
 		elseif (baskets == true) then
 			baskets = false
-			notifyyw("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, 10747384394)
+			Notif("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, "x")
 			zomearm:Stop()
 			BasketLoop:Disconnect()
 			zombiearmsAnim:Destroy()
 			speaker.Character.Animate.Disabled = false
-			effectfalse()
+			sfxSound(false)
 			return
 		else
 			baskets = true
-			notifyyw("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, 10709790644)
-			effecttrue()
+			Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
+			sfxSound(true)
 			zombiearmsAnim = Instance.new("Animation")
 			zombiearmsAnim.AnimationId = "rbxassetid://10714360343"
 			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
@@ -4493,14 +4473,14 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 				if (ActualHeadsit == true) then
 					ActualHeadsit = false
 					ActualHeadSitLoop:Disconnect()
-					notifyyw("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+					Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
 					speaker.Character.Humanoid.Sit = false
-					effectfalse()
+					sfxSound(false)
 					return
 				else
 					ActualHeadsit = true
-					notifyyw("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					ActualHeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							speaker.Character.Humanoid.Sit = true
@@ -4527,14 +4507,14 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 				if (issyncinganim == true) then
 					charresettopos()
 					issyncinganim = false
-					notifyyw("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					animsync:Disconnect()
 					return
 				else
 					issyncinganim = true
-					effecttrue()
-					notifyyw("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+					sfxSound(true)
+					Notif("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
 						local animID = track.Animation.AnimationId
 						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
@@ -4564,10 +4544,10 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName)
 		if foundPlr then
 			if (orbitingfuck == true) then
-				effectfalse()
+				sfxSound(false)
 				OrbititngLoop:Disconnect()
 				orbitingfuck = false
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+				Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy()
@@ -4578,8 +4558,8 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				return
 			else
 				orbitingfuck = true
-				effecttrue()
-				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				local P = Instance.new("Part", foundPlr.Character)
 				P.Transparency = 1
 				P.Name = "ThePart"
@@ -4623,10 +4603,10 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 		foundPlr = getPlr(plrName)
 		if foundPlr then
 			if (closeorbitingfuck == true) then
-				effectfalse()
+				sfxSound(false)
 				CloseOrbititngLoop:Disconnect()
 				closeorbitingfuck = false
-				notifyyw("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+				Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
 				for i, v in pairs(speaker.Character:GetDescendants()) do
 					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
 						v:Destroy()
@@ -4636,8 +4616,8 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 				return
 			else
 				closeorbitingfuck = true
-				effecttrue()
-				notifyyw("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				local rp = Instance.new("RocketPropulsion")
 				rp.Parent = getRoot(speaker.Character)
 				rp.CartoonFactor = 1
@@ -4672,13 +4652,13 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			if (lookingAt == true) then
 				lookingAt = false
 				LookingAtLoop:Disconnect()
-				effectfalse()
-				notifyyw("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, 10747384394)
+				sfxSound(false)
+				Notif("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, "x")
 				return
 			else
 				lookingAt = true
-				effecttrue()
-				notifyyw("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				LookingAtLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
 						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, getRoot(foundPlr.Character).Position)
@@ -4702,14 +4682,14 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
 			if (spinaround == true) then
 				SpinAroundLoop:Disconnect()
-				effectfalse()
-				notifyyw("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+				sfxSound(false)
+				Notif("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, "x")
 				spinaround = false
 				return
 			else
 				spinaround = true
-				effecttrue()
-				notifyyw("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
+				sfxSound(true)
+				Notif("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				SpinAroundLoop = RunService.RenderStepped:Connect(function()
 					spinaroundrotation = spinaroundrotation + spinaroundspeed
 						root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0)
@@ -4756,8 +4736,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					Bang69 = false
 					R6Upsideloop:Disconnect()
 					Bang69Looped:Disconnect()
-					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					bang69:Stop()
 					bangAnim:Destroy()
 					Bang69 = false
@@ -4765,8 +4745,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					return
 				else
 					Bang69 = true
-					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					c = Character
 					hrp0 = c:FindFirstChild("HumanoidRootPart")
 					hrp1 = hrp0:Clone()
@@ -4802,8 +4782,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				end
 			elseif (Bang69 == true) then
 				Bang69 = false
-				notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-				effectfalse()
+				Notif("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, "x")
+				sfxSound(false)
 				bang69:Stop()
 				a69upsideown:Disconnect()
 				R15Bang69Looped:Disconnect()
@@ -4814,8 +4794,8 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				return
 			else
 				Bang69 = true
-				notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-				effecttrue()
+				Notif("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+				sfxSound(true)
 				local LocalPlayer = Players.LocalPlayer
 				local Character = LocalPlayer.Character
 				local c = Character
@@ -4909,14 +4889,14 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 						end
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						notifyyw("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-						effectfalse()
+						Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+						sfxSound(false)
 						charresettopos()
 						return
 					else
 						ffc1hump = true
-						notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-						effecttrue()
+						Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+						sfxSound(true)
 						c = Character
 						hrp0 = c:FindFirstChild("HumanoidRootPart")
 						hrp1 = hrp0:Clone()
@@ -4968,16 +4948,16 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 				end
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				notifyyw("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-				effectfalse()
+				Notif("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+				sfxSound(false)
 				Hump69R15Upsideloop:Disconnect()
 				a69humper:Disconnect()
 				charresettopos()
 				return
 			else
 				ffc1hump = true
-				notifyyw("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-				effecttrue()
+				Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+				sfxSound(true)
 				local LocalPlayer = Players.LocalPlayer
 				local Character = LocalPlayer.Character
 				local c = Character
@@ -5074,8 +5054,8 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					v2banger:Stop()
 					v2bangerAnim:Destroy()
 					Bang = false
-					notifyyw("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					Bang = true
@@ -5087,8 +5067,8 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					end
 					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim)
 					v2banger:Play(0.1, 1, 3)
-					notifyyw("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					BangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
@@ -5126,8 +5106,8 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					FaceBangerLoop:Disconnect()
 					facebanger:Stop()
 					facebangerAnim:Destroy()
-					notifyyw("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					ff2 = true
@@ -5139,8 +5119,8 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					end
 					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim)
 					facebanger:Play(0.1, 1, 3)
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					FaceBangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5)
@@ -5177,13 +5157,13 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 					ff = false
 					SitFaceBangerLoop:Disconnect()
 					Character.Humanoid.Sit = false
-					notifyyw("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					ff = true
-					notifyyw("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
 							Character.Humanoid.Sit = true
@@ -5212,14 +5192,14 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					HumpLoop = nil
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 				end
-				effectfalse()
+				sfxSound(false)
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				notifyyw("No Longer Humping The Player", "Not Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394)
+				Notif("No Longer Humping The Player", "Not Humping " .. foundPlr.Name .. " Anymore", 2, "x")
 				return
 			else
 				Humping = true
-				notifyyw("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-				effecttrue()
+				Notif("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+				sfxSound(true)
 				HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 						local speakerRoot = getRoot(speaker.Character)
@@ -5286,13 +5266,13 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 					end
 					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					notifyyw("No Longer Face Humping The Player", "Not Face Humping " .. foundPlr.Name .. " Anymore", 2, 10747384394)
-					effectfalse()
+					Notif("No Longer Face Humping The Player", "Not Face Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound(false)
 					return
 				else
 					ffc1 = true
-					notifyyw("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, 10709790644)
-					effecttrue()
+					Notif("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound(true)
 					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
@@ -5457,18 +5437,22 @@ end})
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="UNC Enviroment Test",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/unified-naming-convention/NamingStandard/main/UNCCheckEnv.lua"))()
+	sfxSound(true)
+	Notif("Check Console!", "Press F9 To Open Up The Developer Console And See Your UNC Level!", 3, "check")
 end})
 
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Add More UNC",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-MoreUNC-13110"))()
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Paragraph = Miscclient:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Remove Kick GUI",Interact="Click",Callback=function()
 	GuiService:ClearError()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Paragraph = Miscclient:CreateParagraph({Title="Kick Yourself Info",Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts)
@@ -5488,8 +5472,8 @@ end})
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
 	speaker.DevEnableMouseLock = true
-	effecttrue()
-	NSUI:Notify({Title="ShiftLock is Available!",Content="ShiftLock Is Now Available And Enabled!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Reset ShiftLock Enabled!", "ShiftLock Is Now Available In The Esc Menu!", 3, "check")
 end})
 
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228)
@@ -5574,8 +5558,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Int
 		local chatFrame = player.PlayerGui.Chat.Frame
 		chatFrame.ChatChannelParentFrame.Visible = true
 		chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content="Chat Spy On!",Duration=6,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Sectionmisctimescripts = Miscclient:CreateSection("LocalPlayer Related | Time (Client)", false, false, 10709805144)
@@ -5647,8 +5631,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Fu
 	Lighting.FogEnd = 100000
 	Lighting.GlobalShadows = false
 	Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 origsettings = {abt=Lighting.Ambient,oabt=Lighting.OutdoorAmbient,brt=Lighting.Brightness,time=Lighting.ClockTime,fe=Lighting.FogEnd,fs=Lighting.FogStart,gs=Lighting.GlobalShadows}
@@ -5660,8 +5644,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Re
 	Lighting.FogEnd = origsettings.fe
 	Lighting.FogStart = origsettings.fs
 	Lighting.GlobalShadows = origsettings.gs
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
@@ -5753,8 +5737,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectionmiscworldscripts,Name="Ve
 		return
 	end
 	Initialize()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 lightrangee = 30
@@ -5954,10 +5938,10 @@ end})
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freecam",Interact="Click",Callback=function()
 	pcall(function()
-		effecttrue()
+		sfxSound(true)
 		Buttonfreeca:Set("Freecam (SHIFT+P)")
 		speaker.DevEnableMouseLock = false
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=6,Image=7733715400})
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 		function sandbox(var, func)
 			env = getfenv(func)
 			newenv = setmetatable({}, {__index=function(self, k)
@@ -6399,11 +6383,11 @@ end})
 
 Sectiontaudio = Miscclient:CreateSection("LocalPlayer Related | Audio (Client)", false, true, 10747375679)
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Edge's Audio Logger",Interact="Click",Callback=function()
-	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400})
+	Notif("Hold on..", "Loading The Audio Logger", 3, "check")
 	task.wait(2)
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/audiologger.lua", true))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 audioid = nil
@@ -6415,22 +6399,22 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Play Audio",
 	Soundplayaudio = Instance.new("Sound")
 	Soundplayaudio.SoundId = "rbxassetid://" .. audioid
 	Soundplayaudio:Play()
-	NSUI:Notify({Title="Playing!",Content="Playing The Audio",Duration=3,Image=7733715400})
+	Notif("Playing!", "Started Playing The Audio!", 3, "check")
 end})
 
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Pause Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Pause()
-	NSUI:Notify({Title="Paused!",Content="Paused The Audio",Duration=3,Image=7733715400})
+	Notif("Paused!", "Paused The Audio!", 3, "check")
 end})
 
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Resume Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Resume()
-	NSUI:Notify({Title="Resumed!",Content="Resumed The Audio",Duration=3,Image=7733715400})
+	Notif("Resumed!", "Resumed The Audio!", 3, "check")
 end})
 
 Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Stop Audio",Interact="Click",Callback=function()
 	Soundplayaudio:Stop()
-	NSUI:Notify({Title="Stopped!",Content="Stopped The Audio",Duration=3,Image=7733715400})
+	Notif("Stopped!", "Stopped The Audio!", 3, "check")
 end})
 
 Toggle = Miscclient:CreateToggle({SectionParent=Sectiontaudio,Name="Loop Audio",Interact="Click",CurrentValue=false,Callback=function(Value)
@@ -6920,11 +6904,11 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Curre
 		end
 		if (found ~= "Animations Copied") then
 			toClipboard(found)
-			effecttrue()
-			NSUI:Notify({Title="Copied Anim!",Content="Copied the Current Animation ID To Your Clipboard!",Duration=2,Image=7733715400})
+			sfxSound(true)
+			Notif("Copied Anim!", "Copied the Current Animation ID To Your Clipboard!", 3, "check")
 		else
-			NSUI:Notify({Title="Didn't Copy Anim!",Content="No Animation's To Copy!",Duration=2,Image=7733715400})
-			effectfalse()
+			Notif("Didn't Copy Anim!", "No Animation's To Copy!", 3, "check")
+			sfxSound(false)
 		end
 	end
 	copyAnimId(speaker)
@@ -6991,16 +6975,17 @@ end})
 
 SectionAnimHubs = Animations:CreateSection("FE Animation Hub's R6 & R15", false, true, 10709759610)
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R6 & R15 Animation Hub",Interact="Click",Callback=function()
-	effecttrue()
+	sfxSound(true)
 	loadstring(game:HttpGet("https://pastebin.com/raw/RmD3qNp7", true))()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
-Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote Hub",Interact="Click",Callback=function()
-	NSUI:Notify({Title="Wait..",Content="Loading it...",Duration=2,Image=7733715400})
+Buttonemotehubr15 = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R15 Emote Hub",Interact="Click",Callback=function()
+	Notif("Hold on..", "Loading The Emote Hub..", 3, "check")
 	task.wait(2)
-	effecttrue()
-	NSUI:Notify({Title="Open With Comma (,)!",Content="Script Is Working!",Duration=6,Image=7733715400})
+	Buttonemotehubr15:Set("R15 Emote Hub (Open With (,))")
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Gi7331/scripts/main/Emote.lua", true))()
 end})
 
@@ -7084,8 +7069,8 @@ local function PlayEmote(name, id)
             HumanoidPlayEmote(Humanoid, name, id)
         end
     else
-        effectfalse()
-		NSUI:Notify({Title="R15 Needed!",Content="R15 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400})
+        sfxSound(false)
+		Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!", 3, "x")
     end
 end
 
@@ -7105,7 +7090,7 @@ Animations:CreateButton({SectionParent = Sectionfeemotes,Name = "Play Selected E
 	if selectedEmote and emoteData[selectedEmote] then
 		PlayEmote(selectedEmote, emoteData[selectedEmote])
 	else
-		NSUI:Notify({Title="Error!", Content="Please Select A Valid Emote.",Duration=3,Image=7733715400})
+		Notif("Error!", "Please Select A Valid Emote!", 3, "x")
 	end
 end})
 
@@ -7166,8 +7151,8 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanimspacks,Name="Apply 
 	if r15(speaker) then
 		if (selectedPack and animationPacks[selectedPack]) then
 			local animations = animationPacks[selectedPack]
-			effecttrue()
-			NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+			sfxSound(true)
+			Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 			local character = game.Players.LocalPlayer.Character
 			for animName, animId in pairs(animations) do
 				if ((animName == "idle1") or (animName == "idle2")) then
@@ -7177,12 +7162,12 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanimspacks,Name="Apply 
 				end
 			end
 		else
-			effectfalse()
-			NSUI:Notify({Title="Error!",Content="Please Select A Valid Animation Pack.",Duration=3,Image=7733715400})
+			sfxSound(false)
+			Notif("Error!", "Please Select A Valid Animation Pack!", 3, "x")
 		end
 	else
-		effectfalse()
-		NSUI:Notify({Title="R15 Needed!",Content="R15 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400})
+		sfxSound(false)
+		Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!", 3, "x")
 	end
 end})
 
@@ -7334,37 +7319,37 @@ Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name
 	pcall(function()
 		Buttonrewinb:Set("Rewind R6 & R15 (Exed)")
 		loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT"))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	else
-		effectfalse()
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400})
+		sfxSound(false)
+		Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
 	end
 end})
 
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://pastebin.com/raw/R5YR13pG", true))()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	else
-		effecttrue()
-		NSUI:Notify({Title="R6 Needed!",Content="R6 Rig Type Is Needed To Use This!",Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
 	end
 end})
 
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk On Walls R6 & R15",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 isPlayerInValidGameMP = (game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)
@@ -7508,75 +7493,75 @@ end})
 dhbtlock.Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610)
 rayButton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="RayX",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Butdfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nyula",Interact="Click",Callback=function()
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Butasdwton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Swag Mode",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Buttadgon = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Space-X",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/spacexrandom/Lua/main/DaHood"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Buzxcvtton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Destiny",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/compwnter/destiny/main/loader"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Buthjfton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Nova",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://icxy.xyz/NovaGui/NovaGui", true))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Buthfgton = DH:CreateButton({SectionParent=Sectiondhhubs,Name="Faded",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/NighterEpic/Faded/main/YesEpic", true))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 dhbtlock.Sectionaimlockdh = DH:CreateSection("Aim Locks & Aim Viewer", false, false, 10709818534)
 Busdftton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Aim Viewer",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Raycodex/Exploiting/main/Roblox/Aim%20Viewer"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Bwerutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Sun God AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/sungodaim"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 afgButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Streamable AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/smZSXCiQQlUcNphIKlxavK4d5LLAEPPy"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Bahutton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Ahm Tracer Aim Lock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/gh5qEbtWxA3DN1yIaTCsCFAzFjfQJc6G"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 caButton = DH:CreateButton({SectionParent=Sectionaimlockdh,Name="Cam AimLock",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/f36ed8be6ee44f1e8c5ae744fa14d61e/main/%3Ap%22%3E!7ybVR%60QTS%5Eo*8v'oh%7D%2BnYY*e%7C%3Br-O%5D.FDHV%3Aa4CI20w0OZbd%2BU%7D_'%3EpY%23e"))()
-	effecttrue()
-	NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 for _, v in pairs(dhbtlock) do
@@ -7609,8 +7594,8 @@ tohttlock.Sectionscriptstoh = TOH:CreateSection("Script's", false, false, 107097
 Bhsdfsdfhfdutton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Anti-Cheat Bypass",Interact="Click",Callback=function()
 	task.wait(1.5)
 	pcall(function()
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content="You Can Now Use Fly!",Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 		v0 = getreg()
 		for v6, v7 in next, v0 do
 			if (type(v7) == "function") then
@@ -7673,8 +7658,8 @@ Budfgdfgdtton = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Get All 
 				v4.Parent = speaker.Backpack
 			end
 		end
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
@@ -7685,8 +7670,8 @@ Buttergdsfgon = TOH:CreateButton({SectionParent=Sectionscriptstoh,Name="Remove K
 				v1.Parent:Destroy()
 			end
 		end
-		effecttrue()
-		NSUI:Notify({Title="You've Executed The Script!",Content=("You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 	end)
 end})
 
@@ -7696,8 +7681,8 @@ Buttfssadwaon = TOH:CreateButton({SectionParent=Sectiontpscriptstoh,Name="Telepo
 		v0 = game.Workspace.tower.sections.finish.FinishGlow.CFrame
 		v1 = speaker.Character
 		v1.HumanoidRootPart.CFrame = v0
-		effecttrue()
-		NSUI:Notify({Title="Teleported!",Content=("Teleported " .. speaker.DisplayName .. "!"),Duration=3,Image=7733715400})
+		sfxSound(true)
+		Notif("Teleported!", "Teleported " .. speaker.DisplayName .. "!", 3, "check")
 	end)
 end})
 
@@ -7807,8 +7792,8 @@ end)
 
 Button = CRD:CreateButton({SectionParent = Sectionclientinfo,Name = "Print Executor Level",Interact = "Click",Callback = function()
     printidentity()
-    effecttrue()
-    NSUI:Notify({Title = "Printed!",Content = "Press F9 To see Your Executor Level!",Duration = 3,Image = 7733715400})
+    sfxSound(true)
+	Notif("Printed To Console!", "Press F9 To Open Up The Developer Console And See Your Executor Level!", 3, "check")
 end})
 
 Sectionfriendinfo = CRD:CreateSection("Friend Information", false, false, 7743876054)
@@ -7821,20 +7806,20 @@ end)
 Sectioncopysc = CRD:CreateSection("Copy Script's", false, false, 10709799288)
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Interact="Click",Callback=function()
 	toClipboard("https://discord.gg/PhEH8uh9pR")
-	effecttrue()
-	NSUI:Notify({Title="Copied Link!",Content="Copied Discord Link To Clipboard!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy Your Username",Interact="Click",Callback=function()
 	toClipboard("" .. speaker.Name .. "")
-	effecttrue()
-	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy Your UserId",Interact="Click",Callback=function()
 	toClipboard("" .. speaker.UserId .. "")
-	effecttrue()
-	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
 
 AlldropdownRefresh.useriddropdown = Misc:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
@@ -7842,22 +7827,22 @@ AlldropdownRefresh.useriddropdown = Misc:CreateDropdown({SectionParent=Sectionco
 		plrName = Option:match("^(.-) %(")
 		foundPlr = getPlr(plrName)
 		toClipboard("" .. foundPlr.UserId .. "")
-		effecttrue()
-		notifyyw("Copied Player's UserID", "Copied " .. foundPlr.Name .. "'s UserID", 2, 10709790644)
+		sfxSound(true)
+		Notif("Copied Player's UserID", "Copied " .. foundPlr.Name .. "'s UserID", 2, "check")
 	end)
 end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Interact="Click",Callback=function()
 	soundnotification = Instance.new("Sound")
-	effecttrue()
-	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 	toClipboard("--[[Will Join Your Friend's Game\nIf Not Join The Game He's Playing and Execute]]--" .. "\ngame:GetService(\'TeleportService\'):TeleportToPlaceInstance(\'" .. game.PlaceId .. "\', \'" .. game.JobId .. "\')")
 end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Interact="Click",Callback=function()
 	toClipboard("" .. game.PlaceId .. "")
-	effecttrue()
-	NSUI:Notify({Title="Copied!",Content="Copied To Clipboard!",Duration=3,Image=7733715400})
+	sfxSound(true)
+	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
 
 ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
@@ -7937,7 +7922,7 @@ function CheckTimess()
 		else
 			return
 		end
-		effectfriendjoin()
+		sfxSound(friendjoin)
 	end
 end
 CheckTimess()
