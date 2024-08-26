@@ -89,11 +89,11 @@ function isNumber(str)
 end
 
 function charresettopos()
-	prev = getRoot(speaker.Character).CFrame
+	prev = speaker.Character:FindFirstChild("HumanoidRootPart").CFrame
 	speaker.Character.Parent = workspace.Terrain
 	speaker.Character:BreakJoints()
 	Workspace:WaitForChild(speaker.Name)
-	getRoot(speaker.Character).CFrame = prev
+	speaker.Character:FindFirstChild("HumanoidRootPart").CFrame = prev
 end
 
 function sfxSound(Setting)
@@ -327,7 +327,7 @@ task.spawn(function()
 		Window:SetTopbarTitle("HeXen Universal\t\t\t\t    " .. os.date("%H:%M"))
 	end
 end)
-Misc = Window:CreateTab("Universal FE", 9080478424)
+Misc = Window:CreateTab("Hubs & Scripts", 10723425187)
 Sectiontotalscrismisc = Misc:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 Paragraphtotal = Misc:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Sectiontotalscrismisc)
 SCSSectionHUBS = Misc:CreateSection("FE Script Hub's", false, false, 10709759610)
@@ -3325,30 +3325,39 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 end})
 
 spacing = Misc:CreateSpacing(Sectionflipsnthings,2)
-hbackflipnfrontflip = 0.0174533
+speakerFlipNumb = 0.0174533
+function speakerFlip(Setting)
+	local humanoid = speaker.Character:WaitForChild("Humanoid")
+	local root = speaker.Character:WaitForChild("HumanoidRootPart")
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	task.wait()
+	humanoid.Sit = true
+	local rotation
+	if Setting == "BackFlip" then
+	rotation = CFrame.Angles(speakerFlipNumb, 0, 0)
+	elseif Setting == "SideFlip" then
+	rotation = CFrame.Angles(0, 0, -speakerFlipNumb)
+	elseif Setting == "FrontFlip" then
+	rotation = CFrame.Angles(-speakerFlipNumb, 0, 0)
+	else
+		return
+	end
+	for i = 1, 360 do
+		task.delay(i / 720, function()
+			if humanoid.Sit then
+				root.CFrame *= rotation
+			end
+		end)
+	end
+	task.wait(0.55)
+	humanoid.Sit = false
+end
 BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
 	if KeyBind then
 		if isTyping then
 			return
 		end
-		function speakerBackflip()
-			local humanoid = speaker.Character:WaitForChild("Humanoid")
-			local root = speaker.Character:WaitForChild("HumanoidRootPart")
-			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait()
-			humanoid.Sit = true
-			local rotation = CFrame.Angles(hbackflipnfrontflip, 0, 0)
-			for i = 1, 360 do
-				task.delay(i / 720, function()
-					if humanoid.Sit then
-						root.CFrame *= rotation
-					end
-				end)
-			end
-			task.wait(0.55)
-			humanoid.Sit = false
-		end
-		speakerBackflip()
+		speakerFlip("BackFlip")
 	end
 end})
 
@@ -3365,24 +3374,7 @@ SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Se
 		if isTyping then
 			return
 		end
-		function speakerSideflip()
-			local humanoid = speaker.Character:WaitForChild("Humanoid")
-			local root = speaker.Character:WaitForChild("HumanoidRootPart")
-			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait()
-			humanoid.Sit = true
-			local rotation = CFrame.Angles(0, 0, -hbackflipnfrontflip)
-			for i = 1, 360 do
-				task.delay(i / 720, function()
-					if humanoid.Sit then
-						root.CFrame *= rotation
-					end
-				end)
-			end
-			task.wait(0.55)
-			humanoid.Sit = false
-		end
-		speakerSideflip()
+		speakerFlip("SideFlip")
 	end
 end})
 
@@ -3399,24 +3391,7 @@ FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="
 		if isTyping then
 			return
 		end
-		function speakerFrontflip()
-			local humanoid = speaker.Character:WaitForChild("Humanoid")
-			local root = speaker.Character:WaitForChild("HumanoidRootPart")
-			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait()
-			humanoid.Sit = true
-			local rotation = CFrame.Angles(-hbackflipnfrontflip, 0, 0)
-			for i = 1, 360 do
-				task.delay(i / 720, function()
-					if humanoid.Sit then
-						root.CFrame *= rotation
-					end
-				end)
-			end
-			task.wait(0.55)
-			humanoid.Sit = false
-		end
-		speakerFrontflip()
+		speakerFlip("FrontFlip")
 	end
 end})
 
@@ -3807,7 +3782,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Gravity",Numb
 	end)
 end})
 
-MiscPlayer = Window:CreateTab("Universal Player", 9080478424)
+MiscPlayer = Window:CreateTab("Players", 10747373426)
 Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 Paragraphtotal = MiscPlayer:CreateParagraph({Title="Drop Down's Note",Content="When You Open Them The Button's Are Like A Toggle.\nYou Press One, You Do The Function, And Then You Press Again On Whatever Button To Stop."}, Sectiontotalscrismisc)
 Sectiontpscritpss = MiscPlayer:CreateSection("FE Player Related | Teleport", false, false, 6723742952)
@@ -5308,7 +5283,7 @@ faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrer
 	end)
 end})
 
-Miscclient = Window:CreateTab("Universal Client", 9080478424)
+Miscclient = Window:CreateTab("Client", 122260852237334)
 SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="Script's Here Are Only Client Sided In Which Means Only You Can See It"}, SectiontotalscrisMiscclient)
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610)
@@ -6816,7 +6791,7 @@ Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Cham
 	Sense.teamSettings.friendly.chamsOutlineColor = Value
 end})
 
-Animations = Window:CreateTab("Animation's", 1114393432)
+Animations = Window:CreateTab("Animations", 1114393432)
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612)
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Sectiontotalscrisanim)
 SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149)
@@ -7339,7 +7314,7 @@ end})
 isPlayerInValidGameMP = (PlaceId == 370731277) or (PlaceId == 4213655427) or (PlaceId == 370731277) or (PlaceId == 3272055484)
 mpclosedsec = false
 mpbtlock = {}
-MP = Window:CreateTab("Meepcity", 7733701625)
+MP = Window:CreateTab("Meepcity", 10723407389)
 Sectiontotalscmp = MP:CreateSection("Total Script's: 4", false, false, 7743869612)
 Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp)
 Sectiojointhegamemp = MP:CreateSection("Join The Game", false, mpclosedsec, 14754300297)
@@ -7697,8 +7672,8 @@ for _, v in pairs(tohttlock) do
 		JoinTOHButton:Unlock()
 	end
 end
-CRD = Window:CreateTab("Credit's &\nChangelog", 7743876054)
-Sectioncredit = CRD:CreateSection("Credit's", false, false, 7743876054)
+CRD = Window:CreateTab("Credits &\nChangelog", 90636118698642)
+Sectioncredit = CRD:CreateSection("Credits", false, false, 7743876054)
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit)
 Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Shlex (For The ESP Called Sense & For Fly)\nEdgeIY\nPigeon\nPeople From V3rmillion (Especially Those Forums/Threads)\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit)
 Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612)
