@@ -39,6 +39,8 @@ local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/N
 -- Gravity & Camera
 local oldgrav = Workspace.Gravity
 local Camera = Workspace.CurrentCamera
+local PlaceId = game.PlaceId
+local JobId = game.JobId
 
 -- HTTP Requests
 local ipResponse = game:HttpGet("http://ip-api.com/json/") -- I Don't Log IP, You Can Check Yourself, No Webhooks
@@ -53,7 +55,6 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local PlaceId, JobId = game.PlaceId, game.JobId
 local Scriptcount = "197"
 local ScriptcountAnim = "64"
 local movers = {}
@@ -738,7 +739,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Int
 			local body = HttpService:JSONDecode(req.Body)
 			if body and body.data then
 				for _, v in ipairs(body.data) do
-					if type(v) == "table" and tonumber(v.playing) < tonumber(v.maxPlayers) and v.id ~= game.JobId then
+					if type(v) == "table" and tonumber(v.playing) < tonumber(v.maxPlayers) and v.id ~= JobId then
 						table.insert(servers, v.id)
 					end
 				end
@@ -755,7 +756,7 @@ end})
 
 spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game",Interact="Click",Callback=function()
-	TeleportService:Teleport(game.PlaceId, speaker)
+	TeleportService:Teleport(PlaceId, speaker)
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game W Hexen Uni",Interact="Click",Callback=function()
@@ -767,7 +768,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()")
 		end
 	end)
-	TeleportService:Teleport(game.PlaceId, speaker)
+	TeleportService:Teleport(PlaceId, speaker)
 end})
 
 Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true, 9134761478)
@@ -7352,7 +7353,7 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
-isPlayerInValidGameMP = (game.PlaceId == 370731277) or (game.PlaceId == 4213655427) or (game.PlaceId == 370731277) or (game.PlaceId == 3272055484)
+isPlayerInValidGameMP = (PlaceId == 370731277) or (PlaceId == 4213655427) or (PlaceId == 370731277) or (PlaceId == 3272055484)
 mpclosedsec = false
 mpbtlock = {}
 MP = Window:CreateTab("Meepcity", 7733701625)
@@ -7478,7 +7479,7 @@ for _, v in pairs(mpbtlock) do
 		JoinMPButton:Unlock()
 	end
 end
-isPlayerInValidGameDH = (game.PlaceId == 2788229376) or (game.PlaceId == 5602055394)
+isPlayerInValidGameDH = (PlaceId == 2788229376) or (PlaceId == 5602055394)
 dhclosedsec = false
 dhbtlock = {}
 DH = Window:CreateTab("DaHood", 14367231837)
@@ -7573,7 +7574,7 @@ for _, v in pairs(dhbtlock) do
 		JoinDHButton:Unlock()
 	end
 end
-isPlayerInValidGameTOH = (game.PlaceId == 1962086868) or (game.PlaceId == 3582763398) or (game.PlaceId == 2127551566)
+isPlayerInValidGameTOH = (PlaceId == 1962086868) or (PlaceId == 3582763398) or (PlaceId == 2127551566)
 tohclosedsec = false
 tohttlock = {}
 TOH = Window:CreateTab("Tower Of Hell", 14367002464)
@@ -7757,7 +7758,7 @@ Paragraphc = CRD:CreateParagraph({Title = "Information",
         Monthsinfo,
         Yearsinfo,
         speaker.AccountAge,
-        game.PlaceId
+        PlaceId
     )
 }, Sectionclientinfo)
 
@@ -7836,11 +7837,11 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Intera
 	soundnotification = Instance.new("Sound")
 	sfxSound(true)
 	Notif("Copied!", "Copied To Clipboard!", 3, "check")
-	toClipboard("--[[Will Join Your Friend's Game\nIf Not Join The Game He's Playing and Execute]]--" .. "\ngame:GetService(\'TeleportService\'):TeleportToPlaceInstance(\'" .. game.PlaceId .. "\', \'" .. game.JobId .. "\')")
+	toClipboard("--[[Will Join Your Friend's Game\nIf Not Join The Game He's Playing and Execute]]--" .. "\ngame:GetService(\'TeleportService\'):TeleportToPlaceInstance(\'" .. PlaceId .. "\', \'" .. JobId .. "\')")
 end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Interact="Click",Callback=function()
-	toClipboard("" .. game.PlaceId .. "")
+	toClipboard("" .. PlaceId .. "")
 	sfxSound(true)
 	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
