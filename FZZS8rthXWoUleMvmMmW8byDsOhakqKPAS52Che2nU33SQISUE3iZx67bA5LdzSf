@@ -4112,7 +4112,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName)
 		if foundPlr then
 			getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
-			wait(0.78)
+			task.wait(0.78)
 			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
 		elseif (foundPlr == speaker) then
 			return nil
@@ -7349,132 +7349,6 @@ Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Walk
 	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
-isPlayerInValidGameMP = (PlaceId == 370731277) or (PlaceId == 4213655427) or (PlaceId == 370731277) or (PlaceId == 3272055484)
-mpclosedsec = false
-mpbtlock = {}
-MP = Window:CreateTab("Meepcity", 10723407389)
-Sectiontotalscmp = MP:CreateSection("Total Script's: 4", false, false, 7743869612)
-Paragraph = MP:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guaranteed To Work 100%. They Can Break!\nMeepcity Notes: I've Added This For My Brother Because You Know."}, Sectiontotalscmp)
-Sectiojointhegamemp = MP:CreateSection("Join The Game", false, mpclosedsec, 14754300297)
-Paragraph = MP:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectiojointhegamemp)
-JoinMPButton = MP:CreateButton({SectionParent=Sectiojointhegamemp,Name="Join Meepcity",Interact="Click",Callback=function()
-	game:GetService("TeleportService"):Teleport(370731277, LocalPlayer)
-end})
-
-if isPlayerInValidGameMP then
-	mpclosedsec = true
-	ConnectionEvent = ReplicatedStorage:WaitForChild("ConnectionEvent")
-	local function colorToTable(clr)
-		return {tostring(clr.R * 255),tostring(clr.G * 255),tostring(clr.B * 255)}
-	end
-	local function AddAccessoryString(str, id)
-		local ids = string.split(str or "", ",") or {}
-		table.insert(ids, id)
-		return table.concat(ids, ",")
-	end
-	local function ExtractData(humdes)
-		local ava = {}
-		for _, v in pairs({"WidthScale","HeadScale","HeightScale","DepthScale","BodyTypeScale","ProportionScale"}) do
-			ava[v] = humdes[v]
-		end
-		for _, v in pairs({"Face","Head","LeftArm","RightArm","LeftLeg","RightLeg","Torso"}) do
-			ava[v] = humdes[v]
-		end
-		for _, v in pairs({"HeadColor","LeftArmColor","RightArmColor","LeftLegColor","RightLegColor","TorsoColor"}) do
-			ava[v] = colorToTable(humdes[v])
-		end
-		for _, v in pairs({"GraphicTShirt","Shirt","Pants"}) do
-			ava[v] = humdes[v]
-		end
-		for _, v in pairs({"ClimbAnimation","FallAnimation","IdleAnimation","JumpAnimation","RunAnimation","SwimAnimation","WalkAnimation"}) do
-			ava[v] = humdes[v]
-		end
-		for _, v in pairs({"Hat","Hair","Back","Face","Front","Neck","Shoulders","Waist"}) do
-			ava[v .. "Accessory"] = humdes[v .. "Accessory"]
-		end
-		ava.Emotes = humdes:GetEmotes()
-		local layered = humdes:GetAccessories(false)
-		for i, v in pairs(layered) do
-			if (v.AccessoryType and (typeof(v.AccessoryType) == "EnumItem")) then
-				v.AccessoryType = v.AccessoryType.Name
-			end
-		end
-		ava.AccessoryBlob = layered
-		return ava
-	end
-end
-Sectionavmp = MP:CreateSection("Avatar Script's", false, false, 13285615740)
-mpbtlock.fromidInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From ID",OnEnter=true,PlaceholderText="Player ID",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	local userid = Text
-	if (userid and tonumber(userid) and Players:GetHumanoidDescriptionFromUserId(tonumber(userid))) then
-		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(tonumber(userid)))
-		ConnectionEvent:FireServer(315, data, true)
-	end
-end})
-
-mpbtlock.fromuserInput = MP:CreateInput({SectionParent=Sectionavmp,Name="Load Avatar From User",OnEnter=true,PlaceholderText="Username",RemoveTextAfterFocusLost=false,Callback=function(Text)
-	local username = Text
-	if (username and Players:GetUserIdFromNameAsync(username)) then
-		local data = ExtractData(Players:GetHumanoidDescriptionFromUserId(Players:GetUserIdFromNameAsync(username)))
-		ConnectionEvent:FireServer(315, data, true)
-	end
-end})
-
-Sectionothermp = MP:CreateSection("Other Script's", false, false, 10723406988)
-local onsaleran = false
-mpbtlock.makeoffButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Make Offsale Asset's Onsale",Interact="Click",Callback=function()
-	if not onsaleran then
-		onsaleran = true
-		local function onsale(module)
-			local fd = require(module)
-			local id = 666
-			fd.Categories[id] = {CategoryId=id,Image=5277185610,CatTitle="offsale )"}
-			for i, v in pairs(fd.Assets) do
-				if not fd.Assets[i].ForSale then
-					fd.Assets[i].ForSale = true
-					if fd.Assets[i].Details.Price.HalloweenCandy then
-						fd.Assets[i].Details.Price.HalloweenCandy = nil
-					end
-					fd.Assets[i].CatId = id
-					fd.Assets[i].Desc = "this is an offsale item that got brought back to life"
-				end
-			end
-		end
-		onsale(game.ReplicatedStorage:WaitForChild("Shop_Furniture"))
-		onsale(game.ReplicatedStorage:WaitForChild("Shop_Toys"))
-		onsale(game.ReplicatedStorage:WaitForChild("Shop_HomeImprovement"))
-		onsale(game.ReplicatedStorage:WaitForChild("Shop_PetShop"))
-	end
-end})
-
-local oldplusfunc = nil
-mpbtlock.spoofplusButton = MP:CreateButton({SectionParent=Sectionothermp,Name="Spoof PLUS",Interact="Click",Callback=function()
-	pcall(function()
-		local v9 = require(ReplicatedStorage:WaitForChild("Global"))
-		oldplusfunc = hookfunction(v9.IsPlayerPLUS, function(p80)
-			local v110 = Players:GetPlayerByUserId(p80)
-			if not v110 then
-				return
-			end
-			if (v110 == Players.LocalPlayer) then
-				v110:SetAttribute("PLUS", true)
-				return true
-			else
-				return v110:GetAttribute("PLUS") and false
-			end
-		end)
-	end)
-end})
-
-for _, v in pairs(mpbtlock) do
-	if isPlayerInValidGameMP then
-		v:Unlock()
-		JoinMPButton:Lock()
-	else
-		v:Lock("Join The Game To See The Functions!")
-		JoinMPButton:Unlock()
-	end
-end
 isPlayerInValidGameDH = (PlaceId == 2788229376) or (PlaceId == 5602055394)
 dhclosedsec = false
 dhbtlock = {}
