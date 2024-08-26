@@ -89,11 +89,13 @@ function isNumber(str)
 end
 
 function charresettopos()
-	prev = speaker.Character:FindFirstChild("HumanoidRootPart").CFrame
-	speaker.Character.Parent = workspace.Terrain
-	speaker.Character:BreakJoints()
-	Workspace:WaitForChild(speaker.Name)
-	speaker.Character:FindFirstChild("HumanoidRootPart").CFrame = prev
+	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame
+	local humanoid = Character:FindFirstChildOfClass("Humanoid")
+	if humanoid then
+		humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+	end
+	speaker.CharacterAdded:Wait()
+	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
 end
 
 function sfxSound(Setting)
@@ -760,14 +762,14 @@ end})
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Reset",Interact="Click",Callback=function()
 	speaker.Character.Humanoid.Health = 0
 	sfxSound("true")
-	Notif("Reseted Char!", "Reseted" .. speaker.DisplayName .. "!", 3, "check")
+	Notif("Reseted Char!", "Reseted " .. speaker.DisplayName .. "!", 3, "check")
 end})
 
 Paragraph = Misc:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset)
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
 	charresettopos()
 	sfxSound("true")
-	Notif("Reseted Char!", "Reseted" .. speaker.DisplayName .. "!", 3, "check")
+	Notif("Reseted Char!", "Reseted " .. speaker.DisplayName .. "!", 3, "check")
 end})
 
 Sectionflights = Misc:CreateSection("FE LocalPlayer Related | Flight", false, false, 9134755504)
