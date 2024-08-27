@@ -247,7 +247,6 @@ end
 connectPlayerAddedEvent()
 
 flying = false
-alwaysfalses = false
 local isTyping = false
 
 UserInputService.TextBoxFocused:Connect(function()
@@ -260,27 +259,28 @@ end)
 
 RunService.Heartbeat:Connect(function()
 	local primaryPart = Character and Character.PrimaryPart
+	if not primaryPart then return end
 	if primaryPart then
 		local bodyVelocity, bodyGyro = unpack(movers)
 		if not bodyVelocity then
 			bodyVelocity = Instance.new("BodyVelocity")
-			bodyVelocity.MaxForce = Vector3.one * 8999999488
+			bodyVelocity.MaxForce = Vector3.one * 1e10
+
 			bodyGyro = Instance.new("BodyGyro")
-			bodyGyro.MaxTorque = Vector3.one * 8999999488
+			bodyGyro.MaxTorque = Vector3.one * 1e10
 			bodyGyro.P = 90000
+
 			local bodyAngularVelocity = Instance.new("BodyAngularVelocity")
-			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 8999999488
-			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 8999999488
-			bodyAngularVelocity.P = 8999999488
+			bodyAngularVelocity.AngularVelocity = Vector3.yAxis * 1e10
+			bodyAngularVelocity.MaxTorque = Vector3.yAxis * 1e10
+			bodyAngularVelocity.P = 1e10
+
 			movers = {bodyVelocity,bodyGyro,bodyAngularVelocity}
 		end
-		if flying then
+		if flying and not IsTyping then
 			local camCFrame = Camera.CFrame
 			local velocity = Vector3.zero
 			local rotation = camCFrame.Rotation
-			if isTyping then
-				return
-			end
 			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
 				velocity += camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
@@ -306,10 +306,8 @@ RunService.Heartbeat:Connect(function()
 			local tweenInfo = TweenInfo.new(0.5)
 			TweenService:Create(bodyVelocity, tweenInfo, {Velocity=(velocity * flyspeed * 45)}):Play()
 			bodyVelocity.Parent = primaryPart
-			if not alwaysfalses then
-				TweenService:Create(bodyGyro, tweenInfo, {CFrame=rotation}):Play()
-				bodyGyro.Parent = primaryPart
-			end
+			TweenService:Create(bodyGyro, tweenInfo, {CFrame=rotation}):Play()
+			bodyGyro.Parent = primaryPart
 		else
 			bodyVelocity.Parent = nil
 			bodyGyro.Parent = nil
