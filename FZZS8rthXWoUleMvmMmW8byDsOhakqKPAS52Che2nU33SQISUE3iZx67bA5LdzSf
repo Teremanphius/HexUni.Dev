@@ -44,10 +44,19 @@ local JobId = game.JobId
 
 -- HTTP Requests
 local ipResponse = game:HttpGet("http://ip-api.com/json/") -- I Don't Log IP, You Can Check Yourself, No Webhooks
-local ipData = HttpService:JSONDecode(ipResponse)
-local country = ipData.country
-local countryCode = ipData.countryCode
-local timezone = ipData.timezone
+local success, ipData = pcall(function()
+    return HttpService:JSONDecode(ipResponse)
+end)
+
+local country = "N/A"
+local countryCode = "N/A"
+local timezone = "N/A"
+
+if success and type(ipData) == "table" then
+    country = ipData.country or "N/A"
+    countryCode = ipData.countryCode or "N/A"
+    timezone = ipData.timezone or "N/A"
+end
 
 -- Executor & Queue
 local executor = identifyexecutor()
@@ -55,8 +64,8 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local Scriptcount = "197"
-local ScriptcountAnim = "64"
+local Scriptcount = "198"
+local ScriptcountAnim = "63"
 local movers = {}
 local HumanModCons = {}
 local noVoid = false
@@ -174,6 +183,22 @@ function getPlr(name)
 		end
 	end
 	return x
+end
+
+function slipperwalk()
+	for _, a in pairs(Character:GetDescendants()) do
+		if a:IsA("BasePart") then
+			a.CustomPhysicalProperties = PhysicalProperties.new(0.01, 0, 0)
+		end
+	end
+end
+
+function nonslipwalk()
+	for _, a in pairs(Character:GetDescendants()) do
+		if a:IsA("BasePart") then
+			a.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
+		end
+	end
 end
 
 function CheckFriends()
@@ -2148,20 +2173,6 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 	end)
 end})
 
-function slipperwalk()
-	for _, a in pairs(Character:GetDescendants()) do
-		if a:IsA("BasePart") then
-			a.CustomPhysicalProperties = PhysicalProperties.new(0.01, 0, 0)
-		end
-	end
-end
-function nonslipwalk()
-	for _, a in pairs(Character:GetDescendants()) do
-		if a:IsA("BasePart") then
-			a.CustomPhysicalProperties = PhysicalProperties.new(1, 0, 0)
-		end
-	end
-end
 Toggleslider = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
 	icewalker = Value
 	if icewalker then
@@ -3560,6 +3571,145 @@ Inputspinspeed = Misc:CreateInput({SectionParent=Sectionspin,Name="Spin Speed",P
 	spinSpeed = Text
 end})
 
+Sectioncarp = Misc:CreateSection("FE LocalPlayer Related | Car", false, false, 10709789810)
+Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="Car Script But Remade & Better"}, Sectioncarp)
+
+Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",Interact="Click",Callback=function()
+	SliderCarspeed:Set(16)
+end})
+
+local ifCarEnabled = false
+local slipValue = 0.01
+ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(Value)
+	carTog = Value
+	if carTog then
+		ifCarEnabled = true
+		for _, a in pairs(Character:GetDescendants()) do
+			if a:IsA("BasePart") then
+				a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+			end
+		end
+		Caranim = Instance.new("Animation")
+		Caranim.AnimationId = "rbxassetid://129342287"
+		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+		Carpl:Play()
+		Carpl:AdjustSpeed(0)
+	else
+		nonslipwalk()
+		Carpl:Stop()
+		Caranim:Destroy()
+		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+	end
+	speaker.CharacterAdded:Connect(function(char)
+		Character = char
+		if carTog then
+			ifCarEnabled = true
+			for _, a in pairs(Character:GetDescendants()) do
+				if a:IsA("BasePart") then
+					a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+				end
+			end
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://129342287"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play()
+			Carpl:AdjustSpeed(0)
+		else
+			nonslipwalk()
+			Carpl:Stop()
+			Caranim:Destroy()
+			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		end
+	end)
+end})
+
+CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(KeyBind)
+	carkb = KeyBind
+	if carkb and not isTyping then
+		ifCarEnabled = true
+		for _, a in pairs(Character:GetDescendants()) do
+			if a:IsA("BasePart") then
+				a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+			end
+		end
+		Caranim = Instance.new("Animation")
+		Caranim.AnimationId = "rbxassetid://129342287"
+		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+		Carpl:Play()
+		Carpl:AdjustSpeed(0)
+	else
+		nonslipwalk()
+		Carpl:Stop()
+		Caranim:Destroy()
+		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+	end
+	speaker.CharacterAdded:Connect(function(char)
+		Character = char
+		if carTog then
+			ifCarEnabled = true
+			for _, a in pairs(Character:GetDescendants()) do
+				if a:IsA("BasePart") then
+					a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+				end
+			end
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://129342287"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play()
+			Carpl:AdjustSpeed(0)
+		else
+			nonslipwalk()
+			Carpl:Stop()
+			Caranim:Destroy()
+			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		end
+	end)
+end})
+
+Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		CarKeybind:Set("Set Keybind")
+	end)
+end})
+
+spacing = Misc:CreateSpacing(Sectioncarp,2)
+SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Slipperiness",Range={0.01,0.10},Increment=0.01,Suffix="Slipperines",CurrentValue=slipValue,Callback=function(Value)
+	pcall(function()
+		if ifCarEnabled then
+		slipValue = Value		
+		else
+			return
+		end
+	end)
+end})
+
+Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Slipperiness",OnEnter=true,PlaceholderText=slipValue,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	if ifCarEnabled then
+	slipValue = Text
+	else
+		return
+	end
+end})
+SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Speed",Range={0,100},Increment=1,Suffix="Car Speed",CurrentValue=16,Callback=function(Value)
+	pcall(function()
+		if ifCarEnabled then
+		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value		
+		else
+			return
+		end
+	end)
+end})
+
+Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnter=true,PlaceholderText=16,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	if ifCarEnabled then
+	speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text
+	else
+		return
+	end
+end})
+
 Sectionwalkspeeder = Misc:CreateSection("FE LocalPlayer Related | CFrame Walk Speed", false, false, 1114393432)
 Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="This Function Should Be Able To Bypass Anti-Cheat's And Such\nBasically Walk Fast While Bypassing the Anti-Cheat"}, Sectionwalkspeeder)
 Buttonr = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset Char Values",Interact="Click",Callback=function()
@@ -3582,10 +3732,7 @@ end})
 
 CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionwalkspeeder,Callback=function(KeyBind)
 	cfwalk = KeyBind
-	if cfwalk then
-		if isTyping then
-			return
-		end
+	if cfwalk and not isTyping then
 		CFramewalkloopKey = RunService.RenderStepped:Connect(function()
 			getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
 		end)
@@ -7321,17 +7468,6 @@ Buttonrewinb = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name
 	end)
 end})
 
-Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Car R6",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/MonkoTubeYT/carscript/master/!carscript.lua", true))()
-		sfxSound("true")
-		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
-	else
-		sfxSound("false")
-		Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-	end
-end})
-
 Button = Animations:CreateButton({SectionParent=Sectionotherfeanimssc,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
 	if not r15(speaker) then
 		loadstring(game:HttpGet("https://pastebin.com/raw/R5YR13pG", true))()
@@ -7587,7 +7723,7 @@ end
 CRD = Window:CreateTab("Credits &\nChangelog", 90636118698642)
 Sectioncredit = CRD:CreateSection("Credits", false, false, 7743876054)
 Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit)
-Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Shlex (For The ESP Called Sense & For Fly)\nEdgeIY\nPigeon\nPeople From V3rmillion (Especially Those Forums/Threads)\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit)
+Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Shlex (For The ESP Called Sense & For Fly)\nEdgeIY\nPigeon\nPeople From V3rmillion (Especially Those Forums/Threads)\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nRazAPI a.k.a Sk8r (For Loving The Script)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit)
 Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612)
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Fixed Keybinds\n> Added A Dropdown Instead Of Toggles In Anim Tab\n> Made Some Improvements"}, Sectionchangelog)
 Sectionpointofhub = CRD:CreateSection("Point", false, false, 8997386648)
