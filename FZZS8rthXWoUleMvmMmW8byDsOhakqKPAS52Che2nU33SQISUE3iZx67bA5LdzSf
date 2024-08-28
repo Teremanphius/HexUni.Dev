@@ -3531,6 +3531,7 @@ Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="Car Scrip
 
 Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",Interact="Click",Callback=function()
 	SliderCarspeed:Set(16)
+	SliderCarslip:Set(0.01)
 end})
 
 local ifCarEnabled = false
@@ -3634,10 +3635,10 @@ Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",C
 end})
 
 spacing = Misc:CreateSpacing(Sectioncarp,2)
-SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Slipperiness",Range={0.01,0.08},Increment=0.01,Suffix="Slipperines",CurrentValue=slipValue,Callback=function(Value)
+SliderCarslip = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Slipperiness",Range={0.01,0.08},Increment=0.01,Suffix="Slipperines",CurrentValue=slipValue,Callback=function(Value)
 	pcall(function()
 		if ifCarEnabled then
-		slipValue = Value		
+			slipValue = Value		
 		else
 			return
 		end
@@ -3646,7 +3647,7 @@ end})
 
 Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Slipperiness",OnEnter=true,PlaceholderText=slipValue,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	if ifCarEnabled then
-	slipValue = Text
+		slipValue = Text
 	else
 		return
 	end
@@ -3654,7 +3655,7 @@ end})
 SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Speed",Range={0,100},Increment=1,Suffix="Car Speed",CurrentValue=16,Callback=function(Value)
 	pcall(function()
 		if ifCarEnabled then
-		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value		
+			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value		
 		else
 			return
 		end
@@ -3663,7 +3664,7 @@ end})
 
 Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnter=true,PlaceholderText=16,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	if ifCarEnabled then
-	speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text
+		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text
 	else
 		return
 	end
