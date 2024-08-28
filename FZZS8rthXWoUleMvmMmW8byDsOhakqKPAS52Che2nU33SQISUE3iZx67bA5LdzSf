@@ -333,7 +333,7 @@ RunService.Heartbeat:Connect(function()
 			bodyVelocity.Parent = primaryPart
 			TweenService:Create(bodyGyro, tweenInfo, {CFrame=rotation}):Play()
 			bodyGyro.Parent = primaryPart
-		else
+		elseif not flying and not isTyping then
 			bodyVelocity.Parent = nil
 			bodyGyro.Parent = nil
 		end
@@ -700,10 +700,7 @@ end
 
 Paragraph = Misc:CreateParagraph({Title="Press To TP Info",Content="Whenever You Press the Key It TP's To The Mouse Position."}, Sectiontpscritps)
 PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		clicktpFunc()
 	end
 end})
@@ -868,10 +865,7 @@ end})
 
 CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	cffffly = KeyBind
-	if cffffly then
-		if isTyping then
-			return
-		end
+	if cffffly and not isTyping then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 		local Head = speaker.Character:WaitForChild("Head")
 		Head.Anchored = true
@@ -889,7 +883,7 @@ CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind=
 			objectSpaceVelocity = CFrame.new(cameraPosition, Vector3.new(headPosition.X, cameraPosition.Y, headPosition.Z)):VectorToObjectSpace(moveDirection)
 			Head.CFrame = CFrame.new(headPosition) * (cameraCFrame - cameraPosition) * CFrame.new(objectSpaceVelocity)
 		end)
-	else
+	elseif not cffffly and not isTyping then
 		pcall(function()
 			CFloop:Disconnect()
 			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
@@ -1076,16 +1070,13 @@ end})
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind
-	if freeyourselfs then
-		if isTyping then
-			return
-		end
+	if freeyourselfs and not isTyping then
 		for _, v in pairs(speaker.Character:GetChildren()) do
 			if v:IsA("BasePart") then
 				v.Anchored = true
 			end
 		end
-	else
+	elseif not freeyourselfs and not isTyping then
 		for _, v in pairs(speaker.Character:GetChildren()) do
 			if v:IsA("BasePart") then
 				v.Anchored = false
@@ -1106,13 +1097,10 @@ spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 sprintspeed = 32
 SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	sprints = KeyBind
-	if sprints then
-		if isTyping then
-			return
-		end
+	if sprints and not isTyping then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=sprintspeed}):Play()
 		TweenService:Create(Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=95}):Play()
-	else
+	elseif not sprints and not isTyping then
 		TweenService:Create(speaker.Character:FindFirstChildOfClass("Humanoid"), TweenInfo.new(0.2), {WalkSpeed=16}):Play()
 		TweenService:Create(Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=70}):Play()
 	end
@@ -1143,10 +1131,7 @@ end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 			hum = speaker.Character:FindFirstChildOfClass("Humanoid")
 			root = getRoot(speaker.Character)
@@ -1170,10 +1155,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Sit",Inte
 end})
 
 sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true
 	end
 end})
@@ -1189,12 +1171,9 @@ end})
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	Stunff = KeyBind
-	if Stunff then
-		if isTyping then
-			return
-		end
+	if Stunff and not isTyping then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-	else
+	elseif not Stunff and not isTyping then
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 	end
 end})
@@ -1232,10 +1211,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode"
 end})
 
 godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		Cam = workspace.CurrentCamera
 		Pos, Char = Cam.CFrame, speaker.Character
 		Human = Char and Character.FindFirstChildWhichIsA(Char, "Humanoid")
@@ -1268,10 +1244,7 @@ end})
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	zerogravsit = KeyBind
-	if zerogravsit then
-		if isTyping then
-			return
-		end
+	if zerogravsit and not isTyping then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
 			hum = speaker.Character:FindFirstChildOfClass("Humanoid")
 			root = getRoot(speaker.Character)
@@ -1279,7 +1252,7 @@ zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentK
 			root.Velocity = root.CFrame.LookVector * 17
 			speaker.Character.Humanoid.Sit = true
 		end
-	else
+	elseif not zerogravsit and not isTyping then
 		speaker.Character.Humanoid.Sit = false
 		game.Workspace.Gravity = oldgrav
 	end
@@ -1317,10 +1290,7 @@ end})
 
 NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	noclipff = KeyBind
-	if noclipff then
-		if isTyping then
-			return
-		end
+	if noclipff and not isTyping then
 		pcall(function()
 			Noclipping = RunService.Stepped:Connect(function()
 				if speaker.Character ~= nil then
@@ -1332,7 +1302,7 @@ NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Ke
 				end
 			end)
 		end)
-	else
+	elseif not noclipff and not isTyping then
 		pcall(function()
 			if Noclipping then
 				Noclipping:Disconnect()
@@ -1377,10 +1347,7 @@ end})
 
 vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	vehnoclipff = KeyBind
-	if vehnoclipff then
-		if isTyping then
-			return
-		end
+	if vehnoclipff and not isTyping then
 		local Car = speaker.Character.Humanoid.SeatPart
 		for i, v in pairs(Car.Parent.Parent:GetDescendants()) do
 			if v:IsA("BasePart") then
@@ -1390,7 +1357,7 @@ vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeyb
 				end
 			end
 		end
-	else
+	elseif not vehnoclipff and not isTyping then
 		local Car = speaker.Character.Humanoid.SeatPart
 		for i, v in pairs(carParts) do
 			if v:IsA("BasePart") then
@@ -1552,10 +1519,7 @@ end})
 
 InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
 	invisff = KeyBind
-	if invisff then
-		if isTyping then
-			return
-		end
+	if invisff and not isTyping then
 		if invisRunning then
 			return
 		end
@@ -1685,7 +1649,7 @@ InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set 
 			end)
 			invisRunning = false
 		end
-	else
+	elseif not invisff and not isTyping then
 		TurnVisible()
 	end
 end})
@@ -3379,10 +3343,7 @@ function speakerFlip(Setting)
 	humanoid.Sit = false
 end
 BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		speakerFlip("BackFlip")
 	end
 end})
@@ -3396,10 +3357,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFl
 end})
 
 SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		speakerFlip("SideFlip")
 	end
 end})
@@ -3413,10 +3371,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFl
 end})
 
 FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionflipsnthings,Callback=function(KeyBind)
-	if KeyBind then
-		if isTyping then
-			return
-		end
+	if KeyBind and not isTyping then
 		speakerFlip("FrontFlip")
 	end
 end})
@@ -3627,17 +3582,19 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 	carkb = KeyBind
 	if carkb and not isTyping then
 		ifCarEnabled = true
-		for _, a in pairs(Character:GetDescendants()) do
-			if a:IsA("BasePart") then
-				a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+		task.spawn(function()
+			for _, a in pairs(Character:GetDescendants()) do
+				if a:IsA("BasePart") then
+					a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+				end
 			end
-		end
+		end)
 		Caranim = Instance.new("Animation")
 		Caranim.AnimationId = "rbxassetid://129342287"
 		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 		Carpl:Play()
 		Carpl:AdjustSpeed(0)
-	else
+	elseif not carkb and not isTyping then
 		nonslipwalk()
 		Carpl:Stop()
 		Caranim:Destroy()
@@ -3647,17 +3604,19 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 		Character = char
 		if carTog then
 			ifCarEnabled = true
-			for _, a in pairs(Character:GetDescendants()) do
-				if a:IsA("BasePart") then
-					a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+			task.spawn(function()
+				for _, a in pairs(Character:GetDescendants()) do
+					if a:IsA("BasePart") then
+						a.CustomPhysicalProperties = PhysicalProperties.new(slipValue, 0, 0)
+					end
 				end
-			end
+			end)
 			Caranim = Instance.new("Animation")
 			Caranim.AnimationId = "rbxassetid://129342287"
 			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 			Carpl:Play()
 			Carpl:AdjustSpeed(0)
-		else
+		elseif not carkb and not isTyping then
 			nonslipwalk()
 			Carpl:Stop()
 			Caranim:Destroy()
@@ -3675,7 +3634,7 @@ Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",C
 end})
 
 spacing = Misc:CreateSpacing(Sectioncarp,2)
-SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Slipperiness",Range={0.01,0.10},Increment=0.01,Suffix="Slipperines",CurrentValue=slipValue,Callback=function(Value)
+SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Slipperiness",Range={0.01,0.08},Increment=0.01,Suffix="Slipperines",CurrentValue=slipValue,Callback=function(Value)
 	pcall(function()
 		if ifCarEnabled then
 		slipValue = Value		
@@ -3736,7 +3695,7 @@ CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybin
 		CFramewalkloopKey = RunService.RenderStepped:Connect(function()
 			getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
 		end)
-	else
+	elseif not cfwalk and not isTyping then
 		CFramewalkloopKey:Disconnect()
 	end
 end})
