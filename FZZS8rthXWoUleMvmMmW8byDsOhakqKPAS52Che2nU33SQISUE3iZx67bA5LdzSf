@@ -64,7 +64,7 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local Scriptcount = "198"
+local Scriptcount = "199"
 local ScriptcountAnim = "63"
 local movers = {}
 local HumanModCons = {}
@@ -5540,10 +5540,17 @@ end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="UNC Enviroment Test",Interact="Click",Callback=function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/unified-naming-convention/NamingStandard/main/UNCCheckEnv.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/external-naming-convention/RobloxNamingStandard/main/RENCCheckEnv.lua"))()
 	sfxSound("true")
 	Notif("Check Console!", "Press F9 To Open Up The Developer Console And See Your UNC Level!", 3, "check")
 end})
+
+Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Check If Fake UNC",Interact="Click",Callback=function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/HummingBird8/HummingRn/main/sUNCTestGET"))()
+	sfxSound("true")
+	Notif("Check Console!", "Press F9 To Open Up The Developer Console And See Your UNC Level!", 3, "check")
+end})
+
 
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Add More UNC",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-MoreUNC-13110"))()
@@ -6018,13 +6025,10 @@ end})
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		nccamsim = Value
-		if nccamsim then
-			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 1
+		function test(st)
+			if Value == true then return 1 else return 0 end
 		end
-		if not nccamsim then
-			game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = 0
-		end
+		game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = test(Value)
 	end)
 end})
 
@@ -7454,7 +7458,7 @@ Paragraph = DH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guara
 Sectionjointhegamedh = DH:CreateSection("Join The Game!", false, dhclosedsec, 14754300297)
 Paragraph = DH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegamedh)
 JoinDHButton = DH:CreateButton({SectionParent=Sectionjointhegamedh,Name="Join DaHood",Interact="Click",Callback=function()
-	game:GetService("TeleportService"):Teleport(2788229376, LocalPlayer)
+	game:GetService("TeleportService"):Teleport(2788229376, speaker)
 end})
 
 Sectiondhhubs = DH:CreateSection("Hub's", false, false, 10709759610)
@@ -7549,7 +7553,7 @@ Paragraph = TOH:CreateParagraph({Title="Note",Content="Some Scripts Are Not Guar
 Sectionjointhegametoh = TOH:CreateSection("Join The Game!", false, tohclosedsec, 14754300297)
 Paragraph = TOH:CreateParagraph({Title="Important Info",Content="Click The Button To Join The Game To See The Button's!"}, Sectionjointhegametoh)
 JoinTOHButton = TOH:CreateButton({SectionParent=Sectionjointhegametoh,Name="Join Tower Of Hell",Interact="Click",Callback=function()
-	game:GetService("TeleportService"):Teleport(1962086868, LocalPlayer)
+	game:GetService("TeleportService"):Teleport(1962086868, speaker)
 end})
 
 if isPlayerInValidGameTOH then
