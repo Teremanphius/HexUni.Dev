@@ -431,14 +431,13 @@ Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop 
 				v.CanBeDropped = true
 			end
 			speaker.Character:FindFirstChildOfClass("Tool").CanBeDropped = true
-			if not enabledropgears then
-				noVoid = true
-				speaker.Character.ChildAdded:Connect(function(rg)
-					if (rg:IsA("Tool") and (noVoid == true)) then
-						rg:Destroy()
-					end
-				end)
-			end
+		else
+			noVoid = true
+			speaker.Character.ChildAdded:Connect(function(rg)
+				if (rg:IsA("Tool") and (noVoid == true)) then
+					rg:Destroy()
+				end
+			end)
 		end
 	end)
 end})
@@ -458,8 +457,7 @@ Toggleantiflinng = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Na
 				end
 			end
 		end)
-	end
-	if not antiflingVal then
+	else
 		if AntiFlinging then
 			AntiFlinging:Disconnect()
 		end
@@ -564,8 +562,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti V
 					end)
 				end
 			end
-		end
-		if not antivoidder then
+		else
 			noVoid = false
 		end
 	end)
@@ -580,8 +577,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 				speaker.Character.Humanoid.Sit = false
 			end
 		end)
-	end
-	if not anitisitter then
+	else
 		AntiSitLoop:Disconnect()
 	end
 end})
@@ -595,8 +591,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 				speaker.Character.Humanoid.PlatformStand = false
 			end
 		end)
-	end
-	if not antistun then
+	else
 		AntiStunLoop:Disconnect()
 	end
 end})
@@ -640,18 +635,17 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 			for _, v in pairs(getconnections(UserInputService.WindowFocusReleased)) do
 				v:Disable()
 			end
-			if not antiwindowafk then
-				if not getconnections then
-					sfxSound("false")
-					Notif("Incompatible Exploit!", "Missing Function('s) : getconnections!", 3, "x")
-					return
-				end
-				for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
-					v:Enable()
-				end
-				for _, v in pairs(getconnections(UserInputService.WindowFocusReleased)) do
-					v:Enable()
-				end
+		else
+			if not getconnections then
+				sfxSound("false")
+				Notif("Incompatible Exploit!", "Missing Function('s) : getconnections!", 3, "x")
+				return
+			end
+			for _, v in pairs(getconnections(UserInputService.WindowFocused)) do
+				v:Enable()
+			end
+			for _, v in pairs(getconnections(UserInputService.WindowFocusReleased)) do
+				v:Enable()
 			end
 		end
 	end)
@@ -666,8 +660,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 				VirtualUser:CaptureController()
 				VirtualUser:ClickButton2(Vector2.new())
 			end)
-		end
-		if not antiafkidle then
+		else
 			disableidle:Disconnect()
 		end
 	end)
@@ -773,11 +766,6 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 end})
 
 Sectionreset = Misc:CreateSection("FE LocalPlayer Related | Reset", false, true, 9134761478)
-Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Enable Reset Button",Interact="Click",Callback=function()
-	StarterGui:SetCore("ResetButtonCallback", true)
-	sfxSound("true")
-	Notif("Reset Button Enabled!", "Reset Button Is Now Available In The Esc Menu!", 3, "check")
-end})
 
 Button = Misc:CreateButton({SectionParent=Sectionreset,Name="Normal Character Reset",Interact="Click",Callback=function()
 	speaker.Character.Humanoid.Health = 0
@@ -821,8 +809,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 				local mousePosZ = JMouse.Hit.Z
 				bpNew.Position = Vector3.new(mousePosX, mousePosY, mousePosZ)
 			end
-		end
-		if not grapplier then
+		else
 			moveToMouse = false
 			getRoot(speaker.Character).BodyPosition:Destroy()
 		end
@@ -1280,8 +1267,7 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 				end
 			end
 		end)
-	end
-	if not nnoclipping then
+	else
 		if Noclipping then
 			Noclipping:Disconnect()
 		end
@@ -1333,8 +1319,7 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 					end
 				end
 			end
-		end
-		if not ToggleVehiclenoclipnnoclipping then
+		else
 			local Car = speaker.Character.Humanoid.SeatPart
 			for i, v in pairs(carParts) do
 				if v:IsA("BasePart") then
@@ -1510,8 +1495,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 				end)
 				invisRunning = false
 			end
-		end
-		if not invisibleeee then
+		else
 			TurnVisible()
 		end
 	end)
@@ -1854,8 +1838,7 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 				setupCharacter()
 			end)
 		end
-	end
-	if not upsidedown then
+	else
 		if r15(speaker) then 
 			R15Upsidegg:Disconnect()
 		else
@@ -1885,8 +1868,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Zero Grav Trip W/ 
 			root.Velocity = root.CFrame.LookVector * 17
 			speaker.Character.Humanoid.Sit = true
 		end
-	end
-	if not zerograv then
+	else
 		speaker.Character.Humanoid.Sit = false
 		game.Workspace.Gravity = oldgrav
 	end
@@ -1917,8 +1899,7 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 					infJumpDebounce = false
 				end
 			end)
-		end
-		if not infjumpp2 then
+		else
 			infJump:Disconnect()
 		end
 		infJumpDebounce = false
@@ -1945,8 +1926,7 @@ Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",C
 				end
 				task.wait(0.1)
 			end
-		end
-		if not Fakelag then
+		else
 			fakelagging = false
 			for i, v in pairs(speaker.Character:GetChildren()) do
 				if v:IsA("BasePart") then
@@ -2081,8 +2061,7 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 				setupCharacter()
 			end)
 		end
-	end
-	if not Crawlingornot then
+	else
 		pcall(function()
 			if r15(speaker) then
 				R15crawlg:Disconnect()
@@ -2129,8 +2108,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 					Togglestiwalk:Set(false)
 				end)
 			end)
-		end
-		if not sitwalkerr then
+		else
 			ifuserdiedaq:Disconnect()
 			charresettopos()
 		end
@@ -2141,8 +2119,7 @@ Toggleslider = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",Curre
 	icewalker = Value
 	if icewalker then
 		slipperwalk()
-	end
-	if not icewalker then
+	else
 		nonslipwalk()
 	end
 	speaker.CharacterAdded:Connect(function(char)
@@ -2182,8 +2159,7 @@ Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Ju
 				edgejump()
 				HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or RunService.RenderStepped:Connect(edgejump)
 			end)
-		end
-		if not edgerjumper then
+		else
 			HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or nil
 			HumanModCons.ejCA = (HumanModCons.ejCA and HumanModCons.ejCA:Disconnect() and false) or nil
 		end
@@ -2253,8 +2229,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 					FloatingFunc = RunService.Heartbeat:Connect(FloatPadLoop)
 				end)
 			end
-		end
-		if not floattt then
+		else
 			Floating = false
 			pchar = speaker.Character
 			Notif("Float Has Been Disabled!", "You Have Disabled Float!", 2, "x")
@@ -2283,8 +2258,7 @@ Togglestrengthen = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Strength
 					player.CustomPhysicalProperties = PhysicalProperties.new(999999, 0.3, 0.5)
 				end
 			end
-		end
-		if not strengchar then
+		else
 			for i, player in pairs(speaker.Character:GetChildren()) do
 				if (player.ClassName == "Part") then
 					player.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
@@ -2303,8 +2277,7 @@ Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Chara
 					player.CustomPhysicalProperties = PhysicalProperties.new(0, 0.3, 0.5)
 				end
 			end
-		end
-		if not weakenchar then
+		else
 			for i, player in pairs(speaker.Character:GetChildren()) do
 				if (player.ClassName == "Part") then
 					player.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
@@ -2336,8 +2309,7 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 				end
 				Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
 			end
-		end
-		if not swimmer then
+		else
 			if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
 				workspace.Gravity = oldgrav
 				swimming = false
@@ -2442,8 +2414,7 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 				BeyBladee.AngularVelocity = Vector3.new(0, beybaldespeedr, 0)
 			end
 		end)
-	end
-	if not beyblader then
+	else
 		pcall(function()
 			charresettopos()
 			if r15(speaker) then
@@ -2646,8 +2617,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 				Flip2()
 			end
 		end
-	end
-	if not flippa then
+	else
 		Flipping = false
 	end
 end})
@@ -2824,8 +2794,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 					Flip3()
 				end
 			end
-		end
-		if not doubleflippa then
+		else
 			doubleFlipping = false
 		end
 	end)
@@ -2940,8 +2909,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 					Flip()
 				end
 			end
-		end
-		if not cartwheeling then
+		else
 			cwFlipping = false
 		end
 	end)
@@ -3056,8 +3024,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 					Flip()
 				end
 			end
-		end
-		if not starrolling then
+		else
 			StarRoll = false
 		end
 	end)
@@ -3185,8 +3152,7 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 				Flip5()
 			end
 		end
-	end
-	if not seizure then
+	else
 		seizureFlipping = false
 	end
 end})
@@ -3307,8 +3273,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 				Flip()
 			end
 		end
-	end
-	if not barrelrolling then
+	else
 		BarrelRoll = false
 		Looproll = false
 	end
@@ -3439,8 +3404,7 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 			tc:Disconnect()
 			hamDied:Disconnect()
 		end)
-	end
-	if not hamsterballs then
+	else
 		pcall(function()
 			charresettopos()
 			tc:Disconnect()
@@ -3505,8 +3469,7 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",Current
 					Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
 				end
 			end)
-		end
-		if not spinner then
+		else
 			for i, v in pairs(getRoot(speaker.Character):GetChildren()) do
 				if (v.Name == "Spinning") then
 					v:Destroy()
@@ -3684,8 +3647,7 @@ Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CF
 			CFramewalkloop = RunService.RenderStepped:Connect(function()
 				getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
 			end)
-		end
-		if not cframewalk then
+		else
 			CFramewalkloop:Disconnect()
 		end
 end})
@@ -3721,110 +3683,6 @@ Inputwalkspeeder = Misc:CreateInput({SectionParent=Sectionwalkspeeder,Name="CFra
 end})
 
 Sectionlpsliderinputloops = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input Loop's", false, true, 10686489468)
-Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionlpsliderinputloops,Name="Reset Character Loop Values",Interact="Click",Callback=function()
-	pcall(function()
-		Sliderwalkloop:Set(16)
-		Sliderjumploop:Set(50)
-	end)
-end})
-
-walkspeedsped = 16
-Label = Misc:CreateLabel("Set A Value First Then Enable", Sectionlpsliderinputloops)
-Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		loopws = Value
-		if loopws then
-			walkspeedloop = RunService.Heartbeat:Connect(function()
-				if isNumber(walkspeedsped) then
-					local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
-					local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
-					local function WalkSpeedChange()
-						if (Char and Human) then
-							Human.WalkSpeed = walkspeedsped
-						end
-					end
-					WalkSpeedChange()
-					HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
-					HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
-						Char, Human = nChar, nChar:WaitForChild("Humanoid")
-						WalkSpeedChange()
-						HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
-					end)
-				end
-			end)
-		end
-		if not loopws then
-			walkspeedloop:Disconnect()
-			HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or nil
-			HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or nil
-		end
-	end)
-end})
-
-Sliderwalkloop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
-	pcall(function()
-		walkspeedsped = Value
-	end)
-end})
-
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	walkspeedsped = Text
-end})
-
-jpower = 50
-Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		loopjp = Value
-		if loopjp then
-			jumppowerloop = RunService.Heartbeat:Connect(function()
-				if isNumber(jpower) then
-					local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
-					local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
-					local function JumpPowerChange()
-						if (Char and Human) then
-							if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
-								speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = jpower
-							else
-								speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = jpower
-							end
-						end
-					end
-					JumpPowerChange()
-					HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(JumpPowerChange)
-					HumanModCons.jpCA = (HumanModCons.jpCA and HumanModCons.jpCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
-						Char, Human = nChar, nChar:WaitForChild("Humanoid")
-						JumpPowerChange()
-						HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(JumpPowerChange)
-					end)
-				end
-			end)
-		end
-		if not loopjp then
-			jumppowerloop:Disconnect()
-			local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
-			local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
-			HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or nil
-			HumanModCons.jpCA = (HumanModCons.jpCA and HumanModCons.jpCA:Disconnect() and false) or nil
-			if (Char and Human) then
-				if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
-					speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = 50
-				else
-					speaker.Character:FindFirstChildOfClass("Humanoid").JumpHeight = 7
-				end
-			end
-		end
-	end)
-end})
-
-Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,350},Increment=1,Suffix="Power | Height",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),Callback=function(Value)
-	pcall(function()
-		jpower = Value
-	end)
-end})
-
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	jpower = Text
-end})
 
 function getJumpValue()
 	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
@@ -3834,6 +3692,7 @@ function getJumpValue()
 		return math.floor(humanoid.JumpHeight)
 	end
 end
+
 function getJumpValue2()
 	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	if humanoid.UseJumpPower then
@@ -3842,6 +3701,7 @@ function getJumpValue2()
 		return "Jump Height"
 	end
 end
+
 function getJumpValue3()
 	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	if humanoid.UseJumpPower then
@@ -3850,6 +3710,110 @@ function getJumpValue3()
 		return 400
 	end
 end
+
+Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionlpsliderinputloops,Name="Reset Character Loop Values",Interact="Click",Callback=function()
+	pcall(function()
+		Sliderwalkloop:Set(16)
+		local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+		if humanoid.UseJumpPower then
+			Sliderjumploop:Set(50)
+		else
+			Sliderjumploop:Set(7)
+		end
+	end)
+end})
+
+walkspeedsped = 16
+jpower = getJumpValue()
+
+Label = Misc:CreateLabel("Set A Value First Then Enable", Sectionlpsliderinputloops)
+Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+        if Value then
+            walkspeedloop = RunService.Heartbeat:Connect(function()
+                local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
+                local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+                local function WalkSpeedChange()
+                    if Char and Human and isNumber(walkspeedsped) then
+                        Human.WalkSpeed = walkspeedsped
+                    end
+                end
+                WalkSpeedChange()
+                HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
+                HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
+                    Char, Human = nChar, nChar:WaitForChild("Humanoid")
+                    WalkSpeedChange()
+                    HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("WalkSpeed"):Connect(WalkSpeedChange)
+                 end)
+            end)
+        else
+            walkspeedloop:Disconnect()
+            HumanModCons.wsLoop = (HumanModCons.wsLoop and HumanModCons.wsLoop:Disconnect() and false) or nil
+            HumanModCons.wsCA = (HumanModCons.wsCA and HumanModCons.wsCA:Disconnect() and false) or nil
+        end
+    end)
+end})
+
+Sliderwalkloop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
+	pcall(function()
+		walkspeedsped = Value
+	end)
+end})
+
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",OnEnter=true,PlaceholderText=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	walkspeedsped = tonumber(Text)
+end})
+
+Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",CurrentValue=false,Callback=function(Value)
+	 pcall(function()
+        if Value then
+            jumppowerloop = RunService.Heartbeat:Connect(function()
+                local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
+                local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+                local function JumpPowerChange()
+                    if Char and Human and isNumber(jpower) then
+                        if Human.UseJumpPower then
+                            Human.JumpPower = jpower
+                        else
+                            Human.JumpHeight = jpower
+                        end
+                    end
+                end
+                JumpPowerChange()
+                HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(JumpPowerChange)
+                HumanModCons.jpCA = (HumanModCons.jpCA and HumanModCons.jpCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
+                    Char, Human = nChar, nChar:WaitForChild("Humanoid")
+                    JumpPowerChange()
+                    HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or Human:GetPropertyChangedSignal("JumpPower"):Connect(JumpPowerChange)
+                end)
+            end)
+        else
+            jumppowerloop:Disconnect()
+            local Char = speaker.Character or workspace:FindFirstChild(speaker.Name)
+            local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+            HumanModCons.jpLoop = (HumanModCons.jpLoop and HumanModCons.jpLoop:Disconnect() and false) or nil
+            HumanModCons.jpCA = (HumanModCons.jpCA and HumanModCons.jpCA:Disconnect() and false) or nil
+            if Char and Human then
+                if Human.UseJumpPower then
+                    Human.JumpPower = 50
+                else
+                    Human.JumpHeight = 7
+                end
+            end
+        end
+    end)
+end})
+
+Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
+	pcall(function()
+		jpower = Value
+	end)
+end})
+
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",OnEnter=true,PlaceholderText=getJumpValue(),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	jpower = tonumber(Text)
+end})
+
 if r15(speaker) then
 	keephipheightval = {higfd=speaker.Character.Humanoid.HipHeight}
 end
@@ -3895,7 +3859,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",N
 	end)
 end})
 
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value
@@ -3905,7 +3869,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 	end)
 end})
 
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Jump Height",NumbersOnly=true,OnEnter=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",NumbersOnly=true,OnEnter=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Text
@@ -5500,8 +5464,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Us
 		for _, p in pairs(speakers:GetPlayers()) do
 			clean(p)
 		end
-	end
-	if not showrealnamesstog then
+	else
 		xNaming:Disconnect()
 	end
 end})
@@ -5512,8 +5475,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Netw
 	if nonetworkclaimer then
 		DHSaved = workspace.FallenPartsDestroyHeight
 		workspace.FallenPartsDestroyHeight = math.huge - math.huge
-	end
-	if not nonetworkclaimer then
+	else
 		workspace.FallenPartsDestroyHeight = DHSaved
 	end
 end})
@@ -5527,8 +5489,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt
 				CoreGui.TopBar.FullScreenFrame.HurtOverlay.Visible = false
 			end
 		end)
-	end
-	if not nohurtov then
+	else
 		hurtOverlay = false
 	end
 end})
@@ -5581,6 +5542,13 @@ Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Kick Your
 end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
+
+Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Reset Button",Interact="Click",Callback=function()
+	StarterGui:SetCore("ResetButtonCallback", true)
+	sfxSound("true")
+	Notif("Reset Button Enabled!", "Reset Button Is Now Available In The Esc Menu!", 3, "check")
+end})
+
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
 	speaker.DevEnableMouseLock = true
 	sfxSound("true")
@@ -5602,8 +5570,7 @@ Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bu
 					msg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				end
 			end)
-		end
-		if not darkchatbubble then
+		else
 			_G.connections['darkbubbles']:Disconnect()
 			_G.connections['darkbubbles'] = nil
 		end
@@ -5679,8 +5646,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Nig
 		daytonight = Value
 		if daytonight then
 			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play()
-		end
-		if not daytonight then
+		else
 			TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=12}):Play()
 		end
 	end)
@@ -5708,8 +5674,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop"
 			todlooper = RunService.Heartbeat:Connect(function()
 				game.Lighting.ClockTime = todvalue
 			end)
-		end
-		if not todloop then
+		else
 			todlooper:Disconnect()
 		end
 	end)
@@ -5871,8 +5836,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 					light.Color = lightColorr
 				end
 			end)
-		end
-		if not lightroot then
+		else
 			lightinger = false
 			for i, v in pairs(speaker.Character:GetDescendants()) do
 				if (v.ClassName == "PointLight") then
@@ -5920,8 +5884,7 @@ Toggleremovefogga = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 				Lighting.FogEnd = 99999999999
 				task.wait()
 			end)
-		end
-		if not removefogga then
+		else
 			removefogg:Disconnect()
 			Lighting.FogEnd = origsettings.fe
 		end
@@ -5956,8 +5919,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="X-
 				transparent = true
 				x(transparent)
 			end)
-		end
-		if not xrayyer then
+		else
 			xrayingreyer = false
 			xraylooper:Disconnect()
 			transparent = false
@@ -5988,8 +5950,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 					Pxrts[#Pxrts + 1] = v
 				end
 			end
-		end
-		if not showinvislbewalls then
+		else
 			for i, v in pairs(Pxrts) do
 				v.Transparency = 1
 			end
@@ -6447,8 +6408,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Ma
 			maxzoomloop = RunService.Heartbeat:Connect(function()
 				speaker.CameraMaxZoomDistance = maxzoomvalue
 			end)
-		end
-		if not maxzoomloopvalue then
+		else
 			maxzoomloop:Disconnect()
 		end
 	end)
@@ -6472,8 +6432,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Mi
 			minzoomloop = RunService.Heartbeat:Connect(function()
 				speaker.CameraMinZoomDistance = minzoomvalue
 			end)
-		end
-		if not minzooms then
+		else
 			minzoomloop:Disconnect()
 		end
 	end)
@@ -6550,8 +6509,7 @@ Toggle = ESPTAB:CreateToggle({SectionParent=Sectionesp,Name="Main ESP",CurrentVa
 		espfunc = ESP
 		if espfunc then
 			Sense:Load()
-		end
-		if not espfunc then
+		else
 			Sense:Unload()
 		end
 	end)
@@ -7053,8 +7011,7 @@ Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play
 				Animplr:Destroy()
 				Toggleeanimplr:Set(false)
 			end)
-		end
-		if not animplrlr then
+		else
 			animpla:Stop()
 			Animplr:Destroy()
 			animplrDied:Disconnect()
@@ -7606,8 +7563,7 @@ tohttlockTogglfgsdfsdferemoa = TOH:CreateToggle({SectionParent=Sectionscriptstoh
 				Lighting.FogEnd = 99999999999
 				task.wait()
 			end)
-		end
-		if not removefogga then
+		else
 			removefogg:Disconnect()
 			Lighting.FogEnd = origsettings.fe
 		end
@@ -7875,7 +7831,7 @@ function CheckTimess()
 			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want To Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
 				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play()
 				NSUI:Notify({Title="One More Thing...",Content="Do You Want To Keep It At Night?",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
-					Timenightmodeloop = RunService.RenderStepped:Connect(function()
+					Timenightmodeloop = RunService.Heartbeat:Connect(function()
 						game.Lighting.ClockTime = 0 
 					end)
 				end},nottrue={Name="Nah",Callback=function()
