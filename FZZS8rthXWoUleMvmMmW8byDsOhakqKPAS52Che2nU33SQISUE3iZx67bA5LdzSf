@@ -131,14 +131,16 @@ function sfxSound(Setting)
     SoundNotif:Play()
 end
 
-function Notif(TitleStr, ContentStr, TimeDur, NotifType)
+function Notif(TitleStr, ContentStr, TimeDur, NotifType, Plr)
     local ImageID
     if NotifType == "x" then
         ImageID = 10747384394
     elseif NotifType == "check" then
         ImageID = 10709790644
-    else
-        ImageID = 10709782497
+    elseif NotifType == "HeadShot" then 
+        ImageID = NSUI:GetPlayerThumbnail(Plr.UserId, "HeadShot")
+	else
+		ImageID = 10709782497
     end
     NSUI:Notify({Title=TitleStr, Content=ContentStr, Duration=TimeDur, Image=ImageID})
 end
@@ -239,14 +241,15 @@ pcall(CheckFriends)
 
 function CheckTime()
 	local h = os.date("*t").hour
+
 	if ((h < 12) and (h > 4)) then
-		NSUI:Notify({Title=("Morning, " .. speaker.DisplayName),Content="It's starting to shine!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
+		Notif("Morning, " .. speaker.DisplayName, "Sun Is Rising!\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	elseif ((h >= 12) and (h < 20)) then
-		NSUI:Notify({Title=("After Noon, " .. speaker.DisplayName),Content="Remember to smile!\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
+		Notif("Afternoon, " .. speaker.DisplayName, "How Are Ya?\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	else
-		NSUI:Notify({Title=("Good Night, " .. speaker.DisplayName),Content="It's getting late...\nAnd welcome to HeXen Universal!",Duration=5,Image=NSUI:GetPlayerThumbnail(speaker.UserId, "HeadShot")})
+		Notif("Good Night, " .. speaker.DisplayName, "Have A Good Night!\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	end
 end
@@ -5388,22 +5391,28 @@ SectiontotalscrisMiscclient = Miscclient:CreateSection("Total Universal Script's
 Paragraph = Miscclient:CreateParagraph({Title="General Note",Content="Script's Here Are Only Client Sided In Which Means Only You Can See It"}, SectiontotalscrisMiscclient)
 Sectionmiscscripts = Miscclient:CreateSection("Miscellaneous (Client)", false, false, 10709759610)
 PJLNF = 1.3
-function Notifies()
-	pjadded = game.Players.ChildAdded:Connect(function(player)
-		DT = DateTime.fromUnixTimestamp(86400 * player.AccountAge)
-		Days = tonumber(DT:FormatUniversalTime("DD", "en-us"))
-		Months = tonumber(DT:FormatUniversalTime("MM", "en-us"))
-		Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970
-		NSUI:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has joined the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=NSUI:GetPlayerThumbnail(player.UserId, "HeadShot")})
-	end)
-	pjremoved = game.Players.ChildRemoved:Connect(function(player)
-		DT = DateTime.fromUnixTimestamp(86400 * player.AccountAge)
-		Days = tonumber(DT:FormatUniversalTime("DD", "en-us"))
-		Months = tonumber(DT:FormatUniversalTime("MM", "en-us"))
-		Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970
-		NSUI:Notify({Title=("" .. player.Name .. " | " .. player.DisplayName),Content=("Has Left the server\nAccount Age: " .. Days .. " Day " .. Months .. " Month " .. Years .. " Year" .. "" .. "\nAccountId: " .. player.UserId .. ""),Duration=PJLNF,Image=NSUI:GetPlayerThumbnail(player.UserId, "HeadShot")})
-	end)
+function NotifyPlayerEvent(player, event)
+    local DT = DateTime.fromUnixTimestamp(86400 * player.AccountAge)
+    local Days = tonumber(DT:FormatUniversalTime("DD", "en-us"))
+    local Months = tonumber(DT:FormatUniversalTime("MM", "en-us"))
+    local Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970
+
+    local content = ("Account Age: %d Day %d Month %d Year\nAccountId: %d"):format(Days, Months, Years, player.UserId)
+    local title = ("%s / %s"):format(player.Name, player.DisplayName)
+
+    Notif(title, ("%s the server\n%s"):format(event, content), PJLNF, "HeadShot", player)
 end
+
+function Notifies()
+    pjadded = game.Players.ChildAdded:Connect(function(player)
+        NotifyPlayerEvent(player, "Has joined")
+    end)
+
+    pjremoved = game.Players.ChildRemoved:Connect(function(player)
+        NotifyPlayerEvent(player, "Has left")
+    end)
+end
+
 Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Player Join/Leave Notifications",CurrentValue=false,Flag="playerjoinsleave",Callback=function(Value)
 	shared.Notify = Value
 	if shared.Notify then
