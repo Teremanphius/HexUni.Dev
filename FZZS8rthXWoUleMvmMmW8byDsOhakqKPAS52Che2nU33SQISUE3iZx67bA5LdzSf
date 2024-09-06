@@ -243,13 +243,13 @@ function CheckTime()
 	local h = os.date("*t").hour
 
 	if ((h < 12) and (h > 4)) then
-		Notif("Morning, " .. speaker.DisplayName, "Sun Is Rising!\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
+		Notif("Morning, " .. speaker.DisplayName, "Sun Is Rising!\nAnd Welcome To HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	elseif ((h >= 12) and (h < 20)) then
-		Notif("Afternoon, " .. speaker.DisplayName, "How Are Ya?\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
+		Notif("Afternoon, " .. speaker.DisplayName, "How Are Ya?\nAnd Welcome To HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	else
-		Notif("Good Night, " .. speaker.DisplayName, "Have A Good Night!\nAnd welcome to HeXen Universal!", 5, "HeadShot", speaker)
+		Notif("Good Night, " .. speaker.DisplayName, "Have A Good Night!\nAnd Welcome To HeXen Universal!", 5, "HeadShot", speaker)
 		sfxSound("time")
 	end
 end
