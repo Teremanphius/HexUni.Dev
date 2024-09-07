@@ -64,7 +64,7 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local Scriptcount = "199"
+local Scriptcount = "198"
 local ScriptcountAnim = "63"
 local movers = {}
 local HumanModCons = {}
@@ -259,7 +259,7 @@ local playerAddedConnectionfriend
 local function onPlayerAdded(Player)
 	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
 		pcall(function()
-			NSUI:Notify({Title=(Player.Name .. " Joined!"),Content=(Player.Name .. " (Your Friend) Has Joined The Server."),Duration=6,Image=NSUI:GetPlayerThumbnail(Player.UserId, "HeadShot")})
+			Notif(Player.Name .. " Joined!", "Your Friend " .. Player.Name .. " (" .. Player.DisplayName .. ") Has Joined Your Game!", 6, "HeadShot", Player)
 			sfxSound("friendjoin")
 		end)
 	end
@@ -312,23 +312,18 @@ RunService.Heartbeat:Connect(function()
 			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
 				velocity += camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
-			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+			elseif UserInputService:IsKeyDown(Enum.KeyCode.S) then
 				velocity -= camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(40), 0, 0)
-			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+			elseif UserInputService:IsKeyDown(Enum.KeyCode.D) then
 				velocity += camCFrame.RightVector
 				rotation *= CFrame.Angles(0, 0, math.rad(-40))
-			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+			elseif UserInputService:IsKeyDown(Enum.KeyCode.A) then
 				velocity -= camCFrame.RightVector
 				rotation *= CFrame.Angles(0, 0, math.rad(40))
-			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+			elseif UserInputService:IsKeyDown(Enum.KeyCode.Space) then
 				velocity += Vector3.yAxis
-			end
-			if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+			elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
 				velocity -= Vector3.yAxis
 			end
 			local tweenInfo = TweenInfo.new(0.5)
@@ -1868,15 +1863,6 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Zero Grav Trip W/ 
 	end
 end})
 
-Toggleinfjump1 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Hold Jump",CurrentValue=false,Callback=function(Value)
-	InfiniteJumpEnabled = Value
-	UserInputService.JumpRequest:connect(function()
-		if InfiniteJumpEnabled then
-			speaker.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
-		end
-	end)
-end})
-
 Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite Jump",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		infjumpp2 = Value
@@ -3370,19 +3356,14 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 		tc = RunService.RenderStepped:Connect(function(delta)
 			ball.CanCollide = true
 			humanoid.PlatformStand = true
-			if UserInputService:GetFocusedTextBox() then
-				return
-			end
+			if IsTyping then return end
 			if UserInputService:IsKeyDown("W") then
 				ball.RotVelocity -= (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
-			end
-			if UserInputService:IsKeyDown("A") then
+			elseif UserInputService:IsKeyDown("A") then
 				ball.RotVelocity -= (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
-			end
-			if UserInputService:IsKeyDown("S") then
+			elseif UserInputService:IsKeyDown("S") then
 				ball.RotVelocity += (Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER)
-			end
-			if UserInputService:IsKeyDown("D") then
+			elseif UserInputService:IsKeyDown("D") then
 				ball.RotVelocity += (Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER)
 			end
 		end)
@@ -3905,7 +3886,12 @@ local function initialUpdatePlayerList()
     gotoplayersList = {}
     for _, player in pairs(game.Players:GetPlayers()) do
         if player ~= speaker then
-            local playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+            local playerOption
+            if player.Name == player.DisplayName then
+                playerOption = player.Name
+            else
+                playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+            end
             table.insert(gotoplayersList, playerOption)
         end
     end
@@ -3915,7 +3901,12 @@ local function initialUpdatePlayerList()
 end
 
 local function addPlayerToDropdowns(player)
-    local playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+    local playerOption
+    if player.Name == player.DisplayName then
+        playerOption = player.Name
+    else
+        playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+    end
     table.insert(gotoplayersList, playerOption)
     local delayCounter = 0
     for _, dropdown in pairs(AlldropdownRefresh) do
@@ -3927,7 +3918,12 @@ local function addPlayerToDropdowns(player)
 end
 
 local function removePlayerFromDropdowns(player)
-    local playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+    local playerOption
+    if player.Name == player.DisplayName then
+        playerOption = player.Name
+    else
+        playerOption = player.Name .. " (" .. player.DisplayName .. ")"
+    end
     for i = #gotoplayersList, 1, -1 do
         if gotoplayersList[i] == playerOption then
             table.remove(gotoplayersList, i)
@@ -3959,6 +3955,7 @@ local function connectEvents()
 end
 connectEvents()
 initialUpdatePlayerList()
+
 tweenSpeedtp = 1
 spacing = Misc:CreateSpacing(Sectiontpscritpss,2)
 Paragraph = MiscPlayer:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritpss)
@@ -5398,7 +5395,13 @@ function NotifyPlayerEvent(player, event)
     local Years = tonumber(DT:FormatUniversalTime("YYYY", "en-us")) - 1970
 
     local content = ("Account Age: %d Day %d Month %d Year\nAccountId: %d"):format(Days, Months, Years, player.UserId)
-    local title = ("%s / %s"):format(player.Name, player.DisplayName)
+    
+    local title
+    if player.Name == player.DisplayName then
+        title = ("%s"):format(player.Name)
+    else
+        title = ("%s (%s)"):format(player.Name, player.DisplayName)
+    end
 
     Notif(title, ("%s the server\n%s"):format(event, content), PJLNF, "HeadShot", player)
 end
@@ -7660,7 +7663,7 @@ local totalSeconds = math.floor(workspace.DistributedGameTime)
 local sessionTime = formatSessionTime(totalSeconds)
 Paragraphc = CRD:CreateParagraph({Title = "Information",
     Content = string.format(
-        "Name: %s / %s\n" ..
+        "Name: %s (%s)\n" ..
         "UserId: %d\n" ..
         "Account Age | In Days:\n" ..
         "Day(s): %d \n" ..
