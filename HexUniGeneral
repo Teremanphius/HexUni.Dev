@@ -171,15 +171,15 @@ function breakvelocity()
 	end
 end
 
-function getPlr(name)
-	x = nil
-	for i, v in next, Players:GetPlayers() do
-		if string.find(v.Name:lower(), name:lower()) then
-			x = v
-			break
-		end
-	end
-	return x
+local function getPlr(name)
+  	local x = nil
+  		for i,v in next, game:GetService("Players"):GetPlayers() do
+    		if string.find(v.Name, name) then
+     			x = v
+     			break
+    		end
+  		end
+  return x
 end
 
 function slipperwalk(val)
@@ -686,29 +686,32 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Press to 
 end})
 
 local prstotptw = 0.5
-local function clicktpFunctw()
+local function TweenclicktpFunc()
 	pcall(function()
-        if JMouse.Target then
-            if (Humanoid and Humanoid.SeatPart) then
-                Humanoid.Sit = false
-                task.wait(0.1)
-            end  
-            local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1)
-            local rootPart = getRoot(Character)
-            local rootPartPosition = rootPart.Position
-            local hitPosition = JMouse.Hit.Position
-            local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) * CFrame.Angles(0, math.pi, 0)
-            local goalPosition = newCFrame.Position + Vector3.new(0, hipHeight or 4, 0)
-            local tweenInfo = TweenInfo.new(prstotptw,Enum.EasingStyle.Quad,Enum.EasingDirection.Out)
-            local tween = TweenService:Create(rootPart, tweenInfo, {Position = goalPosition})
-            tween:Play()
-        end
-    end)
+		if JMouse.Target then
+			if (Humanoid and Humanoid.SeatPart) then
+				Humanoid.Sit = false
+				task.wait(0.1)
+			end
+
+			local hipHeight = Humanoid and (Humanoid.HipHeight > 0) and (Humanoid.HipHeight + 1) or 4
+			local rootPart = getRoot(Character)
+			local rootPartPosition = rootPart.Position
+			local hitPosition = JMouse.Hit.Position
+			local newCFrame = CFrame.new(hitPosition, Vector3.new(rootPartPosition.X, hitPosition.Y, rootPartPosition.Z)) *
+			CFrame.Angles(0, math.pi, 0)
+			newCFrame = newCFrame + Vector3.new(0, hipHeight, 0)
+			local tweenInfo = TweenInfo.new(prstotptw, Enum.EasingStyle.Linear)
+			local goal = { CFrame = newCFrame }
+			local tween = TweenService:Create(rootPart, tweenInfo, goal)
+			tween:Play()
+		end
+	end)
 end
 
 TweenPressToTpKeybind = Misc:CreateKeybind({Name="Tween Press to TP Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectiontpscritps,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
-		clicktpFunctw()
+		TweenclicktpFunc()
 	end
 end})
 
@@ -720,13 +723,13 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Tween Pre
 	end)
 end})
 
-Slidertweenspeedtp = MiscPlayer:CreateSlider({SectionParent=Sectiontpscritpss,Name="Tween Press To TP Speed",Range={0,10},Increment=0.1,Suffix="Speed",CurrentValue=prstotptw,Callback=function(Value)
+Slidertweenspeedtp = Misc:CreateSlider({SectionParent=Sectiontpscritps,Name="Tween Press To TP Speed",Range={0,10},Increment=0.1,Suffix="Speed",CurrentValue=prstotptw,Callback=function(Value)
 	pcall(function()
 		prstotptw = Value
 	end)
 end})
 
-Input = MiscPlayer:CreateInput({SectionParent=Sectiontpscritpss,Name="Tween Press To TP Speed",OnEnter=true,PlaceholderText=prstotptw,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Press To TP Speed",OnEnter=true,PlaceholderText=prstotptw,NumbersOnly=false,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		prstotptw = Text
 	end)
@@ -3504,7 +3507,6 @@ Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="Car Scrip
 
 Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",Interact="Click",Callback=function()
 	SliderCarspeed:Set(16)
-	SliderCarslip:Set(0.01)
 end})
 
 local ifCarEnabled = false
