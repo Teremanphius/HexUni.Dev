@@ -6,12 +6,24 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.D
 ```
 ---
 ### Features :
-- Fly
-- 69 
-- Remade Car R6
-- Actual Alive Animation Packs
-- CartWheels & Flips & So on.
-- Etc.
+#### Main : 
+- Script Hubs
+  - Infinite Yield / Reborn
+  - CMD X
+  - Dex
+  - Sirius
+  - Nameless Admin Hub
+- Anti Related
+- Teleport Related
+- Flight Related
+- NoClip Related
+- Invisible Related
+- Misc & Fun stuff.
+- Walkspeed & Jump Height sliders
+#### Other :
+- Animation Related Stuff
+- Player Related (Bang, Piggyback, etc.)
+- Client Related (Change Time Of Day, Freecam, Change FOV, etc.) 
 ---
 ### Info :
 Yes, I did use code from other peoples hubs and such but thats due to the fact I wanted to make a all-in-one script of fun stuff, <strong>credits are listed</strong>. (Make an issue if i missed a credit and for you to be credited)
