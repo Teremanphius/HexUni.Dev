@@ -7727,11 +7727,6 @@ task.spawn(function()
 	end
 end)
 Sectioncopysc = CRD:CreateSection("Copy Script's", false, false, 10709799288)
-Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Discord Invite",Interact="Click",Callback=function()
-	toClipboard("https://discord.gg/PhEH8uh9pR")
-	sfxSound("true")
-	Notif("Copied!", "Copied To Clipboard!", 3, "check")
-end})
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy Your Username",Interact="Click",Callback=function()
 	toClipboard("" .. speaker.Name .. "")
