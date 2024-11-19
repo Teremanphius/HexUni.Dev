@@ -7636,8 +7636,9 @@ for _, v in pairs(tohttlock) do
 end
 CRD = Window:CreateTab("Credits &\nChangelog", 90636118698642)
 Sectioncredit = CRD:CreateSection("Credits", false, false, 7743876054)
-Paragraphim = CRD:CreateParagraph({Title="Important People",Content="Javolo\nTripleDomm\nJavolo's Brother\nSunken\nKooggy\nNihan\nValco"}, Sectioncredit)
-Paragraphim2 = CRD:CreateParagraph({Title="Other Important People",Content="Shlex (For The ESP Called Sense & For Fly)\nEdgeIY\nPigeon\nPeople From V3rmillion (Especially Those Forums/Threads)\nPaint (For Helping With The UI)\nMoe (For Meowing)\nAmokahFox (For Invisible)\nRazAPI a.k.a Sk8r (For Loving The Script)\nAnd You!\nUI: Array Field Library (Modified)"}, Sectioncredit)
+Paragraphim = CRD:CreateParagraph({Title = "Contributors", Content ="These are the people who directly contributed to the project, whether through code, assets, or major assistance:\n• Javolo - Main Owner\n• Javolo's Brother - Testing\n• TripleDomm - Co-Owner\n• Sunken - SoggyWare Creator\n• Kooggy - SoggyWare Contributor\n• Nihan - Ideas & General helping\n• Valco - SoggyWare Contributor" },Sectioncredit)
+Paragraphim2 = CRD:CreateParagraph({Title = "Acknowledgments", Content ="These individuals provided specific parts of code, inspiration, or minor contributions:\n• Shlex - For the ESP named Sense & for Fly\n• Paint - For helping with the UI\n• EdgeIY - For some parts of code & Their team\n• Pigeon - For some parts of code & Their team\n• AmokahFox - For Invisible\n• V3rmillion - Especially those forums/threads\n• _Real - For some parts of code & Their team" },Sectioncredit)
+Paragraphim3 = CRD:CreateParagraph({Title = "Special Thanks",Content = "These are people who contributed in unique ways, beyond code:\n• Moe - For meowing\n• RazAPI (Sk8r) - For loving the script\n• Sinister Sane - For being an important part\n• And You - For being awesome"}, Sectioncredit)
 Sectionchangelog = CRD:CreateSection("Changelog", false, false, 7743869612)
 Paragraphchangelog = CRD:CreateParagraph({Title="Changelog",Content="> Fixed Keybinds\n> Added A Dropdown Instead Of Toggles In Anim Tab\n> Made Some Improvements"}, Sectionchangelog)
 Sectionpointofhub = CRD:CreateSection("Point", false, false, 8997386648)
@@ -7645,6 +7646,7 @@ Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I Created This Hub To
 Button = CRD:CreateButton({SectionParent=Sectionpointofhub,Name="Destroy Hub UI",Interact="Click",Callback=function()
 	NSUI:Destroy()
 end})
+Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="Arrayfield (Modified)"}, Sectionpointofhub)
 
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962)
 local DTinfo = DateTime.fromUnixTimestamp(86400 * (speaker.AccountAge or 0))
