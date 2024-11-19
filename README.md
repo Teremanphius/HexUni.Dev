@@ -18,3 +18,5 @@ Yes, I did use code from other peoples hubs and such but thats due to the fact I
 And no this is not skidded because <strong>I'm willing to give credit</strong>.
 
 Furthermore I might not be upkeeping this hub so you know.
+
+List bugs in issues and also if you execute twice something may not work due to my ass coding.
