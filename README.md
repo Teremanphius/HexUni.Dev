@@ -23,7 +23,9 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.D
 #### Other :
 - Animation Related Stuff
 - Player Related (Bang, Piggyback, etc.)
-- Client Related (Change Time Of Day, Freecam, Change FOV, etc.) 
+- Client Related (Change Time Of Day, Freecam, Change FOV, etc.)
+#### UI :
+- [NSUI (Arrayfield Modified)](https://github.com/rrAsus/NSUI) 
 ---
 ### Info :
 Yes, I did use code from other peoples hubs and such but thats due to the fact I wanted to make a all-in-one script of fun stuff, <strong>credits are listed</strong>. (Make an issue if i missed a credit and for you to be credited)
