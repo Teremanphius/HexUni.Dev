@@ -7646,7 +7646,7 @@ Paragraphpoi = CRD:CreateParagraph({Title="Point",Content="I Created This Hub To
 Button = CRD:CreateButton({SectionParent=Sectionpointofhub,Name="Destroy Hub UI",Interact="Click",Callback=function()
 	NSUI:Destroy()
 end})
-Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="Arrayfield (Modified)"}, Sectionpointofhub)
+Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="NSUI (Arrayfield Modified)"}, Sectionpointofhub)
 
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962)
 local DTinfo = DateTime.fromUnixTimestamp(86400 * (speaker.AccountAge or 0))
