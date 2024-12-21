@@ -3887,7 +3887,7 @@ AlldropdownRefresh = {}
 gotoplayersList = {}
 AlldropdownRefresh.gotodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option or Option or Option
+		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
 		Character:PivotTo(foundPlr.Character:GetPivot())
 		sfxSound("true")
