@@ -7601,40 +7601,47 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 	end)
 end)
 
-function CheckTimess()
+function GNTC()
 	local currentTime = game.Lighting.ClockTime
 	local lowerBound = 6
 	local upperBound = 18
 	local h = os.date("*t").hour
-	if ((h < 12) and (h > 4)) then
-		return
-	elseif ((h >= 12) and (h < 20)) then
-		return
-	else
-		if ((currentTime >= lowerBound) and (currentTime <= upperBound)) then
-			task.wait(5)
-			NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want To Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
-				TweenService:Create(game.Lighting, TweenInfo.new(0.5), {ClockTime=0}):Play()
-				NSUI:Notify({Title="One More Thing...",Content="Do You Want To Keep It At Night?",Duration=10,Image=10709806631,Actions={yeatrue={Name="Yea, Sure!",Callback=function()
-					Timenightmodeloop = RunService.Heartbeat:Connect(function()
-						game.Lighting.ClockTime = 0 
-					end)
-				end},nottrue={Name="Nah",Callback=function()
+	local Timenightmodeloop
+	if ((currentTime >= lowerBound) and (currentTime <= upperBound)) then
+		task.wait(5)
+		NSUI:Notify({Title="And Also Since It's Night",Content="Do You Want To Change The Time Of Day To Night? (Make The Game Night Mode)",Duration=10,Image=10709806631,
+			Actions={
+				yeatrue={Name="Yea, Sure!",Callback=function()
+					TweenService:Create(game.Lighting, TweenInfo.new(0.5),{ClockTime=0}):Play()
+						NSUI:Notify({Title="One More Thing...",Content="Do You Want To Keep It At Night?",Duration=10,Image=10709806631,
+							Actions={
+								yeatrue={Name="Yea, Sure!",Callback=function()
+									Timenightmodeloop = RunService.Heartbeat:Connect(function()
+										game.Lighting.ClockTime = 0
+									end)
+								end},
+								nottrue={Name="Nah",Callback=function()
+									pcall(function()
+										if Timenightmodeloop then
+											Timenightmodeloop:Disconnect()
+										end
+									end)
+                                end},
+                            },
+						})
+					end},
+				nottrue={Name="Nah",Callback=function()
 					pcall(function()
-						Timenightmodeloop:Disconnect()
+						if Timenightmodeloop then
+							Timenightmodeloop:Disconnect()
+						end
 					end)
-					return
-				end}}})
-			end},nottrue={Name="Nah",Callback=function()
-				pcall(function()
-					Timenightmodeloop:Disconnect()
-				end)
-				return
-			end}}})
-		else
-			return
-		end
-		sfxSound("friendjoin")
+				end}
+			}
+		})
+	else
+		return
 	end
+	sfxSound("friendjoin")
 end
-CheckTimess()
+GNTC()
