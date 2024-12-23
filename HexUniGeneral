@@ -6483,6 +6483,22 @@ Toggle = ESPTAB:CreateToggle({SectionParent=Sectionesp,Name="Main ESP",CurrentVa
 	end)
 end})
 
+ESPPKeybind = ESPTAB:CreateKeybind({Name="Main ESP Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionesp,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		Sense:Load()
+	elseif not KeyBind and not isTyping then
+		Sense:Unload()
+	end
+end})
+
+Button = ESPTAB:CreateButton({SectionParent=Sectionesp,Name="Reset Main ESP Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		ESPPKeybind:Set("Set Keybind")
+	end)
+end})
+
 Sectionshared = ESPTAB:CreateSection("ESP Shared Settings", false, false, 10709759610)
 Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=13,Callback=function(Value)
 	Sense.sharedSettings.textSize = Value
