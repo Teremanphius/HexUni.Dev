@@ -7539,8 +7539,7 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
     end
     local danceIds = testdances[selectedPackanim]
 	if KeyBind and not isTyping then
-			ocal
-			animId
+			local animId
 			if selectedPackanim == "Random Dance" then
 				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
