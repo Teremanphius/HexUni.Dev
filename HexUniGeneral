@@ -1051,45 +1051,6 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Delete Ve
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
-function promptNewRig(speaker, rig)
-	local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
-	if humanoid then
-		local rigType = Enum.HumanoidRigType[rig]
-		if rigType then
-			local avatarEditorService = game:GetService("AvatarEditorService")
-			local success, result = pcall(function()
-				avatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, rigType)
-				return avatarEditorService.PromptSaveAvatarCompleted:Wait()
-			end)
-			
-			local rigName = rig == "R6" and "R6" or "R15"
-			if success then
-				if result == Enum.AvatarPromptResult.Success then
-					ResetToPos()
-					sfxSound("true")
-					Notif("Changed Rig (" .. rigName .. ")!", "Changed Character's Rig Type To " .. rigName .. "!", 3, "check")
-				else
-					sfxSound("false")
-					Notif("Change Failed!", "The rig change was unsuccessful.", 3, "x")
-				end
-			else
-				sfxSound("false")
-				Notif("Blocked Function!", "This Function Is Blocked By The Game!", 3, "x")
-			end
-		end
-	end
-end
-
-
-Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R6",Interact="Click",Callback=function()
-	promptNewRig(speaker, "R6")
-end})
-
-Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Change Rig Type to R15",Interact="Click",Callback=function()
-	promptNewRig(speaker, "R15")
-end})
-
-spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	freeyourselfs = KeyBind
 	if freeyourselfs and not isTyping then
@@ -1927,24 +1888,16 @@ pcall(function()
     if Fakelag then
         fakelagging = true
         local originalCFrame = speaker.Character.PrimaryPart.CFrame
-		Char = speaker.Character
-		Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
-		task.spawn(function()
-			while true do
-				for i, v in next, Hum:GetPlayingAnimationTracks() do
-					v:AdjustSpeed(1)
-				end
-			task.wait()
-			end
-		end)
         task.spawn(function()
                 while fakelagging do
                 local isFreezing = math.random() < 0.3
                 if isFreezing then
                     local freezeDuration = math.random(0.2, 0.7)
 					AnchorPlr(true)
+					speaker.Character.Animate.Disabled = true
                     task.wait(freezeDuration)
                     AnchorPlr(false)
+					speaker.Character.Animate.Disabled = false
                 else
                     local randomSpeedFactor = math.random(50, 100) / 100
                     speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16 * randomSpeedFactor
@@ -7002,6 +6955,45 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Copy Curre
 		end
 	end
 	copyAnimId(speaker)
+end})
+
+SectionRigChanger = Animations:CreateSection("FE LocalPlayer Related | Rig Changer", false, false, 10734920149)
+function promptNewRig(speaker, rig)
+	local humanoid = speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")
+	if humanoid then
+		local rigType = Enum.HumanoidRigType[rig]
+		if rigType then
+			local avatarEditorService = game:GetService("AvatarEditorService")
+			local success, result = pcall(function()
+				avatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, rigType)
+				return avatarEditorService.PromptSaveAvatarCompleted:Wait()
+			end)
+			
+			local rigName = rig == "R6" and "R6" or "R15"
+			if success then
+				if result == Enum.AvatarPromptResult.Success then
+					ResetToPos()
+					sfxSound("true")
+					Notif("Changed Rig (" .. rigName .. ")!", "Changed Character's Rig Type To " .. rigName .. "!", 3, "check")
+				else
+					sfxSound("false")
+					Notif("Change Failed!", "The rig change was unsuccessful.", 3, "x")
+				end
+			else
+				sfxSound("false")
+				Notif("Blocked Function!", "This Function Is Blocked By The Game!", 3, "x")
+			end
+		end
+	end
+end
+
+
+Button = Misc:CreateButton({SectionParent=SectionRigChanger,Name="Change Rig Type to R6",Interact="Click",Callback=function()
+	promptNewRig(speaker, "R6")
+end})
+
+Button = Misc:CreateButton({SectionParent=SectionRigChanger,Name="Change Rig Type to R15",Interact="Click",Callback=function()
+	promptNewRig(speaker, "R15")
 end})
 
 SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549)
