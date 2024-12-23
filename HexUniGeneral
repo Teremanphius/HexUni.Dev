@@ -319,21 +319,26 @@ RunService.Heartbeat:Connect(function()
 			local camCFrame = Camera.CFrame
 			local velocity = Vector3.zero
 			local rotation = camCFrame.Rotation
-			if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+			if UserInputService:IsKeyDown(Enum.KeyCode.W) and not isTyping then
 				velocity += camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(-40), 0, 0)
-			elseif UserInputService:IsKeyDown(Enum.KeyCode.S) then
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.S) and not isTyping then
 				velocity -= camCFrame.LookVector
 				rotation *= CFrame.Angles(math.rad(40), 0, 0)
-			elseif UserInputService:IsKeyDown(Enum.KeyCode.D) then
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.D) and not isTyping then
 				velocity += camCFrame.RightVector
 				rotation *= CFrame.Angles(0, 0, math.rad(-40))
-			elseif UserInputService:IsKeyDown(Enum.KeyCode.A) then
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.A) and not isTyping then
 				velocity -= camCFrame.RightVector
 				rotation *= CFrame.Angles(0, 0, math.rad(40))
-			elseif UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.Space) and not isTyping then
 				velocity += Vector3.yAxis
-			elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+			end
+			if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) and not isTyping then
 				velocity -= Vector3.yAxis
 			end
 			local tweenInfo = TweenInfo.new(0.5)
@@ -936,6 +941,7 @@ Inputcfspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="CFrame Fly S
 	CFspeed = Text
 end})
 
+local FlyingLoop
 spacing = Misc:CreateSpacing(Sectionflights,2)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -958,15 +964,14 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 end})
 
 fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind, chatting)
-	normalfly = KeyBind
-	if normalfly then
+	if KeyBind and not isTyping then
 		flying = true
 		FlyingLoop = RunService.Stepped:Connect(function()
 			pcall(function()
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 			end)
 		end)
-	else
+	elseif not KeyBind and not isTyping then
 		flying = false
 		FlyingLoop = cleanupConnection(FlyingLoop)
 		pcall(function()
@@ -980,6 +985,11 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
+		flying = false 
+		FlyingLoop = cleanupConnection(FlyingLoop)
+		pcall(function()
+			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+		end)
 	end)
 end})
 
@@ -1006,10 +1016,9 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",
 end})
 
 vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
-	normalvehiclefly = KeyBind
-	if normalvehiclefly then
+	if KeyBind and not isTyping then
 		flying = true
-	else
+	elseif not KeyBind and not isTyping then
 		flying = false
 	end
 end})
