@@ -7175,6 +7175,24 @@ Animations:CreateButton({SectionParent = Sectionfeemotes,Name = "Play Selected E
 	end
 end})
 
+PlayemoteKeybind = Animations:CreateKeybind({Name="Play Selected Emote Keybind",CurrentKeybind="Set Keybind",CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionfeemotes,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		if selectedEmote and emoteData[selectedEmote] then
+			PlayEmote(selectedEmote, emoteData[selectedEmote])
+		else
+			Notif("Error!", "Please Select A Valid Emote!", 3, "x")
+		end
+	end
+end})
+
+Button = Animations:CreateButton({SectionParent=Sectionfeemotes,Name="Reset Play Selected Emote Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		PlayemoteKeybind:Set("Set Keybind")
+	end)
+end})
+
 Sectionfeanimspacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's", false, false, 11932783331)
 local animationPacks = { Sneaky = { climb = "1132461372", fall = "1132469004", idle1 = "1132473842", idle2 = "1132477671", jump = "1132489853", run = "1132494274", swim = "1132500520", swimIdle = "1132506407", walk = "1132510133" }, Bold = { climb = "16738332169", fall = "16738333171", idle1 = "16738333868", idle2 = "16738334710", jump = "16738336650", run = "16738337225", swim = "16738339158", swimIdle = "16738339817", walk = "16738340646" }, Toy = { climb = "782843869", fall = "782846423", idle1 = "782841498", idle2 = "782845736", jump = "782847020", run = "782842708", swim = "782844582", swimIdle = "782845186", walk = "782843345" }, Pirate = { climb = "750779899", fall = "750780242", idle1 = "750781874", idle2 = "750782770", jump = "750782230", run = "750783738", swim = "750784579", swimIdle = "750785176", walk = "750785693" }, Knight = { climb = "658360781", fall = "657600338", idle1 = "657595757", idle2 = "657568135", jump = "658409194", run = "657564596", swim = "657560551", swimIdle = "657557095", walk = "657552124" }, Astronaut = { climb = "891609353", fall = "891617961", idle1 = "891621366", idle2 = "891633237", jump = "891627522", run = "891636393", swim = "891639666", swimIdle = "891663592", walk = "891636393" }, Vampire = { climb = "1083439238", fall = "1083443587", idle1 = "1083445855", idle2 = "1083450166", jump = "1083455352", run = "1083462077", swim = "1083464683", swimIdle = "1083467779", walk = "1083473930" }, Robot = { climb = "616086039", fall = "616087089", idle1 = "616088211", idle2 = "616089559", jump = "616090535", run = "616091570", swim = "616092998", swimIdle = "616094091", walk = "616095330" }, Levitation = { climb = "616003713", fall = "616005863", idle1 = "616006778", idle2 = "616008087", jump = "616008936", run = "616010382", swim = "616011509", swimIdle = "616012453", walk = "616013216" }, Bubbly = { climb = "909997997", fall = "910001910", idle1 = "910004836", idle2 = "910009958", jump = "910016857", run = "910025107", swim = "910028158", swimIdle = "910030921", walk = "910034870" }, Werewolf = { climb = "1083182000", fall = "1083189019", idle1 = "1083195517", idle2 = "1083214717", jump = "1083218792", run = "1083216690", swim = "1083222527", swimIdle = "1083225406", walk = "1083178339" }, Stylish = { climb = "616133594", fall = "616134815", idle1 = "616136790", idle2 = "616138447", jump = "616139451", run = "616140816", swim = "616143378", swimIdle = "616144772", walk = "616146177" }, Mage = { climb = "707826056", fall = "707829716", idle1 = "707742142", idle2 = "707855907", jump = "707853694", run = "707861613", swim = "707876443", swimIdle = "707894699", walk = "707897309" }, Cartoony = { climb = "742636889", fall = "742637151", idle1 = "742637544", idle2 = "742638445", jump = "742637942", run = "742638842", swim = "742639220", swimIdle = "742639812", walk = "742640026" }, Zombie = { climb = "616156119", fall = "616157476", idle1 = "616158929", idle2 = "616160636", jump = "616161997", run = "616163682", swim = "616165109", swimIdle = "616166655", walk = "616168032" }, Superhero = { climb = "616104706", fall = "616108001", idle1 = "616111295", idle2 = "616113536", jump = "616115533", run = "616117076", swim = "616119360", swimIdle = "616120861", walk = "616122287" }, Ninja = { climb = "656114359", fall = "656115606", idle1 = "656117400", idle2 = "656118341", jump = "656117878", run = "656118852", swim = "656119721", swimIdle = "656121397", walk = "656121766" }, Elder = { climb = "845392038", fall = "845396048", idle1 = "845397899", idle2 = "845400520", jump = "845398858", run = "845386501", swim = "845401742", swimIdle = "845403127", walk = "845403856" }, Oldschool = { climb = "5319816685", fall = "5319839762", idle1 = "5319828216", idle2 = "5319831086", jump = "5319841935", run = "5319844329", swim = "5319850266", swimIdle = "5319852613", walk = "5319847204" }, Adidas = { climb = "18537363391", fall = "18537367238", idle1 = "18537376492", idle2 = "18537371272", jump = "18537380791", run = "18537384940", swim = "18537389531", swimIdle = "18537387180", walk = "18537392113" },["No Boundries"] = { climb = "18747060903", fall = "18747062535", idle1 = "18747067405", idle2 = "18747063918", jump = "18747069148", run = "18747070484", swim = "18747073181", swimIdle = "18747071682", walk = "18747074203" }, Patrol = { climb = "1148811837", fall = "1148863382", idle1 = "1149612882", idle2 = "1150842221", jump = "1150944216", run = "1150967949", swim = "1151204998", swimIdle = "1151221899", walk = "1151231493" }, Popstar = { climb = "1213044953", fall = "1212900995", idle1 = "1212900985", idle2 = "1212954651", jump = "1212954642", run = "1212980348", swim = "1212852603", swimIdle = "1212998578", walk = "1212980338" }, Confident = { climb = "1069946257", fall = "1069973677", idle1 = "1069977950", idle2 = "1069987858", jump = "1069984524", run = "1070001516", swim = "1070009914", swimIdle = "1070012133", walk = "1070017263" }, Cowboy = { climb = "1014380606", fall = "1014384571", idle1 = "1014390418", idle2 = "1014398616", jump = "1014394726", run = "1014401683", swim = "1014406523", swimIdle = "1014411816", walk = "1014421541" }, NFL = { climb = "134630013742019", fall = "129773241321032", idle1 = "92080889861410", idle2 = "74451233229259", jump = "119846112151352", run = "117333533048078", swim = "132697394189921", swimIdle = "79090109939093", walk = "110358958299415" },["Wicked Popular"] = { climb = "131326830509784", fall = "121152442762481", idle1 = "118832222982049", idle2 = "76049494037641", jump = "104325245285198", run = "72301599441680", swim = "99384245425157", swimIdle = "113199415118199", walk = "92072849924640" } }
 
@@ -7291,7 +7309,7 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 		currentAnimationTrack:Play(0.1, 10, 1)
 		animationPlaying = true
 		speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			Toggleedance1:Set(false)
+			Toggleedance12:Set(false)
 		end)
 	elseif currentAnimationTrack then
 		currentAnimationTrack:Stop()
@@ -7299,6 +7317,34 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 		currentAnimationTrack = nil
 		animationPlaying = false
 	end
+end})
+
+PlayedanceKeybind = Animations:CreateKeybind({Name="Play Selected \"/e\" Anim Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionrblxclientanims,Callback=function(KeyBind)
+	if not selectedPackdance then
+		return
+	end
+	local danceIds = eedances[selectedPackdance]
+	if KeyBind and not isTyping then
+		local animId = (r15(speaker) and danceIds.R15) or danceIds.R6
+		currentAnimation = Instance.new("Animation")
+		currentAnimation.AnimationId = animId
+		currentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(currentAnimation)
+		currentAnimationTrack:Play(0.1, 10, 1)
+		animationPlaying = true
+	elseif not KeyBind and not isTyping and currentAnimationTrack then
+		currentAnimationTrack:Stop()
+		currentAnimationTrack:Destroy()
+		currentAnimationTrack = nil
+		animationPlaying = false
+	end
+end})
+
+Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Play Selected \"/e\" Anim Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		PlayedanceKeybind:Set("Set Keybind")
+	end)
 end})
 
 spacing = Animations:CreateSpacing(Sectionrblxclientanims,2)
@@ -7430,6 +7476,88 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
         end
         aanimationPlaying = false
     end
+end})
+
+PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionfeanims,Callback=function(KeyBind)
+	local loopConnection
+    if not selectedPackanim then
+        return
+    end
+    local danceIds = testdances[selectedPackanim]
+	if KeyBind and not isTyping then
+        local animId
+        if selectedPackanim == "Random Dance" then
+            local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)]
+            local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)]
+            animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6)
+            acurrentAnimation = Instance.new("Animation")
+            acurrentAnimation.AnimationId = animId
+            acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
+            acurrentAnimationTrack.Looped = true
+            acurrentAnimationTrack:Play()
+        elseif selectedPackanim == "Jerk Off" then
+            animId = danceIds.R6
+            acurrentAnimation = Instance.new("Animation")
+            acurrentAnimation.AnimationId = animId
+            acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
+            acurrentAnimationTrack.Looped = true
+            acurrentAnimationTrack:Play()
+            acurrentAnimationTrack.TimePosition = danceIds.LoopStart
+            loopConnection = RunService.Heartbeat:Connect(function()
+                pcall(function()
+                    if acurrentAnimationTrack.TimePosition >= (danceIds.LoopEnd) then
+                        acurrentAnimationTrack.TimePosition = danceIds.LoopStart
+                    end
+                end)
+            end)
+        else
+            if loopConnection then
+                loopConnection:Disconnect()
+                loopConnection = nil
+            end
+            if acurrentAnimationTrack then
+                acurrentAnimationTrack:Stop()
+                acurrentAnimationTrack:Destroy()
+                acurrentAnimationTrack = nil
+            end
+            if banimTrack then
+                banimTrack:Stop()
+                banimTrack:Destroy()
+                banimTrack = nil
+            end
+            animId = (r15(speaker) and danceIds.R15) or danceIds.R6
+            acurrentAnimation = Instance.new("Animation")
+            acurrentAnimation.AnimationId = animId
+            banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
+            banimTrack.Looped = danceIds.Looped
+            banimTrack:Play(0.1, 10, danceIds.Speed)
+        end
+        aanimationPlaying = true
+    elseif not Keybind and not isTyping then
+		if loopConnection then
+            loopConnection:Disconnect()
+            loopConnection = nil
+        end
+        if acurrentAnimationTrack then
+            acurrentAnimationTrack:Stop()
+            acurrentAnimationTrack:Destroy()
+            acurrentAnimationTrack = nil
+        end
+        if banimTrack then
+            banimTrack:Stop()
+            banimTrack:Destroy()
+            banimTrack = nil
+        end
+        aanimationPlaying = false
+	end
+end})
+
+Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Reset Play Selected Anim Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		PlaycustmAnimKeybind:Set("Set Keybind")
+	end)
 end})
 
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
