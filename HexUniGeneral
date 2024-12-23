@@ -7370,7 +7370,7 @@ end})
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
-local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",Speed=1,AllowSpeedChange=true,Looped=true,LoopStart=0.63,LoopEnd=0.89},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}}
+local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://746398327",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.36,LoopEnd=0.48}},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false}}
 local selectedPackanim = nil
 local acurrentAnimation = nil
 local acurrentAnimationTrack = nil
@@ -7410,27 +7410,39 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
     if Value then
         local animId
         if selectedPackanim == "Random Dance" then
+			if loopConnection then
+                loopConnection:Disconnect()
+                loopConnection = nil
+            end
+            if acurrentAnimationTrack then
+                acurrentAnimationTrack:Stop()
+                acurrentAnimationTrack:Destroy()
+                acurrentAnimationTrack = nil
+            end
             local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)]
             local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)]
             animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6)
+            CcurrentAnimation = Instance.new("Animation")
+            CcurrentAnimation.AnimationId = animId
+            CcurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(CcurrentAnimation)
+            CcurrentAnimationTrack.Looped = true
+			CcurrentAnimationTrack:Play(0.1, 10, 1)
+		elseif selectedPackanim == "Jerk Off" then
+            animId = (r15(speaker) and danceIds.R15) or danceIds.R6
             acurrentAnimation = Instance.new("Animation")
             acurrentAnimation.AnimationId = animId
             acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
             acurrentAnimationTrack.Looped = true
             acurrentAnimationTrack:Play()
-        elseif selectedPackanim == "Jerk Off" then
-            animId = danceIds.R6
-            acurrentAnimation = Instance.new("Animation")
-            acurrentAnimation.AnimationId = animId
-            acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
-            acurrentAnimationTrack.Looped = true
-            acurrentAnimationTrack:Play()
-            acurrentAnimationTrack.TimePosition = danceIds.LoopStart
+			local loopStart = (r15(speaker) and danceIds.R15Time.LoopStart) or danceIds.R6Time.LoopStart
+			local loopEnd = (r15(speaker) and danceIds.R15Time.LoopEnd) or danceIds.R6Time.LoopEnd
             loopConnection = RunService.Heartbeat:Connect(function()
                 pcall(function()
-                    if acurrentAnimationTrack.TimePosition >= (danceIds.LoopEnd) then
-                        acurrentAnimationTrack.TimePosition = danceIds.LoopStart
-                    end
+					if r15(speaker) and acurrentAnimationTrack.TimePosition >= loopEnd then
+						acurrentAnimationTrack.TimePosition = loopStart
+					elseif not r15(speaker) and acurrentAnimationTrack.TimePosition >= loopEnd then
+						acurrentAnimationTrack.TimePosition = loopStart
+					end
                 end)
             end)
         else
@@ -7443,15 +7455,20 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
                 acurrentAnimationTrack:Destroy()
                 acurrentAnimationTrack = nil
             end
+			if CcurrentAnimationTrack then
+                CcurrentAnimationTrack:Stop()
+                CcurrentAnimationTrack:Destroy()
+                CcurrentAnimationTrack = nil
+			end
             if banimTrack then
                 banimTrack:Stop()
                 banimTrack:Destroy()
                 banimTrack = nil
             end
             animId = (r15(speaker) and danceIds.R15) or danceIds.R6
-            acurrentAnimation = Instance.new("Animation")
-            acurrentAnimation.AnimationId = animId
-            banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
+            bcuranim = Instance.new("Animation")
+            bcuranim.AnimationId = animId
+			banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(bcuranim)
             banimTrack.Looped = danceIds.Looped
             banimTrack:Play(0.1, 10, danceIds.Speed)
         end
@@ -7469,6 +7486,11 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
             acurrentAnimationTrack:Destroy()
             acurrentAnimationTrack = nil
         end
+		if CcurrentAnimationTrack then
+            CcurrentAnimationTrack:Stop()
+            CcurrentAnimationTrack:Destroy()
+            CcurrentAnimationTrack = nil
+		end
         if banimTrack then
             banimTrack:Stop()
             banimTrack:Destroy()
@@ -7487,27 +7509,39 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 	if KeyBind and not isTyping then
         local animId
         if selectedPackanim == "Random Dance" then
+			if loopConnection then
+                loopConnection:Disconnect()
+                loopConnection = nil
+            end
+            if acurrentAnimationTrack then
+                acurrentAnimationTrack:Stop()
+                acurrentAnimationTrack:Destroy()
+                acurrentAnimationTrack = nil
+            end
             local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)]
             local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)]
             animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6)
-            acurrentAnimation = Instance.new("Animation")
-            acurrentAnimation.AnimationId = animId
-            acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
-            acurrentAnimationTrack.Looped = true
-            acurrentAnimationTrack:Play()
+            CcurrentAnimation = Instance.new("Animation")
+            CcurrentAnimation.AnimationId = animId
+            CcurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(CcurrentAnimation)
+            CcurrentAnimationTrack.Looped = true
+			CcurrentAnimationTrack:Play(0.1, 10, 1)
         elseif selectedPackanim == "Jerk Off" then
-            animId = danceIds.R6
+            animId = (r15(speaker) and danceIds.R15) or danceIds.R6
             acurrentAnimation = Instance.new("Animation")
             acurrentAnimation.AnimationId = animId
             acurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
             acurrentAnimationTrack.Looped = true
             acurrentAnimationTrack:Play()
-            acurrentAnimationTrack.TimePosition = danceIds.LoopStart
+			local loopStart = (r15(speaker) and danceIds.R15Time.LoopStart) or danceIds.R6Time.LoopStart
+			local loopEnd = (r15(speaker) and danceIds.R15Time.LoopEnd) or danceIds.R6Time.LoopEnd
             loopConnection = RunService.Heartbeat:Connect(function()
                 pcall(function()
-                    if acurrentAnimationTrack.TimePosition >= (danceIds.LoopEnd) then
-                        acurrentAnimationTrack.TimePosition = danceIds.LoopStart
-                    end
+					if r15(speaker) and acurrentAnimationTrack.TimePosition >= loopEnd then
+						acurrentAnimationTrack.TimePosition = loopStart
+					elseif not r15(speaker) and acurrentAnimationTrack.TimePosition >= loopEnd then
+						acurrentAnimationTrack.TimePosition = loopStart
+					end
                 end)
             end)
         else
@@ -7520,21 +7554,26 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
                 acurrentAnimationTrack:Destroy()
                 acurrentAnimationTrack = nil
             end
+			if CcurrentAnimationTrack then
+                CcurrentAnimationTrack:Stop()
+                CcurrentAnimationTrack:Destroy()
+                CcurrentAnimationTrack = nil
+			end
             if banimTrack then
                 banimTrack:Stop()
                 banimTrack:Destroy()
                 banimTrack = nil
             end
             animId = (r15(speaker) and danceIds.R15) or danceIds.R6
-            acurrentAnimation = Instance.new("Animation")
-            acurrentAnimation.AnimationId = animId
-            banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(acurrentAnimation)
+            bcuranim = Instance.new("Animation")
+            bcuranim.AnimationId = animId
+			banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(bcuranim)
             banimTrack.Looped = danceIds.Looped
             banimTrack:Play(0.1, 10, danceIds.Speed)
         end
         aanimationPlaying = true
     elseif not Keybind and not isTyping then
-		if loopConnection then
+        if loopConnection then
             loopConnection:Disconnect()
             loopConnection = nil
         end
@@ -7543,6 +7582,11 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
             acurrentAnimationTrack:Destroy()
             acurrentAnimationTrack = nil
         end
+		if CcurrentAnimationTrack then
+            CcurrentAnimationTrack:Stop()
+            CcurrentAnimationTrack:Destroy()
+            CcurrentAnimationTrack = nil
+		end
         if banimTrack then
             banimTrack:Stop()
             banimTrack:Destroy()
