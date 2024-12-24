@@ -3994,7 +3994,13 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 				sfxSound("true")
 				Notif("Now Spectating", "Spectating " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				SpectateLoop = RunService.RenderStepped:Connect(function()
-					game.Workspace.Camera.CameraSubject = foundPlr.Character
+					pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+							game.Workspace.Camera.CameraSubject = foundPlr.Character
+						else
+							game.Workspace.Camera.CameraSubject = speaker.Character
+						end
+					end)
 				end)
 			end
 		end
@@ -4021,8 +4027,12 @@ AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					Notif("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					AnnoyLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							Character:PivotTo(foundPlr.Character:GetPivot())
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+						else
+							AnnoyLoop:Disconnect()
+						end
 						end)
 					end)
 				end
@@ -4051,9 +4061,14 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					Notif("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					GlueLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                            else
+								GlueLoop:Disconnect()
+								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+							end
 						end)
 					end)
 				end
@@ -4080,7 +4095,13 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					sfxSound("true")
 					Notif("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					WalktoLoop = RunService.RenderStepped:Connect(function()
+						pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position)
+						else
+							WalktoLoop:Disconnect()
+						end
+					end)
 					end)
 				end
 			end
@@ -4108,9 +4129,14 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					Notif("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					StandOnHeadLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.34, 0)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                            else
+								StandOnHeadLoop:Disconnect()
+								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+							end
 						end)
 					end)
 				end
@@ -4139,9 +4165,14 @@ AlldropdownRefresh.becarrieddropdown = MiscPlayer:CreateDropdown({SectionParent=
 					Notif("Now Being Carried", "Carried By " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					becarriedLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(1.5, -0.2, 1.5)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+							else
+								becarriedLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
 						end)
 					end)
 				end
@@ -4186,8 +4217,12 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					sfxSound("true")
 					FollowLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+							else
+								FollowLoop:Disconnect()
+							end
 						end)
 					end)
 				end
@@ -4226,13 +4261,9 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 						WaveAnim.AnimationId = "rbxassetid://507770239"
 					end
 					Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim)
-					WaverDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-						WaverDied:Disconnect()
-						Waver:Stop()
-						WaveAnim:Destroy()
-					end)
 					WaveasLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							if (speaker.Character and foundPlr.Character) then
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
@@ -4241,6 +4272,12 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
 								Waver:Play(0.1, 10, 1)
 								task.wait(1.8)
 							end
+                        else
+							WaverDied:Disconnect()
+							Waver:Stop()
+							WaveasLoop:Disconnect()
+							WaveAnim:Destroy()
+						end
 						end)
 					end)
 				end
@@ -4274,9 +4311,15 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 						sfxSound("true")
 						Notif("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 						CarpetsLoop = RunService.RenderStepped:Connect(function()
-							pcall(function()
+                                pcall(function()
+								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0)
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+								else
+									CarpetsLoop:Disconnect()
+									carpete:Stop()
+									carpetAnim:Destroy()
+								end
 							end)
 						end)
 					end
@@ -4316,8 +4359,14 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 						sfxSound("true")
 						HuggingLoop = RunService.RenderStepped:Connect(function()
 							pcall(function()
+								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                                else
+									HuggingLoop:Disconnect()
+									zomearm:Stop()
+									zombiearmsAnim:Destroy()
+								end
 							end)
 						end)
 					end
@@ -4343,8 +4392,14 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				sfxSound("true")
 				HuggingLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
 						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+							HuggingLoop:Disconnect()
+							zomearm:Stop()
+							zombiearmsAnim:Destroy()
+						end
 					end)
 				end)
 			end
@@ -4372,9 +4427,14 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
 					sfxSound("true")
 					PBLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								PBLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
 						end)
 					end)
 				end
@@ -4403,9 +4463,14 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					sfxSound("true")
 					BackPackLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								BackPackLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
 						end)
 					end)
 				end
@@ -4434,9 +4499,14 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 					sfxSound("true")
 					HeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								HeadSitLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
 						end)
 					end)
 				end
@@ -4465,12 +4535,17 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 					sfxSound("true")
 					BasketLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
 							if targetArm then
 								getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6)
 								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 							end
+                        else
+							BasketLoop:Disconnect()
+							speaker.Character.Humanoid.Sit = false
+						end
 						end)
 					end)
 				end
@@ -4495,10 +4570,17 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 			speaker.Character.Animate.Disabled = true
 			BasketLoop = RunService.RenderStepped:Connect(function()
 				pcall(function()
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					speaker.Character.Humanoid.Sit = true
 					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
 					if targetArm then
 						getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6)
+					end
+                    else
+						zomearm:Stop()
+						BasketLoop:Disconnect()
+						zombiearmsAnim:Destroy()
+						speaker.Character.Animate.Disabled = false
 					end
 				end)
 			end)
@@ -4526,9 +4608,14 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
 					sfxSound("true")
 					ActualHeadSitLoop = RunService.RenderStepped:Connect(function()
 						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 							speaker.Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								ActualHeadSitLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
 						end)
 					end)
 				end
@@ -4628,10 +4715,21 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 				speaker.Character.Humanoid.PlatformStand = true
 				OrbititngLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						sine = sine + change
 						spin2 = spin2 + 0.6
 						spin = spin + 1
 						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0))
+                        else
+							OrbititngLoop:Disconnect()
+							for i, v in pairs(speaker.Character:GetDescendants()) do
+								if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
+									v:Destroy()
+								end
+							end
+							speaker.Character.Humanoid.PlatformStand = false
+							speaker.Character.Humanoid.Sit = false
+						end
 					end)
 				end)
 			end
@@ -4672,11 +4770,21 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
 				rp:Fire()
 				speaker.Character.Humanoid.Sit = true
 				CloseOrbititngLoop = RunService.RenderStepped:Connect(function()
-					pcall(function()
+                    pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						sine = sine + change
 						spin2 = spin2 + 0.6
 						spin = spin + 1
 						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0))
+                        else
+							CloseOrbititngLoop:Disconnect()
+							for i, v in pairs(speaker.Character:GetDescendants()) do
+								if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
+									v:Destroy()
+								end
+							end
+							speaker.Character.Humanoid.Sit = false
+						end
 					end)
 				end)
 			end
@@ -4704,7 +4812,11 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
 				Notif("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				LookingAtLoop = RunService.RenderStepped:Connect(function()
 					pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, getRoot(foundPlr.Character).Position)
+						else
+							LookingAtLoop:Disconnect()
+						end
 					end)
 				end)
 			end
@@ -4734,9 +4846,13 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
 				sfxSound("true")
 				Notif("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				SpinAroundLoop = RunService.RenderStepped:Connect(function()
+					if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
 					spinaroundrotation = spinaroundrotation + spinaroundspeed
 						root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0)
 						root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position)
+                    else
+						SpinAroundLoop:Disconnect()
+					end
 				end)
 			end
 		end
@@ -4818,8 +4934,18 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						Bang69 = true
 						Bang69Looped = RunService.RenderStepped:Connect(function()
-							getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+							pcall(function()
+								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+								getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
+								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                                else
+									R6Upsideloop:Disconnect()
+									Bang69Looped:Disconnect()
+									bang69:Stop()
+									bangAnim:Destroy()
+									ResetToPos()
+								end
+							end)
 						end)
 					end
 				end
@@ -4877,13 +5003,23 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 				bangAnim.AnimationId = "rbxassetid://5918726674"
 				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim)
 				bang69:Play(0.1, 1, 1)
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 					Bang69 = true
 					R15Bang69Looped = RunService.RenderStepped:Connect(function()
-						getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
-						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+							getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								bang69:Stop()
+								a69upsideown:Disconnect()
+								R15Bang69Looped:Disconnect()
+								R15Upside:Disconnect()
+								bangAnim:Destroy()
+								Bang69 = false
+								ResetToPos()
+							end
+						end)
 					end)
-				end
 			end
 		end
 		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
@@ -4962,6 +5098,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 						end)
 						HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
 							pcall(function()
+								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 								local speakerRoot = getRoot(speaker.Character)
 								local targetRoot = getRoot(foundPlr.Character)
@@ -4979,6 +5116,16 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 									HumpBang69Looped = nil
 									speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 								end
+							else
+								Hump69R6Upsideloop:Disconnect()
+                                if HumpBang69Looped then
+                                    HumpBang69Looped:Disconnect()
+                                    HumpBang69Looped = nil
+                                    speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                                end
+								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+								ResetToPos()
+							end
 							end)
 						end)
 					end
@@ -5036,6 +5183,7 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 				end
 				R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
 					pcall(function()
+						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 						local speakerRoot = getRoot(speaker.Character)
 						local targetRoot = getRoot(foundPlr.Character)
@@ -5053,6 +5201,16 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 							R15HumpBang69Looped = nil
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 						end
+					else
+						if R15HumpBang69Looped then
+							R15HumpBang69Looped:Disconnect()
+							R15HumpBang69Looped = nil
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+						end
+						Hump69R15Upsideloop:Disconnect()
+						a69humper:Disconnect()
+						ResetToPos()
+					end
 					end)
 				end)
 			end
@@ -5113,10 +5271,19 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 					Notif("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					sfxSound("true")
 					BangerLoop = RunService.RenderStepped:Connect(function()
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 						end)
+                    else
+						if BangerLoop then
+							BangerLoop:Disconnect()
+							BangerLoop = nil 
+						end
+						v2banger:Stop()
+						v2bangerAnim:Destroy()
+					end
 					end)
 				end
 			end
@@ -5165,10 +5332,19 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
 					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					sfxSound("true")
 					FaceBangerLoop = RunService.RenderStepped:Connect(function()
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						pcall(function()
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 						end)
+                    else
+						if FaceBangerLoop then
+							FaceBangerLoop:Disconnect()
+							FaceBangerLoop = nil
+						end
+						facebanger:Stop()
+						facebangerAnim:Destroy()
+					end
 					end)
 				end
 			end
@@ -5198,8 +5374,11 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 				if (ff == true) then
 					ff = false
-					SitFaceBangerLoop:Disconnect()
-					Character.Humanoid.Sit = false
+					if SitFaceBangerLoop then
+						SitFaceBangerLoop:Disconnect()
+						SitFaceBangerLoop = nil
+						Character.Humanoid.Sit = false
+					end
 					Notif("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, "x")
 					sfxSound("false")
 					return
@@ -5208,11 +5387,19 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
 					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					sfxSound("true")
 					SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						pcall(function()
 							Character.Humanoid.Sit = true
 							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4)
 							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
 						end)
+					else
+						if SitFaceBangerLoop then
+							SitFaceBangerLoop:Disconnect()
+							SitFaceBangerLoop = nil
+							Character.Humanoid.Sit = false
+						end
+					end
 					end)
 				end
 			end
@@ -5243,7 +5430,8 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				Humping = true
 				Notif("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				sfxSound("true")
-				HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 						local speakerRoot = getRoot(speaker.Character)
 						local targetRoot = getRoot(foundPlr.Character)
@@ -5262,6 +5450,13 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 							HumpLoop = nil
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 						end
+                    else
+						if HumpLoop then
+							HumpLoop:Disconnect()
+							HumpLoop = nil
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+						end
+					end
 				end)
 			end
 		end
@@ -5317,6 +5512,7 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 					Notif("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 					sfxSound("true")
 					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						pcall(function()
 							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 							local speakerRoot = getRoot(speaker.Character)
@@ -5336,6 +5532,13 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 							end
 						end)
+                    else
+						if FaceHumpLoop then
+							FaceHumpLoop:Disconnect()
+							FaceHumpLoop = nil
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+						end
+					end
 					end)
 				end
 			end
