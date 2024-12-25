@@ -7307,12 +7307,13 @@ Input = Animations:CreateInput({SectionParent=Sectionanimlog,Name="Animation",On
 	end)
 end})
 
-Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Print Out The TimeStamp",Interact="Click",Callback=function()
+Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Print Out TimePosition",Interact="Click",Callback=function()
 	local PrintTimestampLoop
 	local lastPrintedTime = 0
     local printInterval = 0.01
 	
-	AnimLog = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(AnimLogger)
+    AnimLog = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(AnimLogger)
+	print("---- TimePosition START ----")
 	AnimLog:Play(0.1, 10, 1)
 	PrintTimestampLoop = game:GetService("RunService").RenderStepped:Connect(function()
     	if AnimLog.IsPlaying then
@@ -7330,6 +7331,7 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Pri
 		end
 		AnimLog:Stop()
         AnimLog:Destroy()
+		print("---- TimePosition END ----")
 	end)
 	Notif("Check F9!", "Printed The Animation's TimeStamp Float Value!", 3, "check")
 	sfxSound("true")
@@ -7399,7 +7401,7 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Copy Curren
 	copyAnimId(speaker)
 end})
 
-SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, true, 10734923549)
+SectionAnimpl = Animations:CreateSection("FE LocalPlayer Related | Animation Player", false, false, 10734923549)
 Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Anim Player Values",Interact="Click",Callback=function()
 	Slideranimplr:Set(1)
 end})
