@@ -3676,26 +3676,31 @@ end})
 CFramevaluespeed = 0.1
 spacing = Misc:CreateSpacing(Sectionwalkspeeder,2)
 local CFramewalkloop
+local cframewalk = false
+local cfwalk = false
+
 Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CFrame Walkspeed",CurrentValue=false,Callback=function(Value)
-		cframewalk = Value
-		if cframewalk then
-			CFramewalkloop = RunService.RenderStepped:Connect(function()
-				getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
-			end)
-		else
-			CFramewalkloop:Disconnect()
-		end
+	cframewalk = Value
+	if cframewalk then
+		CFramewalkloop = RunService.RenderStepped:Connect(function()
+			local root = getRoot(speaker.Character)
+			root.CFrame = root.CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
+		end)
+	else
+		cleanupConnection(CFramewalkloop)
+	end
 end})
 
 CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionwalkspeeder,Callback=function(KeyBind)
 	cfwalk = KeyBind
 	if cfwalk and not isTyping then
-		CFramewalkloopKey = RunService.RenderStepped:Connect(function()
-			getRoot(speaker.Character).CFrame = getRoot(speaker.Character).CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
+        CFramewalkloop = RunService.RenderStepped:Connect(function()
+            local root = getRoot(speaker.Character)
+            root.CFrame = root.CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
 		end)
-	elseif not cfwalk and not isTyping then
-		CFramewalkloopKey:Disconnect()
-	end
+    else
+		cleanupConnection(CFramewalkloop)
+    end
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset CFrame Walk Keybind",Callback=function()
