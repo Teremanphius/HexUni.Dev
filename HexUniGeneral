@@ -3631,7 +3631,9 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 		changePhysProps(false)
 		Carpl:Stop()
 		Caranim:Destroy()
-		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		pcall(function()
+			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		end)
 	end
 	speaker.CharacterAdded:Connect(function(char)
 		Character = char
@@ -3652,7 +3654,9 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 			changePhysProps(false)
 			Carpl:Stop()
 			Caranim:Destroy()
+			pcall(function()
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+			end)
 		end
 	end)
 end})
@@ -3676,7 +3680,9 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 		changePhysProps(false)
 		Carpl:Stop()
 		Caranim:Destroy()
-		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		pcall(function()
+			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+		end)
 	end
 	speaker.CharacterAdded:Connect(function(char)
 		Character = char
@@ -3697,7 +3703,9 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 			changePhysProps(false)
 			Carpl:Stop()
 			Caranim:Destroy()
-			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+			pcall(function()
+				speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
+			end)
 		end
 	end)
 end})
