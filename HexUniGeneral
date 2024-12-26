@@ -3623,6 +3623,10 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 		Carpl:Play()
 		Carpl:AdjustSpeed(0)
+			else
+				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+				sfxSound("false")
+			end
 	else
 		changePhysProps(false)
 		Carpl:Stop()
@@ -3632,6 +3636,7 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 	speaker.CharacterAdded:Connect(function(char)
 		Character = char
 		if carTog then
+			if not r15(speaker) then
 			ifCarEnabled = true
 			changePhysProps(true)
 			Caranim = Instance.new("Animation")
@@ -3639,6 +3644,10 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 			Carpl:Play()
 			Carpl:AdjustSpeed(0)
+				else
+					Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+					sfxSound("false")
+				end
 		else
 			changePhysProps(false)
 			Carpl:Stop()
@@ -3646,10 +3655,6 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
 		end
 	end)
-else
-	Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-	sfxSound("false")
-end
 end})
 
 CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(KeyBind)
@@ -3663,6 +3668,10 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 		Carpl:Play()
 		Carpl:AdjustSpeed(0)
+			else
+				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+				sfxSound("false")
+			end
 	elseif not carkb and not isTyping then
 		changePhysProps(false)
 		Carpl:Stop()
@@ -3672,6 +3681,7 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 	speaker.CharacterAdded:Connect(function(char)
 		Character = char
 		if carTog then
+			if not r15(speaker) then
 			ifCarEnabled = true
 			changePhysProps(true)
 			Caranim = Instance.new("Animation")
@@ -3679,6 +3689,10 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
 			Carpl:Play()
 			Carpl:AdjustSpeed(0)
+			else
+				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+				sfxSound("false")
+			end
 		elseif not carkb and not isTyping then
 			changePhysProps(false)
 			Carpl:Stop()
@@ -3686,10 +3700,6 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
 		end
 	end)
-    else
-	Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-	sfxSound("false")
-end
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
