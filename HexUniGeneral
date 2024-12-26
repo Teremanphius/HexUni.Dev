@@ -1032,10 +1032,13 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 			end)
 		else
 			flying = false
-			cleanupConnection(FlyingLoop)
+			if FlyingLoop then
+				FlyingLoop:Disconnect()
+				FlyingLoop = nil
+			end
 			pcall(function()
-				if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+				if Humanoid and Humanoid.PlatformStand then
+					Humanoid.PlatformStand = false
 				end
 			end)
 		end
@@ -1052,11 +1055,14 @@ fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind"
 		end)
 	elseif not KeyBind and not isTyping then
 		flying = false
-		cleanupConnection(FlyingLoop)
+		if FlyingLoop then
+			FlyingLoop:Disconnect()
+			FlyingLoop = nil
+		end
 		pcall(function()
-			if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-			end
+        	if Humanoid and Humanoid.PlatformStand then
+				Humanoid.PlatformStand = false
+        	end
 		end)
 	end
 end})
@@ -1067,11 +1073,14 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
 		flying = false 
-		cleanupConnection(FlyingLoop)
+		if FlyingLoop then
+			FlyingLoop:Disconnect()
+			FlyingLoop = nil
+		end
 		pcall(function()
-			if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-			end
+        	if Humanoid and Humanoid.PlatformStand then
+				Humanoid.PlatformStand = false
+        	end
 		end)
 	end)
 end})
