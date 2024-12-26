@@ -63,8 +63,8 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local Scriptcount = "198"
-local ScriptcountAnim = "63"
+local Scriptcount = "200"
+local ScriptcountAnim = "65"
 local movers = {}
 local HumanModCons = {}
 local noVoid = false
@@ -1032,9 +1032,11 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 			end)
 		else
 			flying = false
-			FlyingLoop = cleanupConnection(FlyingLoop)
+			cleanupConnection(FlyingLoop)
 			pcall(function()
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+				if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
+					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+				end
 			end)
 		end
 	end)
@@ -1050,9 +1052,11 @@ fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind"
 		end)
 	elseif not KeyBind and not isTyping then
 		flying = false
-		FlyingLoop = cleanupConnection(FlyingLoop)
+		cleanupConnection(FlyingLoop)
 		pcall(function()
-			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+			if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+			end
 		end)
 	end
 end})
@@ -1063,9 +1067,11 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
 		flying = false 
-		FlyingLoop = cleanupConnection(FlyingLoop)
+		cleanupConnection(FlyingLoop)
 		pcall(function()
-			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+			if speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand == true then
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+			end
 		end)
 	end)
 end})
@@ -1323,6 +1329,54 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zer
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		zerogravtripKeybind:Set("Set Keybind")
+	end)
+end})
+
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
+SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		if (not swimming and speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
+			oldgrav = workspace.Gravity
+			workspace.Gravity = 0
+			local swimDied = function()
+				workspace.Gravity = oldgrav
+				swimming = false
+			end
+			Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+			gravReset = Humanoid.Died:Connect(swimDied)
+			enums = Enum.HumanoidStateType:GetEnumItems()
+			table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+			for i, v in pairs(enums) do
+				Humanoid:SetStateEnabled(v, false)
+			end
+			Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+		end
+	elseif not KeyBind and not isTyping then
+		if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
+			workspace.Gravity = oldgrav
+			swimming = false
+			if gravReset then
+				gravReset:Disconnect()
+			end
+			if (swimbeat ~= nil) then
+				swimbeat:Disconnect()
+				swimbeat = nil
+			end
+			Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+			enums = Enum.HumanoidStateType:GetEnumItems()
+			table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+			for i, v in pairs(enums) do
+				Humanoid:SetStateEnabled(v, true)
+			end
+		end
+	end
+end})
+
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Swim Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		SwimKeybind:Set("Set Keybind")
 	end)
 end})
 
