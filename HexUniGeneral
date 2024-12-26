@@ -3615,6 +3615,7 @@ local ifCarEnabled = false
 ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(Value)
 	carTog = Value
 	if carTog then
+		if not r15(speaker) then
 		ifCarEnabled = true
 		changePhysProps(true)
 		Caranim = Instance.new("Animation")
@@ -3645,11 +3646,16 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
 		end
 	end)
+else
+	Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+	sfxSound("false")
+end
 end})
 
 CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(KeyBind)
 	carkb = KeyBind
 	if carkb and not isTyping then
+		if not r15(speaker) then
 		ifCarEnabled = true
 		changePhysProps(true)
 		Caranim = Instance.new("Animation")
@@ -3680,6 +3686,10 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
 		end
 	end)
+    else
+	Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+	sfxSound("false")
+end
 end})
 
 Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
@@ -3987,7 +3997,7 @@ end})
 
 MiscPlayer = Window:CreateTab("Players", 10747373426)
 Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
-Paragraphtotal = MiscPlayer:CreateParagraph({Title="Drop Down's Note",Content="When You Open Them The Button's Are Like A Toggle.\nYou Press One, You Do The Function, And Then You Press Again On Whatever Button To Stop."}, Sectiontotalscrismisc)
+Paragraphtotal = MiscPlayer:CreateParagraph({Title="Dropdown Instructions",Content="You Open up the Dropdown. Let's Say \"Annoy\" For an ex.\nTo Start press on a player.\nTo stop you select another player in the same dropdown."}, Sectiontotalscrismisc)
 Sectiontpscritpss = MiscPlayer:CreateSection("FE Player Related | Teleport", false, false, 6723742952)
 AlldropdownRefresh.gotodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
