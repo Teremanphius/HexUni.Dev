@@ -1022,8 +1022,7 @@ local FlyingLoop
 spacing = Misc:CreateSpacing(Sectionflights,2)
 Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
-		flying = Value
-		if flying then
+		if Value then
 			flying = true
 			FlyingLoop = RunService.Stepped:Connect(function()
 				pcall(function()
