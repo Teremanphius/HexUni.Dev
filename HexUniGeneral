@@ -7,22 +7,25 @@ end
 getgenv().SecureMode = true
 
 -- Services
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local VirtualUser = game:GetService("VirtualUser")
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
-local TeleportService = game:GetService("TeleportService")
-local StarterGui = game:GetService("StarterGui")
-local Lighting = game:GetService("Lighting")
-local GuiService = game:GetService("GuiService")
-local CoreGui = game:GetService("CoreGui")
-local ContextActionService = game:GetService("ContextActionService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local StatsService = game:GetService("Stats")
-local AvatarEditorService = game:GetService("AvatarEditorService")
+
+function clrf(name) return cloneref(game:GetService(name)) end 
+
+local RunService = clrf("RunService")
+local Players = clrf("Players")
+local Workspace = clrf("Workspace")
+local VirtualUser = clrf("VirtualUser")
+local UserInputService = clrf("UserInputService")
+local TweenService = clrf("TweenService")
+local HttpService = clrf("HttpService")
+local TeleportService = clrf("TeleportService")
+local StarterGui = clrf("StarterGui")
+local Lighting = clrf("Lighting")
+local GuiService = clrf("GuiService")
+local CoreGui = clrf("CoreGui")
+local ContextActionService = clrf("ContextActionService")
+local ReplicatedStorage = clrf("ReplicatedStorage")
+local Stats = clrf("Stats")
+local AvatarEditorService = clrf("AvatarEditorService")
 local GameSettings = UserSettings():GetService("UserGameSettings")
 
 -- Player & Character
@@ -198,7 +201,7 @@ end
 
 local function getPlr(name)
   	local x = nil
-  		for i,v in next, game:GetService("Players"):GetPlayers() do
+  		for i,v in next, clrf("Players"):GetPlayers() do
     		if string.find(v.Name, name) then
      			x = v
      			break
@@ -6381,19 +6384,19 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoCli
 		function test(st)
 			if Value == true then return 1 else return 0 end
 		end
-		game:GetService("Players").LocalPlayer.DevCameraOcclusionMode = test(Value)
+		clrf("Players").LocalPlayer.DevCameraOcclusionMode = test(Value)
 	end)
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
-		TweenService:Create(game:GetService("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=Value}):Play()
+		TweenService:Create(clrf("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=Value}):Play()
 	end)
 end})
 
 Input = Miscclient:CreateInput({SectionParent=Sectioncamera,Name="Field Of View",OnEnter=true,PlaceholderText=math.floor(game:GetService("Workspace").Camera.FieldOfView),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	game:GetService("Workspace").Camera.FieldOfView = Text
+	clrf("Workspace").Camera.FieldOfView = Text
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
@@ -6417,7 +6420,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 			return func
 		end
 		cors = {}
-		mas = Instance.new("Model", game:GetService("Lighting"))
+		mas = Instance.new("Model", clrf("Lighting"))
 		LocalScript0 = Instance.new("LocalScript")
 		LocalScript0.Name = "FreeCamera"
 		LocalScript0.Parent = mas
@@ -6430,11 +6433,11 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 			sign = math.sign
 			sqrt = math.sqrt
 			tan = math.tan
-			ContextActionService = game:GetService("ContextActionService")
-			Players = game:GetService("Players")
-			RunService = game:GetService("RunService")
-			StarterGui = game:GetService("StarterGui")
-			UserInputService = game:GetService("UserInputService")
+			ContextActionService = clrf("ContextActionService")
+			Players = clrf("Players")
+			RunService = clrf("RunService")
+			StarterGui = clrf("StarterGui")
+			UserInputService = clrf("UserInputService")
 			LocalPlayer = speaker
 			if not LocalPlayer then
 				LocalPlayer = speaker
@@ -6747,7 +6750,7 @@ Buttonfreeca = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Freeca
 			end
 		end))
 		for i, v in pairs(mas:GetChildren()) do
-			v.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+			v.Parent = clrf("Players").LocalPlayer.PlayerGui
 			pcall(function()
 				v:MakeJoints()
 			end)
@@ -7361,7 +7364,7 @@ function promptNewRig(speaker, rig)
 	if humanoid then
 		local rigType = Enum.HumanoidRigType[rig]
 		if rigType then
-			local avatarEditorService = game:GetService("AvatarEditorService")
+			local avatarEditorService = clrf("AvatarEditorService")
 			local success, result = pcall(function()
 				avatarEditorService:PromptSaveAvatar(humanoid.HumanoidDescription, rigType)
 				return avatarEditorService.PromptSaveAvatarCompleted:Wait()
@@ -7411,7 +7414,7 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Pri
 	print("---- TimePosition START ----")
     AnimLog:Play(0.1, 10, 1)
 	AnimLog.Looped = false
-	PrintTimestampLoop = game:GetService("RunService").RenderStepped:Connect(function()
+	PrintTimestampLoop = clrf("RunService").RenderStepped:Connect(function()
     	if AnimLog.IsPlaying then
         	local currentTime = AnimLog.TimePosition
         	if currentTime - lastPrintedTime >= printInterval then
@@ -7627,7 +7630,7 @@ local function fetchEmoteData()
 end
 
 local function HumanoidPlayEmote(humanoid, name, id)
-    if game:GetService("RunService"):IsStudio() then
+    if clrf("RunService"):IsStudio() then
         return humanoid:PlayEmote(name)
     else
         return humanoid:PlayEmoteAndGetAnimTrackById(id)
