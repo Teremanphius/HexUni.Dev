@@ -4709,6 +4709,42 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 	end)
 end})
 
+local shouldersit = false
+AlldropdownRefresh.SHOULDERSITdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Shoulder Sit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(") or Option
+		foundPlr = getPlr(plrName)
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if (shouldersit == true) then
+					shouldersit = false
+					ShouldersitLoop:Disconnect()
+					Notif("No Longer Shoulder Sitting The Player", "Not Shoulder Sitting " .. foundPlr.Name .. " Anymore", 2, "x")
+					speaker.Character.Humanoid.Sit = false
+					sfxSound("false")
+					return
+				else
+					shouldersit = true
+					Notif("Now Shoulder Sitting", "Shoulder Sitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound("true")
+					ShouldersitLoop = RunService.RenderStepped:Connect(function()
+						pcall(function()
+							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+							speaker.Character.Humanoid.Sit = true
+							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(2, 1.6, 0.4)
+							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            else
+								ShouldersitLoop:Disconnect()
+								speaker.Character.Humanoid.Sit = false
+							end
+						end)
+					end)
+				end
+			end
+		end
+	end)
+end})
+
 local baskets = false
 AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	plrName = Option:match("^(.-) %(") or Option
@@ -6893,420 +6929,6 @@ Input = Miscclient:CreateInput({SectionParent=Sectiontaudio,Name="Audio Volume",
 	Soundplayaudio.Volume = Text
 end})
 
-ESPTAB = Window:CreateTab("ESP", 7072716095)
-Sectionesp = ESPTAB:CreateSection("ESP", false, false, 10723346959)
-Sense = {whitelist={},sharedSettings={textSize=13,textFont=2,limitDistance=false,maxDistance=150,useTeamColor=false},teamSettings={enemy={enabled=false,box=false,boxColor={Color3.new(1, 0, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(1, 0, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(1, 0, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(1, 0, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(1, 0, 0),0}},friendly={enabled=false,box=false,boxColor={Color3.new(0, 1, 0),1},boxOutline=true,boxOutlineColor={Color3.new(),1},boxFill=false,boxFillColor={Color3.new(0, 1, 0),0.5},healthBar=false,healthyColor=Color3.new(0, 1, 0),dyingColor=Color3.new(1, 0, 0),healthBarOutline=true,healthBarOutlineColor={Color3.new(),0.5},healthText=false,healthTextColor={Color3.new(1, 1, 1),1},healthTextOutline=true,healthTextOutlineColor=Color3.new(),box3d=false,box3dColor={Color3.new(0, 1, 0),1},name=false,nameColor={Color3.new(1, 1, 1),1},nameOutline=true,nameOutlineColor=Color3.new(),weapon=false,weaponColor={Color3.new(1, 1, 1),1},weaponOutline=true,weaponOutlineColor=Color3.new(),distance=false,distanceColor={Color3.new(1, 1, 1),1},distanceOutline=true,distanceOutlineColor=Color3.new(),tracer=false,tracerOrigin="Bottom",tracerColor={Color3.new(0, 1, 0),1},tracerOutline=true,tracerOutlineColor={Color3.new(),1},offScreenArrow=false,offScreenArrowColor={Color3.new(1, 1, 1),1},offScreenArrowSize=15,offScreenArrowRadius=150,offScreenArrowOutline=true,offScreenArrowOutlineColor={Color3.new(),1},chams=false,chamsVisibleOnly=false,chamsFillColor={Color3.new(0.2, 0.2, 0.2),0.5},chamsOutlineColor={Color3.new(0, 1, 0),0}}}}
-Sense = loadstring(game:HttpGet("https://sirius.menu/sense"))()
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionesp,Name="Main ESP",CurrentValue=false,Callback=function(ESP)
-	pcall(function()
-		espfunc = ESP
-		if espfunc then
-			Sense:Load()
-		else
-			Sense:Unload()
-		end
-	end)
-end})
-
-ESPPKeybind = ESPTAB:CreateKeybind({Name="Main ESP Keybind",CurrentKeybind="Set Keybind",CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionesp,Callback=function(KeyBind)
-	if KeyBind and not isTyping then
-		Sense:Load()
-	elseif not KeyBind and not isTyping then
-		Sense:Unload()
-	end
-end})
-
-Button = ESPTAB:CreateButton({SectionParent=Sectionesp,Name="Reset Main ESP Keybind",Callback=function()
-	sfxSound("true")
-	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
-	pcall(function()
-		ESPPKeybind:Set("Set Keybind")
-	end)
-end})
-
-Sectionshared = ESPTAB:CreateSection("ESP Shared Settings", false, false, 10709759610)
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=13,Callback=function(Value)
-	Sense.sharedSettings.textSize = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Text Font",Range={0,10},Increment=1,Suffix="Font",CurrentValue=2,Callback=function(Value)
-	Sense.sharedSettings.textFont = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Limit Distance",CurrentValue=false,Callback=function(Value)
-	Sense.sharedSettings.limitDistance = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionshared,Name="Max Distance",Range={0,10000},Increment=10,Suffix="Distance",CurrentValue=150,Callback=function(Value)
-	Sense.sharedSettings.maxDistance = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionshared,Name="Use Team Color",Callback=function(Value)
-	Sense.sharedSettings.useTeamColor = Value
-end})
-
-Sectionenemy = ESPTAB:CreateSection("ESP Enemy Settings", false, true, 10709759610)
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Enabled",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.enabled = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.box = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.boxColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.boxOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
-	Sense.teamSettings.enemy.boxOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.boxFill = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.boxFillColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthBar = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthyColor = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.dyingColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthBarOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthBarOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthText = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.healthTextOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.box3d = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.box3dColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.name = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.nameColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.nameOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.nameOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.weapon = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.weaponColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.weaponOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.weaponOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.distance = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.distanceColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.distanceOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.distanceOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.tracer = Value
-end})
-
-TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionenemy,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
-	Sense.teamSettings.enemy.tracerOrigin = Option
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.tracerColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.tracerOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.tracerOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrow = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowColor = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowSize = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionenemy,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowRadius = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.offScreenArrowOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.enemy.chams = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionenemy,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.enemy.chamsVisibleOnly = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.chamsFillColor = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionenemy,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.enemy.chamsOutlineColor = Value
-end})
-
-Sectionfriendly = ESPTAB:CreateSection("ESP Friendly Settings", false, true, 10709759610)
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Enabled",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.enabled = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.box = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.boxColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Box OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.boxOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes OutLines Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
-	Sense.teamSettings.friendly.boxOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes Fill",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.boxFill = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes Fill Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.boxFillColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthBar = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthyColor = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Dying Color Picker",Color=Color3.fromRGB(1, 0, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.dyingColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Bars Outlines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthBarOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Bars OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthBarOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthText = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Health Text OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Health Text OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.healthTextOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Boxes 3D",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.box3d = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Boxes 3D Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.box3dColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.name = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.nameColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Names OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.nameOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Names OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.nameOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.weapon = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.weaponColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Weapons OutLines",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.weaponOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Weapons OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.weaponOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.distance = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.distanceColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Distance OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.distanceOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Distance OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.distanceOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.tracer = Value
-end})
-
-TracersOrigin = ESPTAB:CreateDropdown({SectionParent=Sectionfriendly,Name="Tracers Location",Options={"Mouse","Top","Bottom"},CurrentOption="Bottom",Callback=function(Option)
-	Sense.teamSettings.friendly.tracerOrigin = Option
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.tracerColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Tracers OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.tracerOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Tracers OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.tracerOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrow = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowColor = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Size",Range={0,50},Increment=1,Suffix="Size",CurrentValue=15,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowSize = Value
-end})
-
-Slider = ESPTAB:CreateSlider({SectionParent=Sectionfriendly,Name="Off Screen Arrows Radius",Range={0,1000},Increment=1,Suffix="Radius",CurrentValue=150,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowRadius = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowOutline = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Off Screen Arrows OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.offScreenArrowOutlineColor = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams",CurrentValue=true,Callback=function(Value)
-	Sense.teamSettings.friendly.chams = Value
-end})
-
-Toggle = ESPTAB:CreateToggle({SectionParent=Sectionfriendly,Name="Chams Visible Only",CurrentValue=false,Callback=function(Value)
-	Sense.teamSettings.friendly.chamsVisibleOnly = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams Fill Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.chamsFillColor = Value
-end})
-
-Colorpicker = ESPTAB:CreateColorPicker({SectionParent=Sectionfriendly,Name="Chams OutLines Color Picker",Color=Color3.fromRGB(0, 1, 0),Callback=function(Value)
-	Sense.teamSettings.friendly.chamsOutlineColor = Value
-end})
-
 Animations = Window:CreateTab("Animations", 1114393432)
 Sectiontotalscrisanim = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612)
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Sectiontotalscrisanim)
@@ -7875,7 +7497,7 @@ end})
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
-local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
+local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
 local selectedPackanim = nil
 local PrepAnimForJerkTRACK = nil
 local JerkinAnimTRACK = nil
@@ -7885,7 +7507,7 @@ local loopConJerkinR15
 local banimTrack = nil
 local aanimationPlaying = false
 
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Jerk Off","Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink","Helicopter","Scared","Crouch"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Jerk Off","Salute","Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink","Helicopter","Scared","Crouch"},CurrentOption="Select an option",Callback=function(option)
     selectedPackanim = option
 	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
@@ -7978,13 +7600,32 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
             end)
         end)
     end
+	elseif selectedPackanim == "Salute" then
+		if not r15(speaker) then
+			local SaluteAnimR6 = Instance.new("Animation")
+			SaluteAnimR6.AnimationId = danceIds.R6
+			SaluteAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(SaluteAnimR6)
+			SaluteAnimTRACKR6.Looped = true
+			SaluteAnimTRACKR6:Play()
+			local secondLoopStart = danceIds.R6Time.LoopStart
+			local secondLoopEnd = danceIds.R6Time.LoopEnd
+			loopConSaluting = RunService.Heartbeat:Connect(function()
+				pcall(function()
+					if SaluteAnimTRACKR6.TimePosition >= secondLoopEnd then
+						SaluteAnimTRACKR6.TimePosition = secondLoopStart
+					end
+				end)
+			end)
+		end
         else
 				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
+				SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
 				JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
 				loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
 				loopConPrep = cleanupConnection(loopConPrep)
 				loopConJerkin = cleanupConnection(loopConJerkin)
+				loopConSaluting = cleanupConnection(loopConSaluting)
 				CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
 				banimTrack = cleanupTrack(banimTrack)
             animId = (r15(speaker) and danceIds.R15) or danceIds.R6
@@ -8001,10 +7642,12 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
     else
 	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
+	SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
 	JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
 	loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
 	loopConPrep = cleanupConnection(loopConPrep)
 	loopConJerkin = cleanupConnection(loopConJerkin)
+	loopConSaluting = cleanupConnection(loopConSaluting)
 	CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
 	banimTrack = cleanupTrack(banimTrack)
         aanimationPlaying = false
