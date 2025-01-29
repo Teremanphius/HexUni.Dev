@@ -7727,13 +7727,32 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 						end)
 					end)
 				end
+				elseif selectedPackanim == "Salute" then
+					if not r15(speaker) then
+						local SaluteAnimR6 = Instance.new("Animation")
+						SaluteAnimR6.AnimationId = danceIds.R6
+						SaluteAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(SaluteAnimR6)
+						SaluteAnimTRACKR6.Looped = true
+						SaluteAnimTRACKR6:Play()
+						local secondLoopStart = danceIds.R6Time.LoopStart
+						local secondLoopEnd = danceIds.R6Time.LoopEnd
+						loopConSaluting = RunService.Heartbeat:Connect(function()
+							pcall(function()
+								if SaluteAnimTRACKR6.TimePosition >= secondLoopEnd then
+									SaluteAnimTRACKR6.TimePosition = secondLoopStart
+								end
+							end)
+						end)
+					end
 			else
 				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
+				SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
 				JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
 				loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
 				loopConPrep = cleanupConnection(loopConPrep)
 				loopConJerkin = cleanupConnection(loopConJerkin)
+				loopConSaluting = cleanupConnection(loopConSaluting)
 				CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
 				banimTrack = cleanupTrack(banimTrack)
 				animId = (r15(speaker) and danceIds.R15) or danceIds.R6
@@ -7751,6 +7770,7 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 	loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
 	loopConPrep = cleanupConnection(loopConPrep)
 	loopConJerkin = cleanupConnection(loopConJerkin)
+	loopConSaluting = cleanupConnection(loopConSaluting)
 	CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
 	banimTrack = cleanupTrack(banimTrack)
         aanimationPlaying = false
