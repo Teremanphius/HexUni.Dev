@@ -82,6 +82,33 @@ function getRoot(char)
 	return rootPart
 end
 
+function getJumpValue()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return math.floor(humanoid.JumpPower)
+	else
+		return math.floor(humanoid.JumpHeight)
+	end
+end
+
+function getJumpValue2()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return "Jump Power"
+	else
+		return "Jump Height"
+	end
+end
+
+function getJumpValue3()
+	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	if humanoid.UseJumpPower then
+		return 600
+	else
+		return 400
+	end
+end
+
 function randomString()
 	length = math.random(10, 20)
 	array = {}
@@ -100,7 +127,7 @@ function isNumber(str)
 end
 
 function AnchorPlr(Value)
-	for _, part in pairs(speaker.Character:GetChildren()) do
+	for _, part in pairs(speaker.Character:GetDescendants()) do
        	if part:IsA("BasePart") then
             part.Anchored = Value
 		end
@@ -3627,17 +3654,24 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 	carTog = Value
 	if carTog then
 		if not r15(speaker) then
-		ifCarEnabled = true
-		changePhysProps(true)
-		Caranim = Instance.new("Animation")
-		Caranim.AnimationId = "rbxassetid://129342287"
-		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-		Carpl:Play()
-		Carpl:AdjustSpeed(0)
-			else
-				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-				sfxSound("false")
-			end
+			ifCarEnabled = true
+			changePhysProps(true)
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://129342287"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play()
+			Carpl:AdjustSpeed(0)
+		else
+			ifCarEnabled = true
+			changePhysProps(true)
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://17360699557"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play(0, 10, 0)
+			Carpl:AdjustSpeed(2)
+			task.wait(1)
+			Carpl:AdjustSpeed(0)
+		end
 	else
 		changePhysProps(false)
 		Carpl:Stop()
@@ -3650,17 +3684,24 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
 		Character = char
 		if carTog then
 			if not r15(speaker) then
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://129342287"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play()
-			Carpl:AdjustSpeed(0)
-				else
-					Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-					sfxSound("false")
-				end
+				ifCarEnabled = true
+				changePhysProps(true)
+				Caranim = Instance.new("Animation")
+				Caranim.AnimationId = "rbxassetid://129342287"
+				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+				Carpl:Play()
+				Carpl:AdjustSpeed(0)
+			else
+				ifCarEnabled = true
+				changePhysProps(true)
+				Caranim = Instance.new("Animation")
+				Caranim.AnimationId = "rbxassetid://17360699557"
+				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+				Carpl:Play(0, 10, 0)
+				Carpl:AdjustSpeed(2)
+				task.wait(1)
+				Carpl:AdjustSpeed(0)
+			end
 		else
 			changePhysProps(false)
 			Carpl:Stop()
@@ -3676,17 +3717,24 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 	carkb = KeyBind
 	if carkb and not isTyping then
 		if not r15(speaker) then
-		ifCarEnabled = true
-		changePhysProps(true)
-		Caranim = Instance.new("Animation")
-		Caranim.AnimationId = "rbxassetid://129342287"
-		Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-		Carpl:Play()
-		Carpl:AdjustSpeed(0)
-			else
-				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-				sfxSound("false")
-			end
+			ifCarEnabled = true
+			changePhysProps(true)
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://129342287"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play()
+			Carpl:AdjustSpeed(0)
+		else
+			ifCarEnabled = true
+			changePhysProps(true)
+			Caranim = Instance.new("Animation")
+			Caranim.AnimationId = "rbxassetid://17360699557"
+			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+			Carpl:Play(0, 10, 0)
+			Carpl:AdjustSpeed(2)
+			task.wait(1)
+			Carpl:AdjustSpeed(0)
+		end
 	elseif not carkb and not isTyping then
 		changePhysProps(false)
 		Carpl:Stop()
@@ -3699,16 +3747,23 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
 		Character = char
 		if carTog then
 			if not r15(speaker) then
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://129342287"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play()
-			Carpl:AdjustSpeed(0)
+				ifCarEnabled = true
+				changePhysProps(true)
+				Caranim = Instance.new("Animation")
+				Caranim.AnimationId = "rbxassetid://129342287"
+				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+				Carpl:Play()
+				Carpl:AdjustSpeed(0)
 			else
-				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-				sfxSound("false")
+				ifCarEnabled = true
+				changePhysProps(true)
+				Caranim = Instance.new("Animation")
+				Caranim.AnimationId = "rbxassetid://17360699557"
+				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+				Carpl:Play(0, 10, 0)
+				Carpl:AdjustSpeed(2)
+				task.wait(1)
+				Carpl:AdjustSpeed(0)
 			end
 		elseif not carkb and not isTyping then
 			changePhysProps(false)
@@ -3749,7 +3804,7 @@ Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnter=tru
 	end
 end})
 
-Sliderhipcar = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,1},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(Value)
+Sliderhipcar = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,6},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(Value)
 	pcall(function()
 		speaker.Character.Humanoid.HipHeight = Value
 	end)
@@ -3816,33 +3871,6 @@ Inputwalkspeeder = Misc:CreateInput({SectionParent=Sectionwalkspeeder,Name="CFra
 end})
 
 Sectionlpsliderinputloops = Misc:CreateSection("FE LocalPlayer Related | Slider's & Input Loop's", false, true, 10686489468)
-
-function getJumpValue()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return math.floor(humanoid.JumpPower)
-	else
-		return math.floor(humanoid.JumpHeight)
-	end
-end
-
-function getJumpValue2()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return "Jump Power"
-	else
-		return "Jump Height"
-	end
-end
-
-function getJumpValue3()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return 600
-	else
-		return 400
-	end
-end
 
 Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionlpsliderinputloops,Name="Reset Character Loop Values",Interact="Click",Callback=function()
 	pcall(function()
@@ -7497,7 +7525,7 @@ end})
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
-local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
+local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
 local selectedPackanim = nil
 local PrepAnimForJerkTRACK = nil
 local JerkinAnimTRACK = nil
@@ -7764,14 +7792,15 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 			end
 			aanimationPlaying = true
     elseif not Keybind and not isTyping then
-	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-	JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-	loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-	loopConPrep = cleanupConnection(loopConPrep)
-	loopConJerkin = cleanupConnection(loopConJerkin)
-	loopConSaluting = cleanupConnection(loopConSaluting)
-	CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
+		PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
+		JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
+		SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
+		JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
+		loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
+		loopConPrep = cleanupConnection(loopConPrep)
+		loopConJerkin = cleanupConnection(loopConJerkin)
+		loopConSaluting = cleanupConnection(loopConSaluting)
+		CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
 	banimTrack = cleanupTrack(banimTrack)
         aanimationPlaying = false
 	end
