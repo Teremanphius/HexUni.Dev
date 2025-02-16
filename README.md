@@ -1,5 +1,5 @@
 # Hexen Universal
-
+I know I am adding this now, but this is solely for educational purposes
 ### Loadstring : 
 ```lua 
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.Dev/refs/heads/main/HexUniGeneral'))()
