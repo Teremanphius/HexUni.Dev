@@ -49,7 +49,7 @@ These are the people who directly contributed to the project, whether through co
 
 ## Acknowledgments
 These individuals provided specific parts of code, inspiration, or minor contributions:
-- Shlex - For the ESP named Sense & for Fly
+- Shlex - For Fly & Some what of a inspiration
 - Paint - For helping with the UI
 - EdgelY & Their team - For some parts of code
 - Pigeon & Their team - For some parts of code
