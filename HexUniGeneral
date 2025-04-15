@@ -1340,6 +1340,8 @@ end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 local oldgrav = Workspace.Gravity
+local swimbeat = nil
+swimming = false
 SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
 		if (not swimming and speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
@@ -1347,6 +1349,7 @@ SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybin
 			workspace.Gravity = 0
 			local swimDied = function()
 				workspace.Gravity = oldgrav
+				swimming = false
 			end
 			local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
 			gravReset = Humanoid.Died:Connect(swimDied)
@@ -1361,10 +1364,12 @@ SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybin
 					speaker.Character.HumanoidRootPart.Velocity = ((Humanoid.MoveDirection ~= Vector3.new() or UserInputService:IsKeyDown(Enum.KeyCode.Space)) and speaker.Character.HumanoidRootPart.Velocity or Vector3.new())
 				end)
 			end)
+			swimming = true
 		end
 	elseif not KeyBind and not isTyping then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
 			workspace.Gravity = oldgrav
+			swimming = false
 			if gravReset then
 				gravReset:Disconnect()
 			end
@@ -2518,7 +2523,6 @@ Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Chara
 	end)
 end})
 
-local swimbeat = nil
 spacing = Misc:CreateSpacing(Sectionlprtog,2)
 Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2529,6 +2533,7 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 				workspace.Gravity = 0
 				local swimDied = function()
 					workspace.Gravity = oldgrav
+					swimming = false
 				end
 				local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
 				gravReset = Humanoid.Died:Connect(swimDied)
@@ -2543,10 +2548,12 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 						speaker.Character.HumanoidRootPart.Velocity = ((Humanoid.MoveDirection ~= Vector3.new() or UserInputService:IsKeyDown(Enum.KeyCode.Space)) and speaker.Character.HumanoidRootPart.Velocity or Vector3.new())
 					end)
 				end)
+				swimming = true
 			end
 		else
 			if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
 				workspace.Gravity = oldgrav
+				swimming = false
 				if gravReset then
 					gravReset:Disconnect()
 				end
