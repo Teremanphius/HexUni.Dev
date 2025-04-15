@@ -38,8 +38,7 @@ local JMouse = speaker:GetMouse()
 -- UI Lib
 local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))()
 
--- Gravity & Camera
-local oldgrav = Workspace.Gravity
+-- Place & Camera
 local Camera = Workspace.CurrentCamera
 local PlaceId = game.PlaceId
 local JobId = game.JobId
@@ -66,7 +65,7 @@ local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (f
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 -- Other Variables
-local Scriptcount = "200"
+local Scriptcount = "201"
 local ScriptcountAnim = "65"
 local movers = {}
 local HumanModCons = {}
@@ -1340,6 +1339,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zer
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
+local oldgrav = Workspace.Gravity
 SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
 		if (not swimming and speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
@@ -1347,30 +1347,33 @@ SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybin
 			workspace.Gravity = 0
 			local swimDied = function()
 				workspace.Gravity = oldgrav
-				swimming = false
 			end
-			Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+			local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
 			gravReset = Humanoid.Died:Connect(swimDied)
-			enums = Enum.HumanoidStateType:GetEnumItems()
+			local enums = Enum.HumanoidStateType:GetEnumItems()
 			table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
 			for i, v in pairs(enums) do
 				Humanoid:SetStateEnabled(v, false)
 			end
 			Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+			swimbeat = RunService.Heartbeat:Connect(function()
+				pcall(function()
+					speaker.Character.HumanoidRootPart.Velocity = ((Humanoid.MoveDirection ~= Vector3.new() or UserInputService:IsKeyDown(Enum.KeyCode.Space)) and speaker.Character.HumanoidRootPart.Velocity or Vector3.new())
+				end)
+			end)
 		end
 	elseif not KeyBind and not isTyping then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
 			workspace.Gravity = oldgrav
-			swimming = false
 			if gravReset then
 				gravReset:Disconnect()
 			end
-			if (swimbeat ~= nil) then
+			if swimbeat ~= nil then
 				swimbeat:Disconnect()
 				swimbeat = nil
 			end
-			Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
-			enums = Enum.HumanoidStateType:GetEnumItems()
+			local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+			local enums = Enum.HumanoidStateType:GetEnumItems()
 			table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
 			for i, v in pairs(enums) do
 				Humanoid:SetStateEnabled(v, true)
@@ -2526,30 +2529,33 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 				workspace.Gravity = 0
 				local swimDied = function()
 					workspace.Gravity = oldgrav
-					swimming = false
 				end
-				Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+				local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
 				gravReset = Humanoid.Died:Connect(swimDied)
-				enums = Enum.HumanoidStateType:GetEnumItems()
+				local enums = Enum.HumanoidStateType:GetEnumItems()
 				table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
 				for i, v in pairs(enums) do
 					Humanoid:SetStateEnabled(v, false)
 				end
 				Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+				swimbeat = RunService.Heartbeat:Connect(function()
+					pcall(function()
+						speaker.Character.HumanoidRootPart.Velocity = ((Humanoid.MoveDirection ~= Vector3.new() or UserInputService:IsKeyDown(Enum.KeyCode.Space)) and speaker.Character.HumanoidRootPart.Velocity or Vector3.new())
+					end)
+				end)
 			end
 		else
 			if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
 				workspace.Gravity = oldgrav
-				swimming = false
 				if gravReset then
 					gravReset:Disconnect()
 				end
-				if (swimbeat ~= nil) then
+				if swimbeat ~= nil then
 					swimbeat:Disconnect()
 					swimbeat = nil
 				end
-				Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
-				enums = Enum.HumanoidStateType:GetEnumItems()
+				local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+				local enums = Enum.HumanoidStateType:GetEnumItems()
 				table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
 				for i, v in pairs(enums) do
 					Humanoid:SetStateEnabled(v, true)
@@ -6027,6 +6033,19 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt
 end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
+Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Unsuspend VC",Interact="Click",Callback=function()
+	VoiceChatService:joinVoice()
+
+    if typeof(onVoiceModerated) ~= "RBXScriptConnection" then
+        onVoiceModerated = cloneref(game:GetService("VoiceChatInternal")).LocalPlayerModerated:Connect(function()
+            task.wait(1)
+            VoiceChatService:joinVoice()
+        end)
+    end
+	Notif("Let's see..", "You Should Be Unsuspended Now! No?..", 3, "check")
+end})
+
+spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.UserId = Text
 end})
@@ -7591,7 +7610,7 @@ end})
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
-local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},["Cover Face"]={R6="rbxassetid://183696478",Speed=1,AllowSpeedChange=false,Looped=true},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
+local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},["Cover Face"]={R6="rbxassetid://183696478",Speed=1,AllowSpeedChange=false,Looped=true},["T-Pose"]={R6="rbxassetid://188242481",Speed=1,AllowSpeedChange=false,Looped=true},["Backpack Head"]={R6="rbxassetid://68339848",Speed=1,AllowSpeedChange=false,Looped=true},["Turn Into A Ball"]={R6="rbxassetid://42070810",Speed=1,AllowSpeedChange=false,Looped=true},["Beating Chest"]={R6="rbxassetid://72635328",Speed=1,AllowSpeedChange=true,Looped=true},["Holding Something"]={R6="rbxassetid://189854234",Speed=1,AllowSpeedChange=false,Looped=true},["Holding Something 2"]={R6="rbxassetid://185299570",Speed=1,AllowSpeedChange=false,Looped=true},["Screwing in"]={R6="rbxassetid://75322014",Speed=1,AllowSpeedChange=false,Looped=true},["DJ Bobbing Head"]={R6="rbxassetid://86614939",Speed=1,AllowSpeedChange=true,Looped=true},["DJ Bobbing Head 2"]={R6="rbxassetid://87684948",Speed=1,AllowSpeedChange=true,Looped=true},["Powerful Punch"]={R6="rbxassetid://186934753",Speed=1,AllowSpeedChange=true,Looped=true},["Enrage"]={R6="rbxassetid://93648331",Speed=1,AllowSpeedChange=true,Looped=true},["Head Turn Right"]={R6="rbxassetid://88016955",Speed=1,AllowSpeedChange=false,Looped=true},["Wojack Point"]={R6="rbxassetid://243656287",Speed=1,AllowSpeedChange=false,Looped=true},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
 local selectedPackanim = nil
 local PrepAnimForJerkTRACK = nil
 local JerkinAnimTRACK = nil
@@ -7601,7 +7620,7 @@ local loopConJerkinR15
 local banimTrack = nil
 local aanimationPlaying = false
 
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Jerk Off","Salute","Cover Face","Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink","Helicopter","Scared","Crouch"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Jerk Off","Salute","Cover Face","T-Pose","Backpack Head","Turn Into A Ball","Beating Chest","Holding Something","Holding Something 2","Screwing in","DJ Bobbing Head","DJ Bobbing Head 2","Powerful Punch","Enrage","Head Turn Right","Wojack Point","Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink","Helicopter","Scared","Crouch"},CurrentOption="Select an option",Callback=function(option)
     selectedPackanim = option
 	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
 	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
