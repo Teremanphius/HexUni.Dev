@@ -3715,6 +3715,34 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",Current
 	end)
 end})
 
+SpinKeybind = Misc:CreateKeybind({Name="Spin Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionspin,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		Spin = Instance.new("BodyAngularVelocity")
+		Spin.Name = "Spinning"
+		Spin.Parent = getRoot(speaker.Character)
+		Spin.MaxTorque = Vector3.new(0, math.huge, 0)
+		task.spawn(function()
+			while task.wait() do
+				Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
+			end
+		end)
+	elseif not KeyBind and not isTyping then
+		for i, v in pairs(getRoot(speaker.Character):GetChildren()) do
+			if (v.Name == "Spinning") then
+				v:Destroy()
+			end
+		end
+	end
+end})
+
+Button = Misc:CreateButton({SectionParent=Sectionspin,Name="Reset Spin Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		SpinKeybind:Set("Set Keybind")
+	end)
+end})
+
 Sliderspinspeed = Misc:CreateSlider({SectionParent=Sectionspin,Name="Spin Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
 	pcall(function()
 		spinSpeed = Value
