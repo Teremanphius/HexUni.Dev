@@ -3761,172 +3761,81 @@ Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",
 	Sliderhipcar:Set(0)
 end})
 
-local ifCarEnabled = false
-ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(Value)
-	carTog = Value
-	if carTog then
-		if not r15(speaker) then
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://129342287"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play()
-			Carpl:AdjustSpeed(0)
-		else
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://17360699557"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play(0, 10, 0)
-			Carpl:AdjustSpeed(2)
-			task.wait(1)
-			Carpl:AdjustSpeed(0)
-		end
-	else
-		changePhysProps(false)
-		Carpl:Stop()
-		Caranim:Destroy()
-		pcall(function()
-			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
-		end)
-	end
-	speaker.CharacterAdded:Connect(function(char)
-		Character = char
-		if carTog then
-			if not r15(speaker) then
-				ifCarEnabled = true
-				changePhysProps(true)
-				Caranim = Instance.new("Animation")
-				Caranim.AnimationId = "rbxassetid://129342287"
-				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-				Carpl:Play()
-				Carpl:AdjustSpeed(0)
-			else
-				ifCarEnabled = true
-				changePhysProps(true)
-				Caranim = Instance.new("Animation")
-				Caranim.AnimationId = "rbxassetid://17360699557"
-				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-				Carpl:Play(0, 10, 0)
-				Carpl:AdjustSpeed(2)
-				task.wait(1)
-				Carpl:AdjustSpeed(0)
-			end
-		else
-			changePhysProps(false)
-			Carpl:Stop()
-			Caranim:Destroy()
-			pcall(function()
-			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
-			end)
-		end
-	end)
+local ifCarEnabled=false
+local carControls
+
+local function setCarControls(enabled)
+    for _,ctrl in ipairs(carControls) do
+        if enabled then
+            ctrl:Unlock()
+        else
+            ctrl:Lock("Locked")
+        end
+    end
+end
+
+ToggleCar=Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(val)
+    ifCarEnabled=val
+    if ifCarEnabled then
+        changePhysProps(true)
+        Caranim=Instance.new("Animation")
+        Caranim.AnimationId=r15(speaker)and"rbxassetid://17360699557"or"rbxassetid://129342287"
+        Carpl=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+        Carpl:Play()
+        Carpl:AdjustSpeed(r15(speaker)and 2 or 0)
+    else
+        changePhysProps(false)
+        if Carpl then Carpl:Stop() end
+        if Caranim then Caranim:Destroy() end
+        pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=16 end)
+    end
+    setCarControls(ifCarEnabled)
 end})
 
-CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(KeyBind)
-	carkb = KeyBind
-	if carkb and not isTyping then
-		if not r15(speaker) then
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://129342287"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play()
-			Carpl:AdjustSpeed(0)
-		else
-			ifCarEnabled = true
-			changePhysProps(true)
-			Caranim = Instance.new("Animation")
-			Caranim.AnimationId = "rbxassetid://17360699557"
-			Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-			Carpl:Play(0, 10, 0)
-			Carpl:AdjustSpeed(2)
-			task.wait(1)
-			Carpl:AdjustSpeed(0)
-		end
-	elseif not carkb and not isTyping then
-		changePhysProps(false)
-		Carpl:Stop()
-		Caranim:Destroy()
-		pcall(function()
-			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
-		end)
-	end
-	speaker.CharacterAdded:Connect(function(char)
-		Character = char
-		if carTog then
-			if not r15(speaker) then
-				ifCarEnabled = true
-				changePhysProps(true)
-				Caranim = Instance.new("Animation")
-				Caranim.AnimationId = "rbxassetid://129342287"
-				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-				Carpl:Play()
-				Carpl:AdjustSpeed(0)
-			else
-				ifCarEnabled = true
-				changePhysProps(true)
-				Caranim = Instance.new("Animation")
-				Caranim.AnimationId = "rbxassetid://17360699557"
-				Carpl = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
-				Carpl:Play(0, 10, 0)
-				Carpl:AdjustSpeed(2)
-				task.wait(1)
-				Carpl:AdjustSpeed(0)
-			end
-		elseif not carkb and not isTyping then
-			changePhysProps(false)
-			Carpl:Stop()
-			Caranim:Destroy()
-			pcall(function()
-				speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
-			end)
-		end
-	end)
+CarKeybind=Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(active)
+    ifCarEnabled=active and not isTyping
+    if ifCarEnabled then
+        changePhysProps(true)
+        Caranim=Instance.new("Animation")
+        Caranim.AnimationId=r15(speaker)and"rbxassetid://17360699557"or"rbxassetid://129342287"
+        Carpl=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
+        Carpl:Play()
+        Carpl:AdjustSpeed(r15(speaker)and 2 or 0)
+    else
+        changePhysProps(false)
+        if Carpl then Carpl:Stop() end
+        if Caranim then Caranim:Destroy() end
+        pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=16 end)
+    end
+    setCarControls(ifCarEnabled)
 end})
 
-Button = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
-	sfxSound("true")
-	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
-	pcall(function()
-		CarKeybind:Set("Set Keybind")
-	end)
+Button=Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
+    sfxSound("true")
+    Notif("Reseted Keybind!","You can set a new one now!",2,"check")
+    pcall(function()CarKeybind:Set("Set Keybind")end)
 end})
 
-spacing = Misc:CreateSpacing(Sectioncarp,2)
+spacing=Misc:CreateSpacing(Sectioncarp,2)
 
-SliderCarspeed = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Speed",Range={0,100},Increment=1,Suffix="Car Speed",CurrentValue=16,Callback=function(Value)
-	pcall(function()
-		if ifCarEnabled then
-			speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value		
-		else
-			return
-		end
-	end)
+SliderCarspeed=Misc:CreateSlider({SectionParent=Sectioncarp,Name="Car Speed",Range={0,100},Increment=1,Suffix="Car Speed",CurrentValue=16,Callback=function(val)
+    pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=val end)
 end})
 
-Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnter=true,PlaceholderText=16,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	if ifCarEnabled then
-		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Text
-	else
-		return
-	end
+Inputcarspeed=Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnter=true,PlaceholderText=16,RemoveTextAfterFocusLost=false,Callback=function(text)
+    pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=text end)
 end})
 
-Sliderhipcar = Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,6},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(Value)
-	pcall(function()
-		speaker.Character.Humanoid.HipHeight = Value
-	end)
+Sliderhipcar=Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,6},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(val)
+    pcall(function()speaker.Character.Humanoid.HipHeight=val end)
 end})
 
-Input = Misc:CreateInput({SectionParent=Sectioncarp,Name="Hip Height",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		speaker.Character.Humanoid.HipHeight = Text
-	end)
+Inputhipcar=Misc:CreateInput({SectionParent=Sectioncarp,Name="Hip Height",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(text)
+    pcall(function()speaker.Character.Humanoid.HipHeight=text end)
 end})
+
+carControls={SliderCarspeed,Inputcarspeed,Sliderhipcar,Inputhipcar}
+setCarControls(ifCarEnabled)
 
 Sectionwalkspeeder = Misc:CreateSection("FE LocalPlayer Related | CFrame Walk Speed", false, false, 1114393432)
 Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="This Function Should Be Able To Bypass Anti-Cheat's And Such\nBasically Walk Fast While Bypassing the Anti-Cheat"}, Sectionwalkspeeder)
