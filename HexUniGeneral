@@ -7586,39 +7586,84 @@ end})
 
 Sectionfeanims = Animations:CreateSection("FE LocalPlayer Related | Animation's", false, false, 10686489468)
 Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values",Interact="Click",Callback=function()
-	pcall(function()
-		AnimpSlider:Set(1)
-	end)
+	pcall(function()AnimpSlider:Set(1)end)
 end})
 
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
-local testdances = {["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},Salute={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},["Cover Face"]={R6="rbxassetid://183696478",Speed=1,AllowSpeedChange=false,Looped=true},["T-Pose"]={R6="rbxassetid://188242481",Speed=1,AllowSpeedChange=false,Looped=true},["Backpack Head"]={R6="rbxassetid://68339848",Speed=1,AllowSpeedChange=false,Looped=true},["Turn Into A Ball"]={R6="rbxassetid://42070810",Speed=1,AllowSpeedChange=false,Looped=true},["Beating Chest"]={R6="rbxassetid://72635328",Speed=1,AllowSpeedChange=true,Looped=true},["Holding Something"]={R6="rbxassetid://189854234",Speed=1,AllowSpeedChange=false,Looped=true},["Holding Something 2"]={R6="rbxassetid://185299570",Speed=1,AllowSpeedChange=false,Looped=true},["Screwing in"]={R6="rbxassetid://75322014",Speed=1,AllowSpeedChange=false,Looped=true},["DJ Bobbing Head"]={R6="rbxassetid://86614939",Speed=1,AllowSpeedChange=true,Looped=true},["DJ Bobbing Head 2"]={R6="rbxassetid://87684948",Speed=1,AllowSpeedChange=true,Looped=true},["Powerful Punch"]={R6="rbxassetid://186934753",Speed=1,AllowSpeedChange=true,Looped=true},["Enrage"]={R6="rbxassetid://93648331",Speed=1,AllowSpeedChange=true,Looped=true},["Head Turn Right"]={R6="rbxassetid://88016955",Speed=1,AllowSpeedChange=false,Looped=true},["Wojack Point"]={R6="rbxassetid://243656287",Speed=1,AllowSpeedChange=false,Looped=true},Bang={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},Punch={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},Carpet={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},Spasm={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},Faint={R6="rbxassetid://181526230",Speed=10000000,AllowSpeedChange=false,Looped=true},["Glitch Faint"]={R6="rbxassetid://181525546",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Turbine"]={R6="rbxassetid://259438880",Speed=10000000,AllowSpeedChange=false,Looped=true},["Arm Detach"]={R6="rbxassetid://33169583",Speed=10000000,AllowSpeedChange=false,Looped=true},["Insane Legs"]={R6="rbxassetid://87986341",Speed=10000000,AllowSpeedChange=false,Looped=true},["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},Taunt={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},Pray={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},Summon={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},Drink={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},Helicopter={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},Scared={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},Crouch={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}}
-local selectedPackanim = nil
-local PrepAnimForJerkTRACK = nil
-local JerkinAnimTRACK = nil
-local loopConPrep
-local loopConJerkin
-local loopConJerkinR15
-local banimTrack = nil
-local aanimationPlaying = false
+local testdances = {
+    ["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},
+    ["Salute"]={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},
+    ["Cover Face"]={R6="rbxassetid://183696478",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["T-Pose"]={R6="rbxassetid://188242481",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Backpack Head"]={R6="rbxassetid://68339848",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Turn Into A Ball"]={R6="rbxassetid://42070810",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Beating Chest"]={R6="rbxassetid://72635328",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Holding Something"]={R6="rbxassetid://189854234",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Holding Something 2"]={R6="rbxassetid://185299570",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Screwing in"]={R6="rbxassetid://75322014",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["DJ Bobbing Head"]={R6="rbxassetid://86614939",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["DJ Bobbing Head 2"]={R6="rbxassetid://87684948",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Powerful Punch"]={R6="rbxassetid://186934753",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Enrage"]={R6="rbxassetid://93648331",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Head Turn Right"]={R6="rbxassetid://88016955",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Wojack Point"]={R6="rbxassetid://243656287",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Bang"]={R6="rbxassetid://148840371",R15="rbxassetid://5918726674",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Moving Dance"]={R6="rbxassetid://429703734",R15="rbxassetid://1379432998",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Side To Side Dance"]={R6="rbxassetid://429699657",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Random Dance"]={Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Monster Mash Dance"]={R6="rbxassetid://35654637",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Full Swing"]={R6="rbxassetid://218504594",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Punch"]={R6="rbxassetid://204062532",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Dino Walk"]={R6="rbxassetid://204328711",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Carpet"]={R6="rbxassetid://282574440",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Staff Walk"]={R6="rbxassetid://27759788",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Spasm"]={R6="rbxassetid://33796059",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Clone Illusion"]={R6="rbxassetid://215384594",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Glitch Jump"]={R6="rbxassetid://184574340",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Glitch Levitate"]={R6="rbxassetid://313762630",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Faint"]={R6="rbxassetid://181526230",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Glitch Faint"]={R6="rbxassetid://181525546",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Arm Turbine"]={R6="rbxassetid://259438880",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Arm Detach"]={R6="rbxassetid://33169583",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Insane Legs"]={R6="rbxassetid://87986341",Speed=99,AllowSpeedChange=false,Looped=true},
+    ["Pinch Nose"]={R6="rbxassetid://30235165",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Floating Head"]={R6="rbxassetid://121572214",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Zombie Arms"]={R6="rbxassetid://183294396",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Head Throw"]={R6="rbxassetid://35154961",Speed=1,AllowSpeedChange=false,Looped=false},
+    ["Kick Board"]={R6="rbxassetid://160737244",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Taunt"]={R6="rbxassetid://74901237",Speed=1,AllowSpeedChange=false,Looped=false},
+    ["Pray"]={R6="rbxassetid://75416338",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Summon"]={R6="rbxassetid://93693205",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Drink"]={R6="rbxassetid://163203876",Speed=1,AllowSpeedChange=false,Looped=false},
+    ["Helicopter"]={R6="rbxassetid://235542946",Speed=1,AllowSpeedChange=true,Looped=true},
+    ["Scared"]={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},
+    ["Crouch"]={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}
+}
+local PlaybackHandlers={currentTrack=nil,loop=nil}
 
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options={"Jerk Off","Salute","Cover Face","T-Pose","Backpack Head","Turn Into A Ball","Beating Chest","Holding Something","Holding Something 2","Screwing in","DJ Bobbing Head","DJ Bobbing Head 2","Powerful Punch","Enrage","Head Turn Right","Wojack Point","Bang","Moving Dance","Side To Side Dance","Random Dance","Monster Mash Dance","Full Swing","Punch","Dino Walk","Carpet","Staff Walk","Spasm","Clone Illusion","Glitch Jump","Glitch Levitate","Faint","Glitch Faint","Arm Turbine","Arm Detach","Insane Legs","Pinch Nose","Floating Head","Zombie Arms","Head Throw","Kick Board","Taunt","Pray","Summon","Drink","Helicopter","Scared","Crouch"},CurrentOption="Select an option",Callback=function(option)
-    selectedPackanim = option
-	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-	JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-	loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-	loopConPrep = cleanupConnection(loopConPrep)
-	loopConJerkin = cleanupConnection(loopConJerkin)
-	CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-    banimTrack = cleanupTrack(banimTrack)
-	
-    aanimationPlaying = false
-    Toggleeanimation:Set(false)
-    local danceIds = testdances[selectedPackanim]
-    if danceIds.AllowSpeedChange then
+local function cleanup()
+    if PlaybackHandlers.currentTrack then
+        PlaybackHandlers.currentTrack:Stop()
+        PlaybackHandlers.currentTrack=nil
+    end
+    if PlaybackHandlers.loop then
+        PlaybackHandlers.loop:Disconnect()
+        PlaybackHandlers.loop=nil
+    end
+end
+
+local selectedPackanim
+Dropdown=Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select Animation",Options=(function()
+    local list={}
+    for name in pairs(testdances)do table.insert(list,name)end
+    return list
+end)(),CurrentOption="Select an option",Callback=function(o)
+    selectedPackanim=o
+    cleanup()
+    local dance=testdances[o]
+    if dance.AllowSpeedChange then
         AnimpSlider:Unlock()
         AnimpInput:Unlock()
     else
@@ -7628,251 +7673,75 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select 
 end})
 
 Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="Play Selected Anim",CurrentValue=false,Callback=function(Value)
-    if not selectedPackanim then
-        return
-    end
-    local danceIds = testdances[selectedPackanim]
+    if not selectedPackanim then return end
+	local dance=testdances[selectedPackanim]
     if Value then
-        local animId
-        if selectedPackanim == "Random Dance" then
-			PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-			JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-			JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-			loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-			loopConPrep = cleanupConnection(loopConPrep)
-			loopConJerkin = cleanupConnection(loopConJerkin)
-			CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-			banimTrack = cleanupTrack(banimTrack)
-            local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)]
-            local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)]
-            animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6)
-            CcurrentAnimation = Instance.new("Animation")
-            CcurrentAnimation.AnimationId = animId
-            CcurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(CcurrentAnimation)
-            CcurrentAnimationTrack.Looped = true
-			CcurrentAnimationTrack:Play(0.1, 10, 1)
-		elseif selectedPackanim == "Jerk Off" then
-    if not r15(speaker) then
-        local PrepAnimForJerk = Instance.new("Animation")
-        PrepAnimForJerk.AnimationId = "rbxassetid://168268306"
-        PrepAnimForJerkTRACK = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(PrepAnimForJerk)
-        PrepAnimForJerkTRACK.Looped = true
-        PrepAnimForJerkTRACK:Play()
-        local firstLoopStart = 1.55
-        local firstLoopEnd = 1.91
-        loopConPrep = RunService.Heartbeat:Connect(function()
-            pcall(function()
-                if PrepAnimForJerkTRACK.TimePosition >= firstLoopEnd then
-                    PrepAnimForJerkTRACK.TimePosition = firstLoopStart
-                end
-            end)
-        end)
-        local JerkinAnimR6 = Instance.new("Animation")
-        JerkinAnimR6.AnimationId = danceIds.R6
-		JerkinAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(JerkinAnimR6)
-        JerkinAnimTRACKR6.Looped = true
-        JerkinAnimTRACKR6:Play()
-        local secondLoopStart = danceIds.R6Time.LoopStart
-        local secondLoopEnd = danceIds.R6Time.LoopEnd
-        loopConJerkin = RunService.Heartbeat:Connect(function()
-            pcall(function()
-                if JerkinAnimTRACKR6.TimePosition >= secondLoopEnd then
-                    JerkinAnimTRACKR6.TimePosition = secondLoopStart
-                end
-            end)
-        end)
-    else 
-        local JerkinAnimR15 = Instance.new("Animation")
-        JerkinAnimR15.AnimationId = danceIds.R15
-        JerkinAnimTRACKR15 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(JerkinAnimR15)
-        JerkinAnimTRACKR15.Looped = true
-        JerkinAnimTRACKR15:Play()
-        local loopStart = danceIds.R15Time.LoopStart
-        local loopEnd = danceIds.R15Time.LoopEnd
-        loopConJerkinR15 = RunService.Heartbeat:Connect(function()
-            pcall(function()
-                if JerkinAnimTRACKR15.TimePosition >= loopEnd then
-                    JerkinAnimTRACKR15.TimePosition = loopStart
-                end
-            end)
-        end)
-    end
-	elseif selectedPackanim == "Salute" then
-		if not r15(speaker) then
-			local SaluteAnimR6 = Instance.new("Animation")
-			SaluteAnimR6.AnimationId = danceIds.R6
-			SaluteAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(SaluteAnimR6)
-			SaluteAnimTRACKR6.Looped = true
-			SaluteAnimTRACKR6:Play()
-			local secondLoopStart = danceIds.R6Time.LoopStart
-			local secondLoopEnd = danceIds.R6Time.LoopEnd
-			loopConSaluting = RunService.Heartbeat:Connect(function()
-				pcall(function()
-					if SaluteAnimTRACKR6.TimePosition >= secondLoopEnd then
-						SaluteAnimTRACKR6.TimePosition = secondLoopStart
-					end
-				end)
-			end)
-		end
+        if r15(speaker) then
+            if not dance.R15 then
+                sfxSound("false")
+                Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
+                Toggleeanimation:Set(false)
+                return
+            end
         else
-				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-				SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
-				JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-				loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-				loopConPrep = cleanupConnection(loopConPrep)
-				loopConJerkin = cleanupConnection(loopConJerkin)
-				loopConSaluting = cleanupConnection(loopConSaluting)
-				CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-				banimTrack = cleanupTrack(banimTrack)
-            animId = (r15(speaker) and danceIds.R15) or danceIds.R6
-            bcuranim = Instance.new("Animation")
-            bcuranim.AnimationId = animId
-			banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(bcuranim)
-            banimTrack.Looped = danceIds.Looped
-            banimTrack:Play(0.1, 10, danceIds.Speed)
+            if not dance.R6 then
+                sfxSound("false")
+                Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
+                Toggleeanimation:Set(false)
+                return
+            end
         end
-        aanimationPlaying = true
-        speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-            Toggleeanimation:Set(false)
-        end)
+        cleanup()
+        local anim=Instance.new("Animation")
+        anim.AnimationId=(r15(speaker) and dance.R15) or dance.R6
+        local track=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(anim)
+        track.Looped=dance.Looped
+        track:Play(0,10,dance.Speed)
+        local timeData=(r15(speaker) and dance.R15Time) or dance.R6Time
+        if timeData then
+            PlaybackHandlers.loop=RunService.Heartbeat:Connect(function()
+                if track.TimePosition>=timeData.LoopEnd then track.TimePosition=timeData.LoopStart end
+            end)
+        end
+        PlaybackHandlers.currentTrack=track
     else
-	PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-	JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-	SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
-	JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-	loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-	loopConPrep = cleanupConnection(loopConPrep)
-	loopConJerkin = cleanupConnection(loopConJerkin)
-	loopConSaluting = cleanupConnection(loopConSaluting)
-	CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-	banimTrack = cleanupTrack(banimTrack)
-        aanimationPlaying = false
+        cleanup()
     end
 end})
 
 PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionfeanims,Callback=function(KeyBind)
-	local loopConnection
-    if not selectedPackanim then
-        return
+	if not selectedPackanim then return end
+	local dance=testdances[selectedPackanim]
+    if KeyBind and not IsTyping then
+        if r15(speaker) then
+            if not dance.R15 then
+                sfxSound("false")
+                Notif("Not R15!","You ain't R15 compatible for this anim.",2,"x")
+                return
+            end
+        else
+            if not dance.R6 then
+                sfxSound("false")
+                Notif("Not R6!","You ain't R6 compatible for this anim.",2,"x")
+                return
+            end
+        end
+        cleanup()
+        local anim=Instance.new("Animation")
+        anim.AnimationId=(r15(speaker) and dance.R15) or dance.R6
+        local track=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(anim)
+        track.Looped=dance.Looped
+        track:Play(0,10,dance.Speed)
+        local timeData=(r15(speaker) and dance.R15Time) or dance.R6Time
+        if timeData then
+            PlaybackHandlers.loop=RunService.Heartbeat:Connect(function()
+                if track.TimePosition>=timeData.LoopEnd then track.TimePosition=timeData.LoopStart end
+            end)
+        end
+        PlaybackHandlers.currentTrack=track
+    elseif not KeyBind and not IsTyping then
+        cleanup()
     end
-    local danceIds = testdances[selectedPackanim]
-	if KeyBind and not isTyping then
-			local animId
-			if selectedPackanim == "Random Dance" then
-				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-				JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-				loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-				loopConPrep = cleanupConnection(loopConPrep)
-				loopConJerkin = cleanupConnection(loopConJerkin)
-				CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-				banimTrack = cleanupTrack(banimTrack)
-				local randomR6 = Randomr6dances[math.random(1, #Randomr6dances)]
-				local randomR15 = Randomr15dances[math.random(1, #Randomr15dances)]
-				animId = (r15(speaker) and ("rbxassetid://" .. randomR15)) or ("rbxassetid://" .. randomR6)
-				CcurrentAnimation = Instance.new("Animation")
-				CcurrentAnimation.AnimationId = animId
-				CcurrentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(
-				CcurrentAnimation)
-				CcurrentAnimationTrack.Looped = true
-				CcurrentAnimationTrack:Play(0.1, 10, 1)
-			elseif selectedPackanim == "Jerk Off" then
-				if not r15(speaker) then
-					local PrepAnimForJerk = Instance.new("Animation")
-					PrepAnimForJerk.AnimationId = "rbxassetid://168268306"
-					PrepAnimForJerkTRACK = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(
-					PrepAnimForJerk)
-					PrepAnimForJerkTRACK.Looped = true
-					PrepAnimForJerkTRACK:Play()
-					local firstLoopStart = 1.55
-					local firstLoopEnd = 1.91
-					loopConPrep = RunService.Heartbeat:Connect(function()
-						pcall(function()
-							if PrepAnimForJerkTRACK.TimePosition >= firstLoopEnd then
-								PrepAnimForJerkTRACK.TimePosition = firstLoopStart
-							end
-						end)
-					end)
-					local JerkinAnimR6 = Instance.new("Animation")
-					JerkinAnimR6.AnimationId = danceIds.R6
-					JerkinAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(JerkinAnimR6)
-					JerkinAnimTRACKR6.Looped = true
-					JerkinAnimTRACKR6:Play()
-					local secondLoopStart = danceIds.R6Time.LoopStart
-					local secondLoopEnd = danceIds.R6Time.LoopEnd
-					loopConJerkin = RunService.Heartbeat:Connect(function()
-						pcall(function()
-							if JerkinAnimTRACKR6.TimePosition >= secondLoopEnd then
-								JerkinAnimTRACKR6.TimePosition = secondLoopStart
-							end
-						end)
-					end)
-				else
-					local JerkinAnimR15 = Instance.new("Animation")
-					JerkinAnimR15.AnimationId = danceIds.R15
-					JerkinAnimTRACKR15 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(JerkinAnimR15)
-					JerkinAnimTRACKR15.Looped = true
-					JerkinAnimTRACKR15:Play()
-					local loopStart = danceIds.R15Time.LoopStart
-					local loopEnd = danceIds.R15Time.LoopEnd
-					loopConJerkinR15 = RunService.Heartbeat:Connect(function()
-						pcall(function()
-							if JerkinAnimTRACKR15.TimePosition >= loopEnd then
-								JerkinAnimTRACKR15.TimePosition = loopStart
-							end
-						end)
-					end)
-				end
-				elseif selectedPackanim == "Salute" then
-					if not r15(speaker) then
-						local SaluteAnimR6 = Instance.new("Animation")
-						SaluteAnimR6.AnimationId = danceIds.R6
-						SaluteAnimTRACKR6 = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(SaluteAnimR6)
-						SaluteAnimTRACKR6.Looped = true
-						SaluteAnimTRACKR6:Play()
-						local secondLoopStart = danceIds.R6Time.LoopStart
-						local secondLoopEnd = danceIds.R6Time.LoopEnd
-						loopConSaluting = RunService.Heartbeat:Connect(function()
-							pcall(function()
-								if SaluteAnimTRACKR6.TimePosition >= secondLoopEnd then
-									SaluteAnimTRACKR6.TimePosition = secondLoopStart
-								end
-							end)
-						end)
-					end
-			else
-				PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-				JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-				SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
-				JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-				loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-				loopConPrep = cleanupConnection(loopConPrep)
-				loopConJerkin = cleanupConnection(loopConJerkin)
-				loopConSaluting = cleanupConnection(loopConSaluting)
-				CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-				banimTrack = cleanupTrack(banimTrack)
-				animId = (r15(speaker) and danceIds.R15) or danceIds.R6
-				bcuranim = Instance.new("Animation")
-				bcuranim.AnimationId = animId
-				banimTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(bcuranim)
-				banimTrack.Looped = danceIds.Looped
-				banimTrack:Play(0.1, 10, danceIds.Speed)
-			end
-			aanimationPlaying = true
-    elseif not Keybind and not isTyping then
-		PrepAnimForJerkTRACK = cleanupTrack(PrepAnimForJerkTRACK)
-		JerkinAnimTRACKR6 = cleanupTrack(JerkinAnimTRACKR6)
-		SaluteAnimTRACKR6 = cleanupTrack(SaluteAnimTRACKR6)
-		JerkinAnimTRACKR15 = cleanupTrack(JerkinAnimTRACKR15)
-		loopConJerkinR15 = cleanupConnection(loopConJerkinR15)
-		loopConPrep = cleanupConnection(loopConPrep)
-		loopConJerkin = cleanupConnection(loopConJerkin)
-		loopConSaluting = cleanupConnection(loopConSaluting)
-		CcurrentAnimationTrack = cleanupTrack(CcurrentAnimationTrack)
-	banimTrack = cleanupTrack(banimTrack)
-        aanimationPlaying = false
-	end
 end})
 table.insert(env.AllKeybinds, PlaycustmAnimKeybind)
 
@@ -7886,27 +7755,12 @@ end})
 
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
 AnimpSlider = Animations:CreateSlider({SectionParent=Sectionfeanims,Name="Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-        if selectedPackanim == "Random Dance" then
-			CcurrentAnimationTrack:AdjustSpeed(Value)
-        elseif selectedPackanim == "Jerk Off" then
-			JerkinAnimTRACKR6:AdjustSpeed(Value)
-		else
-			banimTrack:AdjustSpeed(Value)
-		end
-	end)
+	pcall(function()if PlaybackHandlers.currentTrack then PlaybackHandlers.currentTrack:AdjustSpeed(Value) end end)
 end})
 
 AnimpInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		if selectedPackanim == "Random Dance" then
-			CcurrentAnimationTrack:AdjustSpeed(Text)
-		elseif selectedPackanim == "Jerk Off" then
-			JerkinAnimTRACKR6:AdjustSpeed(Text)
-		else
-			banimTrack:AdjustSpeed(Text)
-		end
-	end)
+	local v=tonumber(Text)
+    pcall(function()if PlaybackHandlers.currentTrack then PlaybackHandlers.currentTrack:AdjustSpeed(v) end end)
 end})
 
 Sectionotherfeanimssc = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610)
