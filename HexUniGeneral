@@ -910,13 +910,13 @@ Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Gam
 	TeleportService:Teleport(PlaceId, speaker)
 end})
 
-Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game W Hexen Uni",Interact="Click",Callback=function()
+Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game With Hub",Interact="Click",Callback=function()
 	tpcc = false
 	hu = true
 	speaker.OnTeleport:Connect(function(State)
 		if (hu and not tpcc and queueteleport) then
 			tpcc = true
-			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/JMldw3D8dwztK3BgA-LU-FcupZGw2RdtR8MGPL7m34RMckx68MSZREHERPHwyqIC/main/FZZS8rthXWoUleMvmMmW8byDsOhakqKPAS52Che2nU33SQISUE3iZx67bA5LdzSf'))()")
+			queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.Dev/refs/heads/main/HexUniGeneral'))()")
 		end
 	end)
 	TeleportService:Teleport(PlaceId, speaker)
