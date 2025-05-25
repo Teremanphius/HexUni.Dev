@@ -36,7 +36,7 @@ local Humanoid = Character:FindFirstChildOfClass("Humanoid")
 local JMouse = speaker:GetMouse()
 
 -- UI Lib
-local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/main/main.lua"))()
+local NSUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/rrAsus/NSUI/refs/heads/main/main.lua"))()
 
 -- Place & Camera
 local Camera = Workspace.CurrentCamera
@@ -459,6 +459,10 @@ end
 connectEvents()
 initialUpdatePlayerList()
 
+local env = (getgenv and getgenv()) or _G
+env.AlreadyRan = env.AlreadyRan or false
+env.AllKeybinds = env.AllKeybinds  or {}
+
 local Updatedfps = 0
 RunService.RenderStepped:Connect(function(frame)
     Updatedfps = math.round(1 / frame)
@@ -804,6 +808,7 @@ PressToTpKeybind = Misc:CreateKeybind({Name="Press to TP Keybind",CurrentKeybind
 		clicktpFunc()
 	end
 end})
+table.insert(env.AllKeybinds, PressToTpKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Press to TP Keybind",Callback=function()
 	sfxSound("true")
@@ -842,6 +847,7 @@ TweenPressToTpKeybind = Misc:CreateKeybind({Name="Tween Press to TP Keybind",Cur
 		TweenclicktpFunc()
 	end
 end})
+table.insert(env.AllKeybinds, TweenPressToTpKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Reset Tween Press to TP Keybind",Callback=function()
 	sfxSound("true")
@@ -1030,6 +1036,7 @@ CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind=
 		end)
 	end
 end})
+table.insert(env.AllKeybinds, CframeFlyKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset CFrame Fly Keybind",Callback=function()
 	sfxSound("true")
@@ -1071,6 +1078,7 @@ fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind"
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 	end
 end})
+table.insert(env.AllKeybinds, fLYKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind",Callback=function()
 	sfxSound("true")
@@ -1111,6 +1119,7 @@ vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybin
 		flying = false
 	end
 end})
+table.insert(env.AllKeybinds, vehicleFLYKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle Fly Keybind",Callback=function()
 	sfxSound("true")
@@ -1156,6 +1165,7 @@ anchorKeybind = Misc:CreateKeybind({Name="Freeze / Anchor Keybind",CurrentKeybin
 		AnchorPlr(false)
 	end
 end})
+table.insert(env.AllKeybinds, anchorKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Freeze /.. Keybind",Callback=function()
 	sfxSound("true")
@@ -1177,6 +1187,7 @@ SprintKeybind = Misc:CreateKeybind({Name="Sprint Keybind",CurrentKeybind="Set Ke
 		TweenService:Create(Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=70}):Play()
 	end
 end})
+table.insert(env.AllKeybinds, SprintKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sprint Keybind",Callback=function()
 	sfxSound("true")
@@ -1212,6 +1223,7 @@ tripKeybind = Misc:CreateKeybind({Name="Trip Keybind",CurrentKeybind="Set Keybin
 		end
 	end
 end})
+table.insert(env.AllKeybinds, tripKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Trip Keybind",Callback=function()
 	sfxSound("true")
@@ -1231,6 +1243,7 @@ sitKeybind = Misc:CreateKeybind({Name="Sit Keybind",CurrentKeybind="Set Keybind"
 		speaker.Character:FindFirstChildOfClass("Humanoid").Sit = true
 	end
 end})
+table.insert(env.AllKeybinds, sitKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit Keybind",Callback=function()
 	sfxSound("true")
@@ -1249,6 +1262,7 @@ stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybin
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
 	end
 end})
+table.insert(env.AllKeybinds, stunKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Stun Keybind",Callback=function()
 	sfxSound("true")
@@ -1304,6 +1318,7 @@ godmodeKeybind = Misc:CreateKeybind({Name="God Mode Keybind",CurrentKeybind="Set
 		nHuman.Health = nHuman.MaxHealth
 	end
 end})
+table.insert(env.AllKeybinds, godmodeKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God Mode Keybind",Callback=function()
 	sfxSound("true")
@@ -1329,6 +1344,7 @@ zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentK
 		game.Workspace.Gravity = oldgrav
 	end
 end})
+table.insert(env.AllKeybinds, zerogravtripKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zero Grav Trip Keybind",Callback=function()
 	sfxSound("true")
@@ -1386,6 +1402,7 @@ SwimKeybind = Misc:CreateKeybind({Name="Swim Keybind",CurrentKeybind="Set Keybin
 		end
 	end
 end})
+table.insert(env.AllKeybinds, SwimKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Swim Keybind",Callback=function()
 	sfxSound("true")
@@ -1474,6 +1491,7 @@ FloatKeybind = Misc:CreateKeybind({Name="Float Keybind",CurrentKeybind="Set Keyb
 		end
 	end
 end})
+table.insert(env.AllKeybinds, FloatKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Float Keybind",Callback=function()
 	sfxSound("true")
@@ -1536,6 +1554,7 @@ NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Ke
 		end)
 	end
 end})
+table.insert(env.AllKeybinds, NoClipKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset NoClip Keybind",Callback=function()
 	sfxSound("true")
@@ -1591,6 +1610,7 @@ vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeyb
 		end
 	end
 end})
+table.insert(env.AllKeybinds, vehNoClipKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoClip Keybind",Callback=function()
 	sfxSound("true")
@@ -1877,6 +1897,7 @@ InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set 
 		TurnVisible()
 	end
 end})
+table.insert(env.AllKeybinds, InvisKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Reset Invisible Keybind",Callback=function()
 	sfxSound("true")
@@ -2003,7 +2024,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Invisible (Tool
 end})
 
 Sectionlprtog = Misc:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468)
-Paragraph = Misc:CreateParagraph({Title="Upside Down Character & Crawl Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionlprtog)
+Paragraph = Misc:CreateParagraph({Title="Multiple Function Info",Content="These Functions:\nUpside Down Character\nCrawl\nSit Walk\n... Are Going to Reset Your Character When You Turn It Off"}, Sectionlprtog)
 Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
 	upsidedown = Value
 	if upsidedown then
@@ -2328,7 +2349,6 @@ Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",Curre
 	end)
 end})
 
-Paragraph = Misc:CreateParagraph({Title="Sit Walk Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionlprtog)
 Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		sitwalkerr = Value
@@ -3553,6 +3573,7 @@ BackflipKeybind = Misc:CreateKeybind({Name="BackFlip Keybind",CurrentKeybind="Se
 		speakerFlip("BackFlip")
 	end
 end})
+table.insert(env.AllKeybinds, BackflipKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset BackFlip Keybind",Callback=function()
 	sfxSound("true")
@@ -3567,6 +3588,7 @@ SideflipKeybind = Misc:CreateKeybind({Name="SideFlip Keybind",CurrentKeybind="Se
 		speakerFlip("SideFlip")
 	end
 end})
+table.insert(env.AllKeybinds, SideflipKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset SideFlip Keybind",Callback=function()
 	sfxSound("true")
@@ -3581,6 +3603,7 @@ FrontflipKeybind = Misc:CreateKeybind({Name="FrontFlip Keybind",CurrentKeybind="
 		speakerFlip("FrontFlip")
 	end
 end})
+table.insert(env.AllKeybinds, FrontflipKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionflipsnthings,Name="Reset FrontFlip Keybind",Callback=function()
 	sfxSound("true")
@@ -3734,6 +3757,7 @@ SpinKeybind = Misc:CreateKeybind({Name="Spin Keybind",CurrentKeybind="Set Keybin
 		end
 	end
 end})
+table.insert(env.AllKeybinds, SpinKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionspin,Name="Reset Spin Keybind",Callback=function()
 	sfxSound("true")
@@ -3769,7 +3793,7 @@ local function setCarControls(enabled)
         if enabled then
             ctrl:Unlock()
         else
-            ctrl:Lock("Locked")
+            ctrl:Lock("Turn On Car To Unlock")
         end
     end
 end
@@ -3809,6 +3833,7 @@ CarKeybind=Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",B
     end
     setCarControls(ifCarEnabled)
 end})
+table.insert(env.AllKeybinds, CarKeybind)
 
 Button=Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Car Keybind",Callback=function()
     sfxSound("true")
@@ -3871,6 +3896,7 @@ CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybin
 		cleanupConnection(CFramewalkloop)
     end
 end})
+table.insert(env.AllKeybinds, CframeWalkKeybind)
 
 Button = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset CFrame Walk Keybind",Callback=function()
 	sfxSound("true")
@@ -7005,8 +7031,20 @@ end})
 
 spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
+	speaker.Character.Animate.Disabled = Value
+end})
+
+spacing = Animations:CreateSpacing(SectionAnimHubs,2)
+FreezeCurrentAnimKeybind = Animations:CreateKeybind({Name="Freeze Current Animation Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimHubs,Callback=function(KeyBind)
+	speaker.Character.Animate.Disabled = KeyBind and not isTyping
+end})
+table.insert(env.AllKeybinds, FreezeCurrentAnimKeybind)
+
+Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Freeze Current Animation Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
-		speaker.Character.Animate.Disabled = Value
+		FreezeCurrentAnimKeybind:Set("Set Keybind")
 	end)
 end})
 
@@ -7367,6 +7405,7 @@ PlayemoteKeybind = Animations:CreateKeybind({Name="Play Selected Emote Keybind",
 		end
 	end
 end})
+table.insert(env.AllKeybinds, PlayemoteKeybind)
 
 Button = Animations:CreateButton({SectionParent=Sectionfeemotes,Name="Reset Play Selected Emote Keybind",Callback=function()
 	sfxSound("true")
@@ -7522,6 +7561,7 @@ PlayedanceKeybind = Animations:CreateKeybind({Name="Play Selected \"/e\" Anim Ke
 		animationPlaying = false
 	end
 end})
+table.insert(env.AllKeybinds, PlayedanceKeybind)
 
 Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="Reset Play Selected \"/e\" Anim Keybind",Callback=function()
 	sfxSound("true")
@@ -7834,6 +7874,7 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
         aanimationPlaying = false
 	end
 end})
+table.insert(env.AllKeybinds, PlaycustmAnimKeybind)
 
 Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Reset Play Selected Anim Keybind",Callback=function()
 	sfxSound("true")
@@ -8067,3 +8108,10 @@ ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(fu
 		AnimpSlider:Set(1)
 	end)
 end)
+if env.AlreadyRan then
+    for _, keybind in ipairs(env.AllKeybinds) do
+        pcall(keybind.Clear, keybind)
+    end
+else
+    env.AlreadyRan = true
+end
