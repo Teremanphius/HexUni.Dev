@@ -980,7 +980,7 @@ end})
 
 spacing = Misc:CreateSpacing(Sectionflights,2)
 Paragraph = Misc:CreateParagraph({Title="CFrame Fly Info",Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights)
-Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",CurrentValue=false,Callback=function(Value)
+Togglefliic = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
@@ -1010,30 +1010,10 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",C
 end})
 
 CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
-	cffffly = KeyBind
-	if cffffly and not isTyping then
-		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-		local Head = speaker.Character:WaitForChild("Head")
-		Head.Anchored = true
-		CFloop = cleanupConnection(CFloop)
-		CFloop = RunService.Heartbeat:Connect(function(deltaTime)
-			moveDirection = speaker.Character:FindFirstChildOfClass("Humanoid").MoveDirection * CFspeed * deltaTime
-			headCFrame = Head.CFrame
-			local cameraCFrame = workspace.CurrentCamera.CFrame
-			cameraOffset = headCFrame:ToObjectSpace(cameraCFrame).Position
-			cameraCFrame = cameraCFrame * CFrame.new(-cameraOffset.X, -cameraOffset.Y, -cameraOffset.Z + 1)
-			local cameraPosition = cameraCFrame.Position
-			local headPosition = headCFrame.Position
-			objectSpaceVelocity = CFrame.new(cameraPosition, Vector3.new(headPosition.X, cameraPosition.Y, headPosition.Z)):VectorToObjectSpace(moveDirection)
-			Head.CFrame = CFrame.new(headPosition) * (cameraCFrame - cameraPosition) * CFrame.new(objectSpaceVelocity)
-		end)
-	elseif not cffffly and not isTyping then
-		pcall(function()
-			CFloop = cleanupConnection(CFloop)
-			speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-			Head = speaker.Character:WaitForChild("Head")
-			Head.Anchored = false
-		end)
+	if KeyBind and not isTyping then
+		Togglefliic:Set(true)
+	elseif not KeyBind and not isTyping then
+		Togglefliic:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, CframeFlyKeybind)
@@ -1043,6 +1023,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset CFrame Fly 
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		CframeFlyKeybind:Set("Set Keybind")
+		Togglefliic:Set(false)
 	end)
 end})
 
@@ -1071,11 +1052,9 @@ end})
 
 fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind, chatting)
 	if KeyBind and not isTyping then
-		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-		flying = true
+		Toggleflii:Set(true)
 	elseif not KeyBind and not isTyping then
-		flying = false
-		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+		Toggleflii:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, fLYKeybind)
@@ -1085,8 +1064,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keybind
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
-		flying = false 
-		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+		Toggleflii:Set(false)
 	end)
 end})
 
@@ -1101,7 +1079,7 @@ Inputflyspeed = Misc:CreateInput({SectionParent=Sectionflights,Name="Fly Speed",
 end})
 
 spacing = Misc:CreateSpacing(Sectionflights,2)
-Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
+Togglefliiv = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value
 		if flying then
@@ -1114,9 +1092,9 @@ end})
 
 vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
-		flying = true
+		Togglefliiv:Set(false)
 	elseif not KeyBind and not isTyping then
-		flying = false
+		Togglefliiv:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, vehicleFLYKeybind)
@@ -1126,6 +1104,7 @@ Button = Misc:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle Fly
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		vehicleFLYKeybind:Set("Set Keybind")
+		Togglefliiv:Set(false)
 	end)
 end})
 
@@ -1172,6 +1151,7 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Fre
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		anchorKeybind:Set("Set Keybind")
+		AnchorPlr(false)
 	end)
 end})
 
@@ -1329,7 +1309,8 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset God
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
-zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+local oldgrav = Workspace.Gravity
+zerogravtripKeybind = Misc:CreateKeybind({Name="0 Grav Trip W/Sit Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	zerogravsit = KeyBind
 	if zerogravsit and not isTyping then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
@@ -1346,11 +1327,13 @@ zerogravtripKeybind = Misc:CreateKeybind({Name="Zero Grav Trip Keybind",CurrentK
 end})
 table.insert(env.AllKeybinds, zerogravtripKeybind)
 
-Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Zero Grav Trip Keybind",Callback=function()
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset 0 Grav Trip W/Sit Keybind",Callback=function()
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		zerogravtripKeybind:Set("Set Keybind")
+		speaker.Character.Humanoid.Sit = false
+		game.Workspace.Gravity = oldgrav
 	end)
 end})
 
@@ -1409,6 +1392,23 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Swi
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		SwimKeybind:Set("Set Keybind")
+		if (speaker and speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid")) then
+			workspace.Gravity = oldgrav
+			swimming = false
+			if gravReset then
+				gravReset:Disconnect()
+			end
+			if swimbeat ~= nil then
+				swimbeat:Disconnect()
+				swimbeat = nil
+			end
+			local Humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+			local enums = Enum.HumanoidStateType:GetEnumItems()
+			table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+			for i, v in pairs(enums) do
+				Humanoid:SetStateEnabled(v, true)
+			end
+		end
 	end)
 end})
 
@@ -1475,20 +1475,7 @@ FloatKeybind = Misc:CreateKeybind({Name="Float Keybind",CurrentKeybind="Set Keyb
 			end)
 		end
 	elseif not KeyBind and not isTyping then
-		Floating = false
-		pchar = speaker.Character
-		Notif("Float Has Been Disabled!", "You Have Disabled Float!", 2, "x")
-		if pchar:FindFirstChild(floatName) then
-			pchar:FindFirstChild(floatName):Destroy()
-		end
-		if floatDied then
-			FloatingFunc:Disconnect()
-			qUp:Disconnect()
-			eUp:Disconnect()
-			qDown:Disconnect()
-			eDown:Disconnect()
-			floatDied:Disconnect()
-		end
+
 	end
 end})
 table.insert(env.AllKeybinds, FloatKeybind)
@@ -1538,20 +1525,10 @@ NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Ke
 	noclipff = KeyBind
 	if noclipff and not isTyping then
 		pcall(function()
-			Noclipping = RunService.Stepped:Connect(function()
-				if speaker.Character ~= nil then
-					for _, child in pairs(speaker.Character:GetDescendants()) do
-						if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
-							child.CanCollide = false
-						end
-					end
-				end
-			end)
+			Togglenoclip:Set(true)
 		end)
 	elseif not noclipff and not isTyping then
-		pcall(function()
-			Noclipping = cleanupConnection(Noclipping)
-		end)
+		Togglenoclip:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, NoClipKeybind)
@@ -1561,6 +1538,7 @@ Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset NoClip Keybi
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		NoClipKeybind:Set("Set Keybind")
+		Togglenoclip:Set(false)
 	end)
 end})
 
@@ -1592,22 +1570,9 @@ end})
 vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	vehnoclipff = KeyBind
 	if vehnoclipff and not isTyping then
-		local Car = speaker.Character.Humanoid.SeatPart
-		for i, v in pairs(Car.Parent.Parent:GetDescendants()) do
-			if v:IsA("BasePart") then
-				if v.CanCollide then
-					v.CanCollide = false
-					table.insert(carParts, v)
-				end
-			end
-		end
+		ToggleVehiclenoclip:Set(true)
 	elseif not vehnoclipff and not isTyping then
-		local Car = speaker.Character.Humanoid.SeatPart
-		for i, v in pairs(carParts) do
-			if v:IsA("BasePart") then
-				v.CanCollide = true
-			end
-		end
+		ToggleVehiclenoclip:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, vehNoClipKeybind)
@@ -1617,6 +1582,7 @@ Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoCl
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		vehNoClipKeybind:Set("Set Keybind")
+		ToggleVehiclenoclip:Set(false)
 	end)
 end})
 
@@ -1762,139 +1728,10 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 end})
 
 InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
-	invisff = KeyBind
-	if invisff and not isTyping then
-		if invisRunning then
-			return
-		end
-		invisRunning = true
-		local Player = speaker
-		repeat
-			task.wait(0.1)
-		until Player.Character 
-		local Character = Player.Character
-		Character.Archivable = true
-		local IsInvis = false
-		local IsRunning = true
-		local InvisibleCharacter = Character:Clone()
-		InvisibleCharacter.Parent = Lighting
-		local Void = workspace.FallenPartsDestroyHeight
-		InvisibleCharacter.Name = ""
-		local CF
-		local invisFix = RunService.Stepped:Connect(function()
-			pcall(function()
-				local IsInteger
-				if tostring(Void):find("-") then
-					IsInteger = true
-				else
-					IsInteger = false
-				end
-				local Pos = Player.Character.HumanoidRootPart.Position
-				local Pos_String = tostring(Pos)
-				local Pos_Seperate = Pos_String:split(", ")
-				local X = tonumber(Pos_Seperate[1])
-				local Y = tonumber(Pos_Seperate[2])
-				local Z = tonumber(Pos_Seperate[3])
-				if (IsInteger == true) then
-					if (Y <= Void) then
-						Respawn()
-					end
-				elseif (IsInteger == false) then
-					if (Y >= Void) then
-						Respawn()
-					end
-				end
-			end)
-		end)
-		for i, v in pairs(InvisibleCharacter:GetDescendants()) do
-			if v:IsA("BasePart") then
-				if (v.Name == "HumanoidRootPart") then
-					v.Transparency = 1
-				else
-					v.Material = Enum.Material.ForceField
-					v.Color = Color3.fromRGB(25, 25, 25)
-				end
-			end
-		end
-		function Respawn()
-			IsRunning = false
-			if (IsInvis == true) then
-				pcall(function()
-					Player.Character = Character
-					task.wait()
-					Character.Parent = workspace
-					Character:FindFirstChildWhichIsA("Humanoid"):Destroy()
-					IsInvis = false
-					InvisibleCharacter.Parent = nil
-					invisRunning = false
-				end)
-			elseif (IsInvis == false) then
-				pcall(function()
-					Player.Character = Character
-					task.wait()
-					Character.Parent = workspace
-					Character:FindFirstChildWhichIsA("Humanoid"):Destroy()
-					TurnVisible()
-				end)
-			end
-		end
-		local invisDied
-		invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			Respawn()
-			invisDied:Disconnect()
-		end)
-		if (IsInvis == true) then
-			return
-		end
-		IsInvis = true
-		CF = workspace.CurrentCamera.CFrame
-		local CF_1 = Player.Character.HumanoidRootPart.CFrame
-		Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0))
-		workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-		task.wait(0.2)
-		workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-		InvisibleCharacter = InvisibleCharacter
-		Character.Parent = Lighting
-		InvisibleCharacter.Parent = workspace
-		InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
-		Player.Character = InvisibleCharacter
-		workspace.CurrentCamera:remove()
-		task.wait(0.1)
-		repeat
-			task.wait()
-		until speaker.Character ~= nil 
-		workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid")
-		workspace.CurrentCamera.CameraType = "Custom"
-		speaker.CameraMinZoomDistance = 0.5
-		speaker.CameraMaxZoomDistance = 400
-		speaker.CameraMode = "Classic"
-		speaker.Character.Head.Anchored = false
-		Player.Character.Animate.Disabled = true
-		Player.Character.Animate.Disabled = false
-		function TurnVisible()
-			if (IsInvis == false) then
-				return
-			end
-			invisFix:Disconnect()
-			invisDied:Disconnect()
-			CF = workspace.CurrentCamera.CFrame
-			Character = Character
-			local CF_1 = Player.Character.HumanoidRootPart.CFrame
-			Character.HumanoidRootPart.CFrame = CF_1
-			InvisibleCharacter:Destroy()
-			Player.Character = Character
-			Character.Parent = workspace
-			IsInvis = false
-			Player.Character.Animate.Disabled = true
-			Player.Character.Animate.Disabled = false
-			invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				Respawn()
-				invisDied:Disconnect()
-			end)
-			invisRunning = false
-		end
-	elseif not invisff and not isTyping then
-		TurnVisible()
+	if KeyBind and not isTyping then
+		Toggleinvisibleeee:Set(true)
+	elseif not KeyBind and not isTyping then
+		Toggleinvisibleeee:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, InvisKeybind)
@@ -1904,6 +1741,7 @@ Button = Misc:CreateButton({SectionParent=Sectioninvisible,Name="Reset Invisible
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		InvisKeybind:Set("Set Keybind")
+		Toggleinvisibleeee:Set(false)
 	end)
 end})
 
@@ -2113,7 +1951,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yo
 	AnchorPlr(Value)
 end})
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Zero Grav Trip W/ Sit",CurrentValue=false,Callback=function(Value)
+Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="0 Grav Trip W/ Sit",CurrentValue=false,Callback=function(Value)
 	zerograv = Value
 	if zerograv then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
@@ -3740,21 +3578,9 @@ end})
 
 SpinKeybind = Misc:CreateKeybind({Name="Spin Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionspin,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
-		Spin = Instance.new("BodyAngularVelocity")
-		Spin.Name = "Spinning"
-		Spin.Parent = getRoot(speaker.Character)
-		Spin.MaxTorque = Vector3.new(0, math.huge, 0)
-		task.spawn(function()
-			while task.wait() do
-				Spin.AngularVelocity = Vector3.new(0, spinSpeed, 0)
-			end
-		end)
+		Togglespinner:Set(true)
 	elseif not KeyBind and not isTyping then
-		for i, v in pairs(getRoot(speaker.Character):GetChildren()) do
-			if (v.Name == "Spinning") then
-				v:Destroy()
-			end
-		end
+		Togglespinner:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, SpinKeybind)
@@ -3764,6 +3590,7 @@ Button = Misc:CreateButton({SectionParent=Sectionspin,Name="Reset Spin Keybind",
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		SpinKeybind:Set("Set Keybind")
+		Togglespinner:Set(false)
 	end)
 end})
 
@@ -3886,14 +3713,10 @@ Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CF
 end})
 
 CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionwalkspeeder,Callback=function(KeyBind)
-	cfwalk = KeyBind
-	if cfwalk and not isTyping then
-        CFramewalkloop = RunService.RenderStepped:Connect(function()
-            local root = getRoot(speaker.Character)
-            root.CFrame = root.CFrame + (Humanoid.MoveDirection * CFramevaluespeed)
-		end)
-    else
-		cleanupConnection(CFramewalkloop)
+	if KeyBind and not isTyping then
+        Togglewalkspeeder:Set(true)
+    elseif not KeyBind and not isTyping then
+		Togglewalkspeeder:Set(false)
     end
 end})
 table.insert(env.AllKeybinds, CframeWalkKeybind)
@@ -3903,6 +3726,7 @@ Button = Misc:CreateButton({SectionParent=Sectionwalkspeeder,Name="Reset CFrame 
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		CframeWalkKeybind:Set("Set Keybind")
+		Togglewalkspeeder:Set(false)
 	end)
 end})
 
