@@ -7414,6 +7414,14 @@ Button = Misc:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim Values
 end})
 
 spacing = Animations:CreateSpacing(Sectionfeanims,2)
+math.randomseed(os.time())
+function IfRigRanDance(isR15)
+    if isR15 then
+        return "rbxassetid://" .. Randomr15dances[ math.random(#Randomr15dances) ]
+    else
+        return "rbxassetid://" .. Randomr6dances[ math.random(#Randomr6dances) ]
+    end
+end
 Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
 Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
 local testdances = {
@@ -7501,6 +7509,7 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
 	local dance=testdances[selectedPackanim]
     if Value then
         if r15(speaker) then
+			dance.R15 = IfRigRanDance(true)
             if not dance.R15 then
                 sfxSound("false")
                 Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
@@ -7508,6 +7517,7 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
                 return
             end
         else
+			dance.R6 = IfRigRanDance(false)
             if not dance.R6 then
                 sfxSound("false")
                 Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
@@ -7538,15 +7548,19 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 	local dance=testdances[selectedPackanim]
     if KeyBind and not isTyping then
         if r15(speaker) then
+			dance.R15 = IfRigRanDance(true)
             if not dance.R15 then
                 sfxSound("false")
-                Notif("Not R15!","You ain't R15 compatible for this anim.",2,"x")
+                Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
+                Toggleeanimation:Set(false)
                 return
             end
         else
+			dance.R6 = IfRigRanDance(false)
             if not dance.R6 then
                 sfxSound("false")
-                Notif("Not R6!","You ain't R6 compatible for this anim.",2,"x")
+                Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
+                Toggleeanimation:Set(false)
                 return
             end
         end
@@ -7630,7 +7644,8 @@ end})
 Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="NSUI (Arrayfield Modified)"}, Sectionpointofhub)
 
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962)
-local DTinfo = DateTime.fromUnixTimestamp(86400 * (speaker.AccountAge or 0))
+local checkAgeacc = math.max(speaker.AccountAge or 0, 1)
+local DTinfo = DateTime.fromUnixTimestamp(86400 * checkAgeacc)
 local Daysinfo = tonumber(DTinfo:FormatUniversalTime("DD", "en-us")) or 0
 local Monthsinfo = tonumber(DTinfo:FormatUniversalTime("MM", "en-us")) or 0
 local Yearsinfo = (tonumber(DTinfo:FormatUniversalTime("YYYY", "en-us")) or 1970) - 1970
