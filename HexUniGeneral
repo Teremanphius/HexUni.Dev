@@ -462,6 +462,7 @@ initialUpdatePlayerList()
 local env = (getgenv and getgenv()) or _G
 env.AlreadyRan = env.AlreadyRan or false
 env.AllKeybinds = env.AllKeybinds  or {}
+env.AllToggles = env.AllToggles or {}
 
 local Updatedfps = 0
 RunService.RenderStepped:Connect(function(frame)
@@ -546,7 +547,7 @@ Button = Misc:CreateButton({SectionParent=Sectiontgearstools,Name="Remove Gear's
 	Notif("Removed!", "Removed Gears / Tools!", 3, "check")
 end})
 
-Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop Gear's",CurrentValue=false,Callback=function(Value)
+Toggledropgear = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop Gear's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			for i, v in pairs(speaker.Backpack:GetChildren()) do
@@ -563,6 +564,7 @@ Togglea = Misc:CreateToggle({SectionParent=Sectiontgearstools,Name="Enable Drop 
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggledropgear)
 
 Sectionfeplayerelatedanti = Misc:CreateSection("FE LocalPlayer / Player Related Script's | Anti's", false, true, 10734951847)
 Paragraphtotal = Misc:CreateParagraph({Title="Anti Fling Note",Content="It's Basically Like NoClip"}, Sectionfeplayerelatedanti)
@@ -582,6 +584,7 @@ Toggleantiflinng = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Na
 		AntiFlinging = cleanupConnection(AntiFlinging)
 	end
 end})
+table.insert(env.AllToggles, Toggleantiflinng)
 
 local voidng = false
 local magtd = 2
@@ -643,8 +646,9 @@ end)
 Toggleantibanging = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Bang",CurrentValue=false,Callback=function(Value)
 	antibng = Value
 end})
+table.insert(env.AllToggles, Toggleantibanging)
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Void",CurrentValue=false,Callback=function(Value)
+Toggleantivoid = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Void",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			noVoid = true
@@ -685,9 +689,10 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti V
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleantivoid)
 
 local AntiSitLoop
-Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Sit",CurrentValue=false,Callback=function(Value)
+Toggleantisit = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Sit",CurrentValue=false,Callback=function(Value)
 	if Value then
 		AntiSitLoop = RunService.Heartbeat:Connect(function()
 			if (speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.Sit) then
@@ -698,9 +703,10 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 		AntiSitLoop = cleanupConnection(AntiSitLoop)
 	end
 end})
+table.insert(env.AllToggles, Toggleantisit)
 
 local AntiStunLoop
-Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Stun",CurrentValue=false,Callback=function(Value)
+Toggleantistun = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Stun",CurrentValue=false,Callback=function(Value)
 	if Value then
 		AntiStunLoop = RunService.Heartbeat:Connect(function()
 			if (speaker.Character and speaker.Character.Humanoid and speaker.Character.Humanoid.PlatformStand) then
@@ -711,6 +717,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti S
 		AntiStunLoop = cleanupConnection(AntiStunLoop)
 	end
 end})
+table.insert(env.AllToggles, Toggleantistun)
 
 local noFallConnection
 local function setRagdollState(state)
@@ -719,7 +726,7 @@ local function setRagdollState(state)
     humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, state)
 end
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Ragdoll",CurrentValue=false,Callback=function(Value)
+Toggleantiragdoll = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Ragdoll",CurrentValue=false,Callback=function(Value)
 	if Value then
 		setRagdollState(false)
 		noFallConnection = speaker.CharacterAdded:Connect(function(char)
@@ -731,8 +738,9 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti R
 		noFallConnection = cleanupConnection(noFallConnection)
 	end
 end})
+table.insert(env.AllToggles, Toggleantiragdoll)
 
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=false,Callback=function(Value)
+Toggleantiwindowafk = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Window Afk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			if not getconnections then
@@ -761,8 +769,9 @@ Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti 
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleantiwindowafk)
 
-Togglea = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk / Idle",CurrentValue=true,Callback=function(Value)
+Toggleantiafk = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Afk",CurrentValue=true,Callback=function(Value)
 	pcall(function()
 		if Value then
 			disableidle = Players.LocalPlayer.Idled:Connect(function()
@@ -977,6 +986,7 @@ Togglegrappleasdasd = Misc:CreateToggle({SectionParent=Sectionflights,Name="Grap
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglegrappleasdasd)
 
 spacing = Misc:CreateSpacing(Sectionflights,2)
 Paragraph = Misc:CreateParagraph({Title="CFrame Fly Info",Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights)
@@ -1008,6 +1018,7 @@ Togglefliic = Misc:CreateToggle({SectionParent=Sectionflights,Name="CFrame Fly",
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglefliic)
 
 CframeFlyKeybind = Misc:CreateKeybind({Name="CFrame Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -1049,6 +1060,7 @@ Toggleflii = Misc:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentV
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleflii)
 
 fLYKeybind = Misc:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind, chatting)
 	if KeyBind and not isTyping then
@@ -1089,6 +1101,7 @@ Togglefliiv = Misc:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly"
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglefliiv)
 
 vehicleFLYKeybind = Misc:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -1520,6 +1533,7 @@ Togglenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="NoClip",Curr
 		Noclipping = cleanupConnection(Noclipping)
 	end
 end})
+table.insert(env.AllToggles, Togglenoclip)
 
 NoClipKeybind = Misc:CreateKeybind({Name="NoClip Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	noclipff = KeyBind
@@ -1566,6 +1580,7 @@ ToggleVehiclenoclip = Misc:CreateToggle({SectionParent=Sectionnoclip,Name="Vehic
 		end
 	end)
 end})
+table.insert(env.AllToggles, ToggleVehiclenoclip)
 
 vehNoClipKeybind = Misc:CreateKeybind({Name="Vehicle NoClip Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionnoclip,Callback=function(KeyBind)
 	vehnoclipff = KeyBind
@@ -1726,6 +1741,7 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleinvisibleeee)
 
 InvisKeybind = Misc:CreateKeybind({Name="Invisible Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioninvisible,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -1946,12 +1962,14 @@ Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside D
 		ifuserdiedar:Disconnect()
 	end
 end})
+table.insert(env.AllToggles, Toggleupsidedown)
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
+Toggleanchor = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Freeze / Anchor Yourself",CurrentValue=false,Callback=function(Value)
 	AnchorPlr(Value)
 end})
+table.insert(env.AllToggles, Toggleanchor)
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="0 Grav Trip W/ Sit",CurrentValue=false,Callback=function(Value)
+Toggle0grav = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="0 Grav Trip W/ Sit",CurrentValue=false,Callback=function(Value)
 	zerograv = Value
 	if zerograv then
 		if (speaker and speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") and getRoot(speaker.Character)) then
@@ -1966,6 +1984,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="0 Grav Trip W/ Sit
 		game.Workspace.Gravity = oldgrav
 	end
 end})
+table.insert(env.AllToggles, Toggle0grav)
 
 Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite Jump",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -1987,6 +2006,7 @@ Toggleinfjump2 = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Infinite J
 		infJumpDebounce = false
 	end)
 end})
+table.insert(env.AllToggles, Toggleinfjump2)
 
 fakelagging = false
 Togglefakelag = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Fake Lag",CurrentValue=false,Callback=function(Value)
@@ -2031,6 +2051,7 @@ pcall(function()
     end
 end)
 end})
+table.insert(env.AllToggles, Togglefakelag)
 
 ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
 	Crawlingornot = Value
@@ -2179,6 +2200,7 @@ ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",Curren
 		end)
 	end
 end})
+table.insert(env.AllToggles, ToggleCrawl)
 
 Floating = false
 Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",CurrentValue=false,Callback=function(Value)
@@ -2186,6 +2208,7 @@ Togglestunned = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Stun",Curre
 		speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = Value
 	end)
 end})
+table.insert(env.AllToggles, Togglestunned)
 
 Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2208,6 +2231,7 @@ Togglestiwalk = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Sit Walk",C
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglestiwalk)
 
 Toggleslider = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",CurrentValue=false,Callback=function(Value)
 	icewalker = Value
@@ -2225,6 +2249,7 @@ Toggleslider = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Slide",Curre
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleslider)
 
 Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Jump",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2259,9 +2284,10 @@ Toggleedgerjumper = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Edge Ju
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleedgerjumper)
 
 Paragraph = Misc:CreateParagraph({Title="Float Info",Content="Control's :\nQ - Down\nE - Up"}, Sectionlprtog)
-Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValue=false,Callback=function(Value)
+Togglefloat = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		floattt = Value
 		if floattt then
@@ -2341,6 +2367,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValu
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglefloat)
 
 spacing = Misc:CreateSpacing(Sectionlprtog,2)
 Togglestrengthen = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Strengthen Character",CurrentValue=false,Callback=function(Value)
@@ -2361,6 +2388,7 @@ Togglestrengthen = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Strength
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglestrengthen)
 
 Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Character",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2380,6 +2408,7 @@ Toggleweaken = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Weaken Chara
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleweaken)
 
 spacing = Misc:CreateSpacing(Sectionlprtog,2)
 Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",CurrentValue=false,Callback=function(Value)
@@ -2429,6 +2458,7 @@ Toggleswimmer = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Curre
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleswimmer)
 
 Sectionflipsnthings = Misc:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478)
 Paragraph = Misc:CreateParagraph({Title="Beyblade Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings)
@@ -2530,6 +2560,7 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 		end)
 	end
 end})
+table.insert(env.AllToggles, ToggleBeyBlade)
 
 Sliderbeyblade = Misc:CreateSlider({SectionParent=Sectionflipsnthings,Name="Beyblade Speed",Range={0,780},Increment=1,Suffix="Spin Speed",CurrentValue=20,Callback=function(Value)
 	pcall(function()
@@ -2720,6 +2751,7 @@ Toggleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Fl
 		Flipping = false
 	end
 end})
+table.insert(env.AllToggles, Toggleflipppping)
 
 doubleFlipping = false
 Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Double Flip",CurrentValue=false,Callback=function(Value)
@@ -2898,6 +2930,7 @@ Toggledoubleflipppping = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Na
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggledoubleflipppping)
 
 cwFlipping = false
 Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Cart Wheel",CurrentValue=false,Callback=function(Value)
@@ -3013,9 +3046,10 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Car
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglecartwheel)
 
 StarRoll = false
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Star Roll",CurrentValue=false,Callback=function(Value)
+Togglestarroll = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Star Roll",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		starrolling = Value
 		if starrolling then
@@ -3128,6 +3162,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Sta
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglestarroll)
 
 local seizureFlipping = false
 Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seizure",CurrentValue=false,Callback=function(Value)
@@ -3255,10 +3290,11 @@ Toggleseizuree = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Seiz
 		seizureFlipping = false
 	end
 end})
+table.insert(env.AllToggles, Toggleseizuree)
 
 BarrelRoll = false
 Looproll = false
-Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
+Togglebarrelroll = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
 	barrelrolling = Value
 	if barrelrolling then
 		if not r15(speaker) then
@@ -3377,6 +3413,7 @@ Togglecartwheel = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Bar
 		Looproll = false
 	end
 end})
+table.insert(env.AllKeybinds, Togglebarrelroll)
 
 spacing = Misc:CreateSpacing(Sectionflipsnthings,2)
 speakerFlipNumb = 0.0174533
@@ -3509,6 +3546,7 @@ Togglehamsterball = Misc:CreateToggle({SectionParent=Sectionhamsterball,Name="Ha
 		end)
 	end
 end})
+table.insert(env.AllToggles, Togglehamsterball)
 
 Buttonresethamval = Misc:CreateButton({SectionParent=Sectionhamsterball,Name="Reset Hamster Ball Values",Interact="Click",Callback=function()
 	pcall(function()
@@ -3575,6 +3613,7 @@ Togglespinner = Misc:CreateToggle({SectionParent=Sectionspin,Name="Spin",Current
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglespinner)
 
 SpinKeybind = Misc:CreateKeybind({Name="Spin Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionspin,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -3625,7 +3664,7 @@ local function setCarControls(enabled)
     end
 end
 
-ToggleCar=Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(val)
+ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(val)
     ifCarEnabled=val
     if ifCarEnabled then
         changePhysProps(true)
@@ -3642,8 +3681,9 @@ ToggleCar=Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=f
     end
     setCarControls(ifCarEnabled)
 end})
+table.insert(env.AllToggles, ToggleCar)
 
-CarKeybind=Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(active)
+CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncarp,Callback=function(active)
     ifCarEnabled=active and not isTyping
     if ifCarEnabled then
         changePhysProps(true)
@@ -3711,6 +3751,7 @@ Togglewalkspeeder = Misc:CreateToggle({SectionParent=Sectionwalkspeeder,Name="CF
 		cleanupConnection(CFramewalkloop)
 	end
 end})
+table.insert(env.AllToggles, Togglewalkspeeder)
 
 CframeWalkKeybind = Misc:CreateKeybind({Name="CFrame Walk Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionwalkspeeder,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -3759,7 +3800,7 @@ walkspeedsped = 16
 jpower = getJumpValue()
 
 Label = Misc:CreateLabel("Set A Value First Then Enable", Sectionlpsliderinputloops)
-Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",CurrentValue=false,Callback=function(Value)
+Toggleloopwalk = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",CurrentValue=false,Callback=function(Value)
 	pcall(function()
         if Value then
             walkspeedloop = RunService.Heartbeat:Connect(function()
@@ -3785,6 +3826,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop W
         end
     end)
 end})
+table.insert(env.AllToggles, Toggleloopwalk)
 
 Sliderwalkloop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",Range={1,300},Increment=1,Suffix="Speed",CurrentValue=math.floor(speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed),Callback=function(Value)
 	pcall(function()
@@ -3796,7 +3838,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Wal
 	walkspeedsped = tonumber(Text)
 end})
 
-Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",CurrentValue=false,Callback=function(Value)
+Toggleloopjump = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",CurrentValue=false,Callback=function(Value)
 	 pcall(function()
         if Value then
             jumppowerloop = RunService.Heartbeat:Connect(function()
@@ -3835,6 +3877,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop J
         end
     end)
 end})
+table.insert(env.AllToggles, Toggleloopjump)
 
 Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
 	pcall(function()
@@ -5745,7 +5788,7 @@ function Notifies()
     end)
 end
 
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Player Join/Leave Notifications",CurrentValue=false,Flag="playerjoinsleave",Callback=function(Value)
+Toggleplayerjoin = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Player Join/Leave Notifications",CurrentValue=false,Flag="playerjoinsleave",Callback=function(Value)
 	shared.Notify = Value
 	if shared.Notify then
 		Notifies()
@@ -5755,6 +5798,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Player 
 		return
 	end
 end})
+table.insert(env.AllToggles, Toggleplayerjoin)
 
 Sliderpj = Miscclient:CreateSlider({SectionParent=Sectionmiscscripts,Name="Player Join/.. Notify Duration",Range={0,10},Increment=0.5,Suffix="Duration",CurrentValue=PJLNF,Callback=function(Value)
 	pcall(function()
@@ -5779,7 +5823,7 @@ end})
 
 xNamingTbl = {}
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Usernames Not Display",CurrentValue=false,Callback=function(Value)
+Toggleshowuser = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Usernames Not Display",CurrentValue=false,Callback=function(Value)
 	showrealnamesstog = Value
 	if showrealnamesstog then
 		function clean(cplr)
@@ -5800,9 +5844,10 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="Show Us
 		xNaming:Disconnect()
 	end
 end})
+table.insert(env.AllToggles, Toggleshowuser)
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Network Claim",CurrentValue=false,Callback=function(Value)
+Togglenotnet = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Network Claim",CurrentValue=false,Callback=function(Value)
 	nonetworkclaimer = Value
 	if nonetworkclaimer then
 		DHSaved = workspace.FallenPartsDestroyHeight
@@ -5811,8 +5856,9 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Netw
 		workspace.FallenPartsDestroyHeight = DHSaved
 	end
 end})
+table.insert(env.AllToggles, Togglenotnet)
 
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt Overlay",CurrentValue=false,Callback=function(Value)
+Togglenorthurt = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt Overlay",CurrentValue=false,Callback=function(Value)
 	nohurtov = Value
 	if nohurtov then
 		hurtOverlay = true
@@ -5825,6 +5871,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscscripts,Name="No Hurt
 		hurtOverlay = false
 	end
 end})
+table.insert(env.AllToggles, Togglenorthurt)
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Unsuspend VC",Interact="Click",Callback=function()
@@ -5902,7 +5949,7 @@ end})
 
 Sectiontchat = Miscclient:CreateSection("LocalPlayer / Player Related | Chat", false, false, 10734888228)
 Paragraph = Miscclient:CreateParagraph({Title="Chat Script's Info",Content="Script's Here Are Only For Legacy Chat (The Chat You Can't Type Out Emoji's)\nType in \"/spy\" To Disable The Chat Spy."}, Sectiontchat)
-Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bubbles",CurrentValue=false,Callback=function(Value)
+Toggledarkchat = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bubbles",CurrentValue=false,Callback=function(Value)
 	darkchatbubble = Value
 	if darkchatbubble then
 		if speaker.PlayerGui:FindFirstChild("BubbleChat") then
@@ -5921,6 +5968,7 @@ Togglea = Miscclient:CreateToggle({SectionParent=Sectiontchat,Name="Dark Chat Bu
 		end
 	end
 end})
+table.insert(env.AllToggles, Toggledarkchat)
 
 Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Interact="Click",Callback=function()
 	Config = {
@@ -5986,7 +6034,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontchat,Name="Chat Spy",Int
 end})
 
 Sectionmisctimescripts = Miscclient:CreateSection("LocalPlayer Related | Time (Client)", false, false, 10709805144)
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Night And Day",CurrentValue=false,Callback=function(Value)
+Toggletod = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Night And Day",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		daytonight = Value
 		if daytonight then
@@ -5996,6 +6044,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmisctimescripts,Name="Nig
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggletod)
 
 SliderTOD = Miscclient:CreateSlider({SectionParent=Sectionmisctimescripts,Name="Time Of Day",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
 	pcall(function()
@@ -6012,7 +6061,7 @@ end})
 Sectiontodloop = Miscclient:CreateSection("LocalPlayer Related | World | Time Loop (Client)", false, true, 10709805144)
 todvalue = 12
 Label = Misc:CreateLabel("Set A Value First Then Enable", Sectiontodloop)
-Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
+Toggletodloop = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			todlooper = RunService.Heartbeat:Connect(function()
@@ -6023,6 +6072,7 @@ Toggle = Misc:CreateToggle({SectionParent=Sectiontodloop,Name="Time Of Day Loop"
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggletodloop)
 
 Sliderf = Miscclient:CreateSlider({SectionParent=Sectiontodloop,Name="Time Of Day Loop",Range={0,24},Increment=1,Suffix="Time",CurrentValue=math.floor(game.Lighting.ClockTime),Callback=function(Value)
 	pcall(function()
@@ -6074,12 +6124,14 @@ Toggleshowhitboxes = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscri
 		settings():GetService("RenderSettings").ShowBoundingBoxes = Value
 	end)
 end})
+table.insert(env.AllToggles, Toggleshowhitboxes)
 
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Animation Data",CurrentValue=false,Callback=function(Value)
+Toggleshowanimdata = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Animation Data",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		settings():GetService("NetworkSettings").ShowActiveAnimationAsset = Value
 	end)
 end})
+table.insert(env.AllToggles, Toggleshowanimdata)
 
 spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="Brightness",Range={0,15},Increment=1,Suffix="Brightness",CurrentValue=math.floor(game.Lighting.Brightness),Callback=function(Value)
@@ -6190,6 +6242,7 @@ Togglelightclient = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglelightclient)
 
 Colorpicker = Miscclient:CreateColorPicker({SectionParent=Sectionmiscworldscripts,Name="Light Color Picker",Color=Color3.fromRGB(255, 255, 255),Callback=function(Value)
 	lightColorr = Value
@@ -6233,6 +6286,7 @@ Toggleremovefogga = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscrip
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleremovefogga)
 
 transparent = false
 transprencypartxray = 0.5
@@ -6252,7 +6306,7 @@ function x(v)
 		end
 	end
 end
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="X-Ray",CurrentValue=false,Callback=function(Value)
+Togglexray = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="X-Ray",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			xraylooper = RunService.RenderStepped:Connect(function()
@@ -6266,6 +6320,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="X-
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglexray)
 
 Sliderxrayvalue = Miscclient:CreateSlider({SectionParent=Sectionmiscworldscripts,Name="X-Ray Part Transparency",Range={0,1},Increment=0.1,Suffix="Transparency",CurrentValue=transprencypartxray,Callback=function(Value)
 	pcall(function()
@@ -6279,7 +6334,7 @@ end})
 
 Pxrts = {}
 spacing = Miscclient:CreateSpacing(Sectionmiscworldscripts,2)
-Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Invisible Wall's",CurrentValue=false,Callback=function(Value)
+Toggleshowinvis = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Show Invisible Wall's",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			for i, v in pairs(workspace:GetDescendants()) do
@@ -6295,6 +6350,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectionmiscworldscripts,Name="Sh
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleshowinvis)
 
 Sectioncamera = Miscclient:CreateSection("LocalPlayer Related | Camera (Client)", false, false, 10709789686)
 camzoomdistanceholder = {speaker.CameraMaxZoomDistance,speaker.CameraMinZoomDistance}
@@ -6322,7 +6378,7 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
-Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
+Togglenoclipcam = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		function test(st)
 			if Value == true then return 1 else return 0 end
@@ -6330,6 +6386,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoCli
 		clrf("Players").LocalPlayer.DevCameraOcclusionMode = test(Value)
 	end)
 end})
+table.insert(env.AllToggles, Togglenoclipcam)
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
@@ -6739,7 +6796,7 @@ Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncameraloops
 	end)
 end})
 
-Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Max Zoom",CurrentValue=false,Callback=function(Value)
+Togglelopmaxzo = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Max Zoom",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			maxzoomloop = RunService.Heartbeat:Connect(function()
@@ -6750,6 +6807,7 @@ Toggle = Miscclient:CreateToggle({SectionParent=Sectioncameraloops,Name="Loop Ma
 		end
 	end)
 end})
+table.insert(env.AllToggles, Togglelopmaxzo)
 
 Sliderloopmaxzoom = Miscclient:CreateSlider({SectionParent=Sectioncameraloops,Name="Change Max Zoom",Range={0,99999},Increment=1,Suffix="Zoom",CurrentValue=math.floor(speaker.CameraMaxZoomDistance),Callback=function(Value)
 	pcall(function()
@@ -6820,11 +6878,12 @@ Button = Miscclient:CreateButton({SectionParent=Sectiontaudio,Name="Stop Audio",
 	Notif("Stopped!", "Stopped The Audio!", 3, "check")
 end})
 
-Toggle = Miscclient:CreateToggle({SectionParent=Sectiontaudio,Name="Loop Audio",Interact="Click",CurrentValue=false,Callback=function(Value)
+Togglesoundplaloo = Miscclient:CreateToggle({SectionParent=Sectiontaudio,Name="Loop Audio",Interact="Click",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		Soundplayaudio.Looped = Value
 	end)
 end})
+table.insert(env.AllToggles, Togglesoundplaloo)
 
 Sliderbright = Miscclient:CreateSlider({SectionParent=Sectiontaudio,Name="Audio Volume",Range={0,10},Increment=1,Suffix="Volume",CurrentValue=1,Callback=function(Value)
 	pcall(function()
@@ -6857,6 +6916,7 @@ spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	speaker.Character.Animate.Disabled = Value
 end})
+table.insert(env.AllToggles, Togglefreezecurrentanims)
 
 spacing = Animations:CreateSpacing(SectionAnimHubs,2)
 FreezeCurrentAnimKeybind = Animations:CreateKeybind({Name="Freeze Current Animation Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimHubs,Callback=function(KeyBind)
@@ -7079,12 +7139,14 @@ Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play
 		end
 	end)
 end})
+table.insert(env.AllToggles, Toggleeanimplr)
 
 Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		AnimPlayerlooped = Value
 	end)
 end})
+table.insert(env.AllToggles, Toggleeloopanimplr)
 
 spacing = Animations:CreateSpacing(SectionAnimpl,2)
 Slideranimplr = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -7365,6 +7427,7 @@ Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,N
 		animationPlaying = false
 	end
 end})
+table.insert(env.AllToggles, Toggleedance12)
 
 PlayedanceKeybind = Animations:CreateKeybind({Name="Play Selected \"/e\" Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionrblxclientanims,Callback=function(KeyBind)
 	if not selectedPackdance then
@@ -7542,6 +7605,7 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
         cleanup()
     end
 end})
+table.insert(env.AllToggles, Toggleeanimation)
 
 PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionfeanims,Callback=function(KeyBind)
 	if not selectedPackanim then return end
@@ -7804,6 +7868,11 @@ end)
 if env.AlreadyRan then
     for _, keybind in ipairs(env.AllKeybinds) do
         pcall(keybind.Clear, keybind)
+    end
+	for _, toggle in ipairs(env.AllToggles) do
+        pcall(function()
+            toggle:Set(false)
+        end)
     end
 else
     env.AlreadyRan = true
