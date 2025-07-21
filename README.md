@@ -1,5 +1,5 @@
 # Hexen Universal
-I know I am adding this now, but this is solely for educational purposes
+Solely for educational purposes
 ### Loadstring : 
 ```lua 
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.Dev/refs/heads/main/HexUniGeneral'))()
@@ -44,7 +44,7 @@ These are the people who directly contributed to the project, whether through co
 - TripleDomm - Co-Owner
 - Sunken - SoggyWare Creator
 - Kooggy - SoggyWare Contributor
-- Nihan - Ideas & General helping
+- Nihan - Ideas & General Helping
 - Valco - SoggyWare Contributor
 
 ## Acknowledgments
@@ -60,4 +60,4 @@ These individuals provided specific parts of code, inspiration, or minor contrib
 ## Special Thanks
 These are people who contributed in unique ways, beyond code:
 - RazAPi (Sk8r) - For loving the script
-- sinister Sane - For being an important part
+- Sinister Sane - For being an important part
