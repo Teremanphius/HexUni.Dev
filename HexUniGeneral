@@ -7185,8 +7185,7 @@ local function fetchEmoteData()
     params.AssetTypes = {Enum.AvatarAssetType.EmoteAnimation}
     params.SortType = Enum.CatalogSortType.RecentlyCreated
     params.SortAggregation = Enum.CatalogSortAggregation.AllTime
-    params.IncludeOffSale = true
-    params.CreatorName = "Roblox"
+    params.IncludeOffSale = false
     params.Limit = 120
 
     local function getCatalogPage()
@@ -7572,7 +7571,9 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
 	local dance=testdances[selectedPackanim]
     if Value then
         if r15(speaker) then
-			dance.R15 = IfRigRanDance(true)
+			if selectedPackanim == "Random Dance" then
+				dance.R15 = IfRigRanDance(true)
+			end
             if not dance.R15 then
                 sfxSound("false")
                 Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
@@ -7580,7 +7581,9 @@ Toggleeanimation = Animations:CreateToggle({SectionParent=Sectionfeanims,Name="P
                 return
             end
         else
-			dance.R6 = IfRigRanDance(false)
+			if selectedPackanim == "Random Dance" then
+				dance.R6 = IfRigRanDance(false)
+			end
             if not dance.R6 then
                 sfxSound("false")
                 Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
@@ -7612,7 +7615,9 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
 	local dance=testdances[selectedPackanim]
     if KeyBind and not isTyping then
         if r15(speaker) then
-			dance.R15 = IfRigRanDance(true)
+			if selectedPackanim == "Random Dance" then
+				dance.R15 = IfRigRanDance(true)
+			end
             if not dance.R15 then
                 sfxSound("false")
                 Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
@@ -7620,7 +7625,9 @@ PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybin
                 return
             end
         else
-			dance.R6 = IfRigRanDance(false)
+			if selectedPackanim == "Random Dance" then
+				dance.R6 = IfRigRanDance(false)
+			end
             if not dance.R6 then
                 sfxSound("false")
                 Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
