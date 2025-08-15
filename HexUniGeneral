@@ -5053,7 +5053,6 @@ Sectionplayrerelatedtp69 = MiscPlayer:CreateSection("FE Player Related | 69", fa
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69)
 local Bang69 = false
 AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
 		if foundPlr then
@@ -5195,7 +5194,6 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
 			a69upsideown:Disconnect()
 			Bang69 = false
 		end)
-	end)
 end})
 
 bangSlider69 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -5615,7 +5613,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
 				Humping = true
 				Notif("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
 				sfxSound("true")
-                    HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
 					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
 						local speakerRoot = getRoot(speaker.Character)
@@ -5750,6 +5748,78 @@ facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp
 end})
 
 faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		humpfacespeed = Text
+	end)
+end})
+
+local ReverseHumpLoop
+local ffc2 = false
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
+AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+		plrName = Option:match("^(.-) %(") or Option
+		foundPlr = getPlr(plrName)
+		if foundPlr then
+			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+				if (ffc2 == true) then
+					ffc2 = false
+					if ReverseHumpLoop then
+						ReverseHumpLoop:Disconnect()
+						ReverseHumpLoop = nil
+						speaker.Character.Humanoid.Sit = false
+					end
+					speaker.Character.Humanoid.Sit = false
+					Notif("No Longer Reverse Humping The Player", "Not Reverse Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+					sfxSound("false")
+					return
+				else
+					ffc2 = true
+					Notif("Now Reverse Humping", "Reverse Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					sfxSound("true")
+					ReverseHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+						pcall(function()
+							speaker.Character.Humanoid.Sit = true
+							local speakerRoot = getRoot(speaker.Character)
+							local targetRoot = getRoot(foundPlr.Character)
+							if (speakerRoot and targetRoot) then
+								elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
+								local cycle = elapsedTimehump % 1
+								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+								local xOffset = 5 * alpha			
+								local targetCFrame = targetRoot.CFrame
+								local targetPosition = targetCFrame.Position
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -0.5)
+								speakerRoot.AssemblyLinearVelocity = Vector3.new()
+								speakerRoot.AssemblyAngularVelocity = Vector3.new()
+							elseif ReverseHumpLoop then
+								ReverseHumpLoop:Disconnect()
+								ReverseHumpLoop = nil
+								speaker.Character.Humanoid.Sit = false
+							end
+						end)
+                    else
+						if ReverseHumpLoop then
+							ReverseHumpLoop:Disconnect()
+							ReverseHumpLoop = nil
+							speaker.Character.Humanoid.Sit = false
+						end
+					end
+					end)
+				end
+			end
+		end
+	end)
+end})
+
+ReversebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		humpfacespeed = Value
+	end)
+end})
+
+ReverseInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacespeed = Text
 	end)
@@ -7876,9 +7946,11 @@ if env.AlreadyRan then
     for _, keybind in ipairs(env.AllKeybinds) do
         pcall(keybind.Clear, keybind)
     end
-	for _, toggle in ipairs(env.AllToggles) do
+    for _, toggle in ipairs(env.AllToggles) do
         pcall(function()
-            toggle:Set(false)
+            if toggle.CurrentValue == true then
+                toggle:Set(false)
+            end
         end)
     end
 else
