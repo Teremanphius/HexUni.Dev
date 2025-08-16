@@ -7107,7 +7107,7 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Pri
 	sfxSound("true")
 end})
 
-AlldropdownRefresh.gotodropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Copy Players Anim ID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.copyplrsanimdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Copy Players Anim ID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 	plrName = Option:match("^(.-) %(") or Option
 	foundPlr = getPlr(plrName)
@@ -7138,6 +7138,20 @@ AlldropdownRefresh.gotodropdown = Animations:CreateDropdown({SectionParent=Secti
 		end
 	end
 	copyAnimId(foundPlr)
+	end)
+end})
+
+AlldropdownRefresh.printrigdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Print Players Rig",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+	pcall(function()
+	plrName = Option:match("^(.-) %(") or Option
+	foundPlr = getPlr(plrName)
+		if r15(foundPlr) then
+			sfxSound("true")
+			Notif("R15!", "The Players Rig is R15!", 3, "check")
+		else
+			sfxSound("true")
+			Notif("R6!", "The Players Rig is R6!", 3, "check")
+		end
 	end)
 end})
 
