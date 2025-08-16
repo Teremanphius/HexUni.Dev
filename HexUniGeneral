@@ -7147,10 +7147,10 @@ AlldropdownRefresh.printrigdropdown = Animations:CreateDropdown({SectionParent=S
 	foundPlr = getPlr(plrName)
 		if r15(foundPlr) then
 			sfxSound("true")
-			Notif("R15!", "The Players Rig is R15!", 3, "check")
+			Notif("R15!", "The Players Rig is R15!", 5, "check")
 		else
 			sfxSound("true")
-			Notif("R6!", "The Players Rig is R6!", 3, "check")
+			Notif("R6!", "The Players Rig is R6!", 5, "check")
 		end
 	end)
 end})
@@ -7912,50 +7912,6 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Inter
 	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
 
-ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-	pcall(function()
-		Togglenoclip:Set(false)
-		ToggleVehiclenoclip:Set(false)
-		Toggleinvisibleeee:Set(false)
-		Toggleseizuree:Set(false)
-		Toggleflipppping:Set(false)
-		Toggledoubleflipppping:Set(false)
-		Togglecartwheel:Set(false)
-		Togglestunned:Set(false)
-		Toggleslider:Set(false)
-		Toggleedgerjumper:Set(false)
-		Toggleweaken:Set(false)
-		Toggleswimmer:Set(false)
-		Slidercuranimspeed:Set(1)
-		Togglespinner:Set(false)
-		Toggleedance12:Set(false)
-		Sliderspinspeed:Set(20)
-		Sliderwalkloop:Set(16)
-		Sliderjumploop:Set(7)
-		Sliderwalk:Set(16)
-		speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = 16
-		if not r15(speaker) then
-			Sliderhip:Set(0)
-			speaker.Character.Humanoid.HipHeight = 0
-		else
-			Sliderhip:Set(keephipheightval.higfd)
-			speaker.Character.Humanoid.HipHeight = keephipheightval.higfd
-		end
-		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
-			Sliderjpower:Set(50)
-		else
-			Sliderjpower:Set(7)
-		end
-		Slidergrav:Set(196)
-		game.Workspace.Gravity = 196
-		Sliderbright:Set(origsettingsbrightness.sliderbright)
-		Togglelightclient:Set(false)
-		Sliderfov:Set(70)
-		Togglefreezecurrentanims:Set(false)
-		edance1Slider:Set(1)
-		AnimpSlider:Set(1)
-	end)
-end)
 if env.AlreadyRan then
     for _, keybind in ipairs(env.AllKeybinds) do
         pcall(keybind.Clear, keybind)
