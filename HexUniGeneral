@@ -5790,7 +5790,7 @@ AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 								local xOffset = 5 * alpha			
 								local targetCFrame = targetRoot.CFrame
 								local targetPosition = targetCFrame.Position
-								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -0.5)
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -1)
 								speakerRoot.AssemblyLinearVelocity = Vector3.new()
 								speakerRoot.AssemblyAngularVelocity = Vector3.new()
 							elseif ReverseHumpLoop then
