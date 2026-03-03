@@ -30,9 +30,7 @@ local GameSettings = UserSettings():GetService("UserGameSettings")
 
 -- Player & Character
 local speaker = Players.LocalPlayer
-local Character = speaker.Character or speaker.CharacterAdded:Wait()
-local character = Character
-local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+local Character, character, Humanoid, root
 local JMouse = speaker:GetMouse()
 
 -- UI Lib
@@ -463,6 +461,24 @@ local env = (getgenv and getgenv()) or _G
 env.AlreadyRan = env.AlreadyRan or false
 env.AllKeybinds = env.AllKeybinds  or {}
 env.AllToggles = env.AllToggles or {}
+env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
+
+function updateReferences(newChar)
+    Character = newChar
+    character = newChar
+    Humanoid = newChar:WaitForChild("Humanoid")
+    if getRoot then
+        root = getRoot(newChar)
+    else
+        root = newChar:WaitForChild("HumanoidRootPart")
+    end
+end
+
+env.CharAddedConnection = speaker.CharacterAdded:Connect(updateReferences)
+
+if speaker.Character then
+    updateReferences(speaker.Character)
+end
 
 local Updatedfps = 0
 RunService.RenderStepped:Connect(function(frame)
@@ -568,20 +584,27 @@ table.insert(env.AllToggles, Toggledropgear)
 
 Sectionfeplayerelatedanti = Misc:CreateSection("FE LocalPlayer / Player Related Script's | Anti's", false, true, 10734951847)
 Paragraphtotal = Misc:CreateParagraph({Title="Anti Fling Note",Content="It's Basically Like NoClip"}, Sectionfeplayerelatedanti)
-antiflingClip = true
 Toggleantiflinng = Misc:CreateToggle({SectionParent=Sectionfeplayerelatedanti,Name="Anti Fling",CurrentValue=false,Callback=function(Value)
 	if Value then
 		AntiFlinging = RunService.Stepped:Connect(function()
-			if speaker.Character ~= nil then
-				for _, child in pairs(speaker.Character:GetDescendants()) do
-					if (child:IsA("BasePart") and (child.CanCollide == true) and (child.Name ~= floatName)) then
-						child.CanCollide = false
-					end
-				end
-			end
-		end)
+   		    local char = speaker.Character
+    	    if not char then return end
+    	    for _, child in ipairs(char:GetDescendants()) do
+    	        if child:IsA("BasePart") and child.Name ~= floatName then
+    	            child.CanCollide = false
+    	        end
+    	    end
+    	end)
     else
 		AntiFlinging = cleanupConnection(AntiFlinging)
+		local char = speaker.Character
+    	if char then
+        for _, child in ipairs(char:GetDescendants()) do
+            if child:IsA("BasePart") and (child.Name:find("Leg") or child.Name:find("Arm") or child.Name:find("Torso") or child.Name == "Head") then
+                child.CanCollide = true
+    	        end
+    	    end
+    	end
 	end
 end})
 table.insert(env.AllToggles, Toggleantiflinng)
@@ -4229,7 +4252,7 @@ AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
 		foundPlr = getPlr(plrName)
 		if foundPlr then
 			getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
-			task.wait(math.random(0.3, 0.80))
+			task.wait(math.random(5, 8) / 10)
 			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
 		elseif (foundPlr == speaker) then
 			return nil
