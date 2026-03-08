@@ -5967,29 +5967,11 @@ end})
 table.insert(env.AllToggles, Togglenorthurt)
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
-Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Unsuspend VC",Interact="Click",Callback=function()
-	VoiceChatService:joinVoice()
-
-    if typeof(onVoiceModerated) ~= "RBXScriptConnection" then
-        onVoiceModerated = cloneref(game:GetService("VoiceChatInternal")).LocalPlayerModerated:Connect(function()
-            task.wait(1)
-            VoiceChatService:joinVoice()
-        end)
-    end
-	Notif("Let's see..", "You Should Be Unsuspended Now! No?..", 3, "check")
-end})
-
-spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
 Input = Miscclient:CreateInput({SectionParent=Sectionmiscscripts,Name="Change Player ID",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
 	speaker.UserId = Text
 end})
 
 spacing = Miscclient:CreateSpacing(Sectionmiscscripts,2)
-Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="UNC Enviroment Test",Interact="Click",Callback=function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/external-naming-convention/RobloxNamingStandard/main/RENCCheckEnv.lua"))()
-	sfxSound("true")
-	Notif("Check Console!", "Press F9 To Open Up The Developer Console And See Your UNC Level!", 3, "check")
-end})
 
 Button = Miscclient:CreateButton({SectionParent=Sectionmiscscripts,Name="Check If Fake UNC",Interact="Click",Callback=function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/HummingBird8/HummingRn/main/sUNCTestGET"))()
