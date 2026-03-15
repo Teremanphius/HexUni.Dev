@@ -3663,13 +3663,19 @@ end})
 Sectioncarp = Misc:CreateSection("FE LocalPlayer Related | Car", false, false, 10709789810)
 Paragraphtotal = Misc:CreateParagraph({Title="Important Info",Content="Car Script But Remade & Better"}, Sectioncarp)
 
-Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",Interact="Click",Callback=function()
-	SliderCarspeed:Set(16)
-	Sliderhipcar:Set(0)
-end})
+local function hipCtrl()
+	if r15(speaker) then
+		return 3
+	else
+		return 0
+	end
+end
 
 local ifCarEnabled=false
 local carControls
+local CarAnimLoop
+LoopStart = 1.5
+LoopEnd = 10
 
 local function setCarControls(enabled)
     for _,ctrl in ipairs(carControls) do
@@ -3681,6 +3687,19 @@ local function setCarControls(enabled)
     end
 end
 
+Buttonr = Misc:CreateButton({SectionParent=Sectioncarp,Name="Reset Char Values",Interact="Click",Callback=function()
+	SliderCarspeed:Set(16)
+	if r15(speaker) then
+		Sliderhipcar:Set(hipCtrl())
+		task.wait(0.1)
+		speaker.Character.Humanoid.HipHeight = 2
+	else
+		Sliderhipcar:Set(hipCtrl())
+		task.wait(0.1)
+		speaker.Character.Humanoid.HipHeight = 0
+	end
+end})
+
 ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue=false,Callback=function(val)
     ifCarEnabled=val
     if ifCarEnabled then
@@ -3689,12 +3708,20 @@ ToggleCar = Misc:CreateToggle({SectionParent=Sectioncarp,Name="Car",CurrentValue
         Caranim.AnimationId=r15(speaker)and"rbxassetid://17360699557"or"rbxassetid://129342287"
         Carpl=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
         Carpl:Play()
-        Carpl:AdjustSpeed(r15(speaker)and 2 or 0)
+        Carpl:AdjustSpeed(r15(speaker)and 1 or 0)
+		if r15(speaker) then
+            CarAnimLoop=RunService.Heartbeat:Connect(function()
+                if Carpl.TimePosition>=LoopEnd then Carpl.TimePosition=LoopStart end
+            end)
+        end
+		if r15(speaker) then speaker.Character.Humanoid.HipHeight = 3 else speaker.Character.Humanoid.HipHeight = 0 end
     else
         changePhysProps(false)
         if Carpl then Carpl:Stop() end
         if Caranim then Caranim:Destroy() end
         pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=16 end)
+		if r15(speaker) then speaker.Character.Humanoid.HipHeight = 2 else speaker.Character.Humanoid.HipHeight = 0 end
+		cleanupConnection(CarAnimLoop)
     end
     setCarControls(ifCarEnabled)
 end})
@@ -3709,11 +3736,19 @@ CarKeybind = Misc:CreateKeybind({Name="Car Keybind",CurrentKeybind="Set Keybind"
         Carpl=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Caranim)
         Carpl:Play()
         Carpl:AdjustSpeed(r15(speaker)and 2 or 0)
+		if r15(speaker) then
+            CarAnimLoop=RunService.Heartbeat:Connect(function()
+                if Carpl.TimePosition>=LoopEnd then Carpl.TimePosition=LoopStart end
+            end)
+        end
+		if r15(speaker) then speaker.Character.Humanoid.HipHeight = 3 else speaker.Character.Humanoid.HipHeight = 0 end
     else
         changePhysProps(false)
         if Carpl then Carpl:Stop() end
         if Caranim then Caranim:Destroy() end
         pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=16 end)
+		if r15(speaker) then speaker.Character.Humanoid.HipHeight = 2 else speaker.Character.Humanoid.HipHeight = 0 end
+		cleanupConnection(CarAnimLoop)
     end
     setCarControls(ifCarEnabled)
 end})
@@ -3735,11 +3770,11 @@ Inputcarspeed=Misc:CreateInput({SectionParent=Sectioncarp,Name="Car Speed",OnEnt
     pcall(function()speaker.Character:FindFirstChildOfClass("Humanoid").WalkSpeed=text end)
 end})
 
-Sliderhipcar=Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,6},Increment=1,Suffix="Hip Height",CurrentValue=math.floor(speaker.Character.Humanoid.HipHeight),Callback=function(val)
+Sliderhipcar=Misc:CreateSlider({SectionParent=Sectioncarp,Name="Hip Height",Range={-1,6},Increment=1,Suffix="Hip Height",CurrentValue=hipCtrl(),Callback=function(val)
     pcall(function()speaker.Character.Humanoid.HipHeight=val end)
 end})
 
-Inputhipcar=Misc:CreateInput({SectionParent=Sectioncarp,Name="Hip Height",NumbersOnly=true,OnEnter=true,PlaceholderText=math.floor(speaker.Character.Humanoid.HipHeight),RemoveTextAfterFocusLost=false,Callback=function(text)
+Inputhipcar=Misc:CreateInput({SectionParent=Sectioncarp,Name="Hip Height",NumbersOnly=true,OnEnter=true,PlaceholderText=hipCtrl(),RemoveTextAfterFocusLost=false,Callback=function(text)
     pcall(function()speaker.Character.Humanoid.HipHeight=text end)
 end})
 
@@ -3916,8 +3951,10 @@ Buttonresetcharactervalue = Misc:CreateButton({SectionParent=Sectionlpsliderinpu
 		Sliderhip:Set(0)
 		speaker.Character.Humanoid.HipHeight = 0
 	else
+		pcall(function()
 		Sliderhip:Set(keephipheightval.higfd)
-		speaker.Character.Humanoid.HipHeight = keephipheightval.higfd
+		speaker.Character.Humanoid.HipHeight = keephipheightval.higf
+		end)
 	end
 	if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 		Sliderjpower:Set(50)
