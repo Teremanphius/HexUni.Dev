@@ -159,7 +159,7 @@ function cleanupConnection(connection)
     return connection
 end
 
-function sfxSound(Setting)
+function sfxSound(Setting, vol)
     local soundId
     if Setting == "true" then
         soundId = "rbxassetid://1555493683"
@@ -173,7 +173,7 @@ function sfxSound(Setting)
     local SoundNotif = Instance.new("Sound")
     SoundNotif.SoundId = soundId
     SoundNotif.Looped = false
-    SoundNotif.Volume = 0.65
+    SoundNotif.Volume = vol or 0.65
     SoundNotif.Parent = workspace
     SoundNotif.Ended:Connect(function()
         SoundNotif:Destroy()
@@ -462,24 +462,8 @@ local env = (getgenv and getgenv()) or _G
 env.AlreadyRan = env.AlreadyRan or false
 env.AllKeybinds = env.AllKeybinds  or {}
 env.AllToggles = env.AllToggles or {}
+
 env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
-
-function updateReferences(newChar)
-    Character = newChar
-    character = newChar
-    Humanoid = newChar:WaitForChild("Humanoid")
-    if getRoot then
-        root = getRoot(newChar)
-    else
-        root = newChar:WaitForChild("HumanoidRootPart")
-    end
-end
-
-env.CharAddedConnection = speaker.CharacterAdded:Connect(updateReferences)
-
-if speaker.Character then
-    updateReferences(speaker.Character)
-end
 
 local Updatedfps = 0
 RunService.RenderStepped:Connect(function(frame)
@@ -3319,123 +3303,132 @@ table.insert(env.AllToggles, Toggleseizuree)
 BarrelRoll = false
 Looproll = false
 Togglebarrelroll = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Barrel Roll",CurrentValue=false,Callback=function(Value)
-	barrelrolling = Value
-	if barrelrolling then
-		if not r15(speaker) then
-			BarrelRoll = true
-			function _restoreproperties()
-				Torso = speaker.Character:FindFirstChild("Torso")
-				RightS = Torso:FindFirstChild("Right Shoulder")
-				LeftS = Torso:FindFirstChild("Left Shoulder")
-				RightH = Torso:FindFirstChild("Right Hip")
-				LeftH = Torso:FindFirstChild("Left Hip")
-				RightS.MaxVelocity = 0.15
-				LeftS.MaxVelocity = 0.15
-				RightH.MaxVelocity = 0.1
-				LeftH.MaxVelocity = 0.1
-				RightS.DesiredAngle = 0
-				LeftS.DesiredAngle = 0
-				LeftH.DesiredAngle = 0
-				RightH.DesiredAngle = 0
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
-					wait()
-				end
-				ml:Remove()
-			end
-			Looproll = true
-			function Flip()
-				if (debounce == true) then
-					return
-				end
-				debounce = true
-				local Gyro = Instance.new("BodyGyro")
-				Gyro.P = Gyro.P * 10
-				Gyro.maxTorque = Vector3.new(99999997952, 99999997952, 99999997952) * 8999999488
-				Gyro.CFrame = speaker.Character.Torso.CFrame
-				Gyro.Parent = speaker.Character.Torso
-				local initialPosition = speaker.Character.Torso.Position
-				local initialOrientation = speaker.Character.Torso.CFrame - speaker.Character.Torso.Position
-				Gyro.CFrame = (initialOrientation * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2)) + initialPosition
-				while Looproll do
-					Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(0, math.pi / -34, 0)
-					wait()
-				end
-				speaker.Character.Torso.CFrame = initialOrientation + initialPosition
-				wait()
-				Gyro:Remove()
-				speaker.Character.Humanoid.PlatformStand = false
-				_restoreproperties()
-				debounce = false
-			end
-			while BarrelRoll do
-				wait()
-				Flip()
-			end
-		else
-			BarrelRoll = true
-			function _restoreproperties()
-				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
-				local RightS = Torso:FindFirstChild("Right Shoulder")
-				local LeftS = Torso:FindFirstChild("Left Shoulder")
-				local RightH = Torso:FindFirstChild("Right Hip")
-				local LeftH = Torso:FindFirstChild("Left Hip")
-				if (Torso and RightS and LeftS and RightH and LeftH) then
-					RightS.MaxVelocity = 0.15
-					LeftS.MaxVelocity = 0.15
-					RightH.MaxVelocity = 0.1
-					LeftH.MaxVelocity = 0.1
-					RightS.DesiredAngle = 0
-					LeftS.DesiredAngle = 0
-					LeftH.DesiredAngle = 0
-					RightH.DesiredAngle = 0
-				end
-			end
-			function Down(ml)
-				for i = 1, ml.velocity.y / 3 do
-					ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
-					task.wait()
-				end
-				ml:Remove()
-			end
-			Looproll = true
-			function Flip()
-				if (debounce == true) then
-					return
-				end
-				debounce = true
-				local Gyro = Instance.new("BodyGyro")
-				Gyro.P = Gyro.P * 10
-				Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999
-				local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
-				if Torso then
-					Gyro.CFrame = Torso.CFrame
-					Gyro.Parent = Torso
-					local initialCFrame = Torso.CFrame
-					Gyro.CFrame = initialCFrame * CFrame.fromEulerAnglesXYZ(0, 0, math.pi / 2)
-					while Looproll do
-						Gyro.CFrame = Gyro.CFrame * CFrame.Angles(0, math.rad(-9), 0)
-						task.wait()
-					end
-					Gyro.CFrame = Torso.CFrame
-					task.wait()
-					Gyro:Remove()
-					speaker.Character.Humanoid.PlatformStand = false
-					_restoreproperties()
-					debounce = false
-				end
-			end
-			while BarrelRoll do
-				task.wait()
-				Flip()
-			end
-		end
-	else
-		BarrelRoll = false
-		Looproll = false
-	end
+    barrelrolling = Value
+    if barrelrolling then
+        if not r15(speaker) then
+            BarrelRoll = true
+            function _restoreproperties()
+                Torso = speaker.Character:FindFirstChild("Torso")
+                RightS = Torso:FindFirstChild("Right Shoulder")
+                LeftS = Torso:FindFirstChild("Left Shoulder")
+                RightH = Torso:FindFirstChild("Right Hip")
+                LeftH = Torso:FindFirstChild("Left Hip")
+                RightS.MaxVelocity = 0.15
+                LeftS.MaxVelocity = 0.15
+                RightH.MaxVelocity = 0.1
+                LeftH.MaxVelocity = 0.1
+                RightS.DesiredAngle = 0
+                LeftS.DesiredAngle = 0
+                LeftH.DesiredAngle = 0
+                RightH.DesiredAngle = 0
+            end
+            function Down(ml)
+                for i = 1, ml.velocity.y / 3 do
+                    ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
+                    wait()
+                end
+                ml:Remove()
+            end
+            Looproll = true
+            function Flip()
+                if (debounce == true) then
+                    return
+                end
+                debounce = true
+                speaker.Character.Humanoid.PlatformStand = true
+                local Gyro = Instance.new("BodyGyro")
+                Gyro.P = 30000
+                Gyro.D = 1000
+                Gyro.maxTorque = Vector3.new(400000, 400000, 400000) * 10
+                local Torso = speaker.Character.Torso
+                Gyro.Parent = Torso
+                local _, ry, _ = Torso.CFrame:ToEulerAnglesYXZ()
+                local fixedFlatRot = CFrame.Angles(0, ry, 0)
+                local rot = 0
+                while Looproll do
+                    rot = rot + (math.pi / -34)
+                    Gyro.CFrame = fixedFlatRot * CFrame.Angles(0, 0, math.pi / 2) * CFrame.Angles(0, rot, 0)
+                    wait()
+                end
+                Torso.CFrame = CFrame.new(Torso.Position) * fixedFlatRot
+                wait()
+                Gyro:Remove()
+                speaker.Character.Humanoid.PlatformStand = false
+                _restoreproperties()
+                debounce = false
+            end
+            while BarrelRoll do
+                wait()
+                Flip()
+            end
+        else
+            BarrelRoll = true
+            function _restoreproperties()
+                local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
+                local RightS = Torso:FindFirstChild("Right Shoulder")
+                local LeftS = Torso:FindFirstChild("Left Shoulder")
+                local RightH = Torso:FindFirstChild("Right Hip")
+                local LeftH = Torso:FindFirstChild("Left Hip")
+                if (Torso and RightS and LeftS and RightH and LeftH) then
+                    RightS.MaxVelocity = 0.15
+                    LeftS.MaxVelocity = 0.15
+                    RightH.MaxVelocity = 0.1
+                    LeftH.MaxVelocity = 0.1
+                    RightS.DesiredAngle = 0
+                    LeftS.DesiredAngle = 0
+                    LeftH.DesiredAngle = 0
+                    RightH.DesiredAngle = 0
+                end
+            end
+            function Down(ml)
+                for i = 1, ml.velocity.y / 3 do
+                    ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
+                    task.wait()
+                end
+                ml:Remove()
+            end
+            Looproll = true
+            function Flip()
+                if (debounce == true) then
+                    return
+                end
+                debounce = true
+                speaker.Character.Humanoid.PlatformStand = true
+                local Gyro = Instance.new("BodyGyro")
+                Gyro.P = 30000
+                Gyro.D = 1000
+                Gyro.maxTorque = Vector3.new(400000, 400000, 400000) * 10
+                local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
+                if Torso then
+                    Gyro.Parent = Torso
+                    local _, ry, _ = Torso.CFrame:ToEulerAnglesYXZ()
+                    local fixedFlatRot = CFrame.Angles(0, ry, 0)
+                    local rot = 0
+                    while Looproll do
+                        rot = rot + (math.pi / -34)
+                    	Gyro.CFrame = fixedFlatRot * CFrame.Angles(0, 0, math.pi / 2) * CFrame.Angles(0, rot, 0)
+                    	wait()
+                    end
+                    Torso.CFrame = CFrame.new(Torso.Position) * fixedFlatRot
+                    task.wait()
+                    Gyro:Remove()
+                    speaker.Character.Humanoid.PlatformStand = false
+                    _restoreproperties()
+                    debounce = false
+                end
+            end
+            while BarrelRoll do
+                task.wait()
+                Flip()
+            end
+        end
+    else
+        BarrelRoll = false
+        Looproll = false
+        if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+            speaker.Character.Humanoid.PlatformStand = false
+        end
+    end
 end})
 table.insert(env.AllKeybinds, Togglebarrelroll)
 
@@ -4072,983 +4065,931 @@ AlldropdownRefresh.spectatedropdown = Misc:CreateDropdown({SectionParent=Section
 end})
 
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468)
-local Annoy = false
+
+function StopAllLoops(quiet)
+	wasRunning = false
+    for _, active in pairs(tableofLoopingFuncs) do
+        if active == true then
+            wasRunning = true
+            break
+        end
+    end
+    if wasRunning then
+		sfxSound("false", 0.3)
+        if not quiet then
+            Notif("Switching Functions...", "Switching To a Different Function", 2, "x")
+        end
+    end
+
+	pcall(function()
+        if speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") then
+            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+        end
+    end)
+
+    for name, connection in pairs(activeConnections) do
+        if connection then connection:Disconnect() end
+    end
+    table.clear(activeConnections)
+    
+    for _, animTrack in pairs(activeAnimations) do
+        if animTrack then animTrack:Stop() end
+    end
+    table.clear(activeAnimations)
+
+    for name, _ in pairs(tableofLoopingFuncs) do
+        tableofLoopingFuncs[name] = false
+    end
+    
+    if speaker.Character and speaker.Character:FindFirstChild("Animate") then 
+        speaker.Character.Animate.Disabled = false 
+    end
+	task.wait(0.1)
+end
+
 AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (Annoy == true) then
-					Annoy = false
-					AnnoyLoop:Disconnect()
-					sfxSound("false")
-					Notif("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, "x")
-					return
-				else
-					Annoy = true
-					sfxSound("true")
-					Notif("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					AnnoyLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							Character:PivotTo(foundPlr.Character:GetPivot())
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-						else
-							AnnoyLoop:Disconnect()
-						end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.Annoy then
+                StopAllLoops(true)
+				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false 
+                Notif("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+                tableofLoopingFuncs.Annoy = true
+                sfxSound("true")
+                Notif("Now Annoying", "Annoying " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.Annoy = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            Character:PivotTo(foundPlr.Character:GetPivot())
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local glued = false
 AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (glued == true) then
-					glued = false
-					sfxSound("false")
-					GlueLoop:Disconnect()
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					Notif("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, "x")
-					return
-				else
-					glued = true
-					sfxSound("true")
-					Notif("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					GlueLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-                            else
-								GlueLoop:Disconnect()
-								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.glued then
+                StopAllLoops(true)
+                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                Notif("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+                tableofLoopingFuncs.glued = true
+                sfxSound("true")
+                Notif("Now Glued", "Glued To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.glued = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.new(getRoot(speaker.Character).CFrame.lookVector.X, getRoot(foundPlr.Character).Size.Y, getRoot(speaker.Character).CFrame.lookVector.Z)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local walkto = false
 AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Walk To",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (walkto == true) then
-					walkto = false
-					WalktoLoop:Disconnect()
-					sfxSound("false")
-					Notif("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, "x")
-					return
-				else
-					walkto = true
-					sfxSound("true")
-					Notif("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					WalktoLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position)
-						else
-							WalktoLoop:Disconnect()
-						end
-					end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.walkto then
+                StopAllLoops(true)
+                Notif("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+                tableofLoopingFuncs.walkto = true
+                sfxSound("true")
+                Notif("Now Walking", "Walking To " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.walkto = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid:MoveTo(getRoot(foundPlr.Character).Position)
+                        else
+                            StopAllLoops()
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local StandOnHead = false
 AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (StandOnHead == true) then
-					StandOnHead = false
-					sfxSound("false")
-					StandOnHeadLoop:Disconnect()
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					Notif("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, "x")
-					return
-				else
-					StandOnHead = true
-					sfxSound("true")
-					Notif("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					StandOnHeadLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.34, 0)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-                            else
-								StandOnHeadLoop:Disconnect()
-								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.StandOnHead then
+                StopAllLoops(true)
+                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                Notif("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+                tableofLoopingFuncs.StandOnHead = true
+                sfxSound("true")
+                Notif("Now Standing", "Standing On " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.StandOnHead = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 5.34, 0)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local Becarried = false
 AlldropdownRefresh.becarrieddropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Be Carried",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (Becarried == true) then
-					Becarried = false
-					becarriedLoop:Disconnect()
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					Notif("No Longer Carried By The Player ", "Not Being Carried By " .. foundPlr.Name .. " Anymore", 2, "x")
-					return
-				else
-					Becarried = true
-					sfxSound("true")
-					Notif("Now Being Carried", "Carried By " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					becarriedLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(1.5, -0.2, 1.5)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-							else
-								becarriedLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.Becarried then
+                StopAllLoops(true)
+                speaker.Character.Humanoid.Sit = false
+                Notif("No Longer Carried By The Player ", "Not Being Carried By " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+                tableofLoopingFuncs.Becarried = true
+                sfxSound("true")
+                Notif("Now Being Carried", "Carried By " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.Becarried = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(1.5, -0.2, 1.5)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            speaker.Character.Humanoid.Sit = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
 Paragraph = MiscPlayer:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, Sectionplayrerelatedtp)
 AlldropdownRefresh.Spookdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spook",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
-			task.wait(math.random(5, 8) / 10)
-			speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
-		elseif (foundPlr == speaker) then
-			return nil
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr ~= speaker then
+            StopAllLoops() 
+            task.wait(0.1)
+            local prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame
+            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
+            task.wait(math.random(3, 5) / 10)
+            speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
+        end
+    end)
 end})
 
-local Follow = false
 AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			flwnum = -5
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (Follow == true) then
-					Follow = false
-					FollowLoop:Disconnect()
-					Notif("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					Follow = true
-					Notif("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					FollowLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-							else
-								FollowLoop:Disconnect()
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            flwnum = -5
+            if tableofLoopingFuncs.Follow then
+                StopAllLoops(true)
+                Notif("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops() 
+				task.wait(0.1)
+                tableofLoopingFuncs.Follow = true
+                sfxSound("true")
+                Notif("Now Stalking", "Stalking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.Follow = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local LoopHello = false
 local trueforanim = false
 AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if LoopHello then
-					LoopHello = false
-					trueforanim = false
-					Waver:Stop()
-					WaveAnim:Destroy()
-					if WaveasLoop then WaveasLoop:Disconnect() end
-					Notif("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					LoopHello = true
-					trueforanim = true
-					Notif("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					WaveAnim = Instance.new("Animation")
-            		WaveAnim.AnimationId = r15(speaker) and "rbxassetid://507770239" or "rbxassetid://128777973"
-           			Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim)
-					WaveasLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								if (speaker.Character and foundPlr.Character) then
-									getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
-									getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-								end
-                        	else
-								Waver:Stop()
-								WaveasLoop:Disconnect()
-								WaveAnim:Destroy()
-								trueforanim = false
-							end
-						end)
-					end)
-					task.spawn(function()
-						while trueforanim do
-							Waver:Play(0.1, 10, 1)
-							task.wait(1.8)
-						end
-					end)
-				end
-			end
-		end
-end})
-
-local Carpettion = false
-AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if (Carpettion == true) then
-						Carpettion = false
-						CarpetsLoop:Disconnect()
-						sfxSound("false")
-						Notif("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, "x")
-						carpete:Stop()
-						carpetAnim:Destroy()
-						return
-					else
-						Carpettion = true
-						carpetAnim = Instance.new("Animation")
-						carpetAnim.AnimationId = "rbxassetid://282574440"
-						carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim)
-						carpete:Play(0.1, 1, 1)
-						local function reconDiedCon()
-							ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-								if CarpetsLoop then
-									carpete:Play(0.1, 1, 1)
-									reconDiedCon()
-								end
-							end)
-						end
-						reconDiedCon()
-						sfxSound("true")
-						Notif("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-						CarpetsLoop = RunService.RenderStepped:Connect(function()
-                                pcall(function()
-								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0)
-								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-								else
-									CarpetsLoop:Disconnect()
-									carpete:Stop()
-									carpetAnim:Destroy()
-								end
-							end)
-						end)
-					end
-				end
-			else
-				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-				sfxSound("false")
-			end
-		end
-	end)
-end})
-
-local Kisserrr = false
-AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Kiss",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if (Kisserrr == true) then
-						Kisserrr = false
-						KissingLoop:Disconnect()
-						sfxSound("false")
-						Notif("No Longer Kissing The Player", "Not Kissing " .. foundPlr.Name .. " Anymore", 2, "x")
-						for _, AnimTrack in ipairs(KissAnimTracks) do
-							AnimTrack:Stop()
-						end
-						KissingAnim:Destroy()
-						return
-					else
-						Kisserrr = true
-                        KissAnimIDs = { "rbxassetid://148840371", "rbxassetid://33169583", "rbxassetid://106772613" }
-						KissAnimTracks = {}
-						for _, Animid in ipairs(KissAnimIDs) do
-							local KissingAnim = Instance.new("Animation")
-                            KissingAnim.AnimationId = Animid
-							Kissing = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(KissingAnim)
-							Kissing:Play(0, 10, 0)
-							table.insert(KissAnimTracks, Kissing)
-						end
-						local function reconDiedCon()
-							ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-								if KissingLoop then
-									for _, Animid in ipairs(KissAnimIDs) do
-										local KissingAnim = Instance.new("Animation")
-										KissingAnim.AnimationId = Animid
-										Kissing = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(
-										KissingAnim)
-										Kissing:Play(0, 10, 0)
-										table.insert(KissAnimTracks, Kissing)
-									end
-									reconDiedCon()
-								end
-							end)
-						end
-						reconDiedCon()
-						sfxSound("true")
-						Notif("Now Kissing", "Kissing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-						KissingLoop = RunService.RenderStepped:Connect(function()
-                                pcall(function()
-								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.2, 0, 1)
-								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-								else
-									KissingLoop:Disconnect()
-									for _, AnimTrack in ipairs(KissAnimTracks) do
-										AnimTrack:Stop()
-									end
-									KissingAnim:Destroy()
-								end
-							end)
-						end)
-					end
-				end
-			else
-				Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-				sfxSound("false")
-			end
-		end
-	end)
-end})
-
-local ffhugger = false
-AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if (ffhugger == true) then
-						ffhugger = false
-						HuggingLoop:Disconnect()
-						Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
-						sfxSound("false")
-						zomearm:Stop()
-						zombiearmsAnim:Destroy()
-						return
-					else
-						ffhugger = true
-						zombiearmsAnim = Instance.new("Animation")
-						zombiearmsAnim.AnimationId = "rbxassetid://183294396"
-						zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
-						zomearm:Play(0, 10, 0)
-						Notif("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-                        sfxSound("true")
-						local function reconDiedCon()
-							ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-								if HuggingLoop then
-									zomearm:Play(0, 10, 0)
-									reconDiedCon()
-								end
-							end)
-						end
-						reconDiedCon()
-						HuggingLoop = RunService.RenderStepped:Connect(function()
-							pcall(function()
-								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
-								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                                else
-									HuggingLoop:Disconnect()
-									zomearm:Stop()
-									zombiearmsAnim:Destroy()
-								end
-							end)
-						end)
-					end
-				end
-			elseif (ffhugger == true) then
-				ffhugger = false
-				HuggingLoop:Disconnect()
-				Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
-				sfxSound("false")
-				zomearm:Stop()
-				zombiearmsAnim:Destroy()
-				speaker.Character.Animate.Disabled = false
-				return
-			else
-				ffhugger = true
-				zombiearmsAnim = Instance.new("Animation")
-				zombiearmsAnim.AnimationId = "rbxassetid://708553116"
-				zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
-				zomearm:Play(0, 10, 0)
-				speaker.Character.Animate.Disabled = true
-				Notif("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				sfxSound("true")
-				local function reconDiedCon()
-					ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-						if HuggingLoop then
-							zomearm:Play(0, 10, 0)
-							reconDiedCon()
-						end
-					end)
-				end
-				reconDiedCon()
-				HuggingLoop = RunService.RenderStepped:Connect(function()
-					pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
-						getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                        else
-							HuggingLoop:Disconnect()
-							zomearm:Stop()
-							zombiearmsAnim:Destroy()
-						end
-					end)
-				end)
-			end
-		end
-	end)
-end})
-
-local actualpb = false
-AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (actualpb == true) then
-					actualpb = false
-					PBLoop:Disconnect()
-					Notif("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name .. "", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					actualpb = true
-					Notif("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					PBLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								PBLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
-end})
-
-local besomebackpack = false
-AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (besomebackpack == true) then
-					besomebackpack = false
-					BackPackLoop:Disconnect()
-					Notif("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name .. "", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					besomebackpack = true
-					Notif("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, "check")
-					sfxSound("true")
-					BackPackLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								BackPackLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
-end})
-
-local headsits = false
-AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (headsits == true) then
-					headsits = false
-					HeadSitLoop:Disconnect()
-					Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					headsits = true
-					Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					HeadSitLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								HeadSitLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
-end})
-
-local shouldersit = false
-AlldropdownRefresh.SHOULDERSITdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Shoulder Sit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (shouldersit == true) then
-					shouldersit = false
-					ShouldersitLoop:Disconnect()
-					Notif("No Longer Shoulder Sitting The Player", "Not Shoulder Sitting " .. foundPlr.Name .. " Anymore", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					shouldersit = true
-					Notif("Now Shoulder Sitting", "Shoulder Sitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					ShouldersitLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(2, 1.6, 0.4)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								ShouldersitLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
-end})
-
-local baskets = false
-AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	plrName = Option:match("^(.-) %(") or Option
-	foundPlr = getPlr(plrName)
-	if foundPlr then
-		if not r15(speaker) then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (baskets == true) then
-					baskets = false
-					BasketLoop:Disconnect()
-					Notif("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					baskets = true
-					Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
-					sfxSound("true")
-					BasketLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
-							if targetArm then
-								getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6)
-								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-							end
-                        else
-							BasketLoop:Disconnect()
-							speaker.Character.Humanoid.Sit = false
-						end
-						end)
-					end)
-				end
-			end
-		elseif (baskets == true) then
-			baskets = false
-			Notif("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, "x")
-			zomearm:Stop()
-			BasketLoop:Disconnect()
-			zombiearmsAnim:Destroy()
-			speaker.Character.Animate.Disabled = false
-			sfxSound("false")
-			return
-		else
-			baskets = true
-			Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
-			sfxSound("true")
-			zombiearmsAnim = Instance.new("Animation")
-			zombiearmsAnim.AnimationId = "rbxassetid://10714360343"
-			zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
-			zomearm:Play(0, 10, 0)
-			speaker.Character.Animate.Disabled = true
-			BasketLoop = RunService.RenderStepped:Connect(function()
-				pcall(function()
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					speaker.Character.Humanoid.Sit = true
-					local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
-					if targetArm then
-						getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6)
-					end
+    plrName = Option:match("^(.-) %(") or Option
+    foundPlr = getPlr(plrName)
+    if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+        if tableofLoopingFuncs.LoopHello then
+            StopAllLoops(true)
+            trueforanim = false
+            Notif("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, "x")
+        else
+            StopAllLoops() 
+            task.wait(0.1)
+            tableofLoopingFuncs.LoopHello = true
+            trueforanim = true
+            sfxSound("true")
+            Notif("Now Greeting", "Greeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+            WaveAnim = Instance.new("Animation")
+            WaveAnim.AnimationId = r15(speaker) and "rbxassetid://507770239" or "rbxassetid://128777973"
+            Waver = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(WaveAnim)
+            table.insert(activeAnimations, Waver)
+            activeConnections.LoopHello = RunService.RenderStepped:Connect(function()
+                pcall(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                        getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, 3.2)
+                        getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
                     else
-						zomearm:Stop()
-						BasketLoop:Disconnect()
-						zombiearmsAnim:Destroy()
-						speaker.Character.Animate.Disabled = false
-					end
-				end)
-			end)
-		end
-	end
+                        StopAllLoops()
+                        trueforanim = false
+                    end
+                end)
+            end)
+            task.spawn(function()
+                while trueforanim and tableofLoopingFuncs.LoopHello do
+                    if Waver then Waver:Play(0.1, 10, 1) end
+                    task.wait(1.8)
+                end
+            end)
+        end
+    end
 end})
 
-local ActualHeadsit = false
+AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr then
+            if not r15(speaker) then
+                if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                    if tableofLoopingFuncs.Carpettion then
+                        StopAllLoops(true)
+                        Notif("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, "x")
+                    else
+                        StopAllLoops() 
+            			task.wait(0.1)
+                        tableofLoopingFuncs.Carpettion = true
+                        carpetAnim = Instance.new("Animation")
+                        carpetAnim.AnimationId = "rbxassetid://282574440"
+                        carpete = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(carpetAnim)
+                        carpete:Play(0.1, 1, 1)
+                        table.insert(activeAnimations, carpete)
+                        
+                        function reconDiedCon()
+                            ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+                                if tableofLoopingFuncs.Carpettion then
+                                    carpete:Play(0.1, 1, 1)
+                                    table.insert(activeAnimations, carpete)
+                                    reconDiedCon()
+                                end
+                            end)
+                        end
+                        reconDiedCon()
+
+                        sfxSound("true")
+                        Notif("Now Carpeting", "Carpeting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                        activeConnections.Carpettion = RunService.RenderStepped:Connect(function()
+                            pcall(function()
+                                if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                                    getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0, 0)
+                                    getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                                else
+                                    StopAllLoops()
+                                end
+                            end)
+                        end)
+                    end
+                end
+            else
+                Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+                sfxSound("false")
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.Kisserrdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Kiss",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr then
+            if not r15(speaker) then
+                if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                    if tableofLoopingFuncs.Kisserrr then
+                        StopAllLoops(true)
+                        Notif("No Longer Kissing The Player", "Not Kissing " .. foundPlr.Name .. " Anymore", 2, "x")
+                    else
+                        StopAllLoops()
+						task.wait(0.1)
+                        tableofLoopingFuncs.Kisserrr = true
+                        KissAnimIDs = {"rbxassetid://148840371", "rbxassetid://33169583", "rbxassetid://106772613"}
+                        
+                        for _, Animid in ipairs(KissAnimIDs) do
+                            local KissingAnim = Instance.new("Animation")
+                            KissingAnim.AnimationId = Animid
+                            local track = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(KissingAnim)
+                            track:Play(0, 10, 0)
+                            table.insert(activeAnimations, track)
+                        end
+
+                        function reconDiedCon()
+                            ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+                                if tableofLoopingFuncs.Kisserrr then
+                                    for _, id in ipairs(KissAnimIDs) do
+                                        local anim = Instance.new("Animation")
+                                        anim.AnimationId = id
+                                        local track = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(anim)
+                                        track:Play(0, 10, 0)
+                                        table.insert(activeAnimations, track)
+                                    end
+                                    reconDiedCon()
+                                end
+                            end)
+                        end
+                        reconDiedCon()
+
+                        sfxSound("true")
+                        Notif("Now Kissing", "Kissing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                        activeConnections.Kisserrr = RunService.RenderStepped:Connect(function()
+                            pcall(function()
+                                if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                                    getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.2, 0, 1)
+                                    getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                                else
+                                    StopAllLoops()
+                                end
+                            end)
+                        end)
+                    end
+                end
+            else
+                Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
+                sfxSound("false")
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ffhugger then
+                StopAllLoops(true)
+                Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.ffhugger = true
+                sfxSound("true")
+                Notif("Now Hugging", "Hugging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                
+                zombiearmsAnim = Instance.new("Animation")
+                zombiearmsAnim.AnimationId = not r15(speaker) and "rbxassetid://183294396" or "rbxassetid://708553116"
+                zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
+                zomearm:Play(0, 10, 0)
+                table.insert(activeAnimations, zomearm)
+                
+                if r15(speaker) and speaker.Character:FindFirstChild("Animate") then speaker.Character.Animate.Disabled = true end
+                
+                function reconDiedCon()
+                    ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+                        if tableofLoopingFuncs.ffhugger then
+                            zomearm:Play(0, 10, 0)
+                            table.insert(activeAnimations, zomearm)
+                            reconDiedCon()
+                        end
+                    end)
+                end
+                reconDiedCon()
+
+                activeConnections.ffhugger = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0.6, 0, 1)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.actualpb then
+                StopAllLoops(true)
+                speaker.Character.Humanoid.Sit = false
+                Notif("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name, 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.actualpb = true
+                sfxSound("true")
+                Notif("Now PiggyBacking", "PiggyBacking " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.actualpb = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 0.4, 1.2)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            speaker.Character.Humanoid.Sit = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+
+AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.besomebackpack then
+                StopAllLoops(true)
+                Notif("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name, 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.besomebackpack = true
+                sfxSound("true")
+                Notif("Now Backpacking", "Being " .. foundPlr.Name .. " Backpack", 2, "check")
+                activeConnections.besomebackpack = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -0.21, -1)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.headsits then
+                StopAllLoops(true)
+                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.headsits = true
+                sfxSound("true")
+                Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.headsits = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.SHOULDERSITdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Shoulder Sit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.shouldersit then
+                StopAllLoops(true)
+                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer Shoulder Sitting The Player", "Not Shoulder Sitting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.shouldersit = true
+                sfxSound("true")
+                Notif("Now Shoulder Sitting", "Shoulder Sitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.shouldersit = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(2, 1.6, 0.4)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.baskets then
+                StopAllLoops(true)
+                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer Basketting The Player", "Not Being " .. foundPlr.Name .. " Basket Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.baskets = true
+                sfxSound("true")
+                Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
+                
+                zombiearmsAnim = Instance.new("Animation")
+                zombiearmsAnim.AnimationId = "rbxassetid://10714360343"
+                zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
+                zomearm:Play(0, 10, 0)
+                table.insert(activeAnimations, zomearm)
+                
+                if speaker.Character:FindFirstChild("Animate") then 
+                    speaker.Character.Animate.Disabled = true 
+                end
+
+                activeConnections.baskets = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
+                            if targetArm then
+                                getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6)
+                                getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                            end
+                        else
+                            StopAllLoops()
+                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
 AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (ActualHeadsit == true) then
-					ActualHeadsit = false
-					ActualHeadSitLoop:Disconnect()
-					Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
-					speaker.Character.Humanoid.Sit = false
-					sfxSound("false")
-					return
-				else
-					ActualHeadsit = true
-					Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					ActualHeadSitLoop = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							speaker.Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								ActualHeadSitLoop:Disconnect()
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ActualHeadsit then
+                StopAllLoops(true)
+                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.ActualHeadsit = true
+                sfxSound("true")
+                Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.ActualHeadsit = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local animsync
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
-issyncinganim = false
+local animsync
 Paragraph = MiscPlayer:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp)
 AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (issyncinganim == true) then
-					ResetToPos()
-					issyncinganim = false
-					Notif("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					animsync:Disconnect()
-					return
-				else
-					issyncinganim = true
-					sfxSound("true")
-					Notif("Now Syncing", "Syncing With " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
-						local animID = track.Animation.AnimationId
-						for _, animationTrack in pairs(Character.Humanoid:GetPlayingAnimationTracks()) do
-							animationTrack:Stop()
-						end
-						Character.Animate.Disabled = true
-						local Anim = Instance.new("Animation")
-						Anim.AnimationId = animID
-						local syncinganim = Character.Humanoid:LoadAnimation(Anim)
-						syncinganim:Play()
-						syncinganim:AdjustWeight(10)
-						syncinganim.Stopped:Connect(function()
-							Character.Animate.Disabled = false
-						end)
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.issyncinganim then
+                StopAllLoops(true)
+                ResetToPos()
+                Notif("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name, 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.issyncinganim = true
+                sfxSound("true")
+                Notif("Now Syncing", "Syncing With " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.animsync = foundPlr.Character.Humanoid.AnimationPlayed:Connect(function(track)
+                    local animID = track.Animation.AnimationId
+                    local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                    
+                    if hum then
+                        for _, animationTrack in pairs(hum:GetPlayingAnimationTracks()) do
+                            animationTrack:Stop()
+                        end
+                        
+                        if speaker.Character:FindFirstChild("Animate") then
+                            speaker.Character.Animate.Disabled = true
+                        end
+                        
+                        local Anim = Instance.new("Animation")
+                        Anim.AnimationId = animID
+                        local syncinganim = hum:LoadAnimation(Anim)
+                        syncinganim:Play()
+                        syncinganim:AdjustWeight(10)
+                        
+                        syncinganim.Stopped:Connect(function()
+                            if speaker.Character:FindFirstChild("Animate") then
+                                speaker.Character.Animate.Disabled = false
+                            end
+                        end)
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
-local orbitingfuck = false
 AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (orbitingfuck == true) then
-				sfxSound("false")
-				OrbititngLoop:Disconnect()
-				orbitingfuck = false
-				Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
-				for i, v in pairs(speaker.Character:GetDescendants()) do
-					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-						v:Destroy()
-					end
-				end
-				speaker.Character.Humanoid.PlatformStand = false
-				speaker.Character.Humanoid.Sit = false
-				return
-			else
-				orbitingfuck = true
-				sfxSound("true")
-				Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				local P = Instance.new("Part", foundPlr.Character)
-				P.Transparency = 1
-				P.Name = "ThePart"
-				P.Size = Vector3.new(1.7, 1.7, 1.7)
-				P.Massless = true
-				P.CanCollide = false
-				local W = Instance.new("Weld", P)
-				W.Part1 = foundPlr.Character.HumanoidRootPart
-				W.Part0 = P
-				local sine = 0
-				local change = 1
-				local spin = 0
-				local spin2 = 0
-				local rp = Instance.new("RocketPropulsion")
-				rp.Parent = getRoot(speaker.Character)
-				rp.CartoonFactor = 1
-				rp.MaxThrust = 5000
-				rp.MaxSpeed = 100
-				rp.ThrustP = 5000
-				rp.Name = "OrbitalDestructionPart"
-				rp.Target = foundPlr.Character.ThePart
-				rp:Fire()
-				speaker.Character.Humanoid.PlatformStand = true
-				OrbititngLoop = RunService.RenderStepped:Connect(function()
-					pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						sine = sine + change
-						spin2 = spin2 + 0.6
-						spin = spin + 1
-						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0))
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.orbitingfuck then
+                StopAllLoops(true)
+                for i, v in pairs(speaker.Character:GetDescendants()) do
+                    if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
+                        v:Destroy()
+                    end
+                end
+                speaker.Character.Humanoid.PlatformStand = false
+                speaker.Character.Humanoid.Sit = false
+                Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.orbitingfuck = true
+                sfxSound("true")
+                Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                
+                local P = Instance.new("Part", foundPlr.Character)
+                P.Transparency = 1
+                P.Name = "ThePart"
+                P.Size = Vector3.new(1.7, 1.7, 1.7)
+                P.Massless = true
+                P.CanCollide = false
+                
+                local W = Instance.new("Weld", P)
+                W.Part1 = foundPlr.Character.HumanoidRootPart
+                W.Part0 = P
+                
+                local sine = 0
+                local change = 1
+                local spin = 0
+                local spin2 = 0
+                
+                local rp = Instance.new("RocketPropulsion")
+                rp.Parent = getRoot(speaker.Character)
+                rp.CartoonFactor = 1
+                rp.MaxThrust = 5000
+                rp.MaxSpeed = 100
+                rp.ThrustP = 5000
+                rp.Name = "OrbitalDestructionPart"
+                rp.Target = P
+                rp:Fire()
+                
+                speaker.Character.Humanoid.PlatformStand = true
+                
+                activeConnections.orbitingfuck = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            sine = sine + change
+                            spin2 = spin2 + 0.6
+                            spin = spin + 1
+                            W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(0, math.rad(spin), 0)
                         else
-							OrbititngLoop:Disconnect()
-							for i, v in pairs(speaker.Character:GetDescendants()) do
-								if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-									v:Destroy()
-								end
-							end
-							speaker.Character.Humanoid.PlatformStand = false
-							speaker.Character.Humanoid.Sit = false
-						end
-					end)
-				end)
-			end
-		end
-	end)
+                            StopAllLoops()
+                            for i, v in pairs(speaker.Character:GetDescendants()) do
+                                if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
+                                    v:Destroy()
+                                end
+                            end
+                            speaker.Character.Humanoid.PlatformStand = false
+                            speaker.Character.Humanoid.Sit = false
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local closeorbitingfuck = false
 AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (closeorbitingfuck == true) then
-				sfxSound("false")
-				CloseOrbititngLoop:Disconnect()
-				closeorbitingfuck = false
-				Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
-				for i, v in pairs(speaker.Character:GetDescendants()) do
-					if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-						v:Destroy()
-					end
-				end
-				speaker.Character.Humanoid.Sit = false
-				return
-			else
-				closeorbitingfuck = true
-				sfxSound("true")
-				Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				local rp = Instance.new("RocketPropulsion")
-				rp.Parent = getRoot(speaker.Character)
-				rp.CartoonFactor = 1
-				rp.MaxThrust = 5000
-				rp.MaxSpeed = 100
-				rp.ThrustP = 5000
-				rp.Name = "OrbitalDestruction"
-				rp.Target = foundPlr.Character.HumanoidRootPart
-				rp:Fire()
-				speaker.Character.Humanoid.Sit = true
-				CloseOrbititngLoop = RunService.RenderStepped:Connect(function()
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.closeorbitingfuck then
+                StopAllLoops(true)
+                for i, v in pairs(speaker.Character:GetDescendants()) do
+                    if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
+                        v:Destroy()
+                    end
+                end
+                if speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer Orbiting The Player", "Not Orbiting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.closeorbitingfuck = true
+                sfxSound("true")
+                Notif("Now Orbiting", "Orbiting Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                
+                local rp = Instance.new("RocketPropulsion")
+                rp.Parent = getRoot(speaker.Character)
+                rp.CartoonFactor = 1
+                rp.MaxThrust = 5000
+                rp.MaxSpeed = 100
+                rp.ThrustP = 5000
+                rp.Name = "OrbitalDestruction"
+                rp.Target = foundPlr.Character.HumanoidRootPart
+                rp:Fire()
+                
+                speaker.Character.Humanoid.Sit = true
+                
+                activeConnections.closeorbitingfuck = RunService.RenderStepped:Connect(function()
                     pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						sine = sine + change
-						spin2 = spin2 + 0.6
-						spin = spin + 1
-						W.C0 = CFrame.new(7 * math.cos(20), -2 - (2 * math.sin(sine / 10)), 7 * math.sin(20)) * CFrame.Angles(math.rad(0), math.rad(spin), math.rad(0))
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
                         else
-							CloseOrbititngLoop:Disconnect()
-							for i, v in pairs(speaker.Character:GetDescendants()) do
-								if ((v.Name == "OrbitalDestructionPart") or (v.Name == "OrbitalDestruction")) then
-									v:Destroy()
-								end
-							end
-							speaker.Character.Humanoid.Sit = false
-						end
-					end)
-				end)
-			end
-		end
-	end)
+                            StopAllLoops()
+                            for i, v in pairs(speaker.Character:GetDescendants()) do
+                                if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
+                                    v:Destroy()
+                                end
+                            end
+                            if speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 Paragraph = MiscPlayer:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, Sectionplayrerelatedtp)
-local lookingAt = false
+
 AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (lookingAt == true) then
-				lookingAt = false
-				LookingAtLoop:Disconnect()
-				Toggleantistun:Set(false)
-				sfxSound("false")
-				Notif("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. "Anymore", 2, "x")
-				return
-			else
-				lookingAt = true
-				sfxSound("true")
-				Notif("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				Toggleantistun:Set(true)
-				LookingAtLoop = RunService.RenderStepped:Connect(function()
-					pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						getRoot(speaker.Character).CFrame = CFrame.new(getRoot(speaker.Character).Position, getRoot(foundPlr.Character).Position)
-						else
-							LookingAtLoop:Disconnect()
-						end
-					end)
-				end)
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.lookingAt then
+                StopAllLoops(true)
+                if Toggleantistun then Toggleantistun:Set(false) end
+				if Toggleantiragdoll then Toggleantiragdoll:Set(false) end
+                Notif("No Longer Looking At The Player", "Not Looking At " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.lookingAt = true
+                sfxSound("true")
+                Notif("Now Looking At", "Looking At " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                
+                if Toggleantistun then Toggleantistun:Set(true) end
+				if Toggleantiragdoll then Toggleantiragdoll:Set(true) end
+                
+                activeConnections.lookingAt = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            speakerRoot.CFrame = CFrame.new(speakerRoot.Position, targetRoot.Position)
+                        else
+                            StopAllLoops()
+                            if Toggleantistun then Toggleantistun:Set(false) end
+							if Toggleantiragdoll then Toggleantiragdoll:Set(false) end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
-local spinaround = false
 local spinaroundrotation = 0
 local spinaroundspeed = 0.2
 local spinarounddistance = 6
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtp,2)
 AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		local root = getRoot(speaker.Character)
-		local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
-			if (spinaround == true) then
-				SpinAroundLoop:Disconnect()
-				sfxSound("false")
-				Notif("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, "x")
-				spinaround = false
-				return
-			else
-				spinaround = true
-				sfxSound("true")
-				Notif("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				SpinAroundLoop = RunService.RenderStepped:Connect(function()
-					if (foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid) then
-					spinaroundrotation = spinaroundrotation + spinaroundspeed
-						root.CFrame = CFrame.new(getRoot(foundPlr.Character).Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0)
-						root.CFrame = CFrame.new(root.Position, getRoot(foundPlr.Character).Position)
-                    else
-						SpinAroundLoop:Disconnect()
-					end
-				end)
-			end
-		end
+    pcall(function()
+        local root = getRoot(speaker.Character)
+        local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid then
+            if tableofLoopingFuncs.spinaround then
+                StopAllLoops(true)
+                Notif("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.spinaround = true
+                sfxSound("true")
+                Notif("Now Spinning Around", "Spinning Around " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                
+                activeConnections.spinaround = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and speaker.Character and getRoot(speaker.Character) then
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            spinaroundrotation = spinaroundrotation + spinaroundspeed
+                            speakerRoot.CFrame = CFrame.new(targetRoot.Position) * CFrame.Angles(0, math.rad(spinaroundrotation), 0) * CFrame.new(spinarounddistance, 0, 0)
+                            speakerRoot.CFrame = CFrame.new(speakerRoot.Position, targetRoot.Position)
+                        else
+                            StopAllLoops()
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
 end})
 
 SpinaroundSliderSpeed = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp,Name="Spin Around Speed",Range={1,99},Increment=1,Suffix="Speed",CurrentValue=spinaroundspeed,Callback=function(Value)
@@ -5077,163 +5018,104 @@ end})
 
 Sectionplayrerelatedtp69 = MiscPlayer:CreateSection("FE Player Related | 69", false, false, 10686489468)
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69)
-local Bang69 = false
+
+bang69speed = 1
 AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if not r15(speaker) then
-				if (Bang69 == true) then
-					Bang69 = false
-					R6Upsideloop:Disconnect()
-					Bang69Looped:Disconnect()
-					Notif("No Longer 69'ing The Player", "Not 69'ing " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					bang69:Stop()
-					bangAnim:Destroy()
-					Bang69 = false
-					ResetToPos()
-					return
-				else
-					Bang69 = true
-					Notif("Now 69'ing", "69'ing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					c = Character
-					hrp0 = c:FindFirstChild("HumanoidRootPart")
-					hrp1 = hrp0:Clone()
-					c.Parent = nil
-					hrp0.Parent = hrp1
-					hrp0.RootJoint.Part0 = nil
-					hrp1.Parent = c
-					c.Parent = workspace
-					c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-					hrp0.Transparency = 0.85
-					hrp0.Material = Enum.Material.ForceField
-					hrp0.Color = Color3.fromRGB(25, 25, 25)
-					R6Upsideloop = RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity
-						end
-					end)
-					f69lwnum = 1
-					bangAnim = Instance.new("Animation")
-					bangAnim.AnimationId = "rbxassetid://148840371"
-					bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim)
-					bang69:Play(0.1, 1, 1)
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						Bang69 = true
-						Bang69Looped = RunService.RenderStepped:Connect(function()
-							pcall(function()
-								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
-								getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                                else
-									R6Upsideloop:Disconnect()
-									Bang69Looped:Disconnect()
-									bang69:Stop()
-									bangAnim:Destroy()
-									ResetToPos()
-								end
-							end)
-						end)
-					end
-				end
-			elseif (Bang69 == true) then
-				Bang69 = false
-				Notif("No Longer 69'ing The Player", "Not 69'ing " .. foundPlr.Name .. " Anymore", 2, "x")
-				sfxSound("false")
-				bang69:Stop()
-				a69upsideown:Disconnect()
-				R15Bang69Looped:Disconnect()
-				R15Upside:Disconnect()
-				bangAnim:Destroy()
-				Bang69 = false
-				ResetToPos()
-				return
-			else
-				Bang69 = true
-				Notif("Now 69'ing", "69'ing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				sfxSound("true")
-				local LocalPlayer = Players.LocalPlayer
-				local Character = LocalPlayer.Character
-				local c = Character
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart")
-					if hrp0 then
-						local hrp1 = hrp0:Clone()
-						c.Parent = nil
-						hrp0.Parent = hrp1
-						hrp1.Parent = c
-						c.Parent = workspace
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0)
-						hrp0.Transparency = 0.85
-						hrp0.Material = Enum.Material.ForceField
-						hrp0.Color = Color3.fromRGB(25, 25, 25)
-						R15Upside = RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, -0.5, 0)
-								hrp0.Velocity = hrp1.Velocity
-							end
-						end)
-					end
-				end
-				setupCharacter()
-				if r15(speaker) then
-					local a69upsideown
-					a69upsideown = Players.LocalPlayer.CharacterAdded:Connect(function(char)
-						c = char
-						setupCharacter()
-					end)
-				end
-				f69lwnum = 1
-				bangAnim = Instance.new("Animation")
-				bangAnim.AnimationId = "rbxassetid://5918726674"
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.Bang69 then
+                StopAllLoops(true)
+				local char = speaker.Character
+    			if char and char:FindFirstChild("HumanoidRootPart") and char.Humanoid.Health > 0 then
+        			ResetToPos()
+    			end
+                Notif("No Longer 69'ing The Player", "Not 69'ing " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.Bang69 = true
+                sfxSound("true")
+                Notif("Now 69'ing", "69'ing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+
+                local c = speaker.Character
+                local hrp0 = c:FindFirstChild("HumanoidRootPart")
+                local hrp1 = hrp0:Clone()
+                
+                c.Parent = nil
+                hrp0.Parent = hrp1
+                if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
+				hrp1.Parent = c
+                c.Parent = workspace
+                
+                if not r15(speaker) then
+                    c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
+                else
+                    if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
+                        c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0)
+                    end
+                end
+
+                hrp0.Transparency = 0.85
+                hrp0.Material = Enum.Material.ForceField
+                
+                activeConnections.Bang69Upside = RunService.Heartbeat:Connect(function()
+                    if c and c.Parent and hrp0 and hrp1 then
+                        hrp0.CFrame = hrp1.CFrame
+                        hrp0.Orientation += Vector3.new(0, 0, 180)
+                        hrp0.Velocity = hrp1.Velocity
+                    end
+                end)
+
+                bangAnim = Instance.new("Animation")
+				bangAnim.AnimationId = not r15(speaker) and "rbxassetid://148840371" or "rbxassetid://5918726674"
 				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim)
-				bang69:Play(0.1, 1, 1)
-					Bang69 = true
-					R15Bang69Looped = RunService.RenderStepped:Connect(function()
-						pcall(function()
-							if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-							getRoot(speaker.Character).CFrame = (getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0)) + (getRoot(foundPlr.Character).CFrame.lookVector * f69lwnum)
-                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-                            else
-								bang69:Stop()
-								a69upsideown:Disconnect()
-								R15Bang69Looped:Disconnect()
-								R15Upside:Disconnect()
-								bangAnim:Destroy()
-								Bang69 = false
-								ResetToPos()
-							end
-						end)
-					end)
-			end
-		end
-		ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			bang69:Stop()
-			bangAnim:Destroy()
-			a69upsideown:Disconnect()
-			Bang69 = false
-		end)
+				bang69:Play(0.1, 1, bang69speed)
+				table.insert(activeAnimations, bang69)
+
+                f69lwnum = 1
+                activeConnections.Bang69Loop = RunService.Heartbeat:Connect(function()
+   					pcall(function()
+        				if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+            				local targetHRP = getRoot(foundPlr.Character)
+            				local myHRP = getRoot(speaker.Character)
+            				myHRP.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            				myHRP.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+							getRoot(speaker.Character).CFrame = (targetHRP.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (targetHRP.CFrame.lookVector * f69lwnum) + Vector3.new(0, 0, 0)
+            				myHRP.CFrame = offsetCFrame
+        				else
+							if char and char:FindFirstChild("HumanoidRootPart") and char.Humanoid.Health > 0 then
+        						ResetToPos()
+    						end
+            				StopAllLoops()
+        				end
+    				end)
+				end)
+            end
+        end
+    end)
 end})
 
-bangSlider69 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+bangSlider69 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=bang69speed,Callback=function(Value)
 	pcall(function()
-		bang69:AdjustSpeed(Value)
+		bang69speed = Value
+		if bang69 and bang69.IsPlaying then
+            bang69:AdjustSpeed(bang69speed)
+        end
 	end)
 end})
 
-Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",PlaceholderText="1",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",PlaceholderText=bang69speed,OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		bang69:AdjustSpeed(Text)
+		bang69speed = tonumber(Text) or 1
+		if bang69 and bang69.IsPlaying then
+            bang69:AdjustSpeed(bang69speed)
+        end
 	end)
 end})
 
+spacing = Misc:CreateSpacing(Sectionplayrerelatedtp69,2)
 local ffc1hump = false
 elapsedTimehump = 0
 hump69distance = 5
@@ -5242,170 +5124,143 @@ humpnordistance = 5
 humpnorspeed = 1
 humpfacedistance = 5
 humpfacespeed = 1
-spacing = Misc:CreateSpacing(Sectionplayrerelatedtp69,2)
 local HumpBang69Looped
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if not r15(speaker) then
-				if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-					if (ffc1hump == true) then
-						ffc1hump = false
-						Hump69R6Upsideloop:Disconnect()
-						if HumpBang69Looped then
-							HumpBang69Looped:Disconnect()
-							HumpBang69Looped = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-						sfxSound("false")
-						ResetToPos()
-						return
-					else
-						ffc1hump = true
-						Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-						sfxSound("true")
-						c = Character
-						hrp0 = c:FindFirstChild("HumanoidRootPart")
-						hrp1 = hrp0:Clone()
-						c.Parent = nil
-						hrp0.Parent = hrp1
-						hrp0.RootJoint.Part0 = nil
-						hrp1.Parent = c
-						c.Parent = workspace
-						c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-						hrp0.Transparency = 0.85
-						hrp0.Material = Enum.Material.ForceField
-						hrp0.Color = Color3.fromRGB(25, 25, 25)
-						Hump69R6Upsideloop = RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, 0, 0)
-								hrp0.Velocity = hrp1.Velocity
-							end
-						end)
-						HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
-							pcall(function()
-								if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-								local speakerRoot = getRoot(speaker.Character)
-								local targetRoot = getRoot(foundPlr.Character)
-								if (speakerRoot and targetRoot) then
-									elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
-									local cycle = elapsedTimehump % 1
-									local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-									local xOffset = hump69distance * alpha			
-									local targetCFrame = targetRoot.CFrame
-									local targetPosition = targetCFrame.Position
-									speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
-									speakerRoot.AssemblyLinearVelocity = Vector3.new()
-								elseif HumpBang69Looped then
-									HumpBang69Looped:Disconnect()
-									HumpBang69Looped = nil
-									speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-								end
-							else
-								Hump69R6Upsideloop:Disconnect()
-                                if HumpBang69Looped then
-                                    HumpBang69Looped:Disconnect()
-                                    HumpBang69Looped = nil
-                                    speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+    plrName = Option:match("^(.-) %(") or Option
+    foundPlr = getPlr(plrName)
+    if foundPlr then
+        if not r15(speaker) then
+            if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+                if (ffc1hump == true) then
+                    ffc1hump = false
+                    tableofLoopingFuncs.ffc1hump = false
+                    StopAllLoops(true)
+                    if activeConnections.Hump69R6Upsideloop then activeConnections.Hump69R6Upsideloop:Disconnect() end
+                    if activeConnections.HumpBang69Looped then
+                        activeConnections.HumpBang69Looped:Disconnect()
+                        speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                    end
+                    Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+                    ResetToPos()
+                    return
+                else
+                    StopAllLoops()
+					task.wait(0.1)
+                    ffc1hump = true
+                    tableofLoopingFuncs.ffc1hump = true
+                    sfxSound("true")
+                    Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                    c = Character
+                    hrp0 = c:FindFirstChild("HumanoidRootPart")
+                    hrp1 = hrp0:Clone()
+                    c.Parent = nil
+                    hrp0.Parent = hrp1
+                    hrp0.RootJoint.Part0 = nil
+                    hrp1.Parent = c
+                    c.Parent = workspace
+                    c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
+                    hrp0.Transparency = 0.85
+                    hrp0.Material = Enum.Material.ForceField
+                    hrp0.Color = Color3.fromRGB(25, 25, 25)
+                    activeConnections.Hump69R6Upsideloop = RunService.Heartbeat:Connect(function()
+                        if (c and c.Parent) then
+                            hrp0.CFrame = hrp1.CFrame
+                            hrp0.Orientation += Vector3.new(0, 0, 180)
+                            hrp0.Velocity = hrp1.Velocity
+                        end
+                    end)
+                    activeConnections.HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+                        pcall(function()
+                            if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+                                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                                local speakerRoot = getRoot(speaker.Character)
+                                local targetRoot = getRoot(foundPlr.Character)
+                                if (speakerRoot and targetRoot) then
+                                    elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
+                                    local cycle = elapsedTimehump % 1
+                                    local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                                    local xOffset = hump69distance * alpha          
+                                    local targetCFrame = targetRoot.CFrame
+                                    speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
+                                    speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                                else
+                                    StopAllLoops()
                                 end
-								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-								ResetToPos()
-							end
-							end)
-						end)
-					end
-				end
-			elseif (ffc1hump == true) then
-				ffc1hump = false
-				if R15HumpBang69Looped then
-					R15HumpBang69Looped:Disconnect()
-					R15HumpBang69Looped = nil
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				end
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				Notif("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-				sfxSound("false")
-				Hump69R15Upsideloop:Disconnect()
-				a69humper:Disconnect()
-				ResetToPos()
-				return
-			else
-				ffc1hump = true
-				Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				sfxSound("true")
-				local LocalPlayer = Players.LocalPlayer
-				local Character = LocalPlayer.Character
-				local c = Character
-				local function setupCharacter()
-					local hrp0 = c:FindFirstChild("HumanoidRootPart")
-					if hrp0 then
-						local hrp1 = hrp0:Clone()
-						c.Parent = nil
-						hrp0.Parent = hrp1
-						hrp1.Parent = c
-						c.Parent = workspace
-						c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0)
-						hrp0.Transparency = 0.85
-						hrp0.Material = Enum.Material.ForceField
-						hrp0.Color = Color3.fromRGB(25, 25, 25)
-						Hump69R15Upsideloop = RunService.Heartbeat:Connect(function()
-							if (c and c.Parent) then
-								hrp0.CFrame = hrp1.CFrame
-								hrp0.Orientation += Vector3.new(0, 0, 180)
-								hrp0.Position -= Vector3.new(0, 0, 0)
-								hrp0.Velocity = hrp1.Velocity
-							end
-						end)
-					end
-				end
-				setupCharacter()
-				if r15(speaker) then
-					local a69humper
-					a69humper = Players.LocalPlayer.CharacterAdded:Connect(function(char)
-						c = char
-						setupCharacter()
-					end)
-				end
-				R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
-					pcall(function()
-						if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-						local speakerRoot = getRoot(speaker.Character)
-						local targetRoot = getRoot(foundPlr.Character)
-						if (speakerRoot and targetRoot) then
-							elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
-							local cycle = elapsedTimehump % 1
-							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-							local xOffset = hump69distance * alpha			
-							local targetCFrame = targetRoot.CFrame
-							local targetPosition = targetCFrame.Position
-							speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
-							speakerRoot.AssemblyLinearVelocity = Vector3.new()
-						elseif R15HumpBang69Looped then
-							R15HumpBang69Looped:Disconnect()
-							R15HumpBang69Looped = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
-					else
-						if R15HumpBang69Looped then
-							R15HumpBang69Looped:Disconnect()
-							R15HumpBang69Looped = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
-						Hump69R15Upsideloop:Disconnect()
-						a69humper:Disconnect()
-						ResetToPos()
-					end
-					end)
-				end)
-			end
-		end
+                            else
+                                StopAllLoops()
+                                ResetToPos()
+                            end
+                        end)
+                    end)
+                end
+            end
+        elseif (ffc1hump == true) then
+            ffc1hump = false
+            tableofLoopingFuncs.ffc1hump = false
+			StopAllLoops(true)
+            if activeConnections.R15HumpBang69Looped then
+                activeConnections.R15HumpBang69Looped:Disconnect()
+                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+            end
+            Notif("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+            sfxSound("false")
+            if activeConnections.Hump69R15Upsideloop then activeConnections.Hump69R15Upsideloop:Disconnect() end
+            ResetToPos()
+            return
+        else
+            StopAllLoops()
+            ffc1hump = true
+            tableofLoopingFuncs.ffc1hump = true
+            Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+            sfxSound("true")
+            local c = speaker.Character
+            local function setupCharacter()
+                local hrp0 = c:FindFirstChild("HumanoidRootPart")
+                if hrp0 then
+                    local hrp1 = hrp0:Clone()
+                    c.Parent = nil
+                    hrp0.Parent = hrp1
+                    hrp1.Parent = c
+                    c.Parent = workspace
+                    c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0)
+                    hrp0.Transparency = 0.85
+                    hrp0.Material = Enum.Material.ForceField
+                    hrp0.Color = Color3.fromRGB(25, 25, 25)
+                    activeConnections.Hump69R15Upsideloop = RunService.Heartbeat:Connect(function()
+                        if (c and c.Parent) then
+                            hrp0.CFrame = hrp1.CFrame
+                            hrp0.Orientation += Vector3.new(0, 0, 180)
+                            hrp0.Velocity = hrp1.Velocity
+                        end
+                    end)
+                end
+            end
+            setupCharacter()
+            activeConnections.R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+                pcall(function()
+                    if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+                        speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                        local speakerRoot = getRoot(speaker.Character)
+                        local targetRoot = getRoot(foundPlr.Character)
+                        if (speakerRoot and targetRoot) then
+                            elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
+                            local cycle = elapsedTimehump % 1
+                            local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                            local xOffset = hump69distance * alpha          
+                            local targetCFrame = targetRoot.CFrame
+                            speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
+                            speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                        end
+                    else
+                        StopAllLoops()
+                        ResetToPos()
+                    end
+                end)
+            end)
+        end
+    end
 end})
 
 s69humpSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
@@ -5433,62 +5288,66 @@ s69humpInput = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Na
 end})
 
 Sectionplayrerelatedtpbang = MiscPlayer:CreateSection("FE Player Related | Bang", false, false, 10686489468)
-local Bang = false
+
 AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			flwnum = -1
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (Bang == true) then
-					BangerLoop:Disconnect()
-					v2banger:Stop()
-					v2bangerAnim:Destroy()
-					Bang = false
-					Notif("No Longer Banging The Player", "Not Banging " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					Bang = true
-					v2bangerAnim = Instance.new("Animation")
-					if not r15(speaker) then
-						v2bangerAnim.AnimationId = "rbxassetid://148840371"
-					else
-						v2bangerAnim.AnimationId = "rbxassetid://5918726674"
-					end
-					v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim)
-                    v2banger:Play(0.1, 1, 3)
-					local function reconDiedCon()
-						ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-							if BangerLoop then
-								v2banger:Play(0.1, 1, 3)
-								reconDiedCon()
-							end
-						end)
-					end
-					reconDiedCon()
-					Notif("Now Banging", "Banging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					BangerLoop = RunService.RenderStepped:Connect(function()
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						pcall(function()
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame + (getRoot(foundPlr.Character).CFrame.lookVector * flwnum)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-						end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.Bang then
+                StopAllLoops(true)
+                Notif("No Longer Banging", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.Bang = true
+                sfxSound("true")
+                Notif("Now Banging", "Banging " .. foundPlr.Name, 4, "check")
+                
+                local v2bangerAnim = Instance.new("Animation")
+                if not r15(speaker) then
+                    v2bangerAnim.AnimationId = "rbxassetid://148840371"
+                else
+                    v2bangerAnim.AnimationId = "rbxassetid://5918726674"
+                end
+                
+                local v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim)
+                activeAnimations.Bang = v2banger
+                v2banger:Play(0.1, 1, 3)
+                
+                local function reconDiedCon()
+                    activeConnections.ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+                        if tableofLoopingFuncs.Bang then
+                            task.wait(0.5)
+                            local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            if newHum then
+                                v2banger = newHum:LoadAnimation(v2bangerAnim)
+                                activeAnimations.Bang = v2banger
+                                v2banger:Play(0.1, 1, 3)
+                                reconDiedCon()
+                            end
+                        end
+                    end)
+                end
+                reconDiedCon()
+                activeConnections.BangerLoop = RunService.RenderStepped:Connect(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local targetRoot = getRoot(foundPlr.Character)
+                            local speakerRoot = getRoot(speaker.Character)
+                            if targetRoot and speakerRoot then
+                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, 1.1)
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
                     else
-						if BangerLoop then
-							BangerLoop:Disconnect()
-							BangerLoop = nil 
-						end
-						v2banger:Stop()
-						v2bangerAnim:Destroy()
-					end
-					end)
-				end
-			end
-		end
-	end)
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 bangSlider = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
@@ -5503,62 +5362,68 @@ Inputbangerionspeed = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelated
 	end)
 end})
 
-local ff2 = false
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtpbang,2)
+
 AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (ff2 == true) then
-					ff2 = false
-					FaceBangerLoop:Disconnect()
-					facebanger:Stop()
-					facebangerAnim:Destroy()
-					Notif("No Longer Facebanging The Player", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					ff2 = true
-					facebangerAnim = Instance.new("Animation")
-					if not r15(speaker) then
-						facebangerAnim.AnimationId = "rbxassetid://148840371"
-					else
-						facebangerAnim.AnimationId = "rbxassetid://5918726674"
-					end
-					facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim)
-					facebanger:Play(0.1, 1, 3)
-					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					local function reconDiedCon()
-						ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-							if FaceBangerLoop then
-								facebanger:Play(0.1, 1, 3)
-								reconDiedCon()
-							end
-						end)
-					end
-					reconDiedCon()
-					FaceBangerLoop = RunService.RenderStepped:Connect(function()
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						pcall(function()
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 0.5)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-						end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ff2 then
+                StopAllLoops(true)
+                Notif("No Longer Facebanging", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.ff2 = true
+                sfxSound("true")
+                Notif("Now Facebanging", "Facebanging " .. foundPlr.Name, 4, "check")
+                
+                local facebangerAnim = Instance.new("Animation")
+                if not r15(speaker) then
+                    facebangerAnim.AnimationId = "rbxassetid://148840371"
+                else
+                    facebangerAnim.AnimationId = "rbxassetid://5918726674"
+                end
+                
+                local facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim)
+                activeAnimations.facebang = facebanger
+                facebanger:Play(0.1, 1, 3)
+                
+                local function reconDiedCon()
+                    activeConnections.ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+                        if tableofLoopingFuncs.ff2 then
+                            task.wait(0.5)
+                            local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            if newHum then
+                                facebanger = newHum:LoadAnimation(facebangerAnim)
+                                activeAnimations.facebang = facebanger
+                                facebanger:Play(0.1, 1, 3)
+                                reconDiedCon()
+                            end
+                        end
+                    end)
+                end
+                reconDiedCon()
+                
+                activeConnections.FaceBangerLoop = RunService.RenderStepped:Connect(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            if speakerRoot and targetRoot then
+                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 1.1)
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
                     else
-						if FaceBangerLoop then
-							FaceBangerLoop:Disconnect()
-							FaceBangerLoop = nil
-						end
-						facebanger:Stop()
-						facebangerAnim:Destroy()
-					end
-					end)
-				end
-			end
-		end
-	end)
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 facebangSlider = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=3,Callback=function(Value)
@@ -5573,103 +5438,94 @@ Inputbangerions = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpba
 	end)
 end})
 
-local ff = false
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtpbang,2)
+
 AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (ff == true) then
-					ff = false
-					if SitFaceBangerLoop then
-						SitFaceBangerLoop:Disconnect()
-						SitFaceBangerLoop = nil
-						Character.Humanoid.Sit = false
-					end
-					Notif("No Longer Facebanging ", "Not Facebanging " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					ff = true
-					Notif("Now Facebanging", "Facebanging " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						pcall(function()
-							Character.Humanoid.Sit = true
-							getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 1.6, 0.4)
-							getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
-						end)
-					else
-						if SitFaceBangerLoop then
-							SitFaceBangerLoop:Disconnect()
-							SitFaceBangerLoop = nil
-							Character.Humanoid.Sit = false
-						end
-					end
-					end)
-				end
-			end
-		end
-	end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ff then
+                StopAllLoops(true)
+                if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+                end
+                Notif("No Longer Facebanging ", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.ff = true
+                sfxSound("true")
+                Notif("Now Facebanging", "Facebanging " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.Sit = true
+                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 1.6, -0.4) * CFrame.Angles(0, math.rad(180), 0)
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
+                    else
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468)
-local Humping = false
+
 local HumpLoop
 AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	plrName = Option:match("^(.-) %(") or Option
-	foundPlr = getPlr(plrName)
-	if foundPlr then
-		if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-			if (Humping == true) then
-				Humping = false
-				if HumpLoop then
-					HumpLoop:Disconnect()
-					HumpLoop = nil
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				end
-				sfxSound("false")
-				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-				Notif("No Longer Humping The Player", "Not Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-				return
-			else
-				Humping = true
-				Notif("Now Humping", "Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-				sfxSound("true")
-                HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-						local speakerRoot = getRoot(speaker.Character)
-						local targetRoot = getRoot(foundPlr.Character)
-						if (speakerRoot and targetRoot) then
-							elapsedTimehump = elapsedTimehump + (deltaTime * humpnorspeed)
-							local cycle = elapsedTimehump % 1
-							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-							local targetPosition = targetRoot.CFrame
-							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance)
-							local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha)
-							local targetOrientation = targetRoot.CFrame - targetRoot.CFrame.Position
-							speakerRoot.CFrame = CFrame.new(newPosition) * targetOrientation.Rotation
-							speakerRoot.AssemblyLinearVelocity = Vector3.new()
-						elseif HumpLoop then
-							HumpLoop:Disconnect()
-							HumpLoop = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.Humping then
+                StopAllLoops(true)
+                Notif("No Longer Humping", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.Humping = true
+                sfxSound("true")
+                Notif("Now Humping", "Humping " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.HumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                        local speakerRoot = getRoot(speaker.Character)
+                        local targetRoot = getRoot(foundPlr.Character)
+                        
+                        if hum and speakerRoot and targetRoot then
+                            hum.PlatformStand = true
+                            elapsedTimehump = elapsedTimehump + (deltaTime * humpnorspeed)
+                            local cycle = elapsedTimehump % 1
+                            local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                            
+                            local targetPosition = targetRoot.CFrame
+                            local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance)
+                            local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha)
+                            
+                            speakerRoot.CFrame = CFrame.new(newPosition) * targetRoot.CFrame.Rotation
+                            speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                        end
                     else
-						if HumpLoop then
-							HumpLoop:Disconnect()
-							HumpLoop = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
-					end
-				end)
-			end
-		end
-	end
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
@@ -5696,63 +5552,50 @@ faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrer
 	end)
 end})
 
-local FaceHumpLoop
-local ffc1 = false
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
+
 AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (ffc1 == true) then
-					ffc1 = false
-					if FaceHumpLoop then
-						FaceHumpLoop:Disconnect()
-						FaceHumpLoop = nil
-						speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					end
-					speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-					Notif("No Longer Face Humping The Player", "Not Face Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					ffc1 = true
-					Notif("Now Face Humping", "Face Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						pcall(function()
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-							local speakerRoot = getRoot(speaker.Character)
-							local targetRoot = getRoot(foundPlr.Character)
-							if (speakerRoot and targetRoot) then
-								elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
-								local cycle = elapsedTimehump % 1
-								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-								local xOffset = humpfacedistance * alpha			
-								local targetCFrame = targetRoot.CFrame
-								local targetPosition = targetCFrame.Position
-								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) + targetCFrame.LookVector
-								speakerRoot.AssemblyLinearVelocity = Vector3.new()
-							elseif FaceHumpLoop then
-								FaceHumpLoop:Disconnect()
-								FaceHumpLoop = nil
-								speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-							end
-						end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ffc1 then
+                StopAllLoops(true)
+                Notif("No Longer Face Humping", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.ffc1 = true
+                sfxSound("true")
+                Notif("Now Face Humping", "Face Humping " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.PlatformStand = true
+                                elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
+                                local cycle = elapsedTimehump % 1
+                                local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                                local xOffset = humpfacedistance * alpha            
+                                
+                                local targetCFrame = targetRoot.CFrame
+                                speakerRoot.CFrame = targetCFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, xOffset) + targetCFrame.LookVector
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
                     else
-						if FaceHumpLoop then
-							FaceHumpLoop:Disconnect()
-							FaceHumpLoop = nil
-							speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-						end
-					end
-					end)
-				end
-			end
-		end
-	end)
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
@@ -5779,64 +5622,57 @@ faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrer
 	end)
 end})
 
-local ReverseHumpLoop
-local ffc2 = false
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
+
+local ReverseHumpLoop
+
 AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-	pcall(function()
-		plrName = Option:match("^(.-) %(") or Option
-		foundPlr = getPlr(plrName)
-		if foundPlr then
-			if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-				if (ffc2 == true) then
-					ffc2 = false
-					if ReverseHumpLoop then
-						ReverseHumpLoop:Disconnect()
-						ReverseHumpLoop = nil
-						speaker.Character.Humanoid.Sit = false
-					end
-					speaker.Character.Humanoid.Sit = false
-					Notif("No Longer Reverse Humping The Player", "Not Reverse Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-					sfxSound("false")
-					return
-				else
-					ffc2 = true
-					Notif("Now Reverse Humping", "Reverse Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					sfxSound("true")
-					ReverseHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-					if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-						pcall(function()
-							speaker.Character.Humanoid.Sit = true
-							local speakerRoot = getRoot(speaker.Character)
-							local targetRoot = getRoot(foundPlr.Character)
-							if (speakerRoot and targetRoot) then
-								elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
-								local cycle = elapsedTimehump % 1
-								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-								local xOffset = 5 * alpha			
-								local targetCFrame = targetRoot.CFrame
-								local targetPosition = targetCFrame.Position
-								speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -1)
-								speakerRoot.AssemblyLinearVelocity = Vector3.new()
-								speakerRoot.AssemblyAngularVelocity = Vector3.new()
-							elseif ReverseHumpLoop then
-								ReverseHumpLoop:Disconnect()
-								ReverseHumpLoop = nil
-								speaker.Character.Humanoid.Sit = false
-							end
-						end)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ffc2 then
+                StopAllLoops(true)
+                if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+                end
+                Notif("No Longer Reverse Humping", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.ffc2 = true
+                sfxSound("true")
+                Notif("Now Reverse Humping", "Reverse Humping " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.ReverseHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.Sit = true
+                                elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
+                                local cycle = elapsedTimehump % 1
+                                local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                                local xOffset = 5 * alpha           
+                                
+                                local targetCFrame = targetRoot.CFrame
+                                speakerRoot.CFrame = targetCFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -1)
+                                
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                                speakerRoot.AssemblyAngularVelocity = Vector3.new()
+                            end
+                        end)
                     else
-						if ReverseHumpLoop then
-							ReverseHumpLoop:Disconnect()
-							ReverseHumpLoop = nil
-							speaker.Character.Humanoid.Sit = false
-						end
-					end
-					end)
-				end
-			end
-		end
-	end)
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
 end})
 
 ReversebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
@@ -7813,66 +7649,56 @@ end})
 Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="NSUI (Arrayfield Modified)"}, Sectionpointofhub)
 
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962)
-local checkAgeacc = math.max(speaker.AccountAge or 0, 1)
-local DTinfo = DateTime.fromUnixTimestamp(86400 * checkAgeacc)
-local Daysinfo = tonumber(DTinfo:FormatUniversalTime("DD", "en-us")) or 0
-local Monthsinfo = tonumber(DTinfo:FormatUniversalTime("MM", "en-us")) or 0
-local Yearsinfo = (tonumber(DTinfo:FormatUniversalTime("YYYY", "en-us")) or 1970) - 1970
+local floor = math.floor
+local format = string.format
+local players = game:GetService("Players")
+local statsService = game:GetService("Stats")
 
-local function formatSessionTime(totalSeconds)
-    local hours = math.floor(totalSeconds / 3600)
-    local minutes = math.floor((totalSeconds % 3600) / 60)
-    local seconds = totalSeconds % 60
-    return string.format("%02d:%02d:%02d", hours, minutes, seconds)
-end
+local ageInDays = speaker.AccountAge or 0
+local years = floor(ageInDays / 365)
+local months = floor((ageInDays % 365) / 30)
+local days = ageInDays % 30
 
-local totalSeconds = math.floor(workspace.DistributedGameTime)
-local sessionTime = formatSessionTime(totalSeconds)
-Paragraphc = CRD:CreateParagraph({Title = "Information",
-    Content = string.format(
-        "Name: %s (%s)\n" ..
-        "UserId: %d\n" ..
-        "Account Age | In Days:\n" ..
-        "Day(s): %d \n" ..
-        "Month(s): %d \n" ..
-        "Year(s): %d \n" ..
-        "Total: %d \n" ..
-        "PlaceId: %d",
-        speaker.Name,
-        speaker.DisplayName,
-        speaker.UserId,
-        Daysinfo,
-        Monthsinfo,
-        Yearsinfo,
-        speaker.AccountAge,
-        PlaceId
+Paragraphc = CRD:CreateParagraph({
+    Title = "Information",
+    Content = format(
+        "Name: %s (%s)\nUserId: %d\nAccount Age Details:\nYear(s): %d\nMonth(s): %d\nDay(s): %d\nTotal Days: %d\nPlaceId: %d",
+        speaker.Name, speaker.DisplayName, speaker.UserId, years, months, days, ageInDays, game.PlaceId
     )
 }, Sectionclientinfo)
 
 Paragraphcrdd = CRD:CreateParagraph({
     Title = "Detailed Information",
-    Content = ("Country: " .. (country or "N/A") .. " / " .. (countryCode or "N/A") ..
-    "\nTimezone: " .. (timezone or "N/A") ..
-    "\nExecutor: " .. (executor or "N/A") ..
-    "\nFPS: " .. tostring(Updatedfps or "N/A") ..
-    "\nMemory: " .. tostring(math.floor(stats():GetTotalMemoryUsageMb()) or "N/A") .. " MB" ..
-    "\nSession Time Spent: " .. sessionTime ..
-    "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers))
+    Content = "Loading..."
 }, Sectionclientinfo)
 
+
 task.spawn(function()
-    while task.wait() do
-        totalSeconds = math.floor(workspace.DistributedGameTime)
-        sessionTime = formatSessionTime(totalSeconds)
-        Paragraphcrdd:Set({Title = "Detailed Information",
-            Content = ("Country: " .. (country or "N/A") .. " / " .. (countryCode or "N/A") ..
-            "\nTimezone: " .. (timezone or "N/A") ..
-            "\nExecutor: " .. (executor or "N/A") ..
-            "\nFPS: " .. tostring(Updatedfps or "N/A") ..
-            "\nMemory: " .. tostring(math.floor(stats():GetTotalMemoryUsageMb()) or "N/A") .. " MB" ..
-            "\nSession Time Spent: " .. sessionTime ..
-            "\nPlayers: " .. tostring(#game.Players:GetChildren()) .. "/" .. tostring(game.Players.MaxPlayers))
+    while true do
+        local totalSecs = floor(workspace.DistributedGameTime)
+        
+        local sessionTime = format("%02d:%02d:%02d", 
+            floor(totalSecs / 3600), 
+            floor((totalSecs % 3600) / 60), 
+            totalSecs % 60
+        )
+
+        Paragraphcrdd:Set({
+            Title = "Detailed Information",
+            Content = format(
+                "Country: %s / %s\nTimezone: %s\nExecutor: %s\nFPS: %s\nMemory: %d MB\nSession Time: %s\nPlayers: %d/%d",
+                country or "N/A", countryCode or "N/A",
+                timezone or "N/A",
+                executor or "N/A",
+                tostring(Updatedfps or "N/A"),
+                floor(statsService:GetTotalMemoryUsageMb()),
+                sessionTime,
+                #players:GetPlayers(),
+                players.MaxPlayers
+            )
         })
+    
+        task.wait(1)
     end
 end)
 
@@ -7927,16 +7753,46 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Inter
 end})
 
 if env.AlreadyRan then
-    for _, keybind in ipairs(env.AllKeybinds) do
-        pcall(keybind.Clear, keybind)
+    for _, keybind in ipairs(env.AllKeybinds or {}) do
+        pcall(function() keybind:Clear() end)
     end
-    for _, toggle in ipairs(env.AllToggles) do
+
+    for _, toggle in ipairs(env.AllToggles or {}) do
         pcall(function()
             if toggle.CurrentValue == true then
                 toggle:Set(false)
             end
         end)
     end
+
+    for i, v in pairs(env.activeConnections or {}) do 
+        pcall(function() v:Disconnect() end) 
+    end
+
+    for i, v in pairs(env.activeAnimations or {}) do 
+        pcall(function() v:Stop() v:Destroy() end) 
+    end
+    env.tableofLoopingFuncs = {}
+    
+    env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
 else
     env.AlreadyRan = true
 end
+
+env.activeConnections = {}
+env.activeAnimations = {}
+env.tableofLoopingFuncs = {Annoy = false,glued = false,walkto = false,StandOnHead = false,Becarried = false,Follow = false,LoopHello = false,Carpettion = false,Kisserrr = false,ffhugger = false,actualpb = false,besomebackpack = false,headsits = false,shouldersit = false,baskets = false,ActualHeadsit = false,issyncinganim = false,orbitingfuck = false,closeorbitingfuck = false,lookingAt = false,spinaround = false,Bang69 = false,ffc1hump = false,Bang = false,ff2 = false,ff = false,Humping = false,ffc1 = false,ffc2 = false}
+
+local activeConnections = env.activeConnections
+local activeAnimations = env.activeAnimations
+local tableofLoopingFuncs = env.tableofLoopingFuncs
+
+function updateReferences(newChar)
+    Character = newChar
+    character = newChar
+    Humanoid = newChar:WaitForChild("Humanoid")
+    root = (getRoot and getRoot(newChar)) or newChar:WaitForChild("HumanoidRootPart")
+end
+
+env.CharAddedConnection = speaker.CharacterAdded:Connect(updateReferences)
+if speaker.Character then updateReferences(speaker.Character) end
