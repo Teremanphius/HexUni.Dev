@@ -886,49 +886,56 @@ Input = Misc:CreateInput({SectionParent=Sectiontpscritps,Name="Tween Press To TP
 	end)
 end})
 
-local ApiListSrvr = "https://games.roblox.com/v1/games/"
-local function ListServers(cursor, sortOrder)
-    local url = string.format("%s%d/servers/Public?sortOrder=%s&limit=100", ApiListSrvr, PlaceId, sortOrder)
-    if cursor then
-        url = url .. "&cursor=" .. cursor
-    end
-    local response = HttpService:JSONDecode(game:HttpGet(url))
-    return response.data, response.nextPageCursor
-end
+spacing = Misc:CreateSpacing(Sectiontpscritps,2)
 
-local function TeleportToServer(sortOrder)
+serverMap = {}
+serverOptionsList = {}
+rawName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+gameName = #rawName > 25 and string.sub(rawName, 1, 25) .. "..." or rawName
+req = (syn and syn.request) or (http and http.request) or http_request or request
+
+updateServers = function()
     pcall(function()
-        local Server, Next
-        repeat
-            local Servers
-            Servers, Next = ListServers(Next, sortOrder)
-            Server = Servers[1]
-        until Server
-        TeleportService:TeleportToPlaceInstance(PlaceId, Server.id, game.Players.LocalPlayer)
+        response = req({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=50", Method = "GET"})
+        if response and response.Body then
+            data = game:GetService("HttpService"):JSONDecode(response.Body)
+            if data and data.data then
+                newOptions = {}
+                newMap = {}
+                for _, server in pairs(data.data) do
+                    if server.playing and server.playing < server.maxPlayers then 
+                        isCurrent = (server.id == game.JobId)
+                        suffix = isCurrent and " (Current)" or ""
+                        optionStr = gameName .. " | ≈" .. (server.ping or 0) .. "ms | " .. server.playing .. "/" .. server.maxPlayers .. suffix
+                        table.insert(newOptions, optionStr)
+                        newMap[optionStr] = server.id
+                    end
+                end
+                serverOptionsList = newOptions
+                serverMap = newMap
+                serverdropdown:Refresh(serverOptionsList, "Select an option")
+            end
+        end
     end)
 end
 
-spacing = Misc:CreateSpacing(Sectiontpscritps,2)
-Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Lowest Player's Server",Interact="Click",Callback=function()
-	pcall(function()
-		TeleportToServer("Asc")
-	end)
-end})
+task.spawn(updateServers)
 
-Paragraph = Misc:CreateParagraph({Title="TP To Highest.. Info",Content='Can Show Up a Prompt Saying \"Server Full\" Or Something, Basically Failing But Keep On Pressing To TP'}, Sectiontpscritps)
-Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Teleport To Highest Player's Server",Interact="Click",Callback=function()
-	pcall(function()
-		TeleportToServer("Dsc")
-	end)
-end})
+task.spawn(function()
+    while task.wait(5) do
+        updateServers()
+    end
+end)
 
-Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Server Hop",Interact="Click",Callback=function()
-	pcall(function()
-		TeleportToServer("Asc")
-	end)
+serverdropdown = Misc:CreateDropdown({SectionParent=Sectiontpscritps,Name="Server Lister",Options=serverOptionsList,CurrentOption="Select an option",Callback=function(Option) 
+	targetJobId = serverMap[Option]; 
+	if targetJobId and targetJobId ~= game.JobId then 
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, targetJobId, speaker) 
+	end 
 end})
 
 spacing = Misc:CreateSpacing(Sectiontpscritps,2)
+
 Button = Misc:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game",Interact="Click",Callback=function()
 	TeleportService:Teleport(PlaceId, speaker)
 end})
@@ -6787,8 +6794,9 @@ end})
 
 Sectionfeemotes = Animations:CreateSection("FE LocalPlayer Related | Emotes", false, false, 11932783331)
 
-local function fetchEmoteData()
-    local emotes = {}
+emoteData = {}
+
+local function fetchEmoteData(dropdown)
     local params = CatalogSearchParams.new()
     params.AssetTypes = {Enum.AvatarAssetType.EmoteAnimation}
     params.SortType = Enum.CatalogSortType.RecentlyCreated
@@ -6808,14 +6816,17 @@ local function fetchEmoteData()
     end
 
     local catalogPage = getCatalogPage()
-    local pages = {}
 
     while true do
         local currentPage = catalogPage:GetCurrentPage()
-        table.insert(pages, currentPage)
-        if catalogPage.IsFinished then
-            break
+        
+        for _, emote in pairs(currentPage) do
+            local name = tostring(emote.Name)
+            emoteData[name] = emote.Id
+            dropdown:Add(name)
         end
+
+        if catalogPage.IsFinished then break end
 
         local function AdvanceToNextPage()
             local success = pcall(function()
@@ -6829,14 +6840,6 @@ local function fetchEmoteData()
 
         AdvanceToNextPage()
     end
-
-    for _, page in pairs(pages) do
-        for _, emote in pairs(page) do
-            emotes[emote.Name] = emote.Id
-        end
-    end
-
-    return emotes
 end
 
 local function HumanoidPlayEmote(humanoid, name, id)
@@ -6869,16 +6872,13 @@ local function PlayEmote(name, id)
     end
 end
 
-local emoteData = fetchEmoteData()
-local emoteOptions = {}
-for emoteName, _ in pairs(emoteData) do
-    table.insert(emoteOptions, emoteName)
-end
-
 local selectedEmote = nil
-Animations:CreateDropdown({SectionParent = Sectionfeemotes,Name = "Select Emote",Options = emoteOptions,CurrentOption = "Select an option",Callback = function(option) 
+
+emoteDropdown = Animations:CreateDropdown({SectionParent = Sectionfeemotes,Name = "Select Emote",Options = {},CurrentOption = "Select an option",Callback = function(option) 
 	selectedEmote = option 
 end})
+
+task.spawn(fetchEmoteData, emoteDropdown)
 
 Animations:CreateSpacing(Sectionfeemotes, 2)
 Animations:CreateButton({SectionParent = Sectionfeemotes,Name = "Play Selected Emote",Interact = "Click",Callback = function()
