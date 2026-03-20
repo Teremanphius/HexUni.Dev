@@ -61,10 +61,10 @@ end
 -- Executor & Queue
 local executor = identifyexecutor()
 local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local httprequest = (syn and syn.request) or (http and http.request) or http_request or request
 
 -- Other Variables
-local Scriptcount = "201"
+local Scriptcount = "203"
 local ScriptcountAnim = "65"
 local movers = {}
 local HumanModCons = {}
@@ -80,32 +80,29 @@ function getRoot(char)
 	return rootPart
 end
 
-function getJumpValue()
+function getJumpValue(val)
 	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return math.floor(humanoid.JumpPower)
-	else
-		return math.floor(humanoid.JumpHeight)
+	if val == 1 then 
+		if humanoid.UseJumpPower then
+			return math.floor(humanoid.JumpPower)
+		else
+			return math.floor(humanoid.JumpHeight)
+		end
+	elseif val == 2 then
+		if humanoid.UseJumpPower then
+			return "Jump Power"
+		else
+			return "Jump Height"
+		end
+	elseif val == 3 then
+		if humanoid.UseJumpPower then
+			return 600
+		else
+			return 400
+		end
 	end
 end
 
-function getJumpValue2()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return "Jump Power"
-	else
-		return "Jump Height"
-	end
-end
-
-function getJumpValue3()
-	local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	if humanoid.UseJumpPower then
-		return 600
-	else
-		return 400
-	end
-end
 
 function randomString()
 	length = math.random(10, 20)
@@ -892,11 +889,10 @@ serverMap = {}
 serverOptionsList = {}
 rawName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 gameName = #rawName > 25 and string.sub(rawName, 1, 25) .. "..." or rawName
-req = (syn and syn.request) or (http and http.request) or http_request or request
 
 updateServers = function()
     pcall(function()
-        response = req({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=50", Method = "GET"})
+        response = httprequest({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=50", Method = "GET"})
         if response and response.Body then
             data = game:GetService("HttpService"):JSONDecode(response.Body)
             if data and data.data then
@@ -3856,7 +3852,7 @@ Buttonresetflysvalue = Misc:CreateButton({SectionParent=Sectionlpsliderinputloop
 end})
 
 walkspeedsped = 16
-jpower = getJumpValue()
+jpower = getJumpValue(1)
 
 Label = Misc:CreateLabel("Set A Value First Then Enable", Sectionlpsliderinputloops)
 Toggleloopwalk = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name="Loop Walk Speed",CurrentValue=false,Callback=function(Value)
@@ -3938,13 +3934,13 @@ Toggleloopjump = Misc:CreateToggle({SectionParent=Sectionlpsliderinputloops,Name
 end})
 table.insert(env.AllToggles, Toggleloopjump)
 
-Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
+Sliderjumploop = Misc:CreateSlider({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",Range={1,getJumpValue(3)},Increment=1,Suffix=getJumpValue(2),CurrentValue=getJumpValue(1),Callback=function(Value)
 	pcall(function()
 		jpower = Value
 	end)
 end})
 
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",OnEnter=true,PlaceholderText=getJumpValue(),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinputloops,Name="Loop Jump Power / Height",OnEnter=true,PlaceholderText=getJumpValue(1),NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	jpower = tonumber(Text)
 end})
 
@@ -3995,7 +3991,7 @@ Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Hip Height",N
 	end)
 end})
 
-Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",Range={1,getJumpValue3()},Increment=1,Suffix=getJumpValue2(),CurrentValue=getJumpValue(),Callback=function(Value)
+Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",Range={1,getJumpValue(3)},Increment=1,Suffix=getJumpValue(2),CurrentValue=getJumpValue(1),Callback=function(Value)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Value
@@ -4005,7 +4001,7 @@ Sliderjpower = Misc:CreateSlider({SectionParent=Sectionlpsliderinput,Name="Jump 
 	end)
 end})
 
-Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",NumbersOnly=true,OnEnter=true,PlaceholderText=getJumpValue(),RemoveTextAfterFocusLost=false,Callback=function(Text)
+Input = Misc:CreateInput({SectionParent=Sectionlpsliderinput,Name="Jump Power / Height",NumbersOnly=true,OnEnter=true,PlaceholderText=getJumpValue(1),RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		if speaker.Character:FindFirstChildOfClass("Humanoid").UseJumpPower then
 			speaker.Character:FindFirstChildOfClass("Humanoid").JumpPower = Text
