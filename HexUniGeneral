@@ -1258,6 +1258,37 @@ Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Sit
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
+
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Lay",Interact="Click",Callback=function()
+	Humanoid.Sit = true
+    	task.wait(0.1)
+    	Humanoid.RootPart.CFrame *= CFrame.Angles(math.pi * 0.5, 0, 0)
+    	for _, v in ipairs(Humanoid:GetPlayingAnimationTracks()) do
+        	v:Stop()
+    	end
+end})
+
+layKeybind = Misc:CreateKeybind({Name="Lay Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=false,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		Humanoid.Sit = true
+    	task.wait(0.1)
+    	Humanoid.RootPart.CFrame *= CFrame.Angles(math.pi * 0.5, 0, 0)
+    	for _, v in ipairs(Humanoid:GetPlayingAnimationTracks()) do
+        	v:Stop()
+    	end
+	end
+end})
+table.insert(env.AllKeybinds, layKeybind)
+
+Button = Misc:CreateButton({SectionParent=Sectionplayerealtefunc,Name="Reset Lay Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		layKeybind:Set("Set Keybind")
+	end)
+end})
+
+spacing = Misc:CreateSpacing(Sectionplayerealtefunc,2)
 stunKeybind = Misc:CreateKeybind({Name="Stun Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	Stunff = KeyBind
 	if Stunff and not isTyping then
@@ -4132,8 +4163,14 @@ function StopAllLoops(quiet)
     end
     table.clear(activeConnections)
     
-    for _, animTrack in pairs(activeAnimations) do
-        if animTrack then animTrack:Stop() end
+    for _, item in pairs(activeAnimations) do
+        if type(item) == "table" then
+            for _, track in pairs(item) do
+                if track then pcall(function() track:Stop() track:Destroy() end) end
+            end
+        elseif item then
+            pcall(function() item:Stop() item:Destroy() end)
+        end
     end
     table.clear(activeAnimations)
 
@@ -5059,7 +5096,7 @@ end})
 Sectionplayrerelatedtp69 = MiscPlayer:CreateSection("FE Player Related | 69", false, false, 10686489468)
 Paragraph = MiscPlayer:CreateParagraph({Title="Important Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionplayrerelatedtp69)
 
-bang69speed = 1
+bang69speed = 3
 AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
@@ -5108,11 +5145,25 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
                     end
                 end)
 
-                bangAnim = Instance.new("Animation")
-				bangAnim.AnimationId = not r15(speaker) and "rbxassetid://148840371" or "rbxassetid://5918726674"
-				bang69 = speaker.Character.Humanoid:LoadAnimation(bangAnim)
-				bang69:Play(0.1, 1, bang69speed)
-				table.insert(activeAnimations, bang69)
+                Anim69Bang = Instance.new("Animation")
+				Anim69Bang2 = Instance.new("Animation")
+
+				if not r15(speaker) then
+                    Anim69Bang.AnimationId = "rbxassetid://148840371"
+                    Anim69Bang2.AnimationId = "rbxassetid://225975820"
+                else
+                    Anim69Bang.AnimationId = "rbxassetid://5918726674"
+                    Anim69Bang2.AnimationId = "rbxassetid://4940563117"
+                end
+
+				bang69_1 = speaker.Character.Humanoid:LoadAnimation(Anim69Bang)
+				bang69_2 = speaker.Character.Humanoid:LoadAnimation(Anim69Bang2)
+
+				bang69_1:Play(0.1, 1, bang69speed)
+				bang69_2:Play(0.1, 10, 1)
+				bang69_2.Looped = true
+
+				activeAnimations.bang69 = {bang69_1, bang69_2}
 
                 f69lwnum = 1
                 activeConnections.Bang69Loop = RunService.Heartbeat:Connect(function()
@@ -5139,18 +5190,25 @@ end})
 
 bangSlider69 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",Range={0,100},Increment=3,Suffix="Speed",CurrentValue=bang69speed,Callback=function(Value)
 	pcall(function()
-		bang69speed = Value
-		if bang69 and bang69.IsPlaying then
-            bang69:AdjustSpeed(bang69speed)
+		local tracks = activeAnimations.bang69
+        if type(tracks) == "table" then
+            if tracks[1] then tracks[1]:AdjustSpeed(Value) end
+        elseif tracks then
+            tracks:AdjustSpeed(Value)
         end
 	end)
 end})
 
 Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtp69,Name="69 Speed",PlaceholderText=bang69speed,OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		bang69speed = tonumber(Text) or 1
-		if bang69 and bang69.IsPlaying then
-            bang69:AdjustSpeed(bang69speed)
+		local speed = tonumber(Text)
+        local tracks = activeAnimations.bang69
+        if speed then
+            if type(tracks) == "table" then
+                if tracks[1] then tracks[1]:AdjustSpeed(speed) end
+            elseif tracks then
+                tracks:AdjustSpeed(speed)
+            end
         end
 	end)
 end})
@@ -5333,54 +5391,68 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
+        
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.Bang then
                 StopAllLoops(true)
-                Notif("No Longer Banging", "Stopped", 2, "x")
+				Notif("No Longer Banging", "Stopped", 2, "x")
             else
                 StopAllLoops()
                 task.wait(0.1)
                 
                 tableofLoopingFuncs.Bang = true
                 sfxSound("true")
-                Notif("Now Banging", "Banging " .. foundPlr.Name, 4, "check")
+				Notif("Now Banging", "Banging " .. foundPlr.Name, 4, "check")
+
+                local animBng1 = Instance.new("Animation")
+                local animBng2 = Instance.new("Animation")
                 
-                local v2bangerAnim = Instance.new("Animation")
                 if not r15(speaker) then
-                    v2bangerAnim.AnimationId = "rbxassetid://148840371"
+                    animBng1.AnimationId = "rbxassetid://148840371"
+                    animBng2.AnimationId = "rbxassetid://225975820"
                 else
-                    v2bangerAnim.AnimationId = "rbxassetid://5918726674"
+                    animBng1.AnimationId = "rbxassetid://5918726674"
+                    animBng2.AnimationId = "rbxassetid://4940563117"
                 end
                 
-                local v2banger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(v2bangerAnim)
-                activeAnimations.Bang = v2banger
-                v2banger:Play(0.1, 1, 3)
+                local animBanger = Humanoid:LoadAnimation(animBng1)
+                local animBanger2 = Humanoid:LoadAnimation(animBng2)
                 
-                local function reconDiedCon()
-                    activeConnections.ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-                        if tableofLoopingFuncs.Bang then
-                            task.wait(0.5)
-                            local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
-                            if newHum then
-                                v2banger = newHum:LoadAnimation(v2bangerAnim)
-                                activeAnimations.Bang = v2banger
-                                v2banger:Play(0.1, 1, 3)
-                                reconDiedCon()
-                            end
+                activeAnimations.Bang = {animBanger, animBanger2}
+                
+                animBanger:Play(0.1, 1, 3)
+                animBanger2:Play(1, 10, 1)
+                animBanger2.Looped = true
+                
+                if activeConnections.ifuserdied then 
+                    activeConnections.ifuserdied:Disconnect() 
+                end
+
+                activeConnections.ifuserdied = Humanoid.Died:Connect(function()
+                    if tableofLoopingFuncs.Bang then
+                        task.wait(0.5)
+                        local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                        if newHum then
+                            local animBanger = newHum:LoadAnimation(animBng1)
+                			local animBanger2 = newHum:LoadAnimation(animBng2)
+                
+                			activeAnimations.Bang = {animBanger, animBanger2}
+                
+                			animBanger:Play(0.1, 1, 3)
+                			animBanger2:Play(1, 10, 1)
+                			animBanger2.Looped = true
                         end
-                    end)
-                end
-                reconDiedCon()
+                    end
+                end)
+                
                 activeConnections.BangerLoop = RunService.RenderStepped:Connect(function()
                     if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
-                        pcall(function()
-                            local targetRoot = getRoot(foundPlr.Character)
-                            local speakerRoot = getRoot(speaker.Character)
-                            if targetRoot and speakerRoot then
-                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, 1.1)
-                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
-                            end
-                        end)
+                        local targetRoot = getRoot(foundPlr.Character)
+                        local speakerRoot = getRoot(speaker.Character)
+                        if targetRoot and speakerRoot then
+                            speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, 1.1)
+                            speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                        end
                     else
                         StopAllLoops()
                     end
@@ -5392,13 +5464,26 @@ end})
 
 bangSlider = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=3,Callback=function(Value)
 	pcall(function()
-		v2banger:AdjustSpeed(Value)
+        local tracks = activeAnimations.Bang
+        if type(tracks) == "table" then
+            if tracks[1] then tracks[1]:AdjustSpeed(Value) end
+        elseif tracks then
+            tracks:AdjustSpeed(Value)
+        end
 	end)
 end})
 
 Inputbangerionspeed = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Bang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		v2banger:AdjustSpeed(Text)
+		local speed = tonumber(Text)
+        local tracks = activeAnimations.Bang
+        if speed then
+            if type(tracks) == "table" then
+                if tracks[1] then tracks[1]:AdjustSpeed(speed) end
+            elseif tracks then
+                tracks:AdjustSpeed(speed)
+            end
+        end
 	end)
 end})
 
@@ -5411,41 +5496,55 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.ff2 then
                 StopAllLoops(true)
-                Notif("No Longer Facebanging", "Stopped", 2, "x")
+				Notif("No Longer Facebanging", "Stopped", 2, "x")
             else
                 StopAllLoops()
                 task.wait(0.1)
                 
                 tableofLoopingFuncs.ff2 = true
                 sfxSound("true")
-                Notif("Now Facebanging", "Facebanging " .. foundPlr.Name, 4, "check")
+				Notif("Now Facebanging", "Facebanging " .. foundPlr.Name, 4, "check")
+
+                local animFaceBng1 = Instance.new("Animation")
+                local animFaceBng2 = Instance.new("Animation")
                 
-                local facebangerAnim = Instance.new("Animation")
                 if not r15(speaker) then
-                    facebangerAnim.AnimationId = "rbxassetid://148840371"
+                    animFaceBng1.AnimationId = "rbxassetid://148840371"
+                    animFaceBng2.AnimationId = "rbxassetid://225975820"
                 else
-                    facebangerAnim.AnimationId = "rbxassetid://5918726674"
+                    animFaceBng1.AnimationId = "rbxassetid://5918726674"
+                    animFaceBng2.AnimationId = "rbxassetid://4940563117"
                 end
                 
-                local facebanger = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(facebangerAnim)
-                activeAnimations.facebang = facebanger
-                facebanger:Play(0.1, 1, 3)
+                local animFaceBanger = Humanoid:LoadAnimation(animFaceBng1)
+                local animFaceBanger2 = Humanoid:LoadAnimation(animFaceBng2)
                 
-                local function reconDiedCon()
-                    activeConnections.ifuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-                        if tableofLoopingFuncs.ff2 then
-                            task.wait(0.5)
-                            local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
-                            if newHum then
-                                facebanger = newHum:LoadAnimation(facebangerAnim)
-                                activeAnimations.facebang = facebanger
-                                facebanger:Play(0.1, 1, 3)
-                                reconDiedCon()
-                            end
+                activeAnimations.ff2 = {animFaceBanger, animFaceBanger2}
+                
+                animFaceBanger:Play(0.1, 1, 3)
+                animFaceBanger2:Play(1, 10, 1)
+                animFaceBanger2.Looped = true
+                
+                if activeConnections.ifuserdied then 
+                    activeConnections.ifuserdied:Disconnect() 
+                end
+
+                activeConnections.ifuserdied = Humanoid.Died:Connect(function()
+                    if tableofLoopingFuncs.ff2 then
+                        task.wait(0.5)
+                        local newHum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                        if newHum then
+                            local animFaceBanger = newHum:LoadAnimation(animFaceBng1)
+                			local animFaceBanger2 = newHum:LoadAnimation(animFaceBng2)
+                
+                			activeAnimations.ff2 = {animFaceBanger, animFaceBanger2}
+                
+                			animFaceBanger:Play(0.1, 1, 3)
+                			animFaceBanger2:Play(1, 10, 1)
+                			animFaceBanger2.Looped = true
                         end
-                    end)
-                end
-                reconDiedCon()
+                    end
+                end)
                 
                 activeConnections.FaceBangerLoop = RunService.RenderStepped:Connect(function()
                     if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
@@ -5474,7 +5573,15 @@ end})
 
 Inputbangerions = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtpbang,Name="Anim Facebang Speed",PlaceholderText="3",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
-		facebanger:AdjustSpeed(Text)
+		local speed = tonumber(Text)
+        local tracks = activeAnimations.ff2
+        if speed then
+            if type(tracks) == "table" then
+                if tracks[1] then tracks[1]:AdjustSpeed(speed) end
+            elseif tracks then
+                tracks:AdjustSpeed(speed)
+            end
+        end
 	end)
 end})
 
@@ -6760,6 +6867,40 @@ end})
 table.insert(env.AllToggles, Toggleeloopanimplr)
 
 spacing = Animations:CreateSpacing(SectionAnimpl,2)
+plyorstpAnimKeybind = Animations:CreateKeybind({Name="Play / Stop Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimpl,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr)
+		animpla:Play(0.1, 10, 1)
+		while true do
+			animpla.Looped = AnimPlayerlooped
+			task.wait()
+		end
+		animplrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			animplrDied:Disconnect()
+			animpla:Stop()
+			Animplr:Destroy()
+			Toggleeanimplr:Set(false)
+		end)
+	elseif not KeyBind and not isTyping then
+		animpla:Stop()
+		Animplr:Destroy()
+		animplrDied:Disconnect()
+	end
+end})
+table.insert(env.AllKeybinds, plyorstpAnimKeybind)
+
+Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Play / Stop Anim Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		plyorstpAnimKeybind:Set("Set Keybind")
+		animpla:Stop()
+		Animplr:Destroy()
+		animplrDied:Disconnect()
+	end)
+end})
+
+spacing = Animations:CreateSpacing(SectionAnimpl,2)
 Slideranimplr = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	pcall(function()
 		animpla:AdjustSpeed(Value)
@@ -7319,8 +7460,6 @@ Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="NSUI (Arrayfield Modifi
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 7743875962)
 local floor = math.floor
 local format = string.format
-local players = game:GetService("Players")
-local statsService = game:GetService("Stats")
 
 local ageInDays = speaker.AccountAge or 0
 local years = floor(ageInDays / 365)
@@ -7359,10 +7498,10 @@ task.spawn(function()
                 timezone or "N/A",
                 executor or "N/A",
                 tostring(Updatedfps or "N/A"),
-                floor(statsService:GetTotalMemoryUsageMb()),
+                floor(Stats:GetTotalMemoryUsageMb()),
                 sessionTime,
-                #players:GetPlayers(),
-                players.MaxPlayers
+                #Players:GetPlayers(),
+                Players.MaxPlayers
             )
         })
     
@@ -7438,10 +7577,16 @@ if env.AlreadyRan then
     end
 
     for i, v in pairs(env.activeAnimations or {}) do 
-        pcall(function() v:Stop() v:Destroy() end) 
+        if type(v) == "table" then
+            for _, track in pairs(v) do
+                pcall(function() track:Stop() track:Destroy() end)
+            end
+        else
+            pcall(function() v:Stop() v:Destroy() end)
+        end
     end
-    env.tableofLoopingFuncs = {}
     
+    env.tableofLoopingFuncs = {}
     env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
 else
     env.AlreadyRan = true
