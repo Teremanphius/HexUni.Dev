@@ -1741,139 +1741,44 @@ Button = Misc:CreateButton({SectionParent=Sectionnoclip,Name="Reset Vehicle NoCl
 end})
 
 Sectioninvisible = Misc:CreateSection("FE LocalPlayer Related | Invisible", false, false, 14386256326)
-invisRunning = false
+
 Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Invisible",CurrentValue=false,Callback=function(Value)
 	invisibleeee = Value
-	pcall(function()
-		if invisibleeee then
-    		if invisRunning then return end
-   			invisRunning = true
-    
-    		local Player = speaker
-    		local Character = Player.Character or Player.CharacterAdded:Wait()
-    		Character.Archivable = true
-    
-    		local IsInvis = false
-    		local InvisibleCharacter = Character:Clone()
-    		InvisibleCharacter.Name = ""
-    
-    		local invHum = InvisibleCharacter:FindFirstChildOfClass("Humanoid")
-    		if invHum then
-        		invHum.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-   			end
-    
-    		InvisibleCharacter.Parent = game:GetService("Lighting")
-    
-    		local Void = workspace.FallenPartsDestroyHeight
-    		local invisFix, invisDied
-    
-    		TurnVisible = function()
-        		if not IsInvis then return end
-        		if invisFix then invisFix:Disconnect() end
-        		if invisDied then invisDied:Disconnect() end
-        
-        		if InvisibleCharacter:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("HumanoidRootPart") then
-            		Character.HumanoidRootPart.CFrame = InvisibleCharacter.HumanoidRootPart.CFrame
-        		end
-        
-        		InvisibleCharacter:Destroy()
-        		Player.Character = Character
-        		Character.Parent = workspace
-		        IsInvis = false
-        
-    		    local anim = Character:FindFirstChild("Animate")
-		        if anim then
-            		anim.Disabled = true
-            		anim.Disabled = false
-        		end
-        
-        		local hum = Character:FindFirstChildOfClass("Humanoid")
-        		if hum then
-            		workspace.CurrentCamera.CameraSubject = hum
-            		invisDied = hum.Died:Connect(function()
-                		IsInvis = false
-                		invisRunning = false
-                		hum:Destroy()
-        			end)
-       			end
-        	invisRunning = false
-    	end
+	if invisibleeee then
+    	local originalCF = root.CFrame
 
-    	local function Respawn()
-    	    if invisFix then invisFix:Disconnect() end
-    	    if invisDied then invisDied:Disconnect() end
-    	    pcall(function()
-    	        Player.Character = Character
-    	        Character.Parent = workspace
-    	        local hum = Character:FindFirstChildOfClass("Humanoid")
-    	        if hum then hum:Destroy() end
-    	        if IsInvis then
-    	            InvisibleCharacter:Destroy()
-    	        else
-    	            TurnVisible()
-    	        end
-    	        IsInvis = false
-    	        invisRunning = false
-    	    end)
-    	end
+    	character:MoveTo(Vector3.new(0, 9e9, 0))
+    	task.wait(0.1)
 
-    	invisFix = game:GetService("RunService").Stepped:Connect(function()
-        	pcall(function()
-     	        local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-     	        if root and root.Position.Y <= Void then
-     	           Respawn()
-     	        end
-    	    end)
+    	invisSeat = Instance.new("Seat")
+    	invisSeat.Transparency = 1
+    	invisSeat.CanCollide = false
+    	invisSeat.Parent = workspace
+    	invisSeat.CFrame = originalCF
+
+    	local weld = Instance.new("Weld", invisSeat)
+    	weld.Part0 = invisSeat
+    	weld.Part1 = root
+
+    	invisLoop = game:GetService("RunService").RenderStepped:Connect(function()
+        	for _, v in ipairs(character:GetDescendants()) do
+            	if v:IsA("BasePart") then
+                	v.LocalTransparencyModifier = 0.7
+            	end
+        	end
     	end)
-
-    	for _, v in InvisibleCharacter:GetDescendants() do
-        	if v:IsA("BasePart") then
-            	if v.Name == "HumanoidRootPart" then
-            	    v.Transparency = 1
-            	else
-                	v.Material = Enum.Material.ForceField
-                	v.Color = Color3.fromRGB(25, 25, 25)
+	else
+    	if invisLoop then invisLoop:Disconnect() end
+    	if invisSeat then invisSeat:Destroy() end
+    
+    	if character then
+        	for _, v in ipairs(character:GetDescendants()) do
+            	if v:IsA("BasePart") then
+                	v.LocalTransparencyModifier = 0
             	end
         	end
     	end
-
-    	if invHum then invisDied = invHum.Died:Connect(Respawn) end
-
-    	if IsInvis then return end
-    		IsInvis = true
-
-    		local root = Character:FindFirstChild("HumanoidRootPart")
-    		local CF_1 = root and root.CFrame or CFrame.new()
-    
-    		Character:MoveTo(Vector3.new(0, 9e9, 0))
-    		Character.Parent = game:GetService("Lighting")
-    
-    		InvisibleCharacter.Parent = workspace
-    		if InvisibleCharacter:FindFirstChild("HumanoidRootPart") then
-        		InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
-    		end
-    
-    		Player.Character = InvisibleCharacter
-    
-    		local cam = workspace.CurrentCamera
-    		cam.CameraSubject = invHum
-    		cam.CameraType = Enum.CameraType.Custom
-    		Player.CameraMinZoomDistance = 0.5
-    		Player.CameraMaxZoomDistance = 400
-    		Player.CameraMode = Enum.CameraMode.Classic
-    
-    		local head = InvisibleCharacter:FindFirstChild("Head")
-    		if head then head.Anchored = false end
-    
-    		local anim = InvisibleCharacter:FindFirstChild("Animate")
-    		if anim then
-        		anim.Disabled = true
-        		anim.Disabled = false
-    		end
-		else
-    		if TurnVisible then TurnVisible() end
-		end
-	end)
+	end
 end})
 table.insert(env.AllToggles, Toggleinvisibleeee)
 
@@ -2016,81 +1921,47 @@ Paragraph = Misc:CreateParagraph({Title="Multiple Function Info",Content="These 
 Toggleupsidedown = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
 	upsidedown = Value
 	if upsidedown then
-		if not r15(speaker) then
-			ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
-				pcall(function()
-					Toggleupsidedown:Set(false)
-					ifuserdiedar:Disconnect()
-				end)
+		ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+			pcall(function()
+				Toggleupsidedown:Set(false)
+				ifuserdiedar:Disconnect()
 			end)
-			sfxSound("true")
-			Notif("You're Now Upside Down!", "You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!", 3, "check")
-			c = Character
-			hrp0 = c:FindFirstChild("HumanoidRootPart")
-			hrp1 = hrp0:Clone()
-			c.Parent = nil
-			hrp0.Parent = hrp1
-			hrp0.RootJoint.Part0 = nil
-			hrp1.Parent = c
-			c.Parent = workspace
-			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-			hrp0.Transparency = 0.85
-			hrp0.Material = Enum.Material.ForceField
-			hrp0.Color = Color3.fromRGB(25, 25, 25)
-			R6Upsideg = RunService.Heartbeat:Connect(function()
-				if (c and c.Parent) then
-					hrp0.CFrame = hrp1.CFrame
-					hrp0.Orientation += Vector3.new(0, 0, 180)
-					hrp0.Position -= Vector3.new(0, 0, 0)
-					hrp0.Velocity = hrp1.Velocity
-				end
-			end)
-		elseif r15(speaker) then
-			ifuserdiedar = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
-				pcall(function()
-					Toggleupsidedown:Set(false)
-					ifuserdiedar:Disconnect()
-				end)
-			end)
-			sfxSound("true")
-			Notif("You're Now Upside Down!", "You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!", 3, "check")
-			local LocalPlayer = Players.LocalPlayer
-			local Character = LocalPlayer.Character
-			local c = Character
-			local function setupCharacter()
-				local hrp0 = c:FindFirstChild("HumanoidRootPart")
-				if hrp0 then
-					local hrp1 = hrp0:Clone()
-					c.Parent = nil
-					hrp0.Parent = hrp1
-					hrp1.Parent = c
-					c.Parent = workspace
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1, 0)
-					hrp0.Transparency = 0.85
-					hrp0.Material = Enum.Material.ForceField
-					hrp0.Color = Color3.fromRGB(25, 25, 25)
-					R15Upsidegg = RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame
-							hrp0.Orientation += Vector3.new(0, 0, 180)
-							hrp0.Position -= Vector3.new(0, 1, 0)
-							hrp0.Velocity = hrp1.Velocity
-						end
-					end)
-				end
-			end
-			setupCharacter()
-			Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char
-				setupCharacter()
-			end)
-		end
+		end)
+		sfxSound("true")
+		Notif("You're Now Upside Down!", "You're Upside Down Until You Reset!\nAnd When You Sit In A Chair!", 3, "check")
+		
+		local c = character
+        local hrp0 = c:FindFirstChild("HumanoidRootPart")
+        local hrp1 = hrp0:Clone()
+                
+        c.Parent = nil
+        hrp0.Parent = hrp1
+        if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
+		hrp1.Parent = c
+        c.Parent = workspace
+                
+        if not r15(speaker) then
+            c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
+        else
+            if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
+                c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1.9, 0)
+            end
+        end
+
+        hrp0.Transparency = 0.85
+        hrp0.Material = Enum.Material.ForceField
+		hrp0.Color = Color3.fromRGB(25, 25, 25)
+		hrp0.CanCollide = false
+                
+        initialUniUpsideDown = RunService.Heartbeat:Connect(function()
+            if c and c.Parent and hrp0 and hrp1 then
+                hrp0.CFrame = hrp1.CFrame
+                hrp0.Orientation += Vector3.new(0, 0, 180)
+                hrp0.Velocity = hrp1.Velocity
+            end
+        end)
 	else
-		if r15(speaker) then 
-			R15Upsidegg:Disconnect()
-		else
-			R6Upsideg:Disconnect()
-		end
+		initialUniUpsideDown:Disconnect()
 		ResetToPos()
 		task.wait(1)
 		ifuserdiedar:Disconnect()
@@ -2190,147 +2061,81 @@ table.insert(env.AllToggles, Togglefakelag)
 ToggleCrawl = Misc:CreateToggle({SectionParent=Sectionlprtog,Name="Crawl",CurrentValue=false,Callback=function(Value)
 	Crawlingornot = Value
 	if Crawlingornot then
-		if not r15(speaker) then
-			ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleCrawl:Set(false)
-					ifuserdiedar2:Disconnect()
-				end)
+		ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+			pcall(function()
+				ToggleCrawl:Set(false)
+				ifuserdiedar2:Disconnect()
 			end)
-			local climbAnim = Instance.new("Animation")
-			climbAnim.AnimationId = "rbxassetid://180436334"
-			local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim)
-			local function playIdleClimbingAnimation()
-				if not climbTrack.IsPlaying then
-					climbTrack:Play(0, 10, 0)
-				else
-					climbTrack:AdjustSpeed(0)
-				end
+		end)
+
+		local climbAnim = Instance.new("Animation")
+		climbAnim.AnimationId = r15(speaker) and "rbxassetid://507765644" or "rbxassetid://180436334"
+		local climbTrack = speaker.Character.Humanoid:LoadAnimation(climbAnim)
+		local function playIdleClimbingAnimation()
+			if not climbTrack.IsPlaying then
+				climbTrack:Play(0, 10, 0)
+			else
+				climbTrack:AdjustSpeed(0)
 			end
-			local function playWalkingClimbingAnimation()
-				if not climbTrack.IsPlaying then
-					climbTrack:Play(0, 10, 1)
-				else
-					climbTrack:AdjustSpeed(1)
-				end
-			end
-			local humrunr6
-			humrunr6 = speaker.Character.Humanoid.Running:Connect(function(speed)
-				if (speed == 0) then
-					playIdleClimbingAnimation()
-				else
-					playWalkingClimbingAnimation()
-				end
-			end)
-			local c = speaker.Character
-			local hrp0 = c:FindFirstChild("HumanoidRootPart")
-			if hrp0 then
-				local hrp1 = hrp0:Clone()
-				c.Parent = nil
-				hrp0.Parent = hrp1
-				hrp0.RootJoint.Part0 = nil
-				hrp1.Parent = c
-				c.Parent = workspace
-				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
-				c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0)
-				hrp0.Transparency = 0.85
-				hrp0.Material = Enum.Material.ForceField
-				hrp0.Color = Color3.fromRGB(25, 25, 25)
-			Crawlr6 = RunService.Heartbeat:Connect(function()
-				if (c and c.Parent) then
-					hrp0.CFrame = hrp1.CFrame
-					hrp0.Orientation += Vector3.new(-90, 0, 0)
-					hrp0.Position -= Vector3.new(0, 1.6, 0)
-					hrp0.Velocity = hrp1.Velocity
-				end
-			end)
-			end
-		elseif r15(speaker) then
-			ifuserdiedar2 = speaker.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleCrawl:Set(false)
-					ifuserdiedar2:Disconnect()
-				end)
-			end)
-			local player = speaker
-			local character = player.Character or player.CharacterAdded:Wait()
-			local humanoid = character:WaitForChild("Humanoid")
-			local climbAnim = Instance.new("Animation")
-			climbAnim.AnimationId = "rbxassetid://507765644"
-			local climbTrack = humanoid:LoadAnimation(climbAnim)
-			local function playIdleClimbingAnimation()
-				if not climbTrack.IsPlaying then
-					climbTrack:Play(0, 10, 0)
-				else
-					climbTrack:AdjustSpeed(0)
-				end
-			end
-			local function playWalkingClimbingAnimation()
-				if not climbTrack.IsPlaying then
-					climbTrack:Play(0, 10, 1)
-				else
-					climbTrack:AdjustSpeed(1)
-				end
-			end
-			local humrunr15
-			humrunr15 = humanoid.Running:Connect(function(speed)
-				if (speed == 0) then
-					playIdleClimbingAnimation()
-				else
-					playWalkingClimbingAnimation()
-				end
-			end)
-			local LocalPlayer = Players.LocalPlayer
-			local Character = LocalPlayer.Character
-			local c = Character
-			local function setupCharacter()
-				local hrp0 = c:FindFirstChild("HumanoidRootPart")
-				if hrp0 then
-					local hrp1 = hrp0:Clone()
-					c.Parent = nil
-					hrp0.Parent = hrp1
-					hrp1.Parent = c
-					c.Parent = workspace
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, -1, -1.2)
-					hrp0.Transparency = 0.85
-					hrp0.Material = Enum.Material.ForceField
-					hrp0.Color = Color3.fromRGB(25, 25, 25)
-					R15crawlg = RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame
-							hrp0.Orientation += Vector3.new(-90, 0, 0)
-							hrp0.Position -= Vector3.new(0, 1.6, 0)
-							hrp0.Velocity = hrp1.Velocity
-						end
-					end)
-				end
-			end
-			setupCharacter()
-			r15charaddedcrawl = Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char
-				setupCharacter()
-			end)
 		end
+
+		local function playWalkingClimbingAnimation()
+			if not climbTrack.IsPlaying then
+				climbTrack:Play(0, 10, 1)
+			else
+				climbTrack:AdjustSpeed(1)
+			end
+		end
+
+		local CrawlAnimRun
+		CrawlAnimRun = speaker.Character.Humanoid.Running:Connect(function(speed)
+			if (speed == 0) then
+				playIdleClimbingAnimation()
+			else
+				playWalkingClimbingAnimation()
+			end
+		end)
+
+		local c = character
+    	local hrp0 = c:FindFirstChild("HumanoidRootPart")
+    	local hrp1 = hrp0:Clone()
+                
+        c.Parent = nil
+    	hrp0.Parent = hrp1
+    	if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
+		hrp1.Parent = c
+    	c.Parent = workspace
+                
+    	if not r15(speaker) then
+        	c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
+			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.new(0, -2, 0)
+    	else
+    	    if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
+        	    c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, -1, -1.1)
+        	end
+        end
+
+        hrp0.Transparency = 0.85
+    	hrp0.Material = Enum.Material.ForceField
+		hrp0.Color = Color3.fromRGB(25, 25, 25)
+		hrp0.CanCollide = false
+            
+    	initialUniCrawl = RunService.Heartbeat:Connect(function()
+        	if c and c.Parent and hrp0 and hrp1 then
+                hrp0.CFrame = hrp1.CFrame
+     	        hrp0.Orientation += Vector3.new(-90, 0, 0)
+				hrp0.Position -= Vector3.new(0, 1.6, 0)
+        	    hrp0.Velocity = hrp1.Velocity
+            end
+        end)
 	else
 		pcall(function()
-			if r15(speaker) then
-				R15crawlg:Disconnect()
-			else
-				Crawlr6:Disconnect()
-			end
+			initialUniCrawl:Disconnect()
 			ifuserdiedar2:Disconnect()
 			ResetToPos()
-			if climbTrack then
-				climbTrack:Stop()
-			end
-			if climbAnim then
-				climbAnim:Destroy()
-			end
-			if r15(speaker) then
-				humrunr6:Disconnect()
-			else
-				humrunr15:Disconnect()
-			end
+			climbTrack:Stop()
+			climbAnim:Destroy()
+			CrawlAnimRun:Disconnect()
 		end)
 	end
 end})
@@ -2602,89 +2407,60 @@ ToggleBeyBlade = Misc:CreateToggle({SectionParent=Sectionflipsnthings,Name="Beyb
 	beyblader = Value
 	if beyblader then
 		local ifuserdied2
-		if not r15(speaker) then
-			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleBeyBlade:Set(false)
-					ifuserdied2:Disconnect()
-				end)
+		ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+			pcall(function()
+				ToggleBeyBlade:Set(false)
+				ifuserdied2:Disconnect()
 			end)
-			local Character = game.Players.LocalPlayer.Character
-			local c = Character
-			local hrp0 = c:FindFirstChild("HumanoidRootPart")
-			local hrp1 = hrp0:Clone()
-			c.Parent = nil
-			hrp0.Parent = hrp1
-			hrp0.RootJoint.Part0 = nil
-			hrp1.Parent = c
-			c.Parent = workspace
-			c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
-			hrp0.Transparency = 0.85
-			hrp0.Material = Enum.Material.ForceField
-			hrp0.Color = Color3.fromRGB(25, 25, 25)
-			R6Bladebey = RunService.Heartbeat:Connect(function()
-				if (c and c.Parent) then
-					hrp0.CFrame = hrp1.CFrame
-					hrp0.Orientation += Vector3.new(-90, 0, 0)
-					hrp0.Position -= Vector3.new(0, 0, 0)
-					hrp0.Velocity = hrp1.Velocity
-				end
-			end)
-		elseif r15(speaker) then
-			ifuserdied2 = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				pcall(function()
-					ToggleBeyBlade:Set(false)
-					ifuserdied2:Disconnect()
-				end)
-			end)
-			local LocalPlayer = Players.LocalPlayer
-			local Character = LocalPlayer.Character
-			local c = Character
-			local function setupCharacter()
-				local hrp0 = c:FindFirstChild("HumanoidRootPart")
-				if hrp0 then
-					local hrp1 = hrp0:Clone()
-					c.Parent = nil
-					hrp0.Parent = hrp1
-					hrp1.Parent = c
-					c.Parent = workspace
-					c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, 1.2)
-					hrp0.Transparency = 0.85
-					hrp0.Material = Enum.Material.ForceField
-					hrp0.Color = Color3.fromRGB(25, 25, 25)
-					R15Bladebey = RunService.Heartbeat:Connect(function()
-						if (c and c.Parent) then
-							hrp0.CFrame = hrp1.CFrame
-							hrp0.Orientation += Vector3.new(-90, 0, 0)
-							hrp0.Position -= Vector3.new(0, 0, 0)
-							hrp0.Velocity = hrp1.Velocity
-						end
-					end)
-				end
-			end
-			setupCharacter()
-			Players.LocalPlayer.CharacterAdded:Connect(function(char)
-				c = char
-				setupCharacter()
-			end)
-		end
-		local BeyBladee = Instance.new("BodyAngularVelocity")
-		BeyBladee.Name = "BeyBlading"
-		BeyBladee.Parent = getRoot(speaker.Character)
-		BeyBladee.MaxTorque = Vector3.new(0, math.huge, 0)
+		end)
+
+		local c = character
+    	local hrp0 = c:FindFirstChild("HumanoidRootPart")
+		local hrp1 = hrp0:Clone()
+                
+        c.Parent = nil
+    	hrp0.Parent = hrp1
+		if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
+		hrp1.Parent = c
+    	c.Parent = workspace
+            
+    	if not r15(speaker) then
+    		c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.rad(90), 0, 0)
+		else
+    		if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
+        	    c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(math.rad(-90), 0, 0) * CFrame.new(0, 0, 1.2)
+	    	end
+	    end
+
+        hrp0.Transparency = 0.85
+    	hrp0.Material = Enum.Material.ForceField
+		hrp0.Color = Color3.fromRGB(25, 25, 25)
+		hrp0.CanCollide = false
+        
+		initialUniBeyBlade = RunService.Heartbeat:Connect(function()
+        	if c and c.Parent and hrp0 and hrp1 then
+            	hrp0.CFrame = hrp1.CFrame
+            	hrp0.Orientation += Vector3.new(-90, 0, 0)
+				hrp0.Position -= Vector3.new(0, 0, 0)
+        	    hrp0.Velocity = hrp1.Velocity
+            end
+        end)
+
+		local SpinningBlade = Instance.new("BodyAngularVelocity")
+		SpinningBlade.Name = "BeyBlading"
+		SpinningBlade.Parent = getRoot(speaker.Character)
+		SpinningBlade.MaxTorque = Vector3.new(0, math.huge, 0)
+
 		task.spawn(function()
 			while task.wait() do
-				BeyBladee.AngularVelocity = Vector3.new(0, beybaldespeedr, 0)
+				SpinningBlade.AngularVelocity = Vector3.new(0, beybaldespeedr, 0)
 			end
 		end)
+
 	else
 		pcall(function()
+			initialUniBeyBlade:Disconnect()
 			ResetToPos()
-			if r15(speaker) then
-				R15Bladebey:Disconnect()
-			else
-				R6Bladebey:Disconnect()
-			end
 			ifuserdied2:Disconnect()
 			for _, v in pairs(getRoot(speaker.Character):GetChildren()) do
 				if (v.Name == "BeyBlading") then
@@ -5175,12 +4951,14 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
                     c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
                 else
                     if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
-                        c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0)
+                        c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1.9, 0)
                     end
                 end
 
                 hrp0.Transparency = 0.85
                 hrp0.Material = Enum.Material.ForceField
+				hrp0.Color = Color3.fromRGB(25, 25, 25)
+				hrp0.CanCollide = false
                 
                 activeConnections.Bang69Upside = RunService.Heartbeat:Connect(function()
                     if c and c.Parent and hrp0 and hrp1 then
@@ -5314,6 +5092,8 @@ AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
 
             	hrp0.Transparency = 0.85
                 hrp0.Material = Enum.Material.ForceField
+				hrp0.Color = Color3.fromRGB(25, 25, 25)
+				hrp0.CanCollide = false
             
                 activeConnections.Hump69Upside = RunService.Heartbeat:Connect(function()
                     if c and c.Parent and hrp0 and hrp1 then
