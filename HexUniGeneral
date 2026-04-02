@@ -131,9 +131,8 @@ end
 
 function ResetToPos()
 	prev = speaker.Character:WaitForChild("HumanoidRootPart").CFrame
-	local humanoid = Character:FindFirstChildOfClass("Humanoid")
-	if humanoid then
-		humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+	if Humanoid then
+		Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
 	end
 	speaker.CharacterAdded:Wait()
 	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
@@ -7453,11 +7452,13 @@ local years = floor(ageInDays / 365)
 local months = floor((ageInDays % 365) / 30)
 local days = ageInDays % 30
 
+local nameDisplay = speaker.Name == speaker.DisplayName and speaker.Name or format("%s (%s)", speaker.Name, speaker.DisplayName)
+
 Paragraphc = CRD:CreateParagraph({
     Title = "Information",
     Content = format(
-        "Name: %s (%s)\nUserId: %d\nAccount Age Details:\nYear(s): %d\nMonth(s): %d\nDay(s): %d\nTotal Days: %d\nPlaceId: %d",
-        speaker.Name, speaker.DisplayName, speaker.UserId, years, months, days, ageInDays, game.PlaceId
+        "Name: %s\nUserId: %d\nAccount Age Details:\nYear(s): %d\nMonth(s): %d\nDay(s): %d\nTotal Days: %d\nPlaceId: %d",
+        nameDisplay, speaker.UserId, years, months, days, ageInDays, game.PlaceId
     )
 }, Sectionclientinfo)
 
