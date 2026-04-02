@@ -459,8 +459,106 @@ local env = (getgenv and getgenv()) or _G
 env.AlreadyRan = env.AlreadyRan or false
 env.AllKeybinds = env.AllKeybinds  or {}
 env.AllToggles = env.AllToggles or {}
+local script_id = math.random(1, 999999)
+env.ExecutionID = script_id
 
 env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
+
+if env.AlreadyRan then
+    if env.tableofLoopingFuncs then
+        for i in pairs(env.tableofLoopingFuncs) do
+            env.tableofLoopingFuncs[i] = false
+        end
+    end
+    for _, v in pairs(env.activeConnections or {}) do pcall(function() v:Disconnect() end) end
+    for _, v in pairs(env.activeAnimations or {}) do
+        if type(v) == "table" then
+            for _, t in pairs(v) do pcall(function() t:Stop() t:Destroy() end) end
+        else
+            pcall(function() v:Stop() v:Destroy() end)
+        end
+    end
+    task.wait(0.1)
+
+    for _, keybind in ipairs(env.AllKeybinds or {}) do
+        pcall(function() keybind:Clear() end)
+    end
+
+    for _, toggle in ipairs(env.AllToggles or {}) do
+        pcall(function() if toggle.CurrentValue == true then toggle:Set(false) end end)
+    end
+    
+    env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
+    task.wait(0.1)
+else
+    env.AlreadyRan = true
+end
+
+env.activeConnections = env.activeConnections or {}
+env.activeAnimations = env.activeAnimations or {}
+env.tableofLoopingFuncs = env.tableofLoopingFuncs or {Annoy = false,glued = false,walkto = false,StandOnHead = false,Becarried = false,Follow = false,LoopHello = false,Carpettion = false,Kisserrr = false,ffhugger = false,actualpb = false,besomebackpack = false,headsits = false,shouldersit = false,baskets = false,ActualHeadsit = false,issyncinganim = false,orbitingfuck = false,closeorbitingfuck = false,lookingAt = false,spinaround = false,Bang69 = false,ffc1hump = false,Bang = false,ff2 = false,ff = false,Humping = false,ffc1 = false,ffc2 = false}
+
+local tableofLoopingFuncs = env.tableofLoopingFuncs
+local activeConnections = env.activeConnections
+local activeAnimations = env.activeAnimations
+
+function updateReferences(newChar)
+    Character = newChar
+    character = newChar
+    Humanoid = newChar:WaitForChild("Humanoid")
+    root = (getRoot and getRoot(newChar)) or newChar:WaitForChild("HumanoidRootPart")
+end
+
+env.CharAddedConnection = speaker.CharacterAdded:Connect(updateReferences)
+if speaker.Character then updateReferences(speaker.Character) end
+
+function StopAllLoops(quiet)
+    local wasRunning = false
+    for _, active in pairs(env.tableofLoopingFuncs) do
+        if active == true then
+            wasRunning = true
+            break
+        end
+    end
+
+    if wasRunning then
+        sfxSound("false", 0.3)
+        if not quiet then
+            Notif("Switching Functions...", "Switching To a Different Function", 2, "x")
+        end
+    end
+
+    pcall(function()
+        if speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") then
+            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+        end
+    end)
+
+    for name, connection in pairs(env.activeConnections) do
+        if connection then connection:Disconnect() end
+    end
+    table.clear(env.activeConnections)
+    
+    for _, item in pairs(env.activeAnimations) do
+        if type(item) == "table" then
+            for _, track in pairs(item) do
+                if track then pcall(function() track:Stop() track:Destroy() end) end
+            end
+        elseif item then
+            pcall(function() item:Stop() item:Destroy() end)
+        end
+    end
+    table.clear(env.activeAnimations)
+
+    for name, _ in pairs(env.tableofLoopingFuncs) do
+        env.tableofLoopingFuncs[name] = false
+    end
+    
+    if speaker.Character and speaker.Character:FindFirstChild("Animate") then 
+        speaker.Character.Animate.Disabled = false 
+    end
+    task.wait(0.1)
+end
 
 local Updatedfps = 0
 RunService.RenderStepped:Connect(function(frame)
@@ -892,7 +990,7 @@ gameName = #rawName > 25 and string.sub(rawName, 1, 25) .. "..." or rawName
 
 updateServers = function()
     pcall(function()
-        response = httprequest({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=50", Method = "GET"})
+        response = httprequest({Url = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100", Method = "GET"})
         if response and response.Body then
             data = game:GetService("HttpService"):JSONDecode(response.Body)
             if data and data.data then
@@ -1649,137 +1747,132 @@ Toggleinvisibleeee = Misc:CreateToggle({SectionParent=Sectioninvisible,Name="Inv
 	invisibleeee = Value
 	pcall(function()
 		if invisibleeee then
-			if invisRunning then
-				return
-			end
-			invisRunning = true
-			local Player = speaker
-			repeat
-				task.wait(0.1)
-			until Player.Character 
-			local Character = Player.Character
-			Character.Archivable = true
-			local IsInvis = false
-			local IsRunning = true
-			local InvisibleCharacter = Character:Clone()
-			InvisibleCharacter.Parent = Lighting
-			local Void = workspace.FallenPartsDestroyHeight
-			InvisibleCharacter.Name = ""
-			local CF
-			local invisFix = RunService.Stepped:Connect(function()
-				pcall(function()
-					local IsInteger
-					if tostring(Void):find("-") then
-						IsInteger = true
-					else
-						IsInteger = false
-					end
-					local Pos = Player.Character.HumanoidRootPart.Position
-					local Pos_String = tostring(Pos)
-					local Pos_Seperate = Pos_String:split(", ")
-					local X = tonumber(Pos_Seperate[1])
-					local Y = tonumber(Pos_Seperate[2])
-					local Z = tonumber(Pos_Seperate[3])
-					if (IsInteger == true) then
-						if (Y <= Void) then
-							Respawn()
-						end
-					elseif (IsInteger == false) then
-						if (Y >= Void) then
-							Respawn()
-						end
-					end
-				end)
-			end)
-			for i, v in pairs(InvisibleCharacter:GetDescendants()) do
-				if v:IsA("BasePart") then
-					if (v.Name == "HumanoidRootPart") then
-						v.Transparency = 1
-					else
-						v.Material = Enum.Material.ForceField
-						v.Color = Color3.fromRGB(25, 25, 25)
-					end
-				end
-			end
-			function Respawn()
-				IsRunning = false
-				if (IsInvis == true) then
-					pcall(function()
-						Player.Character = Character
-						task.wait()
-						Character.Parent = workspace
-						Character:FindFirstChildWhichIsA("Humanoid"):Destroy()
-						IsInvis = false
-						InvisibleCharacter.Parent = nil
-						invisRunning = false
-					end)
-				elseif (IsInvis == false) then
-					pcall(function()
-						Player.Character = Character
-						task.wait()
-						Character.Parent = workspace
-						Character:FindFirstChildWhichIsA("Humanoid"):Destroy()
-						TurnVisible()
-					end)
-				end
-			end
-			local invisDied
-			invisDied = InvisibleCharacter:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				Respawn()
-				invisDied:Disconnect()
-			end)
-			if (IsInvis == true) then
-				return
-			end
-			IsInvis = true
-			CF = workspace.CurrentCamera.CFrame
-			local CF_1 = Player.Character.HumanoidRootPart.CFrame
-			Character:MoveTo(Vector3.new(0, math.pi * 1000000, 0))
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-			task.wait(0.2)
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-			InvisibleCharacter = InvisibleCharacter
-			Character.Parent = Lighting
-			InvisibleCharacter.Parent = workspace
-			InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
-			Player.Character = InvisibleCharacter
-			workspace.CurrentCamera:remove()
-			task.wait(0.1)
-			repeat
-				task.wait()
-			until speaker.Character ~= nil 
-			workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA("Humanoid")
-			workspace.CurrentCamera.CameraType = "Custom"
-			speaker.CameraMinZoomDistance = 0.5
-			speaker.CameraMaxZoomDistance = 400
-			speaker.CameraMode = "Classic"
-			speaker.Character.Head.Anchored = false
-			Player.Character.Animate.Disabled = true
-			Player.Character.Animate.Disabled = false
-			function TurnVisible()
-				if (IsInvis == false) then
-					return
-				end
-				invisFix:Disconnect()
-				invisDied:Disconnect()
-				CF = workspace.CurrentCamera.CFrame
-				Character = Character
-				local CF_1 = Player.Character.HumanoidRootPart.CFrame
-				Character.HumanoidRootPart.CFrame = CF_1
-				InvisibleCharacter:Destroy()
-				Player.Character = Character
-				Character.Parent = workspace
-				IsInvis = false
-				Player.Character.Animate.Disabled = true
-				Player.Character.Animate.Disabled = false
-				invisDied = Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-					Respawn()
-					invisDied:Disconnect()
-				end)
-				invisRunning = false
-			end
+    		if invisRunning then return end
+   			invisRunning = true
+    
+    		local Player = speaker
+    		local Character = Player.Character or Player.CharacterAdded:Wait()
+    		Character.Archivable = true
+    
+    		local IsInvis = false
+    		local InvisibleCharacter = Character:Clone()
+    		InvisibleCharacter.Name = ""
+    
+    		local invHum = InvisibleCharacter:FindFirstChildOfClass("Humanoid")
+    		if invHum then
+        		invHum.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+   			end
+    
+    		InvisibleCharacter.Parent = game:GetService("Lighting")
+    
+    		local Void = workspace.FallenPartsDestroyHeight
+    		local invisFix, invisDied
+    
+    		TurnVisible = function()
+        		if not IsInvis then return end
+        		if invisFix then invisFix:Disconnect() end
+        		if invisDied then invisDied:Disconnect() end
+        
+        		if InvisibleCharacter:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("HumanoidRootPart") then
+            		Character.HumanoidRootPart.CFrame = InvisibleCharacter.HumanoidRootPart.CFrame
+        		end
+        
+        		InvisibleCharacter:Destroy()
+        		Player.Character = Character
+        		Character.Parent = workspace
+		        IsInvis = false
+        
+    		    local anim = Character:FindFirstChild("Animate")
+		        if anim then
+            		anim.Disabled = true
+            		anim.Disabled = false
+        		end
+        
+        		local hum = Character:FindFirstChildOfClass("Humanoid")
+        		if hum then
+            		workspace.CurrentCamera.CameraSubject = hum
+            		invisDied = hum.Died:Connect(function()
+                		IsInvis = false
+                		invisRunning = false
+                		hum:Destroy()
+        			end)
+       			end
+        	invisRunning = false
+    	end
+
+    	local function Respawn()
+    	    if invisFix then invisFix:Disconnect() end
+    	    if invisDied then invisDied:Disconnect() end
+    	    pcall(function()
+    	        Player.Character = Character
+    	        Character.Parent = workspace
+    	        local hum = Character:FindFirstChildOfClass("Humanoid")
+    	        if hum then hum:Destroy() end
+    	        if IsInvis then
+    	            InvisibleCharacter:Destroy()
+    	        else
+    	            TurnVisible()
+    	        end
+    	        IsInvis = false
+    	        invisRunning = false
+    	    end)
+    	end
+
+    	invisFix = game:GetService("RunService").Stepped:Connect(function()
+        	pcall(function()
+     	        local root = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
+     	        if root and root.Position.Y <= Void then
+     	           Respawn()
+     	        end
+    	    end)
+    	end)
+
+    	for _, v in InvisibleCharacter:GetDescendants() do
+        	if v:IsA("BasePart") then
+            	if v.Name == "HumanoidRootPart" then
+            	    v.Transparency = 1
+            	else
+                	v.Material = Enum.Material.ForceField
+                	v.Color = Color3.fromRGB(25, 25, 25)
+            	end
+        	end
+    	end
+
+    	if invHum then invisDied = invHum.Died:Connect(Respawn) end
+
+    	if IsInvis then return end
+    		IsInvis = true
+
+    		local root = Character:FindFirstChild("HumanoidRootPart")
+    		local CF_1 = root and root.CFrame or CFrame.new()
+    
+    		Character:MoveTo(Vector3.new(0, 9e9, 0))
+    		Character.Parent = game:GetService("Lighting")
+    
+    		InvisibleCharacter.Parent = workspace
+    		if InvisibleCharacter:FindFirstChild("HumanoidRootPart") then
+        		InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
+    		end
+    
+    		Player.Character = InvisibleCharacter
+    
+    		local cam = workspace.CurrentCamera
+    		cam.CameraSubject = invHum
+    		cam.CameraType = Enum.CameraType.Custom
+    		Player.CameraMinZoomDistance = 0.5
+    		Player.CameraMaxZoomDistance = 400
+    		Player.CameraMode = Enum.CameraMode.Classic
+    
+    		local head = InvisibleCharacter:FindFirstChild("Head")
+    		if head then head.Anchored = false end
+    
+    		local anim = InvisibleCharacter:FindFirstChild("Animate")
+    		if anim then
+        		anim.Disabled = true
+        		anim.Disabled = false
+    		end
 		else
-			TurnVisible()
+    		if TurnVisible then TurnVisible() end
 		end
 	end)
 end})
@@ -4137,59 +4230,12 @@ end})
 
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468)
 
-function StopAllLoops(quiet)
-	wasRunning = false
-    for _, active in pairs(tableofLoopingFuncs) do
-        if active == true then
-            wasRunning = true
-            break
-        end
-    end
-    if wasRunning then
-		sfxSound("false", 0.3)
-        if not quiet then
-            Notif("Switching Functions...", "Switching To a Different Function", 2, "x")
-        end
-    end
-
-	pcall(function()
-        if speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") then
-            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-        end
-    end)
-
-    for name, connection in pairs(activeConnections) do
-        if connection then connection:Disconnect() end
-    end
-    table.clear(activeConnections)
-    
-    for _, item in pairs(activeAnimations) do
-        if type(item) == "table" then
-            for _, track in pairs(item) do
-                if track then pcall(function() track:Stop() track:Destroy() end) end
-            end
-        elseif item then
-            pcall(function() item:Stop() item:Destroy() end)
-        end
-    end
-    table.clear(activeAnimations)
-
-    for name, _ in pairs(tableofLoopingFuncs) do
-        tableofLoopingFuncs[name] = false
-    end
-    
-    if speaker.Character and speaker.Character:FindFirstChild("Animate") then 
-        speaker.Character.Animate.Disabled = false 
-    end
-	task.wait(0.1)
-end
-
 AlldropdownRefresh.Annoydropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.Annoy then
+            if tableofLoopingFuncs.Annoy and env.ExecutionID == script_id then
                 StopAllLoops(true)
 				speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false 
                 Notif("No Longer Annoying The Player ", "Not Annoying " .. foundPlr.Name .. " Anymore", 2, "x")
@@ -4219,7 +4265,7 @@ AlldropdownRefresh.GluetoPLRdropdown = MiscPlayer:CreateDropdown({SectionParent=
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.glued then
+            if tableofLoopingFuncs.glued and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
                 Notif("No Longer Glued To Player", "Not Glued To " .. foundPlr.Name .. " Anymore", 2, "x")
@@ -4250,7 +4296,7 @@ AlldropdownRefresh.WalkTodropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.walkto then
+            if tableofLoopingFuncs.walkto and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Walking To Player", "Not Walking To " .. foundPlr.Name .. " Anymore", 2, "x")
             else
@@ -4277,7 +4323,7 @@ AlldropdownRefresh.StandOndropdown = MiscPlayer:CreateDropdown({SectionParent=Se
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.StandOnHead then
+            if tableofLoopingFuncs.StandOnHead and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
                 Notif("No Longer Standing On The Player ", "Not Standing On " .. foundPlr.Name .. " Anymore", 2, "x")
@@ -4308,7 +4354,7 @@ AlldropdownRefresh.becarrieddropdown = MiscPlayer:CreateDropdown({SectionParent=
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.Becarried then
+            if tableofLoopingFuncs.Becarried and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 speaker.Character.Humanoid.Sit = false
                 Notif("No Longer Carried By The Player ", "Not Being Carried By " .. foundPlr.Name .. " Anymore", 2, "x")
@@ -4356,7 +4402,7 @@ AlldropdownRefresh.followdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             flwnum = -5
-            if tableofLoopingFuncs.Follow then
+            if tableofLoopingFuncs.Follow and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Stalking The Player", "Not Stalking " .. foundPlr.Name .. " Anymore", 2, "x")
             else
@@ -4385,7 +4431,7 @@ AlldropdownRefresh.loopwavedropdown = MiscPlayer:CreateDropdown({SectionParent=S
     plrName = Option:match("^(.-) %(") or Option
     foundPlr = getPlr(plrName)
     if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-        if tableofLoopingFuncs.LoopHello then
+        if tableofLoopingFuncs.LoopHello and env.ExecutionID == script_id then
             StopAllLoops(true)
             trueforanim = false
             Notif("No Longer Greeting The Player", "Not Greeting " .. foundPlr.Name .. " Anymore", 2, "x")
@@ -4428,7 +4474,7 @@ AlldropdownRefresh.Carpetdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
         if foundPlr then
             if not r15(speaker) then
                 if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-                    if tableofLoopingFuncs.Carpettion then
+                    if tableofLoopingFuncs.Carpettion and env.ExecutionID == script_id then
                         StopAllLoops(true)
                         Notif("No Longer Carpeting The Player", "Not Carpeting " .. foundPlr.Name .. " Anymore", 2, "x")
                     else
@@ -4481,7 +4527,7 @@ AlldropdownRefresh.Kisserrdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
         if foundPlr then
             if not r15(speaker) then
                 if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-                    if tableofLoopingFuncs.Kisserrr then
+                    if tableofLoopingFuncs.Kisserrr and env.ExecutionID == script_id then
                         StopAllLoops(true)
                         Notif("No Longer Kissing The Player", "Not Kissing " .. foundPlr.Name .. " Anymore", 2, "x")
                     else
@@ -4541,7 +4587,7 @@ AlldropdownRefresh.Hugdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ffhugger then
+            if tableofLoopingFuncs.ffhugger and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Hugging The Player", "Not Hugging " .. foundPlr.Name .. " Anymore", 2, "x")
             else
@@ -4590,7 +4636,7 @@ AlldropdownRefresh.Piggybackdropdown = MiscPlayer:CreateDropdown({SectionParent=
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.actualpb then
+            if tableofLoopingFuncs.actualpb and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 speaker.Character.Humanoid.Sit = false
                 Notif("No Longer PiggyBacking The Player", "Not PiggyBacking " .. foundPlr.Name, 2, "x")
@@ -4623,7 +4669,7 @@ AlldropdownRefresh.backpackdropdown = MiscPlayer:CreateDropdown({SectionParent=S
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.besomebackpack then
+            if tableofLoopingFuncs.besomebackpack and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name, 2, "x")
             else
@@ -4653,7 +4699,7 @@ AlldropdownRefresh.Headsitdropdown = MiscPlayer:CreateDropdown({SectionParent=Se
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.headsits then
+            if tableofLoopingFuncs.headsits and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
                     speaker.Character.Humanoid.Sit = false
@@ -4689,7 +4735,7 @@ AlldropdownRefresh.SHOULDERSITdropdown = MiscPlayer:CreateDropdown({SectionParen
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.shouldersit then
+            if tableofLoopingFuncs.shouldersit and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
                     speaker.Character.Humanoid.Sit = false
@@ -4725,7 +4771,7 @@ AlldropdownRefresh.Basketdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.baskets then
+            if tableofLoopingFuncs.baskets and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
                     speaker.Character.Humanoid.Sit = false
@@ -4775,7 +4821,7 @@ AlldropdownRefresh.ActualHeadsitdropdown = MiscPlayer:CreateDropdown({SectionPar
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ActualHeadsit then
+            if tableofLoopingFuncs.ActualHeadsit and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
                     speaker.Character.Humanoid.Sit = false
@@ -4814,7 +4860,7 @@ AlldropdownRefresh.animsyncdropdown = MiscPlayer:CreateDropdown({SectionParent=S
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.issyncinganim then
+            if tableofLoopingFuncs.issyncinganim and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 ResetToPos()
                 Notif("Stopped Syncing", "Stopped Syncing With " .. foundPlr.Name, 2, "x")
@@ -4862,7 +4908,7 @@ AlldropdownRefresh.orbitdropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.orbitingfuck then
+            if tableofLoopingFuncs.orbitingfuck and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 for i, v in pairs(speaker.Character:GetDescendants()) do
                     if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
@@ -4936,7 +4982,7 @@ AlldropdownRefresh.closeorbitdropdown = MiscPlayer:CreateDropdown({SectionParent
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.closeorbitingfuck then
+            if tableofLoopingFuncs.closeorbitingfuck and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 for i, v in pairs(speaker.Character:GetDescendants()) do
                     if v.Name == "OrbitalDestructionPart" or v.Name == "OrbitalDestruction" then
@@ -4996,7 +5042,7 @@ AlldropdownRefresh.lookatdropdown = MiscPlayer:CreateDropdown({SectionParent=Sec
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.lookingAt then
+            if tableofLoopingFuncs.lookingAt and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if Toggleantistun then Toggleantistun:Set(false) end
 				if Toggleantiragdoll then Toggleantiragdoll:Set(false) end
@@ -5040,7 +5086,7 @@ AlldropdownRefresh.spinarounddropdown = MiscPlayer:CreateDropdown({SectionParent
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and getRoot(foundPlr.Character) and root and humanoid then
-            if tableofLoopingFuncs.spinaround then
+            if tableofLoopingFuncs.spinaround and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Spinning Around The Player", "Not Spinning Around " .. foundPlr.Name .. " Anymore", 2, "x")
             else
@@ -5102,7 +5148,7 @@ AlldropdownRefresh.a69dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectio
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.Bang69 then
+            if tableofLoopingFuncs.Bang69 and env.ExecutionID == script_id then
                 StopAllLoops(true)
 				local char = speaker.Character
     			if char and char:FindFirstChild("HumanoidRootPart") and char.Humanoid.Health > 0 then
@@ -5214,149 +5260,92 @@ Inputbangerionspeed69 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelat
 end})
 
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtp69,2)
-local ffc1hump = false
+
+-- In general Variable or wtv
 elapsedTimehump = 0
+-- 69 Hump
 hump69distance = 5
 hump69speed = 1
+-- Normal Hump
 humpnordistance = 5
 humpnorspeed = 1
+-- Face Hump
 humpfacedistance = 5
 humpfacespeed = 1
-local HumpBang69Looped
+
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     plrName = Option:match("^(.-) %(") or Option
     foundPlr = getPlr(plrName)
     if foundPlr then
-        if not r15(speaker) then
-            if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-                if (ffc1hump == true) then
-                    ffc1hump = false
-                    tableofLoopingFuncs.ffc1hump = false
-                    StopAllLoops(true)
-                    if activeConnections.Hump69R6Upsideloop then activeConnections.Hump69R6Upsideloop:Disconnect() end
-                    if activeConnections.HumpBang69Looped then
-                        activeConnections.HumpBang69Looped:Disconnect()
-                        speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-                    end
-                    Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-                    ResetToPos()
-                    return
-                else
-                    StopAllLoops()
-					task.wait(0.1)
-                    ffc1hump = true
-                    tableofLoopingFuncs.ffc1hump = true
-                    sfxSound("true")
-                    Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-                    c = Character
-                    hrp0 = c:FindFirstChild("HumanoidRootPart")
-                    hrp1 = hrp0:Clone()
-                    c.Parent = nil
-                    hrp0.Parent = hrp1
-                    hrp0.RootJoint.Part0 = nil
-                    hrp1.Parent = c
-                    c.Parent = workspace
+        if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+			if tableofLoopingFuncs.ffc1hump and env.ExecutionID == script_id then
+                StopAllLoops(true)
+                if activeConnections.Hump69Upside then activeConnections.Hump69Upside:Disconnect() end
+                if activeConnections.HumpBang69Looped then
+                    activeConnections.HumpBang69Looped:Disconnect()
+                    speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
+                end
+                Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
+                ResetToPos()
+            else
+                StopAllLoops()
+				task.wait(0.1)
+
+                tableofLoopingFuncs.ffc1hump = true
+                sfxSound("true")
+                Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+					
+                local c = speaker.Character
+            	local hrp0 = c:FindFirstChild("HumanoidRootPart")
+                local hrp1 = hrp0:Clone()
+                
+            	c.Parent = nil
+            	hrp0.Parent = hrp1
+            	if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
+				hrp1.Parent = c
+                c.Parent = workspace
+            
+                if not r15(speaker) then
                     c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-                    hrp0.Transparency = 0.85
-                    hrp0.Material = Enum.Material.ForceField
-                    hrp0.Color = Color3.fromRGB(25, 25, 25)
-                    activeConnections.Hump69R6Upsideloop = RunService.Heartbeat:Connect(function()
-                        if (c and c.Parent) then
-                            hrp0.CFrame = hrp1.CFrame
-                            hrp0.Orientation += Vector3.new(0, 0, 180)
-                            hrp0.Velocity = hrp1.Velocity
-                        end
-                    end)
-                    activeConnections.HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
-                        pcall(function()
-                            if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-                                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-                                local speakerRoot = getRoot(speaker.Character)
-                                local targetRoot = getRoot(foundPlr.Character)
-                                if (speakerRoot and targetRoot) then
-                                    elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
-                                    local cycle = elapsedTimehump % 1
-                                    local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-                                    local xOffset = hump69distance * alpha          
-                                    local targetCFrame = targetRoot.CFrame
-                                    speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
-                                    speakerRoot.AssemblyLinearVelocity = Vector3.new()
-                                else
-                                    StopAllLoops()
-                                end
-                            else
-                                StopAllLoops()
-                                ResetToPos()
-                            end
-                        end)
-                    end)
+            	else
+              	   if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
+                    	c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0)
+                	end
                 end
-            end
-        elseif (ffc1hump == true) then
-            ffc1hump = false
-            tableofLoopingFuncs.ffc1hump = false
-			StopAllLoops(true)
-            if activeConnections.R15HumpBang69Looped then
-                activeConnections.R15HumpBang69Looped:Disconnect()
-                speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
-            end
-            Notif("No Longer 69 Humping ", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-            sfxSound("false")
-            if activeConnections.Hump69R15Upsideloop then activeConnections.Hump69R15Upsideloop:Disconnect() end
-            ResetToPos()
-            return
-        else
-            StopAllLoops()
-            ffc1hump = true
-            tableofLoopingFuncs.ffc1hump = true
-            Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-            sfxSound("true")
-            local c = speaker.Character
-            local function setupCharacter()
-                local hrp0 = c:FindFirstChild("HumanoidRootPart")
-                if hrp0 then
-                    local hrp1 = hrp0:Clone()
-                    c.Parent = nil
-                    hrp0.Parent = hrp1
-                    hrp1.Parent = c
-                    c.Parent = workspace
-                    c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2, 0)
-                    hrp0.Transparency = 0.85
-                    hrp0.Material = Enum.Material.ForceField
-                    hrp0.Color = Color3.fromRGB(25, 25, 25)
-                    activeConnections.Hump69R15Upsideloop = RunService.Heartbeat:Connect(function()
-                        if (c and c.Parent) then
-                            hrp0.CFrame = hrp1.CFrame
-                            hrp0.Orientation += Vector3.new(0, 0, 180)
-                            hrp0.Velocity = hrp1.Velocity
-                        end
-                    end)
-                end
-            end
-            setupCharacter()
-            activeConnections.R15HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
-                pcall(function()
-                    if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
-                        speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
-                        local speakerRoot = getRoot(speaker.Character)
-                        local targetRoot = getRoot(foundPlr.Character)
-                        if (speakerRoot and targetRoot) then
-                            elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
-                            local cycle = elapsedTimehump % 1
-                            local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-                            local xOffset = hump69distance * alpha          
-                            local targetCFrame = targetRoot.CFrame
-                            speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
-                            speakerRoot.AssemblyLinearVelocity = Vector3.new()
+
+            	hrp0.Transparency = 0.85
+                hrp0.Material = Enum.Material.ForceField
+            
+                activeConnections.Hump69Upside = RunService.Heartbeat:Connect(function()
+                    if c and c.Parent and hrp0 and hrp1 then
+                	    hrp0.CFrame = hrp1.CFrame
+            	        hrp0.Orientation += Vector3.new(0, 0, 180)
+            	        hrp0.Velocity = hrp1.Velocity
+            	    end
+            	end)
+
+                activeConnections.HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
+                    pcall(function()
+                        if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
+                            speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = true
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            if (speakerRoot and targetRoot) then
+                                elapsedTimehump = elapsedTimehump + (deltaTime * hump69speed)
+                                local cycle = elapsedTimehump % 1
+                                local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                                local xOffset = hump69distance * alpha          
+                                local targetCFrame = targetRoot.CFrame
+                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                	        end
                         else
                             StopAllLoops()
+                            ResetToPos()
                         end
-                    else
-                        StopAllLoops()
-                        ResetToPos()
-                    end
+                    end)
                 end)
-            end)
+            end
         end
     end
 end})
@@ -5393,7 +5382,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
         foundPlr = getPlr(plrName)
         
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.Bang then
+            if tableofLoopingFuncs.Bang and env.ExecutionID == script_id then
                 StopAllLoops(true)
 				Notif("No Longer Banging", "Stopped", 2, "x")
             else
@@ -5494,7 +5483,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ff2 then
+            if tableofLoopingFuncs.ff2 and env.ExecutionID == script_id then
                 StopAllLoops(true)
 				Notif("No Longer Facebanging", "Stopped", 2, "x")
             else
@@ -5592,7 +5581,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ff then
+            if tableofLoopingFuncs.ff and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character:FindFirstChildOfClass("Humanoid") then
                     speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
@@ -5636,7 +5625,7 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.Humping then
+            if tableofLoopingFuncs.Humping and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Humping", "Stopped", 2, "x")
             else
@@ -5706,7 +5695,7 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ffc1 then
+            if tableofLoopingFuncs.ffc1 and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 Notif("No Longer Face Humping", "Stopped", 2, "x")
             else
@@ -5771,14 +5760,12 @@ end})
 
 spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
 
-local ReverseHumpLoop
-
 AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ffc2 then
+            if tableofLoopingFuncs.ffc2 and env.ExecutionID == script_id then
                 StopAllLoops(true)
                 if speaker.Character:FindFirstChildOfClass("Humanoid") then
                     speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
@@ -7558,54 +7545,3 @@ Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Copy PlaceId",Inter
 	sfxSound("true")
 	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 end})
-
-if env.AlreadyRan then
-    for _, keybind in ipairs(env.AllKeybinds or {}) do
-        pcall(function() keybind:Clear() end)
-    end
-
-    for _, toggle in ipairs(env.AllToggles or {}) do
-        pcall(function()
-            if toggle.CurrentValue == true then
-                toggle:Set(false)
-            end
-        end)
-    end
-
-    for i, v in pairs(env.activeConnections or {}) do 
-        pcall(function() v:Disconnect() end) 
-    end
-
-    for i, v in pairs(env.activeAnimations or {}) do 
-        if type(v) == "table" then
-            for _, track in pairs(v) do
-                pcall(function() track:Stop() track:Destroy() end)
-            end
-        else
-            pcall(function() v:Stop() v:Destroy() end)
-        end
-    end
-    
-    env.tableofLoopingFuncs = {}
-    env.CharAddedConnection = cleanupConnection(env.CharAddedConnection)
-else
-    env.AlreadyRan = true
-end
-
-env.activeConnections = {}
-env.activeAnimations = {}
-env.tableofLoopingFuncs = {Annoy = false,glued = false,walkto = false,StandOnHead = false,Becarried = false,Follow = false,LoopHello = false,Carpettion = false,Kisserrr = false,ffhugger = false,actualpb = false,besomebackpack = false,headsits = false,shouldersit = false,baskets = false,ActualHeadsit = false,issyncinganim = false,orbitingfuck = false,closeorbitingfuck = false,lookingAt = false,spinaround = false,Bang69 = false,ffc1hump = false,Bang = false,ff2 = false,ff = false,Humping = false,ffc1 = false,ffc2 = false}
-
-local activeConnections = env.activeConnections
-local activeAnimations = env.activeAnimations
-local tableofLoopingFuncs = env.tableofLoopingFuncs
-
-function updateReferences(newChar)
-    Character = newChar
-    character = newChar
-    Humanoid = newChar:WaitForChild("Humanoid")
-    root = (getRoot and getRoot(newChar)) or newChar:WaitForChild("HumanoidRootPart")
-end
-
-env.CharAddedConnection = speaker.CharacterAdded:Connect(updateReferences)
-if speaker.Character then updateReferences(speaker.Character) end
