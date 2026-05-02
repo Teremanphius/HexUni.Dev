@@ -381,79 +381,59 @@ end)
 AlldropdownRefresh = {}
 gotoplayersList = {}
 
-local function initialUpdatePlayerList()
-    gotoplayersList = {}
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player ~= speaker then
-            local playerOption
-            if player.Name == player.DisplayName then
-                playerOption = player.Name
-            else
-                playerOption = player.Name .. " (" .. player.DisplayName .. ")"
-            end
-            table.insert(gotoplayersList, playerOption)
-        end
+local playerCache = {}
+
+local function getPlayerOption(player)
+    if player.Name == player.DisplayName then
+        return player.Name
     end
-    for _, dropdown in pairs(AlldropdownRefresh) do
-        dropdown:Refresh(gotoplayersList, "Select an option")
-    end
+    return player.Name .. " (" .. player.DisplayName .. ")"
 end
 
 local function addPlayerToDropdowns(player)
-    local playerOption
-    if player.Name == player.DisplayName then
-        playerOption = player.Name
-    else
-        playerOption = player.Name .. " (" .. player.DisplayName .. ")"
-    end
+    if player == speaker then return end
+    if playerCache[player] then return end
+    local playerOption = getPlayerOption(player)
+    playerCache[player] = playerOption
     table.insert(gotoplayersList, playerOption)
-    local delayCounter = 0
-    for _, dropdown in pairs(AlldropdownRefresh) do
-        task.delay(delayCounter, function()
-            dropdown:Add(playerOption)
-        end)
-        delayCounter = delayCounter + 0.1
+    for _, dropdown in ipairs(AlldropdownRefresh) do
+        dropdown:Add(playerOption)
     end
 end
 
 local function removePlayerFromDropdowns(player)
-    local playerOption
-    if player.Name == player.DisplayName then
-        playerOption = player.Name
-    else
-        playerOption = player.Name .. " (" .. player.DisplayName .. ")"
-    end
+    local playerOption = playerCache[player]
+    if not playerOption then return end
+    playerCache[player] = nil
     for i = #gotoplayersList, 1, -1 do
         if gotoplayersList[i] == playerOption then
             table.remove(gotoplayersList, i)
             break
         end
     end
-    local delayCounter = 0
-    for _, dropdown in pairs(AlldropdownRefresh) do
-        task.delay(delayCounter, function()
-            dropdown:Remove(playerOption)
-        end)
-        delayCounter = delayCounter + 0.1
+    for _, dropdown in ipairs(AlldropdownRefresh) do
+        dropdown:Remove(playerOption)
     end
 end
 
 local playerAddedConnection
 local playerRemovingConnection
 local function connectEvents()
-    if playerAddedConnection then
-        playerAddedConnection:Disconnect()
-        playerAddedConnection = nil
-    end
-    if playerRemovingConnection then
-        playerRemovingConnection:Disconnect()
-        playerRemovingConnection = nil
-    end
+    if playerAddedConnection then playerAddedConnection:Disconnect() end
+    if playerRemovingConnection then playerRemovingConnection:Disconnect() end
     playerAddedConnection = game.Players.PlayerAdded:Connect(addPlayerToDropdowns)
     playerRemovingConnection = game.Players.PlayerRemoving:Connect(removePlayerFromDropdowns)
 end
+
 connectEvents()
-initialUpdatePlayerList()
+
+for _, player in ipairs(game.Players:GetPlayers()) do
+    addPlayerToDropdowns(player)
+end
+
+for _, dropdown in ipairs(AlldropdownRefresh) do
+    dropdown:Refresh(gotoplayersList, "Select an option")
+end
 
 local env = (getgenv and getgenv()) or _G
 env.AlreadyRan = env.AlreadyRan or false
@@ -496,7 +476,7 @@ end
 
 env.activeConnections = env.activeConnections or {}
 env.activeAnimations = env.activeAnimations or {}
-env.tableofLoopingFuncs = env.tableofLoopingFuncs or {Annoy = false,glued = false,walkto = false,StandOnHead = false,Becarried = false,Follow = false,LoopHello = false,Carpettion = false,Kisserrr = false,ffhugger = false,actualpb = false,besomebackpack = false,headsits = false,shouldersit = false,baskets = false,ActualHeadsit = false,issyncinganim = false,orbitingfuck = false,closeorbitingfuck = false,lookingAt = false,spinaround = false,Bang69 = false,ffc1hump = false,Bang = false,ff2 = false,ff4 = false,ff5 = false,ff = false,Humping = false,ffc1 = false,ffc2 = false}
+env.tableofLoopingFuncs = env.tableofLoopingFuncs or {Annoy = false,glued = false,walkto = false,StandOnHead = false,Becarried = false,Follow = false,LoopHello = false,Carpettion = false,Kisserrr = false,ffhugger = false,actualpb = false,besomebackpack = false,headsits = false,shouldersit = false,baskets = false,ActualHeadsit = false,issyncinganim = false,orbitingfuck = false,closeorbitingfuck = false,lookingAt = false,spinaround = false,Bang69 = false,ffc1hump = false,Bang = false,ff2 = false,ff4 = false,ff5 = false,fff3 = false,ff = false,Humping = false,ffc1 = false,ffc2 = false}
 
 local tableofLoopingFuncs = env.tableofLoopingFuncs
 local activeConnections = env.activeConnections
@@ -3349,6 +3329,7 @@ Buttonresetflysvalue = Miscclient:CreateButton({SectionParent=Sectioncamera,Name
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
+
 Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",Interact="Click",Callback=function()
 	workspace.CurrentCamera:remove()
 	task.wait(0.1)
@@ -3364,7 +3345,8 @@ Button = Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Fix Camera",
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
-Togglenoclipcam = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Simple NoClip Camera",CurrentValue=false,Callback=function(Value)
+
+Togglenoclipcam = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="NoClip Camera",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		function test(st)
 			if Value == true then return 1 else return 0 end
@@ -3374,7 +3356,209 @@ Togglenoclipcam = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Sim
 end})
 table.insert(env.AllToggles, Togglenoclipcam)
 
+local crosshairGui = Instance.new("ScreenGui")
+crosshairGui.Name = "FreecamCrosshair"
+crosshairGui.ResetOnSpawn = false
+crosshairGui.DisplayOrder = 999
+crosshairGui.IgnoreGuiInset = true
+crosshairGui.Parent = speaker.PlayerGui
+ 
+local crosshairSize = 20
+local crosshairThickness = 1
+local crosshairColor = Color3.fromRGB(255, 255, 255)
+ 
+local function makeLine(sizeX, sizeY)
+	local f = Instance.new("Frame")
+	f.BackgroundColor3 = crosshairColor
+	f.BorderSizePixel = 0
+	f.Size = UDim2.new(0, sizeX, 0, sizeY)
+	f.Position = UDim2.new(0.5, 0, 0.5, 0)
+	f.AnchorPoint = Vector2.new(0.5, 0.5)
+	f.Visible = false
+	f.Parent = crosshairGui
+	return f
+end
+ 
+makeLine(crosshairSize, crosshairThickness)
+makeLine(crosshairThickness, crosshairSize)
+ 
+local function setCrosshairVisible(visible)
+	for _, f in ipairs(crosshairGui:GetChildren()) do
+		if f:IsA("Frame") then f.Visible = visible end
+	end
+end
+ 
+local freecamConnection = nil
+local fovConnection = nil
+local savedCFrame = CFrame.new()
+local savedCameraType
+local savedFOV = 70
+local savedShiftLock = false
+ 
+local SPEED_NORMAL = 24
+local SPEED_FAST = 94
+local SPEED_SLOW = 6
+local FRICTION = 6
+local MOUSE_SENSITIVITY = 0.3
+local FOV_STEP = 5
+local FOV_MIN = 10
+local FOV_MAX = 120
+local FOV_TWEEN_TIME = 0.18
+ 
+local camPitch = 0
+local camYaw = 0
+local velocity = Vector3.new()
+local freecamPart = nil
+local fovTween = nil
+local targetFOV = 70
+ 
+local function getMovementInput()
+	local move = Vector3.new()
+	if UserInputService:IsKeyDown(Enum.KeyCode.W) then move += Vector3.new(0, 0, -1) end
+	if UserInputService:IsKeyDown(Enum.KeyCode.S) then move += Vector3.new(0, 0, 1) end
+	if UserInputService:IsKeyDown(Enum.KeyCode.A) then move += Vector3.new(-1, 0, 0) end
+	if UserInputService:IsKeyDown(Enum.KeyCode.D) then move += Vector3.new(1, 0, 0) end
+	if UserInputService:IsKeyDown(Enum.KeyCode.Space) then move += Vector3.new(0, 1, 0) end
+	if UserInputService:IsKeyDown(Enum.KeyCode.C) then move += Vector3.new(0, -1, 0) end
+	return move
+end
+ 
+local function getSpeed()
+	if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then return SPEED_FAST
+	elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then return SPEED_SLOW end
+	return SPEED_NORMAL
+end
+ 
+local function tweenFOV(target)
+	targetFOV = math.clamp(target, FOV_MIN, FOV_MAX)
+	if fovTween then fovTween:Cancel() end
+	fovTween = TweenService:Create(Camera, TweenInfo.new(FOV_TWEEN_TIME, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {FieldOfView = targetFOV})
+	fovTween:Play()
+end
+ 
+local function enableFreecam()
+	savedCFrame = Camera.CFrame
+	savedCameraType = Camera.CameraType
+	savedFOV = Camera.FieldOfView
+	targetFOV = savedFOV
+	Camera.CameraType = Enum.CameraType.Scriptable
+ 
+	local rx, ry, _ = savedCFrame:ToEulerAnglesYXZ()
+	camPitch = math.deg(rx)
+	camYaw = math.deg(ry)
+	velocity = Vector3.new()
+ 
+	freecamPart = Instance.new("Part")
+	freecamPart.Anchored = true
+	freecamPart.CanCollide = false
+	freecamPart.Transparency = 1
+	freecamPart.Size = Vector3.new(0.1, 0.1, 0.1)
+	freecamPart.Position = savedCFrame.Position
+	freecamPart.Parent = workspace
+ 
+	local char = speaker.Character
+	if char then
+		local hum = char:FindFirstChildOfClass("Humanoid")
+		if hum then
+			hum.WalkSpeed = 0
+			hum.JumpPower = 0
+			hum.JumpHeight = 0
+		end
+	end
+ 
+	pcall(function()
+		savedShiftLock = speaker.DevEnableMouseLock
+		speaker.DevEnableMouseLock = false
+	end)
+ 
+	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+	UserInputService.MouseIconEnabled = false
+	setCrosshairVisible(true)
+ 
+	fovConnection = UserInputService.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseWheel then
+			tweenFOV(targetFOV - input.Position.Z * FOV_STEP)
+		end
+	end)
+ 
+	local lastUpdate = tick()
+ 
+	freecamConnection = RunService.RenderStepped:Connect(function()
+		local now = tick()
+		local dt = math.min(now - lastUpdate, 0.1)
+		lastUpdate = now
+ 
+		local mouseDelta = UserInputService:GetMouseDelta()
+		camYaw = camYaw - mouseDelta.X * MOUSE_SENSITIVITY
+		camPitch = math.clamp(camPitch - mouseDelta.Y * MOUSE_SENSITIVITY, -89, 89)
+ 
+		local rotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0)
+		local moveInput = getMovementInput()
+		local targetVelocity = Vector3.new()
+ 
+		if moveInput.Magnitude > 0 then
+			targetVelocity = rotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
+		end
+ 
+		velocity = velocity:Lerp(targetVelocity, math.min(1, FRICTION * dt))
+		freecamPart.Position = freecamPart.Position + velocity * dt
+		Camera.CFrame = CFrame.new(freecamPart.Position) * rotation
+		UserInputService.MouseIconEnabled = false
+	end)
+end
+ 
+local function disableFreecam()
+	if freecamConnection then freecamConnection:Disconnect() freecamConnection = nil end
+	if fovConnection then fovConnection:Disconnect() fovConnection = nil end
+	if fovTween then fovTween:Cancel() fovTween = nil end
+	if freecamPart then freecamPart:Destroy() freecamPart = nil end
+ 
+	Camera.CameraType = savedCameraType or Enum.CameraType.Custom
+	Camera.FieldOfView = savedFOV
+	UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+	UserInputService.MouseIconEnabled = true
+	setCrosshairVisible(false)
+ 
+	pcall(function() speaker.DevEnableMouseLock = savedShiftLock end)
+ 
+	local char = speaker.Character
+	if char then
+		local hum = char:FindFirstChildOfClass("Humanoid")
+		if hum then
+			hum.WalkSpeed = 16
+			hum.JumpPower = 50
+			hum.JumpHeight = 7.2
+		end
+	end
+end
+ 
+speaker.CharacterRemoving:Connect(function()
+	disableFreecam()
+end)
+
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
+
+FreecamParagraph = Miscclient:CreateParagraph({Title="Freecam Information",Content="Controls:\n  Scroll Wheel   →   Change FOV\n  Space          →   Up\n  C              →   Down\n  Left Shift     →   Fast Speed\n  Left Control   →   Slow Speed"}, Sectioncamera)
+
+FreecamKeybind = Miscclient:CreateKeybind({Name="Freecam Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","LeftShift","C","Space","LeftControl"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncamera,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		enableFreecam()
+	elseif not KeyBind and not isTyping then
+		disableFreecam()
+		speaker.DevEnableMouseLock = false
+	end
+end})
+table.insert(env.AllKeybinds, FreecamKeybind)
+
+Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Freecam Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function() FreecamKeybind:Set("Set Keybind") end)
+	pcall(function() disableFreecam() end)
+end})
+
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
+
 Sliderfov = Miscclient:CreateSlider({SectionParent=Sectioncamera,Name="Field Of View",Range={45,120},Increment=1,Suffix="FOV",CurrentValue=math.floor(game:GetService("Workspace").Camera.FieldOfView),Callback=function(Value)
 	pcall(function()
 		TweenService:Create(clrf("Workspace").Camera, TweenInfo.new(0.6, Enum.EasingStyle.Exponential), {FieldOfView=Value}):Play()
@@ -5046,15 +5230,25 @@ spacing = Misc:CreateSpacing(Sectionplayrerelatedtp69,2)
 
 -- In general Variable or wtv
 elapsedTimehump = 0
+
 -- 69 Hump
 hump69distance = 5
 hump69speed = 1
+
 -- Normal Hump
-humpnordistance = 5
+humpnordistance = 7
 humpnorspeed = 1
+
 -- Face Hump
 humpfacedistance = 5
 humpfacespeed = 1
+
+-- Reverse Face Hump
+Reversehumpfacedistance = 5
+Reversehumpfacespeed = 1
+
+-- Reverse Hump
+Reversehumpspeed = 1
 
 AlldropdownRefresh.a69humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtp69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     plrName = Option:match("^(.-) %(") or Option
@@ -5404,7 +5598,9 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
     end)
 end})
 
-AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+SectionplayrerelatedtpReverse = MiscPlayer:CreateSection("FE Player Related | Reverse", false, false, 10686489468)
+
+AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5447,7 +5643,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
     end)
 end})
 
-AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtpbang,Name="Reverse-Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse-Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5490,6 +5686,146 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
     end)
 end})
 
+spacing = Misc:CreateSpacing(SectionplayrerelatedtpReverse,2)
+
+AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ffc2 and env.ExecutionID == script_id then
+                StopAllLoops(true)
+                if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+                end
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                Notif("No Longer Reverse Humping", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.ffc2 = true
+                sfxSound("true")
+                Notif("Now Reverse Humping", "Reverse Humping " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.ReverseHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+								hum.Sit = true
+								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+								elapsedTimehump = elapsedTimehump + (deltaTime * Reversehumpspeed)
+								local cycle = elapsedTimehump % 1
+								local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+								local xOffset = 2 + (5 * alpha)
+
+								local targetCFrame = targetRoot.CFrame
+								speakerRoot.CFrame = targetCFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -1)
+
+								speakerRoot.AssemblyLinearVelocity = Vector3.new()
+								speakerRoot.AssemblyAngularVelocity = Vector3.new()
+							end
+                        end)
+                    else
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
+end})
+
+ReversebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		Reversehumpspeed = Value
+	end)
+end})
+
+ReverseInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		Reversehumpspeed = Text
+	end)
+end})
+
+spacing = Misc:CreateSpacing(SectionplayrerelatedtpReverse,2)
+
+AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.fff3 and env.ExecutionID == script_id then
+                StopAllLoops(true)
+				if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+                end
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                Notif("No Longer Reverse Face Humping", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.fff3 = true
+                sfxSound("true")
+                Notif("Now Reverse Face Humping", "Reverse Face Humping " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.FaceHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.Sit = true
+								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+                                elapsedTimehump = elapsedTimehump + (deltaTime * Reversehumpfacespeed)
+                                local cycle = elapsedTimehump % 1
+                                local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+                                local xOffset = Reversehumpfacedistance * alpha            
+                                
+                                local targetCFrame = targetRoot.CFrame
+                                speakerRoot.CFrame = targetCFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, -2, xOffset) + targetCFrame.LookVector
+                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
+                    else
+                        StopAllLoops()
+                    end
+                end)
+            end
+        end
+    end)
+end})
+
+ReversefacebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Face Hump Distance",Range={1,25},Increment=1,Suffix="Distance",CurrentValue=5,Callback=function(Value)
+	pcall(function()
+		Reversehumpfacedistance = Value
+	end)
+end})
+
+ReversefaceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Face Hump Distance",OnEnter=true,PlaceholderText="5",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		Reversehumpfacedistance = Text
+	end)
+end})
+
+ReversefacebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Face Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+	pcall(function()
+		Reversehumpfacespeed = Value
+	end)
+end})
+
+ReversefaceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=SectionplayrerelatedtpReverse,Name="Reverse Face Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		Reversehumpfacespeed = Text
+	end)
+end})
+
 Sectionplayrerelatedtphump = MiscPlayer:CreateSection("FE Player Related | Hump", false, false, 10686489468)
 
 local HumpLoop
@@ -5516,18 +5852,18 @@ AlldropdownRefresh.humpdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
                         local targetRoot = getRoot(foundPlr.Character)
                         
                         if hum and speakerRoot and targetRoot then
-                            hum.PlatformStand = true
-                            elapsedTimehump = elapsedTimehump + (deltaTime * humpnorspeed)
-                            local cycle = elapsedTimehump % 1
-                            local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-                            
-                            local targetPosition = targetRoot.CFrame
-                            local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance)
-                            local newPosition = targetPosition.Position:Lerp(backPosition.Position, alpha)
-                            
-                            speakerRoot.CFrame = CFrame.new(newPosition) * targetRoot.CFrame.Rotation
-                            speakerRoot.AssemblyLinearVelocity = Vector3.new()
-                        end
+							hum.PlatformStand = true
+							elapsedTimehump = elapsedTimehump + (deltaTime * humpnorspeed)
+							local cycle = elapsedTimehump % 1
+							local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
+
+							local startPosition = targetRoot.CFrame * CFrame.new(0, 0, 1)
+							local backPosition = targetRoot.CFrame * CFrame.new(0, 0, humpnordistance)
+							local newPosition = startPosition.Position:Lerp(backPosition.Position, alpha)
+
+							speakerRoot.CFrame = CFrame.new(newPosition) * targetRoot.CFrame.Rotation
+							speakerRoot.AssemblyLinearVelocity = Vector3.new()
+						end
                     else
                         StopAllLoops()
                     end
@@ -5626,69 +5962,6 @@ facebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtp
 end})
 
 faceInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Face Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		humpfacespeed = Text
-	end)
-end})
-
-spacing = Misc:CreateSpacing(Sectionplayrerelatedtphump,2)
-
-AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
-    pcall(function()
-        plrName = Option:match("^(.-) %(") or Option
-        foundPlr = getPlr(plrName)
-        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ffc2 and env.ExecutionID == script_id then
-                StopAllLoops(true)
-                if speaker.Character:FindFirstChildOfClass("Humanoid") then
-                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
-                end
-                Notif("No Longer Reverse Humping", "Stopped", 2, "x")
-            else
-                StopAllLoops()
-                task.wait(0.1)
-                
-                tableofLoopingFuncs.ffc2 = true
-                sfxSound("true")
-                Notif("Now Reverse Humping", "Reverse Humping " .. foundPlr.Name, 4, "check")
-                
-                activeConnections.ReverseHumpLoop = RunService.Stepped:Connect(function(_, deltaTime)
-                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
-                        pcall(function()
-                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
-                            local speakerRoot = getRoot(speaker.Character)
-                            local targetRoot = getRoot(foundPlr.Character)
-                            
-                            if hum and speakerRoot and targetRoot then
-                                hum.Sit = true
-                                elapsedTimehump = elapsedTimehump + (deltaTime * humpfacespeed)
-                                local cycle = elapsedTimehump % 1
-                                local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
-                                local xOffset = 5 * alpha           
-                                
-                                local targetCFrame = targetRoot.CFrame
-                                speakerRoot.CFrame = targetCFrame * CFrame.Angles(math.rad(90), math.rad(180), math.rad(180)) * CFrame.new(0, xOffset, -1)
-                                
-                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
-                                speakerRoot.AssemblyAngularVelocity = Vector3.new()
-                            end
-                        end)
-                    else
-                        StopAllLoops()
-                    end
-                end)
-            end
-        end
-    end)
-end})
-
-ReversebangSliderv1 = MiscPlayer:CreateSlider({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		humpfacespeed = Value
-	end)
-end})
-
-ReverseInputbangerionspeedf1 = MiscPlayer:CreateInput({SectionParent=Sectionplayrerelatedtphump,Name="Reverse Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacespeed = Text
 	end)
