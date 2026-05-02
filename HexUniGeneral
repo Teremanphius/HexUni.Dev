@@ -28,6 +28,7 @@ local Stats = clrf("Stats")
 local AvatarEditorService = clrf("AvatarEditorService")
 local GameSettings = UserSettings():GetService("UserGameSettings")
 local SoundService = clrf("SoundService")
+local MarketplaceService = clrf("MarketplaceService")
 
 -- Player & Character
 local speaker = Players.LocalPlayer
@@ -3865,7 +3866,7 @@ spacing = TP:CreateSpacing(Sectiontpscritps,2)
 
 serverMap = {}
 serverOptionsList = {}
-rawName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+rawName = MarketplaceService:GetProductInfo(game.PlaceId).Name
 gameName = #rawName > 25 and string.sub(rawName, 1, 25) .. "..." or rawName
 
 serverdropdown = TP:CreateDropdown({SectionParent=Sectiontpscritps,Name="Server Lister",Options=serverOptionsList,CurrentOption="Select an option",Callback=function(Option) 
@@ -3926,7 +3927,7 @@ Button = TP:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game 
 end})
 
 Sectiontpscritpss = TP:CreateSection("FE Player Related | Teleport", false, false, 6723742952)
-Paragraphtotal = TP:CreateParagraph({Title="Dropdown Instructions",Content="You Open up the Dropdown. Let's Say \"Annoy\" For an ex.\nTo Start press on a player.\nTo stop you select another player in the same dropdown."}, Sectiontpscritpss)
+Paragraphtotal = TP:CreateParagraph({Title="Dropdown Instructions",Content="To Start:\nPress on \'Annoy\' for a example and then press on a random player\nTo Stop:\nPress on \'Annoy\' again and press on a random player\nNote: Switching between functions is possible, but can be buggy!"}, Sectiontpscritpss)
 AlldropdownRefresh.gotodropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
@@ -4006,7 +4007,7 @@ end})
 
 MiscPlayer = Window:CreateTab("Players", 10747373426)
 Sectiontotalscrismisc = MiscPlayer:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
-Paragraphtotal = MiscPlayer:CreateParagraph({Title="Dropdown Instructions",Content="You Open up the Dropdown. Let's Say \"Annoy\" For an ex.\nTo Start press on a player.\nTo stop you select another player in the same dropdown."}, Sectiontotalscrismisc)
+Paragraphtotal = MiscPlayer:CreateParagraph({Title="Dropdown Instructions",Content="To Start:\nPress on \'Annoy\' for a example and then press on a random player\nTo Stop:\nPress on \'Annoy\' again and press on a random player\nNote: Switching between functions is possible, but can be buggy!"}, Sectiontotalscrismisc)
 
 Sectionplayrerelatedtp = MiscPlayer:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468)
 
@@ -6989,88 +6990,270 @@ Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Anim P
 end})
 
 spacing = Animations:CreateSpacing(SectionAnimpl,2)
+
 Input = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Animation",OnEnter=true,PlaceholderText="ID",RemoveTextAfterFocusLost=false,Callback=function(Text)
+	local id = tonumber(Text)
+	if not id then return end
+
+	Animplr_id = id
 	Animplr = Instance.new("Animation")
-	Animplr.AnimationId = "rbxassetid://" .. Text .. ""
+	Animplr.AnimationId = "rbxassetid://" .. id
+	Animplr_isEmote = false
+
+	PlayEmoteBtn:Unlock() PlayEmoteBtn:Lock("Detecting...")
+	Toggleeanimplr:Unlock() Toggleeanimplr:Lock("Detecting...")
+
+	task.spawn(function()
+		local ok, info = pcall(function()
+			return MarketplaceService:GetProductInfo(id, Enum.InfoType.Asset)
+		end)
+
+		if ok and info then
+			if info.AssetTypeId == 61 then
+				Animplr_isEmote = true
+				if r15(speaker) then
+					PlayEmoteBtn:Unlock()
+					plyEmoteKeybind:Unlock()
+					Toggleeanimplr:Unlock() Toggleeanimplr:Lock("Emote - Use Play Emote")
+					plyorstpAnimKeybind:Unlock() plyorstpAnimKeybind:Lock("Emote - Use Play Emote")
+					Slideranimplr:Unlock() Slideranimplr:Lock("N/A for Emotes")
+					Inputanimplr:Unlock() Inputanimplr:Lock("N/A for Emotes")
+				else
+					PlayEmoteBtn:Unlock() PlayEmoteBtn:Lock("R15 Only")
+					plyEmoteKeybind:Unlock() plyEmoteKeybind:Lock("R15 Only")
+					Toggleeanimplr:Unlock() Toggleeanimplr:Lock("R15 Only")
+					plyorstpAnimKeybind:Unlock() plyorstpAnimKeybind:Lock("R15 Only")
+					Slideranimplr:Unlock() Slideranimplr:Lock("N/A for Emotes")
+					Inputanimplr:Unlock() Inputanimplr:Lock("N/A for Emotes")
+				end
+			else
+				Animplr_isEmote = false
+				PlayEmoteBtn:Unlock() PlayEmoteBtn:Lock("Not an Emote")
+				plyEmoteKeybind:Unlock() plyEmoteKeybind:Lock("Not an Emote")
+				Toggleeanimplr:Unlock()
+				plyorstpAnimKeybind:Unlock()
+				Slideranimplr:Unlock()
+				Inputanimplr:Unlock()
+			end
+		else
+			Animplr_isEmote = false
+			PlayEmoteBtn:Unlock() PlayEmoteBtn:Lock("Not an Emote")
+			plyEmoteKeybind:Unlock() plyEmoteKeybind:Lock("Not an Emote")
+			Toggleeanimplr:Unlock()
+			plyorstpAnimKeybind:Unlock()
+			Slideranimplr:Unlock()
+			Inputanimplr:Unlock()
+		end
+	end)
 end})
 
-AnimPlayerlooped = false
-spacing = Animations:CreateSpacing(SectionAnimpl,2)
+spacing = Animations:CreateSpacing(SectionAnimpl, 2)
+
+local emoteCurrentlyPlaying = false
+local animCurrentlyPlaying = false
+
+local function doPlayEmote()
+	local humanoid = speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid")
+	if not humanoid or not Animplr_id or not Animplr_isEmote then return end
+
+	local Description = humanoid:FindFirstChildOfClass("HumanoidDescription")
+	if Description then
+		pcall(function() Description:AddEmote("ce_" .. Animplr_id, Animplr_id) end)
+	end
+
+	emoteCurrentlyPlaying = false
+	task.wait(0.05)
+
+	pcall(function() humanoid:PlayEmoteAndGetAnimTrackById(Animplr_id) end)
+
+	emoteCurrentlyPlaying = true
+
+	if AnimPlayerlooped then
+		if speaker.Character and speaker.Character:FindFirstChild("Animate") then
+			speaker.Character.Animate.Disabled = true
+		end
+	end
+
+	task.spawn(function()
+		task.wait(0.5)
+		local id = tostring(Animplr_id)
+		while emoteCurrentlyPlaying do
+			task.wait(0.2)
+			local char = speaker.Character
+			local hum = char and char:FindFirstChildOfClass("Humanoid")
+			if not hum then
+				emoteCurrentlyPlaying = false
+				if char and char:FindFirstChild("Animate") then char.Animate.Disabled = false end
+				break
+			end
+			local found = false
+			for _, t in ipairs(hum:GetPlayingAnimationTracks()) do
+				if tostring(t.Animation.AnimationId):find(id) then found = true break end
+			end
+			if not found then
+				if AnimPlayerlooped then
+					pcall(function() hum:PlayEmoteAndGetAnimTrackById(Animplr_id) end)
+				else
+					emoteCurrentlyPlaying = false
+					if char and char:FindFirstChild("Animate") then
+						char.Animate.Disabled = false
+					end
+				end
+			end
+		end
+	end)
+end
+
+PlayEmoteBtn = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Play Emote (R15)",Interact="Click",Callback=function()
+	doPlayEmote()
+end})
+PlayEmoteBtn:Lock("Enter ID First")
+
 Toggleeanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Play / Stop Animation",CurrentValue=false,Callback=function(Value)
 	animplrlr = Value
-	if animplrlr then
-		animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr)
-		animpla:Play(0.1, 10, 1)
-		while true do
-			animpla.Looped = AnimPlayerlooped
-			task.wait()
+	local humanoid = speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then Toggleeanimplr:Set(false) return end
+
+	if Value then
+		if not Animplr then Toggleeanimplr:Set(false) return end
+
+		local ok = pcall(function()
+			animpla = humanoid:LoadAnimation(Animplr)
+			animpla:Play(0.1, 10, currentAnimSpeed or 1)
+		end)
+
+		if not ok or not animpla then Toggleeanimplr:Set(false) return end
+
+		animCurrentlyPlaying = true
+
+		if AnimPlayerlooped then
+			if speaker.Character and speaker.Character:FindFirstChild("Animate") then
+				speaker.Character.Animate.Disabled = true
+			end
 		end
-		AnimPlrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
+
+		task.wait(0.2)
+		if not animplrlr then return end
+
+		animpla.Stopped:Connect(function()
+			if animplrlr then
+				animplrlr = false
+				animCurrentlyPlaying = false
+				if speaker.Character and speaker.Character:FindFirstChild("Animate") then
+					speaker.Character.Animate.Disabled = false
+				end
+				Toggleeanimplr:Set(false)
+			end
+		end)
+
+		AnimPlrDied = humanoid.Died:Connect(function()
+			animplrlr = false
+			animCurrentlyPlaying = false
+			if speaker.Character and speaker.Character:FindFirstChild("Animate") then
+				speaker.Character.Animate.Disabled = false
+			end
 			Toggleeanimplr:Set(false)
 			AnimPlrDied:Disconnect()
 		end)
+
+		while animplrlr do
+			if animpla then animpla.Looped = AnimPlayerlooped end
+			task.wait()
+		end
 	else
-		pcall(function()
-			AnimPlrDied:Disconnect()
-		end)
-		animpla:Stop()
-		Animplr:Destroy()
+		animplrlr = false
+		animCurrentlyPlaying = false
+		pcall(function() AnimPlrDied:Disconnect() end)
+		pcall(function() animpla:Stop(0) end)
+		if speaker.Character and speaker.Character:FindFirstChild("Animate") then
+			speaker.Character.Animate.Disabled = false
+		end
+		local h = speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid")
+		if h then
+			h:ChangeState(Enum.HumanoidStateType.GettingUp)
+			task.wait(0.1)
+			h:ChangeState(Enum.HumanoidStateType.Running)
+		end
 	end
 end})
+Toggleeanimplr:Lock("Enter ID First")
 table.insert(env.AllToggles, Toggleeanimplr)
 
 Toggleeloopanimplr = Animations:CreateToggle({SectionParent=SectionAnimpl,Name="Loop Animation",CurrentValue=false,Callback=function(Value)
-	pcall(function()
-		AnimPlayerlooped = Value
-	end)
+	AnimPlayerlooped = Value
+	local char = speaker.Character
+	if Value then
+		if (animCurrentlyPlaying or emoteCurrentlyPlaying) and char and char:FindFirstChild("Animate") then
+			char.Animate.Disabled = true
+		end
+	else
+		if char and char:FindFirstChild("Animate") then
+			char.Animate.Disabled = false
+		end
+	end
 end})
 table.insert(env.AllToggles, Toggleeloopanimplr)
 
 spacing = Animations:CreateSpacing(SectionAnimpl,2)
+
 plyorstpAnimKeybind = Animations:CreateKeybind({Name="Play / Stop Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimpl,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
-		animpla = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(Animplr)
-		animpla:Play(0.1, 10, 1)
-		while true do
-			animpla.Looped = AnimPlayerlooped
-			task.wait()
-		end
-		animplrDied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-			animplrDied:Disconnect()
-			animpla:Stop()
-			Animplr:Destroy()
-			Toggleeanimplr:Set(false)
-		end)
+		Toggleeanimplr:Set(true)
 	elseif not KeyBind and not isTyping then
-		animpla:Stop()
-		Animplr:Destroy()
-		animplrDied:Disconnect()
+		Toggleeanimplr:Set(false)
 	end
 end})
+plyorstpAnimKeybind:Lock("Enter ID First")
 table.insert(env.AllKeybinds, plyorstpAnimKeybind)
 
-Button = Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Play / Stop Anim Keybind",Callback=function()
+Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Play / Stop Anim Keybind",Callback=function()
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
-	pcall(function()
-		plyorstpAnimKeybind:Set("Set Keybind")
-		animpla:Stop()
-		Animplr:Destroy()
-		animplrDied:Disconnect()
-	end)
+	Toggleeanimplr:Set(false)
+	pcall(function() plyorstpAnimKeybind:Set("Set Keybind") end)
 end})
 
 spacing = Animations:CreateSpacing(SectionAnimpl,2)
+
+plyEmoteKeybind = Animations:CreateKeybind({Name="Play Emote Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D"},CanBeToggled=false,HoldToInteract=false,SectionParent=SectionAnimpl,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		doPlayEmote()
+	end
+end})
+plyEmoteKeybind:Lock("Enter ID First")
+table.insert(env.AllKeybinds, plyEmoteKeybind)
+
+Animations:CreateButton({SectionParent=SectionAnimpl,Name="Reset Play Emote Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	emoteSpeedLoop = false
+	pcall(function() plyEmoteKeybind:Set("Set Keybind") end)
+end})
+
+spacing = Animations:CreateSpacing(SectionAnimpl,2)
+
 Slideranimplr = Animations:CreateSlider({SectionParent=SectionAnimpl,Name="Playing Anim Speed",Range={0,100},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
-	pcall(function()
-		animpla:AdjustSpeed(Value)
-	end)
+	currentAnimSpeed = Value
+	if not Animplr_isEmote then
+		pcall(function()
+			if animpla and animpla.IsPlaying then
+				animpla:AdjustSpeed(Value)
+			end
+		end)
+	end
 end})
 
 Inputanimplr = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
-	pcall(function()
-		animpla:AdjustSpeed(Text)
-	end)
+	local spd = tonumber(Text)
+	if not spd then return end
+	currentAnimSpeed = spd
+	if not Animplr_isEmote then
+		pcall(function()
+			if animpla and animpla.IsPlaying then
+				animpla:AdjustSpeed(spd)
+			end
+		end)
+	end
 end})
 
 SectionAnimHubs = Animations:CreateSection("FE Animation Hub's R6 & R15", false, true, 10709759610)
