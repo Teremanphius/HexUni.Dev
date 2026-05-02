@@ -6551,6 +6551,128 @@ Togglecartwheel = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Nam
 end})
 table.insert(env.AllToggles, Togglecartwheel)
 
+bckFlipping = false
+Togglecbackroll = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Name="Back Roll",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		cartwheeling = Value
+		if cartwheeling then
+			if not r15(speaker) then
+				speaker.DevEnableMouseLock = false
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+				bckFlipping = true
+				function _restoreproperties()
+					Torso = speaker.Character:FindFirstChild("Torso")
+					RightS = Torso:FindFirstChild("Right Shoulder")
+					LeftS = Torso:FindFirstChild("Left Shoulder")
+					RightH = Torso:FindFirstChild("Right Hip")
+					LeftH = Torso:FindFirstChild("Left Hip")
+					RightS.MaxVelocity = 0.15
+					LeftS.MaxVelocity = 0.15
+					RightH.MaxVelocity = 0.1
+					LeftH.MaxVelocity = 0.1
+					RightS.DesiredAngle = 0
+					LeftS.DesiredAngle = 0
+					LeftH.DesiredAngle = 0
+					RightH.DesiredAngle = 0
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
+						wait()
+					end
+					ml:Remove()
+				end
+				function Flip()
+					if (debounce == true) then
+						return
+					end
+					debounce = true
+					local Gyro = Instance.new("BodyGyro")
+					Gyro.P = Gyro.P * 10
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999
+					Gyro.CFrame = speaker.Character.Torso.CFrame
+					Gyro.Parent = speaker.Character.Torso
+					for i = 0, 50 do
+						Gyro.CFrame = Gyro.CFrame * CFrame.fromEulerAnglesXYZ(math.pi / 29, 0, 0)
+						wait()
+					end
+					Gyro.CFrame = speaker.Character.Torso.CFrame
+					wait()
+					Gyro:Remove()
+					speaker.Character.Humanoid.PlatformStand = false
+					_restoreproperties()
+					debounce = false
+				end
+				while bckFlipping do
+					wait()
+					Flip()
+				end
+			else
+				speaker.DevEnableMouseLock = false
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+				bckFlipping = true
+				function _restoreproperties()
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
+					local RightS = Torso:FindFirstChild("Right Shoulder")
+					local LeftS = Torso:FindFirstChild("Left Shoulder")
+					local RightH = Torso:FindFirstChild("Right Hip")
+					local LeftH = Torso:FindFirstChild("Left Hip")
+					if (Torso and RightS and LeftS and RightH and LeftH) then
+						RightS.MaxVelocity = 0.15
+						LeftS.MaxVelocity = 0.15
+						RightH.MaxVelocity = 0.1
+						LeftH.MaxVelocity = 0.1
+						RightS.DesiredAngle = 0
+						LeftS.DesiredAngle = 0
+						LeftH.DesiredAngle = 0
+						RightH.DesiredAngle = 0
+					end
+				end
+				function Down(ml)
+					for i = 1, ml.velocity.y / 3 do
+						ml.velocity = ml.velocity + Vector3.new(0, -4.25, 0)
+						task.wait()
+					end
+					ml:Remove()
+				end
+				function Flip()
+					if (debounce == true) then
+						return
+					end
+					debounce = true
+					local Gyro = Instance.new("BodyGyro")
+					Gyro.P = Gyro.P * 10
+					Gyro.maxTorque = Vector3.new(100000, 100000, 100000) * 999
+					local Torso = speaker.Character:FindFirstChild("UpperTorso") or speaker.Character:FindFirstChild("Torso")
+					if Torso then
+						Gyro.CFrame = Torso.CFrame
+						Gyro.Parent = Torso
+						for i = 0, 50 do
+							Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(7), 0, 0)
+							wait()
+						end
+						Gyro.CFrame = Torso.CFrame
+						wait()
+						Gyro:Remove()
+						speaker.Character.Humanoid.PlatformStand = false
+						_restoreproperties()
+						debounce = false
+					end
+				end
+				while bckFlipping do
+					wait()
+					Flip()
+				end
+			end
+		else
+			speaker.DevEnableMouseLock = true
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+			bckFlipping = false
+		end
+	end)
+end})
+table.insert(env.AllToggles, Togglecbackroll)
+
 StarRoll = false
 Togglestarroll = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Name="Cartwheel Roll",CurrentValue=false,Callback=function(Value)
 	pcall(function()
