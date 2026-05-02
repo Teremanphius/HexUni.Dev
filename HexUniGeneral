@@ -3356,6 +3356,21 @@ Togglenoclipcam = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="NoC
 end})
 table.insert(env.AllToggles, Togglenoclipcam)
 
+local crosshairEnabled = true
+local mouseUnlocked = false
+local mouseUnlockConnection = nil
+
+local function setMouseUnlock(unlocked)
+    mouseUnlocked = unlocked
+    if unlocked then
+        UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+        UserInputService.MouseIconEnabled = true
+    else
+        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+        UserInputService.MouseIconEnabled = false
+    end
+end
+
 local crosshairGui = Instance.new("ScreenGui")
 crosshairGui.Name = "FreecamCrosshair"
 crosshairGui.ResetOnSpawn = false
@@ -3473,11 +3488,17 @@ local function enableFreecam()
  
 	UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
 	UserInputService.MouseIconEnabled = false
-	setCrosshairVisible(true)
+	setCrosshairVisible(crosshairEnabled)
  
 	fovConnection = UserInputService.InputChanged:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseWheel then
 			tweenFOV(targetFOV - input.Position.Z * FOV_STEP)
+		end
+	end)
+
+	mouseUnlockConnection = UserInputService.InputBegan:Connect(function(input, gpe)
+		if input.KeyCode == Enum.KeyCode.V and not gpe and not isTyping then
+			setMouseUnlock(not mouseUnlocked)
 		end
 	end)
  
@@ -3487,27 +3508,31 @@ local function enableFreecam()
 		local now = tick()
 		local dt = math.min(now - lastUpdate, 0.1)
 		lastUpdate = now
- 
-		local mouseDelta = UserInputService:GetMouseDelta()
-		camYaw = camYaw - mouseDelta.X * MOUSE_SENSITIVITY
-		camPitch = math.clamp(camPitch - mouseDelta.Y * MOUSE_SENSITIVITY, -89, 89)
- 
+
+		if not mouseUnlocked then
+			local mouseDelta = UserInputService:GetMouseDelta()
+			camYaw = camYaw - mouseDelta.X * MOUSE_SENSITIVITY
+			camPitch = math.clamp(camPitch - mouseDelta.Y * MOUSE_SENSITIVITY, -89, 89)
+			UserInputService.MouseIconEnabled = false
+		end
+
 		local rotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0)
 		local moveInput = getMovementInput()
 		local targetVelocity = Vector3.new()
- 
+
 		if moveInput.Magnitude > 0 then
 			targetVelocity = rotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
 		end
- 
+
 		velocity = velocity:Lerp(targetVelocity, math.min(1, FRICTION * dt))
 		freecamPart.Position = freecamPart.Position + velocity * dt
 		Camera.CFrame = CFrame.new(freecamPart.Position) * rotation
-		UserInputService.MouseIconEnabled = false
 	end)
 end
  
 local function disableFreecam()
+	mouseUnlocked = false
+	if mouseUnlockConnection then mouseUnlockConnection:Disconnect() mouseUnlockConnection = nil end
 	if freecamConnection then freecamConnection:Disconnect() freecamConnection = nil end
 	if fovConnection then fovConnection:Disconnect() fovConnection = nil end
 	if fovTween then fovTween:Cancel() fovTween = nil end
@@ -3538,9 +3563,9 @@ end)
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 
-FreecamParagraph = Miscclient:CreateParagraph({Title="Freecam Information",Content="Controls:\n  Scroll Wheel   →   Change FOV\n  Space          →   Up\n  C              →   Down\n  Left Shift     →   Fast Speed\n  Left Control   →   Slow Speed"}, Sectioncamera)
+FreecamParagraph = Miscclient:CreateParagraph({Title="Freecam Information",Content="Controls:\n  Scroll Wheel   →   Change FOV\n  Space          →   Up\n  C              →   Down\n  V              →   Unlock Mouse\n  Left Shift     →   Fast Speed\n  Left Control   →   Slow Speed"}, Sectioncamera)
 
-FreecamKeybind = Miscclient:CreateKeybind({Name="Freecam Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","LeftShift","C","Space","LeftControl"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncamera,Callback=function(KeyBind)
+FreecamKeybind = Miscclient:CreateKeybind({Name="Freecam Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","LeftShift","C","Space","LeftControl","V"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncamera,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
 		enableFreecam()
 	elseif not KeyBind and not isTyping then
@@ -3556,6 +3581,16 @@ Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Freecam Keybind
 	pcall(function() FreecamKeybind:Set("Set Keybind") end)
 	pcall(function() disableFreecam() end)
 end})
+
+Crosshairvis = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Freecam CrossHair Visibility",CurrentValue=true,Callback=function(Value)
+	pcall(function()
+		crosshairEnabled = Value
+		if freecamConnection then
+			setCrosshairVisible(Value)
+		end
+	end)
+end})
+table.insert(env.AllToggles, Crosshairvis)
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 
