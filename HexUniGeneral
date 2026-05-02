@@ -3417,7 +3417,7 @@ local FRICTION = 6
 local MOUSE_SENSITIVITY = 0.3
 local FOV_STEP = 5
 local FOV_MIN = 10
-local FOV_MAX = 120
+local FOV_MAX = 130
 local FOV_TWEEN_TIME = 0.18
  
 local camPitch = 0
@@ -3491,9 +3491,9 @@ local function enableFreecam()
 	setCrosshairVisible(crosshairEnabled)
  
 	fovConnection = UserInputService.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseWheel then
-			tweenFOV(targetFOV - input.Position.Z * FOV_STEP)
-		end
+    if input.UserInputType == Enum.UserInputType.MouseWheel and not mouseUnlocked then
+        	tweenFOV(targetFOV - input.Position.Z * FOV_STEP)
+    	end
 	end)
 
 	mouseUnlockConnection = UserInputService.InputBegan:Connect(function(input, gpe)
@@ -3580,6 +3580,7 @@ Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Freecam Keybind
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function() FreecamKeybind:Set("Set Keybind") end)
 	pcall(function() disableFreecam() end)
+	speaker.DevEnableMouseLock = true
 end})
 
 Crosshairvis = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Freecam CrossHair Visibility",CurrentValue=true,Callback=function(Value)
