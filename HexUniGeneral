@@ -3395,8 +3395,8 @@ local savedCameraType
 local savedFOV = 70
 local savedShiftLock = false
  
-local SPEED_NORMAL = 24
-local SPEED_FAST = 94
+local SPEED_NORMAL = 40
+local SPEED_FAST = 134
 local SPEED_SLOW = 6
 local FRICTION = 6
 local MOUSE_SENSITIVITY = 0.3
@@ -5363,6 +5363,7 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.Bang and env.ExecutionID == script_id then
                 StopAllLoops(true)
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 				Notif("No Longer Banging", "Stopped", 2, "x")
             else
                 StopAllLoops()
@@ -5418,11 +5419,13 @@ AlldropdownRefresh.bangdropdown = MiscPlayer:CreateDropdown({SectionParent=Secti
                         local targetRoot = getRoot(foundPlr.Character)
                         local speakerRoot = getRoot(speaker.Character)
                         if targetRoot and speakerRoot then
+							Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
                             speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, 1.1)
                             speakerRoot.AssemblyLinearVelocity = Vector3.new()
                         end
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5464,6 +5467,7 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.ff2 and env.ExecutionID == script_id then
                 StopAllLoops(true)
+				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 				Notif("No Longer Facebanging", "Stopped", 2, "x")
             else
                 StopAllLoops()
@@ -5520,12 +5524,14 @@ AlldropdownRefresh.facebangdropdown = MiscPlayer:CreateDropdown({SectionParent=S
                             local speakerRoot = getRoot(speaker.Character)
                             local targetRoot = getRoot(foundPlr.Character)
                             if speakerRoot and targetRoot then
+								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
                                 speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 2, 1.1)
                                 speakerRoot.AssemblyLinearVelocity = Vector3.new()
                             end
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5591,6 +5597,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5636,6 +5643,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5679,6 +5687,7 @@ AlldropdownRefresh.sitfacebangdropdown = MiscPlayer:CreateDropdown({SectionParen
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5732,6 +5741,7 @@ AlldropdownRefresh.hump3dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
@@ -5795,6 +5805,7 @@ AlldropdownRefresh.hump2dropdown = MiscPlayer:CreateDropdown({SectionParent=Sect
                         end)
                     else
                         StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
                     end
                 end)
             end
