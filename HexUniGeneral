@@ -293,22 +293,6 @@ function CheckTime()
 end
 CheckTime()
 
-local playerAddedConnectionfriend
-local function onPlayerAdded(Player)
-	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
-		pcall(function()
-			Notif(Player.Name .. " Joined!", "Your Friend " .. Player.Name .. " (" .. Player.DisplayName .. ") Has Joined Your Game!", 6, "HeadShot", Player)
-			sfxSound("friendjoin")
-		end)
-	end
-end
-
-local function connectPlayerAddedEvent()
-	playerAddedConnectionfriend = cleanupConnection(playerAddedConnectionfriend)
-    playerAddedConnectionfriend = game.Players.PlayerAdded:Connect(onPlayerAdded)
-end
-connectPlayerAddedEvent()
-
 flying = false
 local isTyping = false
 
@@ -415,6 +399,22 @@ local function removePlayerFromDropdowns(player)
         dropdown:Remove(playerOption)
     end
 end
+
+local playerAddedConnectionfriend
+local function onPlayerAdded(Player)
+	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+		pcall(function()
+			Notif(Player.Name .. " Joined!", "Your Friend " .. Player.Name .. " (" .. Player.DisplayName .. ") Has Joined Your Game!", 6, "HeadShot", Player)
+			sfxSound("friendjoin",0.3)
+		end)
+	end
+end
+
+local function connectPlayerAddedEvent()
+	if playerAddedConnectionfriend then cleanupConnection(playerAddedConnectionfriend) end
+    playerAddedConnectionfriend = game.Players.PlayerAdded:Connect(onPlayerAdded)
+end
+connectPlayerAddedEvent()
 
 local playerAddedConnection
 local playerRemovingConnection
@@ -3359,6 +3359,8 @@ table.insert(env.AllToggles, Togglenoclipcam)
 local crosshairEnabled = true
 local mouseUnlocked = false
 local mouseUnlockConnection = nil
+local camRoll = 0
+local targetRoll = 0
 
 local function setMouseUnlock(unlocked)
     mouseUnlocked = unlocked
@@ -3428,14 +3430,14 @@ local fovTween = nil
 local targetFOV = 70
  
 local function getMovementInput()
-	local move = Vector3.new()
-	if UserInputService:IsKeyDown(Enum.KeyCode.W) then move += Vector3.new(0, 0, -1) end
-	if UserInputService:IsKeyDown(Enum.KeyCode.S) then move += Vector3.new(0, 0, 1) end
-	if UserInputService:IsKeyDown(Enum.KeyCode.A) then move += Vector3.new(-1, 0, 0) end
-	if UserInputService:IsKeyDown(Enum.KeyCode.D) then move += Vector3.new(1, 0, 0) end
-	if UserInputService:IsKeyDown(Enum.KeyCode.Space) then move += Vector3.new(0, 1, 0) end
-	if UserInputService:IsKeyDown(Enum.KeyCode.C) then move += Vector3.new(0, -1, 0) end
-	return move
+    local move = Vector3.new()
+    if UserInputService:IsKeyDown(Enum.KeyCode.W) and not mouseUnlocked and not isTyping then move += Vector3.new(0, 0, -1) end
+    if UserInputService:IsKeyDown(Enum.KeyCode.S) and not mouseUnlocked and not isTyping then move += Vector3.new(0, 0, 1) end
+    if UserInputService:IsKeyDown(Enum.KeyCode.A) and not mouseUnlocked and not isTyping then move += Vector3.new(-1, 0, 0) end
+    if UserInputService:IsKeyDown(Enum.KeyCode.D) and not mouseUnlocked and not isTyping then move += Vector3.new(1, 0, 0) end
+    if UserInputService:IsKeyDown(Enum.KeyCode.Space) and not mouseUnlocked and not isTyping then move += Vector3.new(0, 1, 0) end
+    if UserInputService:IsKeyDown(Enum.KeyCode.C) and not mouseUnlocked and not isTyping then move += Vector3.new(0, -1, 0) end
+    return move
 end
  
 local function getSpeed()
@@ -3491,7 +3493,7 @@ local function enableFreecam()
 	setCrosshairVisible(crosshairEnabled)
  
 	fovConnection = UserInputService.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseWheel and not mouseUnlocked then
+    if input.UserInputType == Enum.UserInputType.MouseWheel and not mouseUnlocked and not isTyping then
         	tweenFOV(targetFOV - input.Position.Z * FOV_STEP)
     	end
 	end)
@@ -3511,20 +3513,41 @@ local function enableFreecam()
 
 		if not mouseUnlocked then
 			local mouseDelta = UserInputService:GetMouseDelta()
-			camYaw = camYaw - mouseDelta.X * MOUSE_SENSITIVITY
-			camPitch = math.clamp(camPitch - mouseDelta.Y * MOUSE_SENSITIVITY, -89, 89)
+			local rollRad = math.rad(camRoll)
+			local rotatedX = mouseDelta.X * math.cos(rollRad) - mouseDelta.Y * math.sin(rollRad)
+			local rotatedY = mouseDelta.X * math.sin(rollRad) + mouseDelta.Y * math.cos(rollRad)
+			camYaw = camYaw - rotatedX * MOUSE_SENSITIVITY
+			camPitch = math.clamp(camPitch - rotatedY * MOUSE_SENSITIVITY, -89, 89)
 			UserInputService.MouseIconEnabled = false
 		end
 
-		local rotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0)
+		local ROLL_SPEED = 160
+		local ROLL_FRICTION = 2
+		local FRICTION_VERTICAL = 8
+
+		if UserInputService:IsKeyDown(Enum.KeyCode.E) and not mouseUnlocked and not isTyping then
+			targetRoll = targetRoll - ROLL_SPEED * dt
+		elseif UserInputService:IsKeyDown(Enum.KeyCode.Q) and not mouseUnlocked and not isTyping then
+			targetRoll = targetRoll + ROLL_SPEED * dt
+		end
+		camRoll = camRoll + (targetRoll - camRoll) * math.min(1, ROLL_FRICTION * dt)
+
+		local rotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0) * CFrame.Angles(0, 0, math.rad(camRoll))
 		local moveInput = getMovementInput()
 		local targetVelocity = Vector3.new()
 
+		local pitchRotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0)
+
 		if moveInput.Magnitude > 0 then
-			targetVelocity = rotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
+			targetVelocity = pitchRotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
 		end
 
-		velocity = velocity:Lerp(targetVelocity, math.min(1, FRICTION * dt))
+		local horizontal = Vector3.new(targetVelocity.X, 0, targetVelocity.Z)
+		local vertical = Vector3.new(0, targetVelocity.Y, 0)
+
+		local smoothH = Vector3.new(velocity.X, 0, velocity.Z):Lerp(horizontal, math.min(1, FRICTION * dt))
+		local smoothV = Vector3.new(0, velocity.Y, 0):Lerp(vertical, math.min(1, FRICTION_VERTICAL * dt))
+		velocity = smoothH + smoothV
 		freecamPart.Position = freecamPart.Position + velocity * dt
 		Camera.CFrame = CFrame.new(freecamPart.Position) * rotation
 	end)
@@ -3563,9 +3586,9 @@ end)
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 
-FreecamParagraph = Miscclient:CreateParagraph({Title="Freecam Information",Content="Controls:\n  Scroll Wheel   →   Change FOV\n  Space          →   Up\n  C              →   Down\n  V              →   Unlock Mouse\n  Left Shift     →   Fast Speed\n  Left Control   →   Slow Speed"}, Sectioncamera)
+FreecamParagraph = Miscclient:CreateParagraph({Title="Freecam Information",Content="Controls:\n  Scroll Wheel   →   Change FOV\n  Space          →   Up\n  C              →   Down\n  Q              →   Roll Left\n  E              →   Roll Right\n  V              →   Unlock Mouse\n  Left Shift     →   Fast Speed\n  Left Control   →   Slow Speed"}, Sectioncamera)
 
-FreecamKeybind = Miscclient:CreateKeybind({Name="Freecam Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","LeftShift","C","Space","LeftControl","V"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncamera,Callback=function(KeyBind)
+FreecamKeybind = Miscclient:CreateKeybind({Name="Freecam Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","LeftShift","C","Space","LeftControl","V","Q","E"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectioncamera,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
 		enableFreecam()
 	elseif not KeyBind and not isTyping then
@@ -3581,6 +3604,15 @@ Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Freecam Keybind
 	pcall(function() FreecamKeybind:Set("Set Keybind") end)
 	pcall(function() disableFreecam() end)
 	speaker.DevEnableMouseLock = true
+	targetRoll = 0
+    camRoll = 0
+end})
+
+spacing = Miscclient:CreateSpacing(Sectioncamera,2)
+
+Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Camera Roll",Callback=function()
+    targetRoll = 0
+    camRoll = 0
 end})
 
 Crosshairvis = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Freecam CrossHair Visibility",CurrentValue=true,Callback=function(Value)
