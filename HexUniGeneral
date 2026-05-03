@@ -3359,8 +3359,6 @@ table.insert(env.AllToggles, Togglenoclipcam)
 local crosshairEnabled = true
 local mouseUnlocked = false
 local mouseUnlockConnection = nil
-local camRoll = 0
-local targetRoll = 0
 
 local function setMouseUnlock(unlocked)
     mouseUnlocked = unlocked
@@ -3424,6 +3422,11 @@ local FOV_TWEEN_TIME = 0.18
  
 local camPitch = 0
 local camYaw = 0
+local camRotation = CFrame.new()
+local camRoll = 0
+local targetRoll = 0
+local prevCamRoll = 0
+local camRotation = CFrame.new()
 local velocity = Vector3.new()
 local freecamPart = nil
 local fovTween = nil
@@ -3463,6 +3466,7 @@ local function enableFreecam()
 	local rx, ry, _ = savedCFrame:ToEulerAnglesYXZ()
 	camPitch = math.deg(rx)
 	camYaw = math.deg(ry)
+	camRotation = savedCFrame.Rotation
 	velocity = Vector3.new()
  
 	freecamPart = Instance.new("Part")
@@ -3513,11 +3517,8 @@ local function enableFreecam()
 
 		if not mouseUnlocked then
 			local mouseDelta = UserInputService:GetMouseDelta()
-			local rollRad = math.rad(camRoll)
-			local rotatedX = mouseDelta.X * math.cos(rollRad) - mouseDelta.Y * math.sin(rollRad)
-			local rotatedY = mouseDelta.X * math.sin(rollRad) + mouseDelta.Y * math.cos(rollRad)
-			camYaw = camYaw - rotatedX * MOUSE_SENSITIVITY
-			camPitch = math.clamp(camPitch - rotatedY * MOUSE_SENSITIVITY, -89, 89)
+			camRotation = CFrame.Angles(0, -math.rad(mouseDelta.X * MOUSE_SENSITIVITY), 0) * camRotation
+			camRotation = camRotation * CFrame.Angles(-math.rad(mouseDelta.Y * MOUSE_SENSITIVITY), 0, 0)
 			UserInputService.MouseIconEnabled = false
 		end
 
@@ -3531,15 +3532,18 @@ local function enableFreecam()
 			targetRoll = targetRoll + ROLL_SPEED * dt
 		end
 		camRoll = camRoll + (targetRoll - camRoll) * math.min(1, ROLL_FRICTION * dt)
+		local rollDiff = camRoll - prevCamRoll
+		prevCamRoll = camRoll
+		camRotation = camRotation * CFrame.Angles(0, 0, math.rad(rollDiff))
 
-		local rotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0) * CFrame.Angles(0, 0, math.rad(camRoll))
+		local rotation = camRotation
 		local moveInput = getMovementInput()
 		local targetVelocity = Vector3.new()
 
 		local pitchRotation = CFrame.Angles(0, math.rad(camYaw), 0) * CFrame.Angles(math.rad(camPitch), 0, 0)
 
 		if moveInput.Magnitude > 0 then
-			targetVelocity = pitchRotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
+			targetVelocity = camRotation:VectorToWorldSpace(moveInput.Unit) * getSpeed()
 		end
 
 		local horizontal = Vector3.new(targetVelocity.X, 0, targetVelocity.Z)
@@ -3604,15 +3608,19 @@ Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Freecam Keybind
 	pcall(function() FreecamKeybind:Set("Set Keybind") end)
 	pcall(function() disableFreecam() end)
 	speaker.DevEnableMouseLock = true
+	camRotation = savedCFrame.Rotation
+	camRoll = 0
 	targetRoll = 0
-    camRoll = 0
+	prevCamRoll = 0
 end})
 
 spacing = Miscclient:CreateSpacing(Sectioncamera,2)
 
 Miscclient:CreateButton({SectionParent=Sectioncamera,Name="Reset Camera Roll",Callback=function()
-    targetRoll = 0
-    camRoll = 0
+    camRotation = savedCFrame.Rotation
+	camRoll = 0
+	targetRoll = 0
+	prevCamRoll = 0
 end})
 
 Crosshairvis = Miscclient:CreateToggle({SectionParent=Sectioncamera,Name="Freecam CrossHair Visibility",CurrentValue=true,Callback=function(Value)
