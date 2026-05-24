@@ -108,7 +108,6 @@ function getJumpValue(val)
 	end
 end
 
-
 function randomString()
 	length = math.random(10, 20)
 	array = {}
@@ -422,7 +421,7 @@ local function addPlayerToDropdowns(player)
     local playerOption = getPlayerOption(player)
     playerCache[player] = playerOption
     table.insert(gotoplayersList, playerOption)
-    for _, dropdown in ipairs(AlldropdownRefresh) do
+    for _, dropdown in pairs(AlldropdownRefresh) do
         dropdown:Add(playerOption)
     end
 end
@@ -437,23 +436,37 @@ local function removePlayerFromDropdowns(player)
             break
         end
     end
-    for _, dropdown in ipairs(AlldropdownRefresh) do
+    for _, dropdown in pairs(AlldropdownRefresh) do
         dropdown:Remove(playerOption)
     end
 end
 
+function RegisterDropdown(dropdown)
+    table.insert(AlldropdownRefresh, dropdown)
+    dropdown:Refresh(gotoplayersList, "Select a Player")
+end
+
+setmetatable(AlldropdownRefresh, {
+    __newindex = function(t, k, v)
+        rawset(t, k, v)
+        if type(v) == "table" and v.Refresh then
+            v:Refresh(gotoplayersList, "Select a Player")
+        end
+    end
+})
+
 local playerAddedConnectionfriend
 local function onPlayerAdded(Player)
-	if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
-		pcall(function()
-			Notif(Player.Name .. " Joined!", "Your Friend " .. Player.Name .. " (" .. Player.DisplayName .. ") Has Joined Your Game!", 6, "HeadShot", Player)
-			sfxSound("friendjoin",0.3)
-		end)
-	end
+    if Player:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+        pcall(function()
+            Notif(Player.Name .. " Joined!", "Your Friend " .. Player.Name .. " (" .. Player.DisplayName .. ") Has Joined Your Game!", 6, "HeadShot", Player)
+            sfxSound("friendjoin", 0.3)
+        end)
+    end
 end
 
 local function connectPlayerAddedEvent()
-	if playerAddedConnectionfriend then cleanupConnection(playerAddedConnectionfriend) end
+    if playerAddedConnectionfriend then cleanupConnection(playerAddedConnectionfriend) end
     playerAddedConnectionfriend = game.Players.PlayerAdded:Connect(onPlayerAdded)
 end
 connectPlayerAddedEvent()
@@ -471,10 +484,6 @@ connectEvents()
 
 for _, player in ipairs(game.Players:GetPlayers()) do
     addPlayerToDropdowns(player)
-end
-
-for _, dropdown in ipairs(AlldropdownRefresh) do
-    dropdown:Refresh(gotoplayersList, "Select a Player")
 end
 
 -- AlreadyRan Checker
@@ -623,14 +632,19 @@ RunService.RenderStepped:Connect(function(frame)
 end)
 
 -- Main Script
+
 local Window = NSUI:CreateWindow({Name=("HeXen Universal\t\t\t\t    " .. os.date("%H:%M")),LoadingTitle="HeXen Universal",LoadingSubtitle="By Javolo"})
+
 task.spawn(function()
 	while task.wait(1) do
-		Window:SetTopbarTitle("HeXen Universal\t\t\t\t    " .. os.date("%H:%M"))
+		pcall(function()
+			Window:SetTopbarTitle("HeXen Universal\t\t\t\t    " .. os.date("%H:%M"))
+		end)
 	end
 end)
 
 General = Window:CreateTab("Hubs & \nMain Scripts", 114127804740858)
+
 Section_Total_Of_Scripts = General:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
 Paragraphtotal = General:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
@@ -1161,10 +1175,6 @@ local moveToMouse = false
 Togglegrappleasdasd = General:CreateToggle({SectionParent=Sectionflights,Name="Grapple",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
-			local grappleuserdied
-			grappleuserdied = speaker.Character:FindFirstChildOfClass("Humanoid").Died:Connect(function()
-				Togglegrappleasdasd:Set(false)
-			end)
 			moveToMouse = true
 			local bpNew = Instance.new("BodyPosition", getRoot(speaker.Character))
 			while moveToMouse do
@@ -1181,6 +1191,28 @@ Togglegrappleasdasd = General:CreateToggle({SectionParent=Sectionflights,Name="G
 	end)
 end})
 table.insert(env.AllToggles, Togglegrappleasdasd)
+
+General:CreateSpacing(Sectionflights,2)
+
+GrappleKeybind = General:CreateKeybind({Name="Grapple Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		Togglegrappleasdasd:Lock("Reset The Keybind To Access")
+		Togglegrappleasdasd:Set(true)
+	elseif not KeyBind and not isTyping then
+		Togglegrappleasdasd:Set(false)
+	end
+end})
+table.insert(env.AllKeybinds, CframeFlyKeybind)
+
+Button = General:CreateButton({SectionParent=Sectionflights,Name="Reset Grapple Keybind",Interact="Reset Keybind",Callback=function()
+	sfxSound("true")
+	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
+	pcall(function()
+		Togglegrappleasdasd:Unlock()
+		Togglegrappleasdasd:Set(false)
+		GrappleKeybind:Set("Set Keybind")
+	end)
+end})
 
 Sectionplayerealtefunc = General:CreateSection("FE LocalPlayer Related | Function's & Keybind's", false, false, 10686489468)
 
@@ -2972,11 +3004,11 @@ ClientSide_Scripts = Window:CreateTab("Client-Side Scripts", 122260852237334)
 
 Section_Total_Of_Scripts = ClientSide_Scripts:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraph = ClientSide_Scripts:CreateParagraph({Title="General Note",Content="Script's Here Are Only Client Sided In Which Means Only You Can See It"}, Section_Total_Of_Scripts)
+Paragraph = ClientSide_Scripts:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Script's Here Are Only Client Sided In Which Means Only You Can See It"}, Section_Total_Of_Scripts)
 
 Sectionmiscscripts = ClientSide_Scripts:CreateSection("Miscellaneous (Client)", false, false, 10709759610)
 
-PJLNF = 1.3
+PJLNF = 2
 
 function NotifyPlayerEvent(player, event)
     local DT = DateTime.fromUnixTimestamp(86400 * player.AccountAge)
@@ -3991,7 +4023,7 @@ ESPP = Window:CreateTab("ESP", 134539162713658)
 
 Section_Total_Of_Scripts = ESPP:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraphtotal = ESPP:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
+Paragraphtotal = ESPP:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Things Here Are Client-Sided So That Means You Only Can See It."}, Section_Total_Of_Scripts)
 
 local ESP = loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/ESP/refs/heads/main/main'))()
 
@@ -4232,7 +4264,7 @@ TP = Window:CreateTab("Teleport To &\nRejoin", 136541163724895)
 
 Section_Total_Of_Scripts = TP:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraphtotal = TP:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
+Paragraphtotal = TP:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
 
 Sectiontpscritps = TP:CreateSection("FE LocalPlayer Related | Teleport", false, false, 10481501007)
 
@@ -4492,9 +4524,9 @@ Players = Window:CreateTab("Players Scripts", 16485180075)
 
 Section_Total_Of_Scripts = Players:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraphtotal = Players:CreateParagraph({Title="Dropdown Instructions",Content="To Start:\nPress on \'Annoy\' for a example and then press on a random player\nTo Stop:\nPress on \'Annoy\' again and press on a random player\nNote: Switching between functions is possible, but can be buggy!"}, Section_Total_Of_Scripts)
+Paragraphtotal = Players:CreateParagraph({Title="Dropdown Instructions",Icon=81531453679196,Content="To Start:\nPress on \'Annoy\' for a example and then press on a random player\nTo Stop:\nPress on \'Annoy\' again and press on a random player\nNote: Switching between functions is possible, but can be buggy!"}, Section_Total_Of_Scripts)
 
-General_Plr_Related = Players:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468)
+General_Plr_Related = Players:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 100094020789566)
 
 AlldropdownRefresh.Annoydropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Annoy",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
@@ -5426,7 +5458,7 @@ SpinaroundInputRadius = Players:CreateInput({SectionParent=General_Plr_Related,N
 	end)
 end})
 
-General_Plr_Related69 = Players:CreateSection("FE Player Related | 69", false, false, 10686489468)
+General_Plr_Related69 = Players:CreateSection("FE Player Related | 69", false, false, 130095284127917)
 
 Paragraph = Players:CreateParagraph({Title="Important Info",Icon=81531453679196,Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related69)
 
@@ -5685,7 +5717,7 @@ HSI69 = Players:CreateInput({SectionParent=General_Plr_Related69,Name="69 Hump S
 	end)
 end})
 
-General_Bang = Players:CreateSection("FE Player Related | Bang", false, false, 10686489468)
+General_Bang = Players:CreateSection("FE Player Related | Bang", false, false, 8553911793)
 
 AlldropdownRefresh.bangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Anim Bang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
@@ -5941,7 +5973,7 @@ AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=G
     end)
 end})
 
-General_Reverse_Funcs = Players:CreateSection("FE Player Related | Reverse", false, false, 10686489468)
+General_Reverse_Funcs = Players:CreateSection("FE Player Related | Reverse", false, false, 127709440505853)
 
 AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Sit Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
@@ -6179,7 +6211,7 @@ RFHSI = Players:CreateInput({SectionParent=General_Reverse_Funcs,Name="Reverse F
 	end)
 end})
 
-General_Hump = Players:CreateSection("FE Player Related | Hump", false, false, 10686489468)
+General_Hump = Players:CreateSection("FE Player Related | Hump", false, false, 8553911793)
 
 local HumpLoop
 
@@ -6335,7 +6367,7 @@ Acrobatics = Window:CreateTab("Acrobatics", 2714338256)
 
 Section_Total_Of_Scripts = Acrobatics:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraphtotal = Acrobatics:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
+Paragraphtotal = Acrobatics:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
 
 Sectionflipsnthings = Acrobatics:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478)
 
@@ -6927,7 +6959,7 @@ Animations = Window:CreateTab("Animations", 1114393432)
 
 Total_Anim_Scripts = Animations:CreateSection("Total Animation Script's: " .. ScriptcountAnim, false, false, 7743869612)
 
-Paragraph = Animations:CreateParagraph({Title="Note",Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Total_Anim_Scripts)
+Paragraph = Animations:CreateParagraph({Title="Note",Icon=81531453679196,Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Total_Anim_Scripts)
 
 SectionCurrentAnim = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149)
 
@@ -6953,8 +6985,13 @@ table.insert(env.AllToggles, Togglefreezecurrentanims)
 
 Animations:CreateSpacing(SectionCurrentAnim,2)
 
-FreezeCurrentAnimKeybind = Animations:CreateKeybind({Name="Freeze Current Animation Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimHubs,Callback=function(KeyBind)
-	speaker.Character.Animate.Disabled = KeyBind and not isTyping
+FreezeCurrentAnimKeybind = Animations:CreateKeybind({Name="Freeze Current Animation Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionCurrentAnim,Callback=function(KeyBind)
+	if KeyBind and not isTyping then
+		Togglefreezecurrentanims:Lock("Reset The Keybind To Access")
+		Togglefreezecurrentanims:Set(true)
+	elseif not KeyBind and not isTyping then
+		Togglefreezecurrentanims:Set(false)
+	end
 end})
 table.insert(env.AllKeybinds, FreezeCurrentAnimKeybind)
 
@@ -6962,6 +6999,7 @@ Button = Animations:CreateButton({SectionParent=SectionCurrentAnim,Name="Reset F
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
+		Togglefreezecurrentanims:Unlock()
 		FreezeCurrentAnimKeybind:Set("Set Keybind")
 	end)
 end})
@@ -7762,22 +7800,11 @@ table.insert(env.AllToggles, Toggleedance12)
 Animations:CreateSpacing(Sectionrblxclientanims,2)
 
 PlayedanceKeybind = Animations:CreateKeybind({Name="Play Selected \"/e\" Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionrblxclientanims,Callback=function(KeyBind)
-	if not selectedPackdance then
-		return
-	end
-	local danceIds = eedances[selectedPackdance]
 	if KeyBind and not isTyping then
-		local animId = (r15(speaker) and danceIds.R15) or danceIds.R6
-		currentAnimation = Instance.new("Animation")
-		currentAnimation.AnimationId = animId
-		currentAnimationTrack = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(currentAnimation)
-		currentAnimationTrack:Play(0.1, 10, 1)
-		animationPlaying = true
-	elseif not KeyBind and not isTyping and currentAnimationTrack then
-		currentAnimationTrack:Stop()
-		currentAnimationTrack:Destroy()
-		currentAnimationTrack = nil
-		animationPlaying = false
+		Toggleedance12:Lock("Reset The Keybind To Access")
+		Toggleedance12:Set(true)
+	elseif not KeyBind and not isTyping then
+		Toggleedance12:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, PlayedanceKeybind)
@@ -7786,6 +7813,8 @@ Button = Animations:CreateButton({SectionParent=Sectionrblxclientanims,Name="Res
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
+		Toggleedance12:Unlock()
+		Toggleedance12:Set(false)
 		PlayedanceKeybind:Set("Set Keybind")
 	end)
 end})
@@ -7948,45 +7977,11 @@ table.insert(env.AllToggles, Toggleeanimation)
 Animations:CreateSpacing(Sectionfeanims,2)
 
 PlaycustmAnimKeybind = Animations:CreateKeybind({Name="Play Selected Anim Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionfeanims,Callback=function(KeyBind)
-	if not selectedPackanim then return end
-	local dance=testdances[selectedPackanim]
     if KeyBind and not isTyping then
-        if r15(speaker) then
-			if selectedPackanim == "Random Dance" then
-				dance.R15 = IfRigRanDance(true)
-			end
-            if not dance.R15 then
-                sfxSound("false")
-                Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!",2,"x")
-                Toggleeanimation:Set(false)
-                return
-            end
-        else
-			if selectedPackanim == "Random Dance" then
-				dance.R6 = IfRigRanDance(false)
-			end
-            if not dance.R6 then
-                sfxSound("false")
-                Notif("Invalid Rig (R6)!", "R15 Rig Type Is Needed To Use This Function!",2,"x")
-                Toggleeanimation:Set(false)
-                return
-            end
-        end
-        cleanup()
-        local anim=Instance.new("Animation")
-        anim.AnimationId=(r15(speaker) and dance.R15) or dance.R6
-        local track=speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(anim)
-        track.Looped=dance.Looped
-        track:Play(0,10,dance.Speed)
-        local timeData=(r15(speaker) and dance.R15Time) or dance.R6Time
-        if timeData then
-            PlaybackHandlers.loop=RunService.Heartbeat:Connect(function()
-                if track.TimePosition>=timeData.LoopEnd then track.TimePosition=timeData.LoopStart end
-            end)
-        end
-        PlaybackHandlers.currentTrack=track
+		Toggleeanimation:Lock("Reset The Keybind To Access")
+		Toggleeanimation:Set(true)
     elseif not KeyBind and not isTyping then
-        cleanup()
+		Toggleeanimation:Set(false)
     end
 end})
 table.insert(env.AllKeybinds, PlaycustmAnimKeybind)
@@ -7995,6 +7990,8 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Reset Play 
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
+		Toggleeanimation:Unlock()
+		Toggleeanimation:Set(false)
 		PlaycustmAnimKeybind:Set("Set Keybind")
 	end)
 end})
@@ -8008,36 +8005,6 @@ end})
 AnimpInput = Animations:CreateInput({SectionParent=Sectionfeanims,Name="Anim Speed",OnEnter=true,PlaceholderText="1",CharacterLimit=3,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	local v=tonumber(Text)
     pcall(function()if PlaybackHandlers.currentTrack then PlaybackHandlers.currentTrack:AdjustSpeed(v) end end)
-end})
-
-Other_Anim_Scripts = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610)
-
-Paragraph = Animations:CreateParagraph({Title="Rewind Info",Icon=81531453679196,Content="X = Rewind"}, Other_Anim_Scripts)
-
-Buttonrewinb = Animations:CreateButton({SectionParent=Other_Anim_Scripts,Name="Rewind R6 & R15",Interact="Click",Callback=function()
-	pcall(function()
-		Buttonrewinb:Set("Rewind R6 & R15 (Exed)")
-		loadstring(game:HttpGet("https://pastebin.com/raw/2h8E1DVT"))()
-		sfxSound("true")
-		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
-	end)
-end})
-
-Button = Animations:CreateButton({SectionParent=Other_Anim_Scripts,Name="Roblox R6 Parkour",Interact="Click",Callback=function()
-	if not r15(speaker) then
-		loadstring(game:HttpGet("https://pastebin.com/raw/R5YR13pG", true))()
-		sfxSound("true")
-		Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
-	else
-		sfxSound("true")
-		Notif("Invalid Rig (R15)!", "R6 Rig Type Is Needed To Use This Function!", 3, "x")
-	end
-end})
-
-Button = Animations:CreateButton({SectionParent=Other_Anim_Scripts,Name="Walk On Walls R6 & R15",Interact="Click",Callback=function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/zXk4Rq2r"))()
-	sfxSound("true")
-	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
 Window:CreateSpacerTab(2)
@@ -8101,31 +8068,31 @@ Detailed_Info = CRD:CreateParagraph({
 
 
 task.spawn(function()
-    while true do
-        local totalSecs = floor(workspace.DistributedGameTime)
-        
-        local sessionTime = format("%02d:%02d:%02d", 
-            floor(totalSecs / 3600), 
-            floor((totalSecs % 3600) / 60), 
-            totalSecs % 60
-        )
-
-        Detailed_Info:Set({
-            Title = "Detailed Information",
-            Content = format(
-                "Country: %s / %s\nTimezone: %s\nExecutor: %s\nFPS: %s\nMemory: %d MB\nSession Time: %s\nPlayers: %d/%d",
-                country or "N/A", countryCode or "N/A",
-                timezone or "N/A",
-                executor or "N/A",
-                tostring(Updatedfps or "N/A"),
-                floor(Stats:GetTotalMemoryUsageMb()),
-                sessionTime,
-                #clrf("Players"):GetPlayers(),
-                clrf("Players").MaxPlayers
+    while task.wait(1/10) do
+        pcall(function()
+            local totalSecs = floor(workspace.DistributedGameTime)
+            
+            local sessionTime = format("%02d:%02d:%02d", 
+                floor(totalSecs / 3600), 
+                floor((totalSecs % 3600) / 60), 
+                totalSecs % 60
             )
-        })
-    
-        task.wait(1 / 10)
+
+            Detailed_Info:Set({
+                Title = "Detailed Information",
+                Content = format(
+                    "Country: %s / %s\nTimezone: %s\nExecutor: %s\nFPS: %s\nMemory: %d MB\nSession Time: %s\nPlayers: %d/%d",
+                    country or "N/A", countryCode or "N/A",
+                    timezone or "N/A",
+                    executor or "N/A",
+                    tostring(Updatedfps or "N/A"),
+                    floor(Stats:GetTotalMemoryUsageMb()),
+                    sessionTime,
+                    #clrf("Players"):GetPlayers(),
+                    clrf("Players").MaxPlayers
+                )
+            })
+        end)
     end
 end)
 
@@ -8139,11 +8106,14 @@ end})
 
 Sectionfriendinfo = CRD:CreateSection("Friend Information", false, false, 16485180075)
 
-Paragraphcrddfriendrelated = CRD:CreateParagraph({Title="Information",Content=(AllFoes .. "\n" .. OfflineFoes .. "\n" .. OnlineFoes .. "\n" .. IngameFoes .. "")}, Sectionfriendinfo)
+Friend_Info = CRD:CreateParagraph({Title="Friend Information",Content=(AllFoes .. "\n" .. OfflineFoes .. "\n" .. OnlineFoes .. "\n" .. IngameFoes .. "")}, Sectionfriendinfo)
+
 task.spawn(function()
-	while task.wait() do
-		Paragraphcrddfriendrelated:Set({Title="Friend Information",Content=(AllFoes .. "\n" .. OfflineFoes .. "\n" .. OnlineFoes .. "\n" .. IngameFoes .. "")})
-	end
+    while task.wait() do
+        pcall(function()
+            Friend_Info:Set({Title="Friend Information", Content=(AllFoes .. "\n" .. OfflineFoes .. "\n" .. OnlineFoes .. "\n" .. IngameFoes)})
+        end)
+    end
 end)
 
 Sectioncopysc = CRD:CreateSection("Logging Copy Script's", false, false, 10709799288)
