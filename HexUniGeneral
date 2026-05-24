@@ -301,23 +301,32 @@ pcall(CheckFriends)
 
 math.randomseed(os.time())
 
-local greetings = {
-	{ before = 12, title = "Morning",    lines = { "Sun Is Rising!", "Rise And Shine!", "Wakey Wakey!" } },
-	{ before = 20, title = "Afternoon",  lines = { "How Are Ya?", "Hope Your Day Is Going Well!", "Having A Good One?" } },
-	{ before = 24, title = "Good Night", lines = { "Have A Good Night!", "Sweet Dreams!", "Don't Stay Up Too Late!" } },
+local GREETINGS = {
+	{before = 12, title = "Good Morning",lines = {"Sun Is Rising!","Rise And Shine!","Wakey Wakey!"}},
+	{before = 18, title = "Good Afternoon",lines = {"How Are Ya?","Hope Your Day Is Going Well!","Having A Good One?"}},
+	{before = 22, title = "Good Evening",lines = {"Winding Down?","Hope You Had A Great Day!","Evening, Friend!"} },
+	{before = 24, title = "Good Night",lines = {"Have A Good Night!","Sweet Dreams!","Don't Stay Up Too Late!"}},
 }
 
-function CheckTime()
+local function GetGreeting()
 	local hour = os.date("*t").hour
-
-	for _, g in ipairs(greetings) do
+	for _, g in ipairs(GREETINGS) do
 		if hour < g.before then
-			local line = g.lines[math.random(#g.lines)]
-			Notif(g.title .. ", " .. speaker.DisplayName, line .. "\nAnd Welcome To HeXen Universal!", 5, "HeadShot", speaker)
-			sfxSound("time")
-			return
+			return g.title, g.lines[math.random(#g.lines)]
 		end
 	end
+end
+
+local function CheckTime()
+	local title, line = GetGreeting()
+	if not title then return end
+
+	Notif(
+		title .. ", " .. speaker.DisplayName,
+		line .. "\nAnd Welcome To HeXen Universal!",
+		5, "HeadShot", speaker
+	)
+	sfxSound("time")
 end
 
 CheckTime()
@@ -465,7 +474,7 @@ for _, player in ipairs(game.Players:GetPlayers()) do
 end
 
 for _, dropdown in ipairs(AlldropdownRefresh) do
-    dropdown:Refresh(gotoplayersList, "Select an option")
+    dropdown:Refresh(gotoplayersList, "Select a Player")
 end
 
 -- AlreadyRan Checker
@@ -624,7 +633,7 @@ end)
 General = Window:CreateTab("Hubs & \nMain Scripts", 114127804740858)
 Section_Total_Of_Scripts = General:CreateSection("Total Universal Script's: " .. Scriptcount, false, false, 7743869612)
 
-Paragraphtotal = General:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
+Paragraphtotal = General:CreateParagraph({Title="General Note",Icon=81531453679196,Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
 
 Script_hubs = General:CreateSection("FE Script Hub's", false, false, 10709759610)
 
@@ -962,7 +971,7 @@ Button = General:CreateButton({SectionParent=Sectionreset,Name="Normal Character
 	Notif("Reseted Char!", "Reseted " .. speaker.DisplayName .. "!", 3, "check")
 end})
 
-Paragraph = General:CreateParagraph({Title="Character Reset Info",Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset)
+Paragraph = General:CreateParagraph({Title="Character Reset Info",Icon=81531453679196,Content="This Character Reset Type, When You Reset It Teleport's You Back To Your Original Position."}, Sectionreset)
 
 Button = General:CreateButton({SectionParent=Sectionreset,Name="Character Reset",Interact="Click",Callback=function()
 	ResetToPos()
@@ -1073,7 +1082,7 @@ end})
 
 General:CreateSpacing(Sectionflights,2)
 
-Paragraph = General:CreateParagraph({Title="CFrame Fly Info",Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights)
+Paragraph = General:CreateParagraph({Title="CFrame Fly Info",Icon=81531453679196,Content="This Version Of Fly Bypasses Most Anti-Cheat's"}, Sectionflights)
 
 General:CreateSpacing(Sectionflights,2)
 
@@ -1143,7 +1152,7 @@ end})
 
 General:CreateSpacing(Sectionflights,2)
 
-Paragraph = General:CreateParagraph({Title="Grapple Info",Content="Make's Your Character Move To The Mouse\nex. You Put Your Mouse Up, Your Character Goes Up"}, Sectionflights)
+Paragraph = General:CreateParagraph({Title="Grapple Info",Icon=81531453679196,Content="Make's Your Character Move To The Mouse\nex. You Put Your Mouse Up, Your Character Goes Up"}, Sectionflights)
 
 General:CreateSpacing(Sectionflights,2)
 
@@ -1522,7 +1531,7 @@ end})
 
 General:CreateSpacing(Sectionplayerealtefunc,2)
 
-Paragraph = General:CreateParagraph({Title="Float Info",Content="Control's :\nQ - Down\nE - Up\nYou can't set Q or E as a Keybind!"}, Sectionplayerealtefunc)
+Paragraph = General:CreateParagraph({Title="Float Info",Icon=81531453679196,Content="Control's :\nQ - Down\nE - Up\nYou can't set Q or E as a Keybind!"}, Sectionplayerealtefunc)
 
 FloatKeybind = General:CreateKeybind({Name="Float Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"Q","E","W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionplayerealtefunc,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
@@ -1892,7 +1901,7 @@ end})
 
 Sectionlprtog = General:CreateSection("FE LocalPlayer Related | Toggle's", false, false, 10686489468)
 
-Paragraph = General:CreateParagraph({Title="Multiple Function Info",Content="These Functions:\nUpside Down Character\nCrawl\nSit Walk\n... Are Going to Reset Your Character When You Turn It Off"}, Sectionlprtog)
+Paragraph = General:CreateParagraph({Title="Multiple Function Info",Icon=81531453679196,Content="These Functions:\nUpside Down Character\nCrawl\nSit Walk\n... Are Going to Reset Your Character When You Turn It Off"}, Sectionlprtog)
 
 Toggleupsidedown = General:CreateToggle({SectionParent=Sectionlprtog,Name="Upside Down Character",CurrentValue=false,Callback=function(Value)
 	upsidedown = Value
@@ -2201,7 +2210,7 @@ Toggleedgerjumper = General:CreateToggle({SectionParent=Sectionlprtog,Name="Edge
 end})
 table.insert(env.AllToggles, Toggleedgerjumper)
 
-Paragraph = General:CreateParagraph({Title="Float Info",Content="Control's :\nQ - Down\nE - Up"}, Sectionlprtog)
+Paragraph = General:CreateParagraph({Title="Float Info",Icon=81531453679196,Content="Control's :\nQ - Down\nE - Up"}, Sectionlprtog)
 
 Togglefloat = General:CreateToggle({SectionParent=Sectionlprtog,Name="Float",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -2378,9 +2387,9 @@ Toggleswimmer = General:CreateToggle({SectionParent=Sectionlprtog,Name="Swim",Cu
 end})
 table.insert(env.AllToggles, Toggleswimmer)
 
-HamsterBall = General:CreateSection("FE LocalPlayer Related | Hamster Ball", false, false, 5845546527)
+HamsterBall = General:CreateSection("FE LocalPlayer Related | Hamster Ball", false, false, 99242939212171)
 
-Paragraph = General:CreateParagraph({Title="Hamster Ball Info",Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, HamsterBall)
+Paragraph = General:CreateParagraph({Title="Hamster Ball Info",Icon=81531453679196,Content="People See You Rolling Like a Hamster Ball, But They Don't See The Ball"}, HamsterBall)
 
 SPEED_MULTIPLIER = 30
 JUMP_POWER = 60
@@ -2563,7 +2572,7 @@ end})
 
 Sectioncarp = General:CreateSection("FE LocalPlayer Related | Car", false, false, 123358713103625)
 
-Paragraphtotal = General:CreateParagraph({Title="Important Info",Content="Car Script But Remade & Better"}, Sectioncarp)
+Paragraphtotal = General:CreateParagraph({Title="Important Info",Icon=81531453679196,Content="Car Script But Remade & Better"}, Sectioncarp)
 
 local function hipCtrl()
 	if r15(speaker) then
@@ -2689,7 +2698,7 @@ setCarControls(ifCarEnabled)
 
 Cframe_WS = General:CreateSection("FE LocalPlayer Related | CFrame Walk Speed", false, false, 8673851977)
 
-InfoCFWS = General:CreateParagraph({Title="Important Info",Content="This Function Should Be Able To Bypass Anti-Cheat's And Such\nBasically Walk Fast While Bypassing the Anti-Cheat"}, Cframe_WS)
+InfoCFWS = General:CreateParagraph({Title="Important Info",Icon=81531453679196,Content="This Function Should Be Able To Bypass Anti-Cheat's And Such\nBasically Walk Fast While Bypassing the Anti-Cheat"}, Cframe_WS)
 
 General:CreateSpacing(Cframe_WS,2)
 
@@ -3106,7 +3115,7 @@ end})
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
-Paragraph = ClientSide_Scripts:CreateParagraph({Title="Remove Kick GUI Info",Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts)
+Paragraph = ClientSide_Scripts:CreateParagraph({Title="Remove Kick GUI Info",Icon=81531453679196,Content="When You're Kicked From A Game It Will Remove The Prompt Saying You're Kicked."}, Sectionmiscscripts)
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
@@ -3116,7 +3125,7 @@ Button = ClientSide_Scripts:CreateButton({SectionParent=Sectionmiscscripts,Name=
 	Notif("You've Executed The Script!", "You've Executed it " .. speaker.DisplayName .. "!\nAnd The Script Should Be Now Working!", 3, "check")
 end})
 
-Paragraph = ClientSide_Scripts:CreateParagraph({Title="Kick Yourself Info",Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts)
+Paragraph = ClientSide_Scripts:CreateParagraph({Title="Kick Yourself Info",Icon=81531453679196,Content="Useful When Roblox UI Disappear's."}, Sectionmiscscripts)
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
@@ -3126,7 +3135,7 @@ end})
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
-Paragraph = ClientSide_Scripts:CreateParagraph({Title="Kick Yourself W/ A MSG Info",Content="In The Box First Type In The Message You Want To Be Kicked With And Press Enter."}, Sectionmiscscripts)
+Paragraph = ClientSide_Scripts:CreateParagraph({Title="Kick Yourself W/ A MSG Info",Icon=81531453679196,Content="In The Box First Type In The Message You Want To Be Kicked With And Press Enter."}, Sectionmiscscripts)
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
@@ -4225,7 +4234,7 @@ Section_Total_Of_Scripts = TP:CreateSection("Total Universal Script's: " .. Scri
 
 Paragraphtotal = TP:CreateParagraph({Title="General Note",Content="Section's With FE (Filtering Enabled) Can Be Seen By Other Player's\nIf a Section Has (Client) Mean's You Only Can See It."}, Section_Total_Of_Scripts)
 
-Sectiontpscritps = TP:CreateSection("FE LocalPlayer Related | Teleport", false, false, 6723742952)
+Sectiontpscritps = TP:CreateSection("FE LocalPlayer Related | Teleport", false, false, 10481501007)
 
 Input = TP:CreateInput({SectionParent=Sectiontpscritps,Name="Teleport To Game",PlaceholderText="ID",OnEnter=true,NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
@@ -4253,7 +4262,7 @@ local function clicktpFunc()
 	end)
 end
 
-Paragraph = TP:CreateParagraph({Title="Press To TP Info",Content="Teleports You To Your Mouse Position On Key Press"}, Sectiontpscritps)
+Paragraph = TP:CreateParagraph({Title="Press To TP Info",Icon=81531453679196,Content="Teleports You To Your Mouse Position On Key Press"}, Sectiontpscritps)
 
 TP:CreateSpacing(Sectiontpscritps,2)
 
@@ -4336,7 +4345,7 @@ serverOptionsList = {}
 rawName = MarketplaceService:GetProductInfo(game.PlaceId).Name
 gameName = #rawName > 25 and string.sub(rawName, 1, 25) .. "..." or rawName
 
-serverdropdown = TP:CreateDropdown({SectionParent=Sectiontpscritps,Name="Server Lister",Options=serverOptionsList,CurrentOption="Select an option",Callback=function(Option) 
+serverdropdown = TP:CreateDropdown({SectionParent=Sectiontpscritps,Name="Server Lister",Options=serverOptionsList,PlaceholderText="Choose a Server",Callback=function(Option) 
 	targetJobId = serverMap[Option]; 
 	if targetJobId and targetJobId ~= game.JobId then 
 		clrf("TeleportService"):TeleportToPlaceInstance(game.PlaceId, targetJobId, speaker) 
@@ -4362,7 +4371,7 @@ updateServers = function()
                 end
                 serverOptionsList = newOptions
                 serverMap = newMap
-                serverdropdown:Refresh(serverOptionsList, "Select an option")
+                serverdropdown:Refresh(serverOptionsList, "Select a Server")
             end
         end
     end)
@@ -4393,9 +4402,9 @@ Button = TP:CreateButton({SectionParent=Sectiontpscritps,Name="Rejoin This Game 
 	TeleportService:Teleport(PlaceId, speaker)
 end})
 
-Sectiontpscritpss = TP:CreateSection("FE Player Related | Teleport", false, false, 6723742952)
+Sectiontpscritpss = TP:CreateSection("FE Player Related | Teleport", false, false, 10481501007)
 
-AlldropdownRefresh.gotodropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.gotodropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Teleport to / Goto",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
@@ -4407,13 +4416,13 @@ end})
 
 TP:CreateSpacing(Sectiontpscritpss,2)
 
-Paragraph = TP:CreateParagraph({Title="Tween Info",Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritpss)
+Paragraph = TP:CreateParagraph({Title="Tween Info",Icon=81531453679196,Content="This Type Teleport Bypasses Most Anti-Cheat's.\nThe Lower The Speed The Faster It Is."}, Sectiontpscritpss)
 
 TP:CreateSpacing(Sectiontpscritpss,2)
 
 tweenSpeedtp = 1
 
-AlldropdownRefresh.tweegotodropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Tween Teleport to / Goto",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.tweegotodropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Tween Teleport to / Goto",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
@@ -4449,7 +4458,7 @@ end})
 
 TP:CreateSpacing(Sectiontpscritpss,2)
 local spectateing = false
-AlldropdownRefresh.spectatedropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Spectate",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.spectatedropdown = TP:CreateDropdown({SectionParent=Sectiontpscritpss,Name="Spectate",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
@@ -4487,7 +4496,7 @@ Paragraphtotal = Players:CreateParagraph({Title="Dropdown Instructions",Content=
 
 General_Plr_Related = Players:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 10686489468)
 
-AlldropdownRefresh.Annoydropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Annoy",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Annoydropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Annoy",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4517,7 +4526,7 @@ AlldropdownRefresh.Annoydropdown = Players:CreateDropdown({SectionParent=General
     end)
 end})
 
-AlldropdownRefresh.GluetoPLRdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Glue",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.GluetoPLRdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Glue",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4548,7 +4557,7 @@ AlldropdownRefresh.GluetoPLRdropdown = Players:CreateDropdown({SectionParent=Gen
     end)
 end})
 
-AlldropdownRefresh.WalkTodropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Walk To",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.WalkTodropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Walk To",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4575,7 +4584,7 @@ AlldropdownRefresh.WalkTodropdown = Players:CreateDropdown({SectionParent=Genera
     end)
 end})
 
-AlldropdownRefresh.StandOndropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Stand On",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.StandOndropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Stand On",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4606,7 +4615,7 @@ AlldropdownRefresh.StandOndropdown = Players:CreateDropdown({SectionParent=Gener
     end)
 end})
 
-AlldropdownRefresh.becarrieddropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Be Carried",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.becarrieddropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Be Carried",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4639,11 +4648,11 @@ end})
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-Paragraph = Players:CreateParagraph({Title="Spook Info",Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, General_Plr_Related)
+Paragraph = Players:CreateParagraph({Title="Spook Info",Icon=81531453679196,Content="Teleport's You To The Player For A Few Seconds To Spook Them"}, General_Plr_Related)
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-AlldropdownRefresh.Spookdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Spook",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Spookdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Spook",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4658,7 +4667,7 @@ AlldropdownRefresh.Spookdropdown = Players:CreateDropdown({SectionParent=General
     end)
 end})
 
-AlldropdownRefresh.followdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Stalk",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.followdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Stalk",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4689,7 +4698,7 @@ AlldropdownRefresh.followdropdown = Players:CreateDropdown({SectionParent=Genera
 end})
 
 local trueforanim = false
-AlldropdownRefresh.loopwavedropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Loop Wave / Greeting",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.loopwavedropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Loop Wave / Greeting",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     plrName = Option:match("^(.-) %(") or Option
     foundPlr = getPlr(plrName)
     if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
@@ -4729,7 +4738,7 @@ AlldropdownRefresh.loopwavedropdown = Players:CreateDropdown({SectionParent=Gene
     end
 end})
 
-AlldropdownRefresh.Carpetdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Carpet",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Carpetdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Carpet",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4782,7 +4791,7 @@ AlldropdownRefresh.Carpetdropdown = Players:CreateDropdown({SectionParent=Genera
     end)
 end})
 
-AlldropdownRefresh.Kisserrdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Kiss",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Kisserrdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Kiss",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4844,7 +4853,7 @@ AlldropdownRefresh.Kisserrdropdown = Players:CreateDropdown({SectionParent=Gener
     end)
 end})
 
-AlldropdownRefresh.Hugdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Hug",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Hugdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Hug",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4893,7 +4902,7 @@ AlldropdownRefresh.Hugdropdown = Players:CreateDropdown({SectionParent=General_P
     end)
 end})
 
-AlldropdownRefresh.Piggybackdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="PiggyBack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Piggybackdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="PiggyBack",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4926,7 +4935,7 @@ AlldropdownRefresh.Piggybackdropdown = Players:CreateDropdown({SectionParent=Gen
 end})
 
 
-AlldropdownRefresh.backpackdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Backpack",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.backpackdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Backpack",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4956,7 +4965,7 @@ AlldropdownRefresh.backpackdropdown = Players:CreateDropdown({SectionParent=Gene
     end)
 end})
 
-AlldropdownRefresh.Headsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Headsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Headsit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -4992,7 +5001,7 @@ AlldropdownRefresh.Headsitdropdown = Players:CreateDropdown({SectionParent=Gener
     end)
 end})
 
-AlldropdownRefresh.SHOULDERSITdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Shoulder Sit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.SHOULDERSITdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Shoulder Sit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5028,7 +5037,7 @@ AlldropdownRefresh.SHOULDERSITdropdown = Players:CreateDropdown({SectionParent=G
     end)
 end})
 
-AlldropdownRefresh.Basketdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Basket",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.Basketdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Basket",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5078,7 +5087,7 @@ AlldropdownRefresh.Basketdropdown = Players:CreateDropdown({SectionParent=Genera
     end)
 end})
 
-AlldropdownRefresh.ActualHeadsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Actual Headsit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.ActualHeadsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Actual Headsit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5116,13 +5125,13 @@ end})
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-Paragraph = Players:CreateParagraph({Title="Anim Sync Info",Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related)
+Paragraph = Players:CreateParagraph({Title="Anim Sync Info",Icon=81531453679196,Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related)
 
 Players:CreateSpacing(General_Plr_Related,2)
 
 local animsync
 
-AlldropdownRefresh.animsyncdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Anim Sync",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.animsyncdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Anim Sync",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5171,7 +5180,7 @@ end})
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-AlldropdownRefresh.orbitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.orbitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Orbit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5245,7 +5254,7 @@ AlldropdownRefresh.orbitdropdown = Players:CreateDropdown({SectionParent=General
     end)
 end})
 
-AlldropdownRefresh.closeorbitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Close Orbit",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.closeorbitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Close Orbit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5304,11 +5313,11 @@ end})
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-Paragraph = Players:CreateParagraph({Title="Look At Info",Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, General_Plr_Related)
+Paragraph = Players:CreateParagraph({Title="Look At Info",Icon=81531453679196,Content="Make's Your Character Look At The Target. \nBest Used With Anti Ragdoll Which Is In the Anti Section"}, General_Plr_Related)
 
 Players:CreateSpacing(General_Plr_Related,2)
 
-AlldropdownRefresh.lookatdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Look At",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.lookatdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Look At",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5353,7 +5362,7 @@ local spinaroundrotation = 0
 local spinaroundspeed = 0.2
 local spinarounddistance = 6
 
-AlldropdownRefresh.spinarounddropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Spin Around",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.spinarounddropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Spin Around",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         local root = getRoot(speaker.Character)
         local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
@@ -5419,13 +5428,13 @@ end})
 
 General_Plr_Related69 = Players:CreateSection("FE Player Related | 69", false, false, 10686489468)
 
-Paragraph = Players:CreateParagraph({Title="Important Info",Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related69)
+Paragraph = Players:CreateParagraph({Title="Important Info",Icon=81531453679196,Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related69)
 
 Players:CreateSpacing(General_Plr_Related69,2)
 
 bang69speed = 3
 
-AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_Plr_Related69,Name="69",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_Plr_Related69,Name="69",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5569,7 +5578,7 @@ Reversehumpfacespeed = 1
 -- Reverse Hump
 Reversehumpspeed = 1
 
-AlldropdownRefresh.a69humpdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related69,Name="69 Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.a69humpdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related69,Name="69 Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     plrName = Option:match("^(.-) %(") or Option
     foundPlr = getPlr(plrName)
     if foundPlr then
@@ -5678,7 +5687,7 @@ end})
 
 General_Bang = Players:CreateSection("FE Player Related | Bang", false, false, 10686489468)
 
-AlldropdownRefresh.bangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Anim Bang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.bangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Anim Bang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5785,7 +5794,7 @@ end})
 
 Players:CreateSpacing(General_Bang,2)
 
-AlldropdownRefresh.facebangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Anim Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.facebangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Anim Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5888,7 +5897,7 @@ end})
 
 Players:CreateSpacing(General_Bang,2)
 
-AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Bang,Name="Sit Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5934,7 +5943,7 @@ end})
 
 General_Reverse_Funcs = Players:CreateSection("FE Player Related | Reverse", false, false, 10686489468)
 
-AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Sit Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -5978,7 +5987,7 @@ AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=G
     end)
 end})
 
-AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse-Reverse Sit Facebang",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse-Reverse Sit Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -6024,7 +6033,7 @@ end})
 
 Players:CreateSpacing(General_Reverse_Funcs,2)
 
-AlldropdownRefresh.hump3dropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.hump3dropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -6092,7 +6101,7 @@ end})
 
 Players:CreateSpacing(General_Reverse_Funcs,2)
 
-AlldropdownRefresh.hump2dropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.hump2dropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Face Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -6174,7 +6183,7 @@ General_Hump = Players:CreateSection("FE Player Related | Hump", false, false, 1
 
 local HumpLoop
 
-AlldropdownRefresh.humpdropdown = Players:CreateDropdown({SectionParent=General_Hump,Name="Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.humpdropdown = Players:CreateDropdown({SectionParent=General_Hump,Name="Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -6248,7 +6257,7 @@ end})
 
 Players:CreateSpacing(General_Hump,2)
 
-AlldropdownRefresh.hump2dropdown = Players:CreateDropdown({SectionParent=General_Hump,Name="Face Hump",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.hump2dropdown = Players:CreateDropdown({SectionParent=General_Hump,Name="Face Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
     pcall(function()
         plrName = Option:match("^(.-) %(") or Option
         foundPlr = getPlr(plrName)
@@ -6330,7 +6339,7 @@ Paragraphtotal = Acrobatics:CreateParagraph({Title="General Note",Content="Secti
 
 Sectionflipsnthings = Acrobatics:CreateSection("FE LocalPlayer Related | Flip's & Roll's", false, false, 9134761478)
 
-Paragraph = Acrobatics:CreateParagraph({Title="Beyblade Info",Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings)
+Paragraph = Acrobatics:CreateParagraph({Title="Beyblade Info",Icon=81531453679196,Content="Going to Reset Your Character When You Turn It Off"}, Sectionflipsnthings)
 
 beybaldespeedr = 20
 
@@ -6920,9 +6929,9 @@ Total_Anim_Scripts = Animations:CreateSection("Total Animation Script's: " .. Sc
 
 Paragraph = Animations:CreateParagraph({Title="Note",Content="Everything Here Is Mostly FE (Filtering Enabled) In Which People Can See"}, Total_Anim_Scripts)
 
-SectionAnimHubs = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149)
+SectionCurrentAnim = Animations:CreateSection("FE LocalPlayer Related | Current Animation", false, false, 10734920149)
 
-Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Current Anim Values",Interact="Reset Values",Callback=function()
+Button = Animations:CreateButton({SectionParent=SectionCurrentAnim,Name="Reset Current Anim Values",Interact="Reset Values",Callback=function()
 	Char = speaker.Character
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 	Slidercuranimspeed:Set(1)
@@ -6935,21 +6944,21 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Curr
 	end
 end})
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(SectionCurrentAnim,2)
 
-Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionAnimHubs,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
+Togglefreezecurrentanims = Animations:CreateToggle({SectionParent=SectionCurrentAnim,Name="Freeze Current Animation",CurrentValue=false,Callback=function(Value)
 	speaker.Character.Animate.Disabled = Value
 end})
 table.insert(env.AllToggles, Togglefreezecurrentanims)
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(SectionCurrentAnim,2)
 
 FreezeCurrentAnimKeybind = Animations:CreateKeybind({Name="Freeze Current Animation Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space"},CanBeToggled=true,HoldToInteract=false,SectionParent=SectionAnimHubs,Callback=function(KeyBind)
 	speaker.Character.Animate.Disabled = KeyBind and not isTyping
 end})
 table.insert(env.AllKeybinds, FreezeCurrentAnimKeybind)
 
-Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Freeze Current Animation Keybind",Interact="Reset Keybind",Callback=function()
+Button = Animations:CreateButton({SectionParent=SectionCurrentAnim,Name="Reset Freeze Current Animation Keybind",Interact="Reset Keybind",Callback=function()
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
@@ -6957,9 +6966,9 @@ Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="Reset Free
 	end)
 end})
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(SectionCurrentAnim,2)
 
-Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name="Current Animation Speed",Range={1,60},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
+Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionCurrentAnim,Name="Current Animation Speed",Range={1,60},Increment=1,Suffix="Speed",CurrentValue=1,Callback=function(Value)
 	Char = speaker.Character
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 	task.spawn(function()
@@ -6972,7 +6981,7 @@ Slidercuranimspeed = Animations:CreateSlider({SectionParent=SectionAnimHubs,Name
 	end)
 end})
 
-Input = Animations:CreateInput({SectionParent=SectionAnimHubs,Name="Current Animation Speed",OnEnter=true,PlaceholderText=1,RemoveTextAfterFocusLost=false,NumbersOnly=true,CharacterLimit=2,Callback=function(Text)
+Input = Animations:CreateInput({SectionParent=SectionCurrentAnim,Name="Current Animation Speed",OnEnter=true,PlaceholderText=1,RemoveTextAfterFocusLost=false,NumbersOnly=true,CharacterLimit=2,Callback=function(Text)
 	Char = speaker.Character
 	Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 	task.spawn(function()
@@ -6994,7 +7003,7 @@ Input = Animations:CreateInput({SectionParent=Sectionanimlog,Name="Animation",On
 	end)
 end})
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(Sectionanimlog,2)
 
 Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Print Out TimePosition",Interact="Click To Print",Callback=function()
 	local PrintTimestampLoop
@@ -7027,7 +7036,7 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Play To Pri
 	sfxSound("true")
 end})
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(Sectionanimlog,2)
 
 Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Copy Current Anim ID",Interact="Copy Current ID",Callback=function()
 	local copyAnimId = function(player)
@@ -7059,9 +7068,9 @@ Button = Animations:CreateButton({SectionParent=Sectionanimlog,Name="Copy Curren
 	copyAnimId(speaker)
 end})
 
-Animations:CreateSpacing(SectionAnimHubs,2)
+Animations:CreateSpacing(Sectionanimlog,2)
 
-AlldropdownRefresh.copyplrsanimdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Copy Players Anim ID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.copyplrsanimdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Copy Players Anim ID",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 	plrName = Option:match("^(.-) %(") or Option
 	foundPlr = getPlr(plrName)
@@ -7095,7 +7104,7 @@ AlldropdownRefresh.copyplrsanimdropdown = Animations:CreateDropdown({SectionPare
 	end)
 end})
 
-AlldropdownRefresh.printrigdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Print Players Rig",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.printrigdropdown = Animations:CreateDropdown({SectionParent=Sectionanimlog,Name="Print Players Rig",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 	plrName = Option:match("^(.-) %(") or Option
 	foundPlr = getPlr(plrName)
@@ -7523,7 +7532,7 @@ end
 
 local selectedEmote = nil
 
-emoteDropdown = Animations:CreateDropdown({SectionParent = Sectionfeemotes,Name = "Select Emote",Options = {},CurrentOption = "Select an option",Callback = function(option) 
+emoteDropdown = Animations:CreateDropdown({SectionParent = Sectionfeemotes,Name = "Select Emote",Options = {},CurrentOption = "Select a Emote",Callback = function(option) 
 	selectedEmote = option 
 end})
 
@@ -7668,7 +7677,7 @@ local function applyIdleAnimations(character, idle1Id, idle2Id)
 end
 
 local selectedPack = nil
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanimspacks,Name="Select Anim Pack",Options=animPackOptions,CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionfeanimspacks,Name="Select Anim Pack",Options=animPackOptions,PlaceholderText="Choose a Anim Pack",Callback=function(option)
 	selectedPack = option
 end})
 
@@ -7714,7 +7723,7 @@ local currentAnimation = nil
 local currentAnimationTrack = nil
 local animationPlaying = false
 
-Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name='Select \"/e\" Anim',Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},CurrentOption="Select an option",Callback=function(option)
+Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name='Select \"/e\" Anim',Options={"Dance1","Dance2","Dance3","Cheer","Point","Wave"},PlaceholderText="Choose a \"/e\" Dance",Callback=function(option)
 	selectedPackdance = option
 	if currentAnimationTrack then
 		currentAnimationTrack:Stop()
@@ -7879,7 +7888,7 @@ Dropdown=Animations:CreateDropdown({SectionParent=Sectionfeanims,Name="Select An
     local list={}
     for name in pairs(testdances)do table.insert(list,name)end
     return list
-end)(),CurrentOption="Select an option",Callback=function(o)
+end)(),PlaceholderText="Choose an Animation",Callback=function(o)
     selectedPackanim=o
     cleanup()
     local dance=testdances[o]
@@ -8003,7 +8012,7 @@ end})
 
 Other_Anim_Scripts = Animations:CreateSection("Other FE Animation Script's", false, false, 10709759610)
 
-Paragraph = Animations:CreateParagraph({Title="Rewind Info",Content="X = Rewind"}, Other_Anim_Scripts)
+Paragraph = Animations:CreateParagraph({Title="Rewind Info",Icon=81531453679196,Content="X = Rewind"}, Other_Anim_Scripts)
 
 Buttonrewinb = Animations:CreateButton({SectionParent=Other_Anim_Scripts,Name="Rewind R6 & R15",Interact="Click",Callback=function()
 	pcall(function()
@@ -8153,7 +8162,7 @@ end})
 
 CRD:CreateSpacing(Sectioncopysc,2)
 
-AlldropdownRefresh.useriddropdown = CRD:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.useriddropdown = CRD:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's UserID",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
@@ -8163,7 +8172,7 @@ AlldropdownRefresh.useriddropdown = CRD:CreateDropdown({SectionParent=Sectioncop
 	end)
 end})
 
-AlldropdownRefresh.usernamedropdown = CRD:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's Username",Options=gotoplayersList,CurrentOption="Select an option",Callback=function(Option)
+AlldropdownRefresh.usernamedropdown = CRD:CreateDropdown({SectionParent=Sectioncopysc,Name="Copy Selected Player's Username",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
 	pcall(function()
 		plrName = Option:match("^(.-) %(") or Option
 		foundPlr = getPlr(plrName)
