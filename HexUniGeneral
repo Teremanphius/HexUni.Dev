@@ -7,7 +7,6 @@ end
 getgenv().SecureMode = true
 
 -- Services
-
 function clrf(name) return cloneref(game:GetService(name)) end 
 
 local RunService = clrf("RunService")
@@ -141,6 +140,8 @@ function ResetToPos()
 	speaker.CharacterAdded:Wait()
 	speaker.Character:WaitForChild("HumanoidRootPart").CFrame = prev
 end
+
+-- Cleanup
 
 function cleanupTrack(track)
     if track then
@@ -530,38 +531,38 @@ end
 env.activeConnections = env.activeConnections or {}
 env.activeAnimations = env.activeAnimations or {}
 env.tableofLoopingFuncs = env.tableofLoopingFuncs or {
-Annoy = false,
-glued = false,
-walkto = false,
-StandOnHead = false,
-Becarried = false,
-Follow = false,
-LoopHello = false,
-Carpettion = false,
-Kisserrr = false,
-ffhugger = false,
-actualpb = false,
-besomebackpack = false,
-headsits = false,
-shouldersit = false,
-baskets = false,
-ActualHeadsit = false,
-issyncinganim = false,
-orbitingfuck = false,
-closeorbitingfuck = false,
-lookingAt = false,
-spinaround = false,
-Bang69 = false,
-ffc1hump = false,
-Bang = false,
-ff2 = false,
-ff4 = false,
-ff5 = false,
-fff3 = false,
-ff = false,
-Humping = false,
-ffc1 = false,
-ffc2 = false
+	Annoy = false,
+	glued = false,
+	walkto = false,
+	StandOnHead = false,
+	Becarried = false,
+	Follow = false,
+	LoopHello = false,
+	Carpettion = false,
+	Kisserrr = false,
+	ffhugger = false,
+	actualpb = false,
+	besomebackpack = false,
+	headsits = false,
+	shouldersit = false,
+	baskets = false,
+	ActualHeadsit = false,
+	issyncinganim = false,
+	orbitingfuck = false,
+	closeorbitingfuck = false,
+	lookingAt = false,
+	spinaround = false,
+	Bang69 = false,
+	ffc1hump = false,
+	Bang = false,
+	ff2 = false,
+	ff4 = false,
+	ff5 = false,
+	fff3 = false,
+	ff = false,
+	Humping = false,
+	ffc1 = false,
+	ffc2 = false
 }
 
 local tableofLoopingFuncs = env.tableofLoopingFuncs
@@ -1005,7 +1006,7 @@ end})
 
 General:CreateSpacing(Sectionflights,2)
 
-Toggleflii = General:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
+FlyTog = General:CreateToggle({SectionParent=Sectionflights,Name="Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
 			flying = true
@@ -1021,16 +1022,16 @@ Toggleflii = General:CreateToggle({SectionParent=Sectionflights,Name="Fly",Curre
 		end
 	end)
 end})
-table.insert(env.AllToggles, Toggleflii)
+table.insert(env.AllToggles, FlyTog)
 
 General:CreateSpacing(Sectionflights,2)
 
 fLYKeybind = General:CreateKeybind({Name="Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space","LeftControl"},HoldToInteract=false,CanBeToggled=true,SectionParent=Sectionflights,Callback=function(KeyBind, chatting)
 	if KeyBind and not isTyping then
-		Toggleflii:Lock("Reset The Keybind To Access")
-		Toggleflii:Set(true)
+		FlyTog:Lock("Reset The Keybind To Access")
+		FlyTog:Set(true)
 	elseif not KeyBind and not isTyping then
-		Toggleflii:Set(false)
+		FlyTog:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, fLYKeybind)
@@ -1040,15 +1041,15 @@ Button = General:CreateButton({SectionParent=Sectionflights,Name="Reset Fly Keyb
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
 		fLYKeybind:Set("Set Keybind")
-		Toggleflii:Unlock()
-		Toggleflii:Set(false)
+		FlyTog:Unlock()
+		FlyTog:Set(false)
 		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 	end)
 end})
 
 General:CreateSpacing(Sectionflights,2)
 
-Togglefliiv = General:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
+VehFlyTog = General:CreateToggle({SectionParent=Sectionflights,Name="Vehicle Fly",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		flying = Value
 		if flying then
@@ -1058,16 +1059,16 @@ Togglefliiv = General:CreateToggle({SectionParent=Sectionflights,Name="Vehicle F
 		end
 	end)
 end})
-table.insert(env.AllToggles, Togglefliiv)
+table.insert(env.AllToggles, VehFlyTog)
 
 General:CreateSpacing(Sectionflights,2)
 
 vehicleFLYKeybind = General:CreateKeybind({Name="Vehicle Fly Keybind",CurrentKeybind="Set Keybind",BlockedKeybinds={"W","A","S","D","Space","LeftControl"},CanBeToggled=true,HoldToInteract=false,SectionParent=Sectionflights,Callback=function(KeyBind)
 	if KeyBind and not isTyping then
-		Toggleflii:Lock("Reset The Keybind To Access")
-		Togglefliiv:Set(true)
+		VehFlyTog:Lock("Reset The Keybind To Access")
+		VehFlyTog:Set(true)
 	elseif not KeyBind and not isTyping then
-		Togglefliiv:Set(false)
+		VehFlyTog:Set(false)
 	end
 end})
 table.insert(env.AllKeybinds, vehicleFLYKeybind)
@@ -1076,9 +1077,9 @@ Button = General:CreateButton({SectionParent=Sectionflights,Name="Reset Vehicle 
 	sfxSound("true")
 	Notif("Reseted Keybind!", "Reseted The Keybind!\nYou Can Set A New One Now!", 2, "check")
 	pcall(function()
-		Togglefliiv:Unlock()
+		VehFlyTog:Unlock()
 		vehicleFLYKeybind:Set("Set Keybind")
-		Togglefliiv:Set(false)
+		VehFlyTog:Set(false)
 	end)
 end})
 
@@ -1398,7 +1399,7 @@ end})
 
 General:CreateSpacing(Sectionplayerealtefunc,2)
 
-Button = General:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode",Interact="Click To Be God Mode",Callback=function()
+GodModeButton = General:CreateButton({SectionParent=Sectionplayerealtefunc,Name="God Mode",Interact="Click To Be God Mode",Callback=function()
 	sfxSound("true")
 	Notif("God Mode Exed!", "God Mode Is Now Working Until You Reset!", 3, "check")
 	Cam = workspace.CurrentCamera
@@ -3181,13 +3182,13 @@ end})
 
 ClientSide_Scripts:CreateSpacing(Sectionmiscscripts,2)
 
-Button = ClientSide_Scripts:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Reset Button",Interact="Click",Callback=function()
+Button = ClientSide_Scripts:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Reset Button",Interact="Click To Enable Reset",Callback=function()
 	StarterGui:SetCore("ResetButtonCallback", true)
 	sfxSound("true")
 	Notif("Reset Button Enabled!", "Reset Button Is Now Available In The Esc Menu!", 3, "check")
 end})
 
-Button = ClientSide_Scripts:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click",Callback=function()
+Button = ClientSide_Scripts:CreateButton({SectionParent=Sectionmiscscripts,Name="Enable Shift Lock",Interact="Click To Enable Shift Lock",Callback=function()
 	speaker.DevEnableMouseLock = true
 	sfxSound("true")
 	Notif("Reset ShiftLock Enabled!", "ShiftLock Is Now Available In The Esc Menu!", 3, "check")
@@ -3318,6 +3319,7 @@ Input = ClientSide_Scripts:CreateInput({SectionParent=Misc_World_Scripts,Name="B
 end})
 
 ClientSide_Scripts:CreateSpacing(Misc_World_Scripts,2)
+
 Colorpickerskybox = ClientSide_Scripts:CreateColorPicker({SectionParent=Misc_World_Scripts,Name="Ambient Color Picker",Color=Color3.fromRGB(0, 0, 0),Callback=function(Value)
 	TweenService:Create(game.Lighting, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In, 0, false, 0), {Ambient=Value}):Play()
 end})
@@ -3468,6 +3470,8 @@ table.insert(env.AllToggles, Toggleremovefogga)
 
 ClientSide_Scripts:CreateSpacing(Misc_World_Scripts,2)
 
+-- Xray Function
+
 transparent = false
 transprencypartxray = 0.5
 
@@ -3486,6 +3490,7 @@ function x(v)
 		end
 	end
 end
+
 Togglexray = ClientSide_Scripts:CreateToggle({SectionParent=Misc_World_Scripts,Name="X-Ray",CurrentValue=false,Callback=function(Value)
 	pcall(function()
 		if Value then
@@ -3575,6 +3580,8 @@ Togglenoclipcam = ClientSide_Scripts:CreateToggle({SectionParent=Sectioncamera,N
 	end)
 end})
 table.insert(env.AllToggles, Togglenoclipcam)
+
+-- Freecam Script
 
 local crosshairEnabled = true
 local mouseUnlocked = false
@@ -4526,6 +4533,10 @@ Section_Total_Of_Scripts = Players:CreateSection("Total Universal Script's: " ..
 
 Paragraphtotal = Players:CreateParagraph({Title="Dropdown Instructions",Icon=81531453679196,Content="To Start:\nPress on \'Annoy\' for a example and then press on a random player\nTo Stop:\nPress on \'Annoy\' again and press on a random player\nNote: Switching between functions is possible, but can be buggy!"}, Section_Total_Of_Scripts)
 
+Players:CreateSpacing(Section_Total_Of_Scripts,2)
+
+ParagraphFuncWarning = Players:CreateParagraph({Title="Function Warning",Icon=81531453679196,Content="Functions like:\n- Kiss\n- Hug\n- 69\n- Anim Bang & Facebang\nCan OR Will reset your character due to them having certain animations games may not allow."}, Section_Total_Of_Scripts)
+
 General_Plr_Related = Players:CreateSection("FE Player Related | Silly & Misc & Other", false, false, 100094020789566)
 
 AlldropdownRefresh.Annoydropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Annoy",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
@@ -4974,6 +4985,7 @@ AlldropdownRefresh.backpackdropdown = Players:CreateDropdown({SectionParent=Gene
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.besomebackpack and env.ExecutionID == script_id then
                 StopAllLoops(true)
+				speaker.Character.Humanoid.Sit = false
                 Notif("No Longer Backpacking The Player", "Not Backpacking " .. foundPlr.Name, 2, "x")
             else
                 StopAllLoops()
@@ -4989,6 +5001,7 @@ AlldropdownRefresh.backpackdropdown = Players:CreateDropdown({SectionParent=Gene
                             getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
                         else
                             StopAllLoops()
+							speaker.Character.Humanoid.Sit = false
                         end
                     end)
                 end)
@@ -5019,6 +5032,42 @@ AlldropdownRefresh.Headsitdropdown = Players:CreateDropdown({SectionParent=Gener
                         if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
                             speaker.Character.Humanoid.Sit = true
                             getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 1.6, 0.4)
+                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
+                        else
+                            StopAllLoops()
+                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                                speaker.Character.Humanoid.Sit = false
+                            end
+                        end
+                    end)
+                end)
+            end
+        end
+    end)
+end})
+
+AlldropdownRefresh.ActualHeadsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Actual Headsit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.ActualHeadsit and env.ExecutionID == script_id then
+                StopAllLoops(true)
+                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                    speaker.Character.Humanoid.Sit = false
+                end
+                Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
+            else
+                StopAllLoops()
+				task.wait(0.1)
+                tableofLoopingFuncs.ActualHeadsit = true
+                sfxSound("true")
+                Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
+                activeConnections.ActualHeadsit = RunService.RenderStepped:Connect(function()
+                    pcall(function()
+                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
+                            speaker.Character.Humanoid.Sit = true
+                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4)
                             getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
                         else
                             StopAllLoops()
@@ -5086,16 +5135,6 @@ AlldropdownRefresh.Basketdropdown = Players:CreateDropdown({SectionParent=Genera
                 tableofLoopingFuncs.baskets = true
                 sfxSound("true")
                 Notif("Now Basketting", "Being " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ") Basket", 4, "check")
-                
-                zombiearmsAnim = Instance.new("Animation")
-                zombiearmsAnim.AnimationId = "rbxassetid://10714360343"
-                zomearm = speaker.Character:FindFirstChildOfClass("Humanoid"):LoadAnimation(zombiearmsAnim)
-                zomearm:Play(0, 10, 0)
-                table.insert(activeAnimations, zomearm)
-                
-                if speaker.Character:FindFirstChild("Animate") then 
-                    speaker.Character.Animate.Disabled = true 
-                end
 
                 activeConnections.baskets = RunService.RenderStepped:Connect(function()
                     pcall(function()
@@ -5103,45 +5142,9 @@ AlldropdownRefresh.Basketdropdown = Players:CreateDropdown({SectionParent=Genera
                             speaker.Character.Humanoid.Sit = true
                             local targetArm = foundPlr.Character:FindFirstChild("RightHand") or foundPlr.Character:FindFirstChild("Right Arm")
                             if targetArm then
-                                getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(145), math.rad(0), 0) * CFrame.new(0, 1.6, 1.6)
+                                getRoot(speaker.Character).CFrame = targetArm.CFrame * CFrame.Angles(math.rad(90), math.rad(0), 0) * CFrame.new(0, 0, 1.6)
                                 getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
                             end
-                        else
-                            StopAllLoops()
-                            if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
-                                speaker.Character.Humanoid.Sit = false
-                            end
-                        end
-                    end)
-                end)
-            end
-        end
-    end)
-end})
-
-AlldropdownRefresh.ActualHeadsitdropdown = Players:CreateDropdown({SectionParent=General_Plr_Related,Name="Actual Headsit",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
-    pcall(function()
-        plrName = Option:match("^(.-) %(") or Option
-        foundPlr = getPlr(plrName)
-        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ActualHeadsit and env.ExecutionID == script_id then
-                StopAllLoops(true)
-                if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
-                    speaker.Character.Humanoid.Sit = false
-                end
-                Notif("No Longer HeadSitting The Player", "Not HeadSitting " .. foundPlr.Name .. " Anymore", 2, "x")
-            else
-                StopAllLoops()
-				task.wait(0.1)
-                tableofLoopingFuncs.ActualHeadsit = true
-                sfxSound("true")
-                Notif("Now HeadSitting", "HeadSitting " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-                activeConnections.ActualHeadsit = RunService.RenderStepped:Connect(function()
-                    pcall(function()
-                        if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
-                            speaker.Character.Humanoid.Sit = true
-                            getRoot(speaker.Character).CFrame = getRoot(foundPlr.Character).CFrame * CFrame.Angles(0, math.rad(0), 0) * CFrame.new(0, 3.6, 0.4)
-                            getRoot(speaker.Character).AssemblyLinearVelocity = Vector3.new()
                         else
                             StopAllLoops()
                             if speaker.Character and speaker.Character:FindFirstChild("Humanoid") then
@@ -5460,10 +5463,6 @@ end})
 
 General_Plr_Related69 = Players:CreateSection("FE Player Related | 69", false, false, 130095284127917)
 
-Paragraph = Players:CreateParagraph({Title="Important Info",Icon=81531453679196,Content="Going to Reset Your Character When You Turn It Off"}, General_Plr_Related69)
-
-Players:CreateSpacing(General_Plr_Related69,2)
-
 bang69speed = 3
 
 AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_Plr_Related69,Name="69",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
@@ -5473,10 +5472,6 @@ AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_P
         if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
             if tableofLoopingFuncs.Bang69 and env.ExecutionID == script_id then
                 StopAllLoops(true)
-				local char = speaker.Character
-    			if char and char:FindFirstChild("HumanoidRootPart") and char.Humanoid.Health > 0 then
-        			ResetToPos()
-    			end
                 Notif("No Longer 69'ing The Player", "Not 69'ing " .. foundPlr.Name .. " Anymore", 2, "x")
             else
                 StopAllLoops()
@@ -5484,37 +5479,6 @@ AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_P
                 tableofLoopingFuncs.Bang69 = true
                 sfxSound("true")
                 Notif("Now 69'ing", "69'ing " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-
-                local c = speaker.Character
-                local hrp0 = c:FindFirstChild("HumanoidRootPart")
-                local hrp1 = hrp0:Clone()
-                
-                c.Parent = nil
-                hrp0.Parent = hrp1
-                if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
-				hrp1.Parent = c
-                c.Parent = workspace
-                
-                if not r15(speaker) then
-                    c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-                else
-                    if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
-                        c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -1.9, 0)
-                    end
-                end
-
-                hrp0.Transparency = 0.85
-                hrp0.Material = Enum.Material.ForceField
-				hrp0.Color = Color3.fromRGB(25, 25, 25)
-				hrp0.CanCollide = false
-                
-                activeConnections.Bang69Upside = RunService.Heartbeat:Connect(function()
-                    if c and c.Parent and hrp0 and hrp1 then
-                        hrp0.CFrame = hrp1.CFrame
-                        hrp0.Orientation += Vector3.new(0, 0, 180)
-                        hrp0.Velocity = hrp1.Velocity
-                    end
-                end)
 
                 Anim69Bang = Instance.new("Animation")
 				Anim69Bang2 = Instance.new("Animation")
@@ -5544,12 +5508,9 @@ AlldropdownRefresh.a69dropdown = Players:CreateDropdown({SectionParent=General_P
             				local myHRP = getRoot(speaker.Character)
             				myHRP.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
             				myHRP.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-							getRoot(speaker.Character).CFrame = (targetHRP.CFrame * CFrame.Angles(0, math.rad(180), 0)) + (targetHRP.CFrame.lookVector * f69lwnum) + Vector3.new(0, 0, 0)
+							getRoot(speaker.Character).CFrame = (targetHRP.CFrame * CFrame.Angles(0, math.rad(180), math.rad(180))) + (targetHRP.CFrame.lookVector * f69lwnum) + Vector3.new(0, 0, 0)
             				myHRP.CFrame = offsetCFrame
         				else
-							if char and char:FindFirstChild("HumanoidRootPart") and char.Humanoid.Health > 0 then
-        						ResetToPos()
-    						end
             				StopAllLoops()
         				end
     				end)
@@ -5617,13 +5578,11 @@ AlldropdownRefresh.a69humpdropdown = Players:CreateDropdown({SectionParent=Gener
         if (foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid")) then
 			if tableofLoopingFuncs.ffc1hump and env.ExecutionID == script_id then
                 StopAllLoops(true)
-                if activeConnections.Hump69Upside then activeConnections.Hump69Upside:Disconnect() end
                 if activeConnections.HumpBang69Looped then
                     activeConnections.HumpBang69Looped:Disconnect()
                     speaker.Character:FindFirstChildOfClass("Humanoid").PlatformStand = false
                 end
                 Notif("No Longer 69 Humping The Player", "Not 69 Humping " .. foundPlr.Name .. " Anymore", 2, "x")
-                ResetToPos()
             else
                 StopAllLoops()
 				task.wait(0.1)
@@ -5631,37 +5590,6 @@ AlldropdownRefresh.a69humpdropdown = Players:CreateDropdown({SectionParent=Gener
                 tableofLoopingFuncs.ffc1hump = true
                 sfxSound("true")
                 Notif("Now 69 Humping", "69 Humping " .. foundPlr.Name .. " (" .. foundPlr.DisplayName .. ")", 4, "check")
-					
-                local c = speaker.Character
-            	local hrp0 = c:FindFirstChild("HumanoidRootPart")
-                local hrp1 = hrp0:Clone()
-                
-            	c.Parent = nil
-            	hrp0.Parent = hrp1
-            	if hrp0:FindFirstChild("RootJoint") then hrp0.RootJoint.Part0 = nil end
-				hrp1.Parent = c
-                c.Parent = workspace
-            
-                if not r15(speaker) then
-                    c.HumanoidRootPart.RootJoint.C0 = c.HumanoidRootPart.RootJoint.C0 * CFrame.Angles(math.pi, 0, math.pi)
-            	else
-              	   if c:FindFirstChild("LowerTorso") and c.LowerTorso:FindFirstChild("Root") then
-                    	c.LowerTorso.Root.C0 = c.LowerTorso.Root.C0 * CFrame.Angles(0, 0, math.pi) * CFrame.new(0, -2.5, 0)
-                	end
-                end
-
-            	hrp0.Transparency = 0.85
-                hrp0.Material = Enum.Material.ForceField
-				hrp0.Color = Color3.fromRGB(25, 25, 25)
-				hrp0.CanCollide = false
-            
-                activeConnections.Hump69Upside = RunService.Heartbeat:Connect(function()
-                    if c and c.Parent and hrp0 and hrp1 then
-                	    hrp0.CFrame = hrp1.CFrame
-            	        hrp0.Orientation += Vector3.new(0, 0, 180)
-            	        hrp0.Velocity = hrp1.Velocity
-            	    end
-            	end)
 
                 activeConnections.HumpBang69Looped = RunService.Stepped:Connect(function(_, deltaTime)
                     pcall(function()
@@ -5675,12 +5603,11 @@ AlldropdownRefresh.a69humpdropdown = Players:CreateDropdown({SectionParent=Gener
                                 local alpha = (math.sin(cycle * math.pi * 2) * 0.5) + 0.5
                                 local xOffset = hump69distance * alpha          
                                 local targetCFrame = targetRoot.CFrame
-                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), 0) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
+                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.Angles(0, math.rad(180), math.rad(180)) * CFrame.new(0, 0, xOffset) + targetCFrame.LookVector
                                 speakerRoot.AssemblyLinearVelocity = Vector3.new()
                 	        end
                         else
                             StopAllLoops()
-                            ResetToPos()
                         end
                     end)
                 end)
@@ -6487,6 +6414,7 @@ local function manageAnimation(char, player, enable)
 		if anim then anim.Disabled = true; anim.Parent = player end
 	end
 end
+
 Flipping = false
 Toggleflipppping = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Name="Flip",CurrentValue=false,Callback=function(Value)
 	pcall(function()
@@ -6523,8 +6451,8 @@ Toggleflipppping = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Na
 				Gyro.MaxTorque  = Vector3.new(100000, 100000, 100000) * 999
 				Gyro.CFrame     = CF
 				Gyro.Parent     = torso
-				for i = 2, 28 do
-					Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-16), 0, 0)
+				for i = 1, 26 do
+					Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-13), 0, 0)
 					task.wait(0.03)
 				end
 				Gyro.CFrame = CF
@@ -6573,7 +6501,7 @@ Toggledoubleflipppping = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthi
 				local CF    = torso.CFrame
 				human.PlatformStand = true
 				local VelUp = Instance.new("BodyVelocity")
-				VelUp.Velocity  = Vector3.new(0, 80, 0) + (torso.CFrame.LookVector * 35)
+				VelUp.Velocity  = Vector3.new(0, 60, 0) + (torso.CFrame.LookVector * 26)
 				VelUp.P         = VelUp.P * 2
 				VelUp.MaxForce  = Vector3.new(10000, 10000, 10000) * 999
 				VelUp.Parent    = torso
@@ -6583,8 +6511,8 @@ Toggledoubleflipppping = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthi
 				Gyro.MaxTorque = Vector3.new(100000, 100000, 100000) * 999
 				Gyro.CFrame    = CF
 				Gyro.Parent    = torso
-				for i = 2, 20 do
-					Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-18), 0, 0)
+				for i = 1, 26 do
+					Gyro.CFrame = Gyro.CFrame * CFrame.Angles(math.rad(-26), 0, 0)
 					task.wait(0.03)
 				end
 				Gyro.CFrame = CF
@@ -6847,7 +6775,7 @@ Togglebarrelroll = Acrobatics:CreateToggle({SectionParent=Sectionflipsnthings,Na
 		local fixedFlatRot = CFrame.Angles(0, ry, 0)
 		local rot = 0
 		while Looproll do
-			rot = rot + (math.pi / -34)
+			rot = rot + (math.pi / -24)
 			Gyro.CFrame = fixedFlatRot * CFrame.Angles(0, 0, math.pi / 2) * CFrame.Angles(0, rot, 0)
 			task.wait(0.03)
 		end
@@ -7187,7 +7115,6 @@ function promptNewRig(speaker, rig)
 	end
 end
 
-
 Button = Animations:CreateButton({SectionParent=SectionRigChanger,Name="Change Rig Type to R6",Interact="Click For R6",Callback=function()
 	promptNewRig(speaker, "R6")
 end})
@@ -7473,6 +7400,7 @@ Inputanimplr = Animations:CreateInput({SectionParent=SectionAnimpl,Name="Playing
 end})
 
 SectionAnimHubs = Animations:CreateSection("FE Animation Hub's R6 & R15", false, true, 10709759610)
+
 Button = Animations:CreateButton({SectionParent=SectionAnimHubs,Name="R6 & R15 Animation Hub",Interact="Click",Callback=function()
 	sfxSound("true")
 	loadstring(game:HttpGet("https://pastebin.com/raw/RmD3qNp7", true))()
@@ -7610,64 +7538,64 @@ end})
 Sectionfeanimspacks = Animations:CreateSection("FE LocalPlayer Related | Animation Pack's", false, false, 11932783331)
 
 local animationPacks = {
-Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},
-Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},
-Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},
-Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},
-Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},
-Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},
-Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},
-Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},
-Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},
-Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},
-Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},
-Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},
-Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},
-Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},
-Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},
-Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},
-Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},
-Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},
-Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},
-Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"},
-["No Boundries"]={climb="18747060903",fall="18747062535",idle1="18747067405",idle2="18747063918",jump="18747069148",run="18747070484",swim="18747073181",swimIdle="18747071682",walk="18747074203"},
-Patrol={climb="1148811837",fall="1148863382",idle1="1149612882",idle2="1150842221",jump="1150944216",run="1150967949",swim="1151204998",swimIdle="1151221899",walk="1151231493"},
-Popstar={climb="1213044953",fall="1212900995",idle1="1212900985",idle2="1212954651",jump="1212954642",run="1212980348",swim="1212852603",swimIdle="1212998578",walk="1212980338"},
-Confident={climb="1069946257",fall="1069973677",idle1="1069977950",idle2="1069987858",jump="1069984524",run="1070001516",swim="1070009914",swimIdle="1070012133",walk="1070017263"},
-Cowboy={climb="1014380606",fall="1014384571",idle1="1014390418",idle2="1014398616",jump="1014394726",run="1014401683",swim="1014406523",swimIdle="1014411816",walk="1014421541"},
-NFL={climb="134630013742019",fall="129773241321032",idle1="92080889861410",idle2="74451233229259",jump="119846112151352",run="117333533048078",swim="132697394189921",swimIdle="79090109939093",walk="110358958299415"},
-["Wicked Popular"]={climb="131326830509784",fall="121152442762481",idle1="118832222982049",idle2="76049494037641",jump="104325245285198",run="72301599441680",swim="99384245425157",swimIdle="113199415118199",walk="92072849924640"},
-["Catwalk Glam"]={climb="119377220967554",fall="92294537340807",idle1="133806214992291",idle2="94970088341563",jump="116936326516985",run="81024476153754",swim="134591743181628",swimIdle="98854111361360",walk="109168724482748"}
+	Sneaky={climb="1132461372",fall="1132469004",idle1="1132473842",idle2="1132477671",jump="1132489853",run="1132494274",swim="1132500520",swimIdle="1132506407",walk="1132510133"},
+	Bold={climb="16738332169",fall="16738333171",idle1="16738333868",idle2="16738334710",jump="16738336650",run="16738337225",swim="16738339158",swimIdle="16738339817",walk="16738340646"},
+	Toy={climb="782843869",fall="782846423",idle1="782841498",idle2="782845736",jump="782847020",run="782842708",swim="782844582",swimIdle="782845186",walk="782843345"},
+	Pirate={climb="750779899",fall="750780242",idle1="750781874",idle2="750782770",jump="750782230",run="750783738",swim="750784579",swimIdle="750785176",walk="750785693"},
+	Knight={climb="658360781",fall="657600338",idle1="657595757",idle2="657568135",jump="658409194",run="657564596",swim="657560551",swimIdle="657557095",walk="657552124"},
+	Astronaut={climb="891609353",fall="891617961",idle1="891621366",idle2="891633237",jump="891627522",run="891636393",swim="891639666",swimIdle="891663592",walk="891636393"},
+	Vampire={climb="1083439238",fall="1083443587",idle1="1083445855",idle2="1083450166",jump="1083455352",run="1083462077",swim="1083464683",swimIdle="1083467779",walk="1083473930"},
+	Robot={climb="616086039",fall="616087089",idle1="616088211",idle2="616089559",jump="616090535",run="616091570",swim="616092998",swimIdle="616094091",walk="616095330"},
+	Levitation={climb="616003713",fall="616005863",idle1="616006778",idle2="616008087",jump="616008936",run="616010382",swim="616011509",swimIdle="616012453",walk="616013216"},
+	Bubbly={climb="909997997",fall="910001910",idle1="910004836",idle2="910009958",jump="910016857",run="910025107",swim="910028158",swimIdle="910030921",walk="910034870"},
+	Werewolf={climb="1083182000",fall="1083189019",idle1="1083195517",idle2="1083214717",jump="1083218792",run="1083216690",swim="1083222527",swimIdle="1083225406",walk="1083178339"},
+	Stylish={climb="616133594",fall="616134815",idle1="616136790",idle2="616138447",jump="616139451",run="616140816",swim="616143378",swimIdle="616144772",walk="616146177"},
+	Mage={climb="707826056",fall="707829716",idle1="707742142",idle2="707855907",jump="707853694",run="707861613",swim="707876443",swimIdle="707894699",walk="707897309"},
+	Cartoony={climb="742636889",fall="742637151",idle1="742637544",idle2="742638445",jump="742637942",run="742638842",swim="742639220",swimIdle="742639812",walk="742640026"},
+	Zombie={climb="616156119",fall="616157476",idle1="616158929",idle2="616160636",jump="616161997",run="616163682",swim="616165109",swimIdle="616166655",walk="616168032"},
+	Superhero={climb="616104706",fall="616108001",idle1="616111295",idle2="616113536",jump="616115533",run="616117076",swim="616119360",swimIdle="616120861",walk="616122287"},
+	Ninja={climb="656114359",fall="656115606",idle1="656117400",idle2="656118341",jump="656117878",run="656118852",swim="656119721",swimIdle="656121397",walk="656121766"},
+	Elder={climb="845392038",fall="845396048",idle1="845397899",idle2="845400520",jump="845398858",run="845386501",swim="845401742",swimIdle="845403127",walk="845403856"},
+	Oldschool={climb="5319816685",fall="5319839762",idle1="5319828216",idle2="5319831086",jump="5319841935",run="5319844329",swim="5319850266",swimIdle="5319852613",walk="5319847204"},
+	Adidas={climb="18537363391",fall="18537367238",idle1="18537376492",idle2="18537371272",jump="18537380791",run="18537384940",swim="18537389531",swimIdle="18537387180",walk="18537392113"},
+	["No Boundries"]={climb="18747060903",fall="18747062535",idle1="18747067405",idle2="18747063918",jump="18747069148",run="18747070484",swim="18747073181",swimIdle="18747071682",walk="18747074203"},
+	Patrol={climb="1148811837",fall="1148863382",idle1="1149612882",idle2="1150842221",jump="1150944216",run="1150967949",swim="1151204998",swimIdle="1151221899",walk="1151231493"},
+	Popstar={climb="1213044953",fall="1212900995",idle1="1212900985",idle2="1212954651",jump="1212954642",run="1212980348",swim="1212852603",swimIdle="1212998578",walk="1212980338"},
+	Confident={climb="1069946257",fall="1069973677",idle1="1069977950",idle2="1069987858",jump="1069984524",run="1070001516",swim="1070009914",swimIdle="1070012133",walk="1070017263"},
+	Cowboy={climb="1014380606",fall="1014384571",idle1="1014390418",idle2="1014398616",jump="1014394726",run="1014401683",swim="1014406523",swimIdle="1014411816",walk="1014421541"},
+	NFL={climb="134630013742019",fall="129773241321032",idle1="92080889861410",idle2="74451233229259",jump="119846112151352",run="117333533048078",swim="132697394189921",swimIdle="79090109939093",walk="110358958299415"},
+	["Wicked Popular"]={climb="131326830509784",fall="121152442762481",idle1="118832222982049",idle2="76049494037641",jump="104325245285198",run="72301599441680",swim="99384245425157",swimIdle="113199415118199",walk="92072849924640"},
+	["Catwalk Glam"]={climb="119377220967554",fall="92294537340807",idle1="133806214992291",idle2="94970088341563",jump="116936326516985",run="81024476153754",swim="134591743181628",swimIdle="98854111361360",walk="109168724482748"}
 }
 
 local animPackOptions = {
-"Sneaky",
-"Bold",
-"Toy",
-"Knight",
-"Astronaut",
-"Vampire",
-"Robot",
-"Levitation",
-"Bubbly",
-"Werewolf",
-"Stylish",
-"Wicked Popular",
-"Mage",
-"Cartoony",
-"Zombie",
-"Superhero",
-"Ninja",
-"Elder",
-"Oldschool",
-"Adidas",
-"No Boundries",
-"Patrol",
-"Popstar",
-"Confident",
-"Cowboy",
-"NFL",
-"Catwalk Glam"
+	"Sneaky",
+	"Bold",
+	"Toy",
+	"Knight",
+	"Astronaut",
+	"Vampire",
+	"Robot",
+	"Levitation",
+	"Bubbly",
+	"Werewolf",
+	"Stylish",
+	"Wicked Popular",
+	"Mage",
+	"Cartoony",
+	"Zombie",
+	"Superhero",
+	"Ninja",
+	"Elder",
+	"Oldschool",
+	"Adidas",
+	"No Boundries",
+	"Patrol",
+	"Popstar",
+	"Confident",
+	"Cowboy",
+	"NFL",
+	"Catwalk Glam"
 }
 
 local function setAnimation(character, animName, animId)
@@ -7755,7 +7683,15 @@ end})
 
 Animations:CreateSpacing(Sectionrblxclientanims,2)
 
-local eedances = {Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"},Cheer={R6="rbxassetid://129423030",R15="rbxassetid://507770677"},Point={R6="rbxassetid://128853357",R15="rbxassetid://507770453"},Wave={R6="rbxassetid://128777973",R15="rbxassetid://507770239"}}
+local eedances = {
+	Dance1={R6="rbxassetid://182491065",R15="rbxassetid://507771955"},
+	Dance2={R6="rbxassetid://182491277",R15="rbxassetid://507776879"},
+	Dance3={R6="rbxassetid://182491368",R15="rbxassetid://507777268"},
+	Cheer={R6="rbxassetid://129423030",R15="rbxassetid://507770677"},
+	Point={R6="rbxassetid://128853357",R15="rbxassetid://507770453"},
+	Wave={R6="rbxassetid://128777973",R15="rbxassetid://507770239"}
+}
+
 local selectedPackdance = nil
 local currentAnimation = nil
 local currentAnimationTrack = nil
@@ -7773,6 +7709,7 @@ Dropdown = Animations:CreateDropdown({SectionParent=Sectionrblxclientanims,Name=
 end})
 
 Animations:CreateSpacing(Sectionrblxclientanims,2)
+
 Toggleedance12 = Animations:CreateToggle({SectionParent=Sectionrblxclientanims,Name='Play Selected \"/e\" Anim',CurrentValue=false,Callback=function(Value)
 	if not selectedPackdance then
 		return
@@ -7840,7 +7777,9 @@ Button = Animations:CreateButton({SectionParent=Sectionfeanims,Name="Reset Anim 
 end})
 
 Animations:CreateSpacing(Sectionfeanims,2)
+
 math.randomseed(os.time())
+
 function IfRigRanDance(isR15)
     if isR15 then
         return "rbxassetid://" .. Randomr15dances[ math.random(#Randomr15dances) ]
@@ -7848,8 +7787,32 @@ function IfRigRanDance(isR15)
         return "rbxassetid://" .. Randomr6dances[ math.random(#Randomr6dances) ]
     end
 end
-Randomr6dances = {"27789359","30196114","248263260","45834924","33796059","28488254","52155728"}
-Randomr15dances = {"3333432454","4555808220","4049037604","4555782893","10214311282","10714010337","10713981723","10714372526","10714076981","10714392151","11444443576","10714100539"}
+
+Randomr6dances = {
+	"27789359",
+	"30196114",
+	"248263260",
+	"45834924",
+	"33796059",
+	"28488254",
+	"52155728"
+}
+
+Randomr15dances = {
+	"3333432454",
+	"4555808220",
+	"4049037604",
+	"4555782893",
+	"10214311282",
+	"10714010337",
+	"10713981723",
+	"10714372526",
+	"10714076981",
+	"10714392151",
+	"11444443576",
+	"10714100539"
+}
+
 local testdances = {
     ["Jerk Off"]={R6="rbxassetid://72042024",R15="rbxassetid://698251653",Speed=1,AllowSpeedChange=true,Looped=true,R6Time={LoopStart=0.7,LoopEnd=0.899},R15Time={LoopStart=0.53,LoopEnd=0.76}},
     ["Salute"]={R6="rbxassetid://273717479",Speed=1,AllowSpeedChange=false,Looped=true,R6Time={LoopStart=0.1,LoopEnd=0.11}},
@@ -7899,6 +7862,7 @@ local testdances = {
     ["Scared"]={R6="rbxassetid://180612465",Speed=1,AllowSpeedChange=false,Looped=true},
     ["Crouch"]={R6="rbxassetid://182724289",Speed=1,AllowSpeedChange=false,Looped=true}
 }
+
 local PlaybackHandlers={currentTrack=nil,loop=nil}
 
 local function cleanup()
@@ -8040,6 +8004,8 @@ CRD:CreateSpacing(Sectionpointofhub,2)
 Paragraphhvvv = CRD:CreateParagraph({Title="UI",Content="NSUI (Arrayfield Modified)"}, Sectionpointofhub)
 
 Sectionclientinfo = CRD:CreateSection("Client Information", false, false, 10686489468)
+
+-- Info Paragraphs / Client Info
 
 local floor = math.floor
 local format = string.format
