@@ -562,7 +562,9 @@ env.tableofLoopingFuncs = env.tableofLoopingFuncs or {
 	ff = false,
 	Humping = false,
 	ffc1 = false,
-	ffc2 = false
+	ffc2 = false,
+	eatingout = false,
+	EatenOut = false
 }
 
 local tableofLoopingFuncs = env.tableofLoopingFuncs
@@ -751,30 +753,72 @@ table.insert(env.AllToggles, Toggledropgear)
 
 Antis = General:CreateSection("FE LocalPlayer / Player Related Script's | Anti's", false, false, 10734951847)
 
-Toggleantiflinng = General:CreateToggle({SectionParent=Antis,Name="Anti Fling",CurrentValue=false,Callback=function(Value)
-	if Value then
-		AntiFlinging = RunService.Stepped:Connect(function()
-   		    local char = speaker.Character
-    	    if not char then return end
-    	    for _, child in ipairs(char:GetDescendants()) do
-    	        if child:IsA("BasePart") and child.Name ~= floatName then
-    	            child.CanCollide = false
-    	        end
-    	    end
-    	end)
-    else
-		AntiFlinging = cleanupConnection(AntiFlinging)
-		local char = speaker.Character
-    	if char then
-        for _, child in ipairs(char:GetDescendants()) do
-            if child:IsA("BasePart") and (child.Name:find("Leg") or child.Name:find("Arm") or child.Name:find("Torso") or child.Name == "Head") then
-                child.CanCollide = true
-    	        end
-    	    end
-    	end
-	end
+AntiFlingTog = General:CreateToggle({SectionParent=Antis,Name="Anti Fling",CurrentValue=false,Callback=function(Value)
+	pcall(function()
+		if Value then
+			AntiFlinging = RunService.Stepped:Connect(function()
+				local allPlayers = Players:GetPlayers()
+				for _, player in ipairs(allPlayers) do
+					if player ~= speaker and player.Character then
+						local character = player.Character
+
+						for _, part in ipairs(character:GetDescendants()) do
+							if part:IsA("BasePart") then
+								part.CanCollide = false
+							end
+						end
+					end
+				end
+				local char = speaker.Character
+
+				if char then
+					local hrp = char:FindFirstChild("HumanoidRootPart")
+					if hrp and hrp:IsA("BasePart") then
+						local linearVel = hrp.AssemblyLinearVelocity.Magnitude
+						local angularVel = hrp.AssemblyAngularVelocity.Magnitude
+						
+						if linearVel > 80 or angularVel > 80 then
+							hrp.AssemblyLinearVelocity = Vector3.zero
+							hrp.AssemblyAngularVelocity = Vector3.zero
+						end
+					end
+				end
+			end)
+		else
+			AntiFlinging = cleanupConnection(AntiFlinging)
+			local allPlayers = Players:GetPlayers()
+
+			for _, player in ipairs(allPlayers) do
+				if player ~= speaker and player.Character then
+					for _, part in ipairs(player.Character:GetDescendants()) do
+						if part:IsA("BasePart") then
+							part.CanCollide = true
+						end
+					end
+				end
+			end
+		end
+	end)
 end})
-table.insert(env.AllToggles, Toggleantiflinng)
+table.insert(env.AllToggles, AntiFlingTog)
+
+-- If collision is enabled ingame or not
+
+function IfplrCollides()
+	pcall(function()
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= speaker and player.Character then
+				local torso = player.Character:FindFirstChild("UpperTorso") or player.Character:FindFirstChild("Torso") or player.Character:FindFirstChild("HumanoidRootPart")
+				if torso and torso:IsA("BasePart") and torso.CanCollide then
+					return true
+				end
+			end
+		end
+	end)
+    return false
+end
+
+AntiFlingTog:Set(IfplrCollides())
 
 local voidng = false
 local magtd = 2
@@ -5946,50 +5990,6 @@ AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=G
     end)
 end})
 
-AlldropdownRefresh.sitfacebangdropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse-Reverse Sit Facebang",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
-    pcall(function()
-        plrName = Option:match("^(.-) %(") or Option
-        foundPlr = getPlr(plrName)
-        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
-            if tableofLoopingFuncs.ff5 and env.ExecutionID == script_id then
-                StopAllLoops(true)
-                if speaker.Character:FindFirstChildOfClass("Humanoid") then
-                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
-					Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
-                end
-                Notif("No Longer Reverse Facebanging ", "Stopped", 2, "x")
-            else
-                StopAllLoops()
-                task.wait(0.1)
-                
-                tableofLoopingFuncs.ff5 = true
-                sfxSound("true")
-                Notif("Now Reverse Facebanging", "Reverse Facebanging " .. foundPlr.Name, 4, "check")
-                
-                activeConnections.SitFaceBangerLoop = RunService.RenderStepped:Connect(function()
-                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
-                        pcall(function()
-                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
-                            local speakerRoot = getRoot(speaker.Character)
-                            local targetRoot = getRoot(foundPlr.Character)
-                            
-                            if hum and speakerRoot and targetRoot then
-                                hum.Sit = true
-								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
-                                speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, -2.2, 0.7) * CFrame.Angles(0, 0, 0)
-                                speakerRoot.AssemblyLinearVelocity = Vector3.new()
-                            end
-                        end)
-                    else
-                        StopAllLoops()
-						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
-                    end
-                end)
-            end
-        end
-    end)
-end})
-
 Players:CreateSpacing(General_Reverse_Funcs,2)
 
 AlldropdownRefresh.hump3dropdown = Players:CreateDropdown({SectionParent=General_Reverse_Funcs,Name="Reverse Hump",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
@@ -6285,6 +6285,141 @@ end})
 FacehumpInputSpeed = Players:CreateInput({SectionParent=General_Hump,Name="Face Hump Speed",OnEnter=true,PlaceholderText="1",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
 	pcall(function()
 		humpfacespeed = Text
+	end)
+end})
+
+General_Eating = Players:CreateSection("FE Player Related | Eating Out", false, false, 17181101929)
+
+-- Speed Of Eaintg out
+EatingoutSpeed = 6
+EatenOutSpeed = 6
+prevAngle = 0
+
+AlldropdownRefresh.EatingOutdropdown = Players:CreateDropdown({SectionParent=General_Eating,Name="Eating Out",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.eatingout and env.ExecutionID == script_id then
+                StopAllLoops(true)
+                if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+					Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                end
+                Notif("No Longer Eating out", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.eatingout = true
+                sfxSound("true")
+                Notif("Now Eating out", "Eating out " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.EatingoutLoop = RunService.RenderStepped:Connect(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.Sit = true
+								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+								
+								local currentAngle = math.sin(os.clock() * EatingoutSpeed) * math.rad(35)
+								local deltaAngle = currentAngle - prevAngle
+								prevAngle = currentAngle
+
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, -2.2, 1) * CFrame.Angles(0, currentAngle, 0)
+								speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
+                    else
+                        StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                    end
+                end)
+            end
+        end
+    end)
+end})
+
+Players:CreateSpacing(General_Eating,2)
+
+EatingOutSliderSpeed = Players:CreateSlider({SectionParent=General_Eating,Name="Eating Out Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=6,Callback=function(Value)
+	pcall(function()
+		EatingoutSpeed = Value
+	end)
+end})
+
+EatingOutInputSpeed = Players:CreateInput({SectionParent=General_Eating,Name="Eating Out Speed",OnEnter=true,PlaceholderText="6",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		EatingoutSpeed = Text
+	end)
+end})
+
+Players:CreateSpacing(General_Eating,2)
+
+AlldropdownRefresh.EatenOutdropdown = Players:CreateDropdown({SectionParent=General_Eating,Name="Be Eaten Out",Options=gotoplayersList,PlaceholderText="Choose a Player",Callback=function(Option)
+    pcall(function()
+        plrName = Option:match("^(.-) %(") or Option
+        foundPlr = getPlr(plrName)
+        if foundPlr and foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") then
+            if tableofLoopingFuncs.EatenOut and env.ExecutionID == script_id then
+                StopAllLoops(true)
+                if speaker.Character:FindFirstChildOfClass("Humanoid") then
+                    speaker.Character:FindFirstChildOfClass("Humanoid").Sit = false
+					Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                end
+                Notif("No Longer Eating out", "Stopped", 2, "x")
+            else
+                StopAllLoops()
+                task.wait(0.1)
+                
+                tableofLoopingFuncs.EatenOut = true
+                sfxSound("true")
+                Notif("Now Eating out", "Eating out " .. foundPlr.Name, 4, "check")
+                
+                activeConnections.EatenOutLoop = RunService.RenderStepped:Connect(function()
+                    if foundPlr.Character and foundPlr.Character:FindFirstChild("Humanoid") and speaker.Character then
+                        pcall(function()
+                            local hum = speaker.Character:FindFirstChildOfClass("Humanoid")
+                            local speakerRoot = getRoot(speaker.Character)
+                            local targetRoot = getRoot(foundPlr.Character)
+                            
+                            if hum and speakerRoot and targetRoot then
+                                hum.Sit = true
+								Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+								
+								local currentAngle = math.sin(os.clock() * EatenOutSpeed) * math.rad(35)
+								local deltaAngle = currentAngle - prevAngle
+								prevAngle = currentAngle
+
+								speakerRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 2, -1.7) * CFrame.Angles(math.rad(270), currentAngle, 0)
+								speakerRoot.AssemblyLinearVelocity = Vector3.new()
+                            end
+                        end)
+                    else
+                        StopAllLoops()
+						Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+                    end
+                end)
+            end
+        end
+    end)
+end})
+
+Players:CreateSpacing(General_Eating,2)
+
+EatenOutSliderSpeed = Players:CreateSlider({SectionParent=General_Eating,Name="Eating Out Speed",Range={1,20},Increment=1,Suffix="Speed",CurrentValue=6,Callback=function(Value)
+	pcall(function()
+		EatenOutSpeed = Value
+	end)
+end})
+
+EatenOutInputSpeed = Players:CreateInput({SectionParent=General_Eating,Name="Eating Out Speed",OnEnter=true,PlaceholderText="6",NumbersOnly=true,RemoveTextAfterFocusLost=false,Callback=function(Text)
+	pcall(function()
+		EatenOutSpeed = Text
 	end)
 end})
 
@@ -8129,7 +8264,6 @@ end})
 CRD:CreateSpacing(Sectioncopysc,2)
 
 Button = CRD:CreateButton({SectionParent=Sectioncopysc,Name="Join Script",Interact="Click",Callback=function()
-	soundnotification = Instance.new("Sound")
 	sfxSound("true")
 	Notif("Copied!", "Copied To Clipboard!", 3, "check")
 	toClipboard("--[[Will Join Your Friend's Game\nIf Not Join The Game He's Playing and Execute]]--" .. "\ngame:GetService(\'TeleportService\'):TeleportToPlaceInstance(\'" .. PlaceId .. "\', \'" .. JobId .. "\')")
