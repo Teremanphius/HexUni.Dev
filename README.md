@@ -2,7 +2,7 @@
 Solely for educational purposes
 ### Loadstring : 
 ```lua 
-loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.Dev/refs/heads/main/HexUniGeneral'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Teremanphius/HexUni.Dev/refs/heads/main/HexUniGeneral.luau'))()
 ```
 ---
 ### Features :
